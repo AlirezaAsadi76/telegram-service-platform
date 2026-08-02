@@ -1,6 +1,7 @@
 package config
 
 import (
+	"telegram-service-platform/repository/postgres"
 	"time"
 )
 
@@ -13,6 +14,7 @@ type Application struct {
 }
 
 type Config struct {
-	HttpServer  HttpServer  `koanf:"httpServer"`
-	Application Application `koanf:"application"`
+	HttpServer  HttpServer        `koanf:"httpServer"`
+	Application Application       `koanf:"application"`
+	Postgres    postgres.DBConfig `koanf:"postgres"`
 }
