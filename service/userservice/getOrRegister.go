@@ -28,7 +28,7 @@ func (s Service) GetOrRegister(ctx context.Context, request params.GetOrRegister
 		Role:       request.Role,
 	}
 
-	userRegistered, rErr := s.repository.Create(ctx, &user)
+	rErr := s.repository.Create(ctx, &user)
 	if rErr != nil {
 		return params.GetOrRegisterResponse{},
 			richerror.New(Op, rErr).
@@ -36,5 +36,5 @@ func (s Service) GetOrRegister(ctx context.Context, request params.GetOrRegister
 				WithMessage(msgerror.InternalServerError)
 	}
 
-	return mapper.MapUserResponse(userRegistered), nil
+	return mapper.MapUserResponse(&user), nil
 }
