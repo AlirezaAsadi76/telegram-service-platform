@@ -109,7 +109,7 @@ func (e *RichError) Message() string {
 
 func (e *RichError) Operation() string {
 
-	return e.operation
+	return string(e.operation)
 
 }
 

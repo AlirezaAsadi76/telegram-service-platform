@@ -1,6 +1,8 @@
 package params
 
-import "telegram-service-platform/service/entity"
+import (
+	"telegram-service-platform/entity"
+)
 
 type UserInfo struct {
 	Id         uint64      `json:"id"`

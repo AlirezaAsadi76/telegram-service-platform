@@ -2,18 +2,19 @@ package userservice
 
 import (
 	"context"
-	"telegram-service-platform/service/entity"
+	"telegram-service-platform/entity"
 )
 
-type Repository interface {
-	Register(ctx context.Context, user entity.User) (entity.User, error)
+type UserRepository interface {
+	FindUserByTelegramID(ctx context.Context, telegramID int64) (*entity.User, error)
+	Create(ctx context.Context, user *entity.User) (*entity.User, error)
 }
 
 type Service struct {
-	repository Repository
+	repository UserRepository
 }
 
-func New(repository Repository) Service {
+func New(repository UserRepository) Service {
 	return Service{
 		repository: repository,
 	}

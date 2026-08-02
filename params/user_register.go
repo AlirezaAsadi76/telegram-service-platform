@@ -1,14 +1,16 @@
 package params
 
-import "telegram-service-platform/service/entity"
+import (
+	"telegram-service-platform/entity"
+)
 
-type RegisterRequest struct {
+type GetOrRegisterRequest struct {
 	TelegramID int64
 	Username   string
 	FirstName  string
 	LastName   string
 	Role       entity.Role
 }
-type RegisterResponse struct {
+type GetOrRegisterResponse struct {
 	UserInfo UserInfo `json:"user_info"`
 }
