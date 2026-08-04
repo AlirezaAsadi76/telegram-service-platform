@@ -3,6 +3,7 @@ package userhandler
 import (
 	"context"
 	"log"
+	"telegram-service-platform/delivery/telegramserver/keyboard"
 	"telegram-service-platform/pkg/mapper"
 
 	"github.com/go-telegram/bot"
@@ -30,15 +31,15 @@ func (h Handler) start(
 		request,
 	)
 	if gErr != nil {
-		log.Println(gErr)
 		return
 	}
 
 	_, err = b.SendMessage(
 		ctx,
 		&bot.SendMessageParams{
-			ChatID: update.Message.Chat.ID,
-			Text:   "خوش آمدید 👋",
+			ChatID:      update.Message.Chat.ID,
+			Text:        "به پنل خدمات تلگرام خوش آمدید 👋",
+			ReplyMarkup: keyboard.MainMenu(),
 		},
 	)
 
