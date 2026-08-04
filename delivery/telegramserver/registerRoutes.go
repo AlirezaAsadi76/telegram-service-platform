@@ -2,8 +2,7 @@ package telegramserver
 
 func (b *Bot) registerRoutes() {
 
-	b.userRouter.Register(
+	b.userHandler.RegisterRoutes(
 		b.client,
 	)
-
 }

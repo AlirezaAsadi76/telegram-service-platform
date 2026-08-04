@@ -10,7 +10,7 @@ import (
 	"telegram-service-platform/params"
 )
 
-func (h Handler) Start(
+func (h Handler) start(
 	ctx context.Context,
 	b *bot.Bot,
 	update *models.Update,

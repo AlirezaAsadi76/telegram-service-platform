@@ -12,6 +12,9 @@ postgres:
   database: "telegram_service_platform"
   sslmode: "disable"
 
+telegram:
+  token: ""
+  debug: false
 
 
 

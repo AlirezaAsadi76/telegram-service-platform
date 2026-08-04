@@ -3,28 +3,27 @@ package telegramserver
 import (
 	"context"
 	"log"
+
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
-	"telegram-service-platform/service/userservice"
-	"telegram-service-platform/validator/uservalidator"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
 )
 
 type Config struct {
-	Token string
-	Debug bool
+	Token string `koanf:"token"`
+	Debug bool   `koanf:"debug"`
 }
 
 type Bot struct {
-	client     *bot.Bot
-	userRouter userhandler.Router
-	config     Config
+	client      *bot.Bot
+	userHandler userhandler.Handler
+	config      Config
 }
 
 func New(
 	cfg Config,
-	userRouter userhandler.Router,
+	userHandler userhandler.Handler,
 ) (*Bot, error) {
 
 	client, err := bot.New(
@@ -49,12 +48,9 @@ func New(
 	}
 
 	server := &Bot{
-
-		client: client,
-
-		userRouter: userRouter,
-
-		config: cfg,
+		client:      client,
+		userHandler: userHandler,
+		config:      cfg,
 	}
 
 	server.registerRoutes()

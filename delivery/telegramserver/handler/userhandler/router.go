@@ -2,15 +2,11 @@ package userhandler
 
 import "github.com/go-telegram/bot"
 
-type Router struct {
-	handler Handler
-}
-
-func NewRouter(
-	handler Handler,
-) Router {
-
-	return Router{
-		handler: handler,
-	}
+func (h Handler) RegisterRoutes(b *bot.Bot) {
+	b.RegisterHandler(
+		bot.HandlerTypeMessageText,
+		"/start",
+		bot.MatchTypeExact,
+		h.start,
+	)
 }
