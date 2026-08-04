@@ -21,3 +21,6 @@ redis:
   port: 6380
   password: MyStrongPassword
   db: 0
+
+priceService:
+  expTime: "60m"

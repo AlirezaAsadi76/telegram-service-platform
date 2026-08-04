@@ -23,7 +23,7 @@ func (s Service) GetTonPrice(
 	price, err = s.provider.GetTonPrice(ctx)
 
 	if err != nil {
-		return 0,
+		return params.GetTonPriceResponse{},
 			richerror.New(
 				Op,
 				err,
@@ -39,6 +39,7 @@ func (s Service) GetTonPrice(
 	if err := s.repository.SetTonPrice(
 		ctx,
 		price,
+		s.config.ExpTime,
 	); err != nil {
 
 		// cache failure should not break business flow

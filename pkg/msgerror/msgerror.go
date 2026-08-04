@@ -26,4 +26,7 @@ const (
 	TelegramOperationFailed = "telegram operation failed"
 	Unexpected              = "unexpected"
 	TelegramIdInvalid       = "telegram id invalid"
+	CacheReadFailed         = "failed to read cache"
+	CacheWriteFailed        = "failed to write cache"
+	CacheParseFailed        = "failed to parse cache value"
 )
