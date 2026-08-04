@@ -2,6 +2,7 @@ package userservice
 
 import (
 	"context"
+	"fmt"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/params"
 	"telegram-service-platform/pkg/mapper"
@@ -13,14 +14,15 @@ func (s Service) GetOrRegister(ctx context.Context, request params.GetOrRegister
 	const Op = "userservice.GetOrRegister"
 
 	existingUser, fErr := s.repository.FindUserByTelegramID(ctx, request.TelegramID)
-
+	fmt.Println("existingUser : ", existingUser)
+	fmt.Println("fErr : ", fErr)
 	if fErr != nil {
 		return params.GetOrRegisterResponse{}, richerror.New(Op, fErr)
 	}
 	if existingUser != nil {
 		return mapper.MapUserResponse(existingUser), nil
 	}
-
+	fmt.Println("user : ", request.TelegramID)
 	user := entity.User{
 		Username:   request.Username,
 		TelegramID: request.TelegramID,
