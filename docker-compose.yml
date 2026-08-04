@@ -25,5 +25,27 @@ services:
       timeout: 5s
       retries: 5
 
+
+  redis:
+    image: redis:7.4
+    container_name: gameapp_redis
+
+    env_file:
+      - .env
+      -
+    ports:
+      - "${REDIS_PORT}:6379"
+
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"
+      - --requirepass
+      - "${REDIS_PASSWORD}"
+
+    volumes:
+      - gameapp_redis_data:/data
+
+    restart: unless-stopped
 volumes:
   postgres_data:

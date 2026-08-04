@@ -16,6 +16,8 @@ telegram:
   token: "8873841525:AAGdvvgTW1hAzVjONNZ5apyXGmhEDVKbtZM"
   debug: false
 
-
-
-
+redis:
+  host: localhost
+  port: 6380
+  password: MyStrongPassword
+  db: 0
