@@ -1,6 +1,8 @@
 package keyboard
 
 import (
+	"telegram-service-platform/delivery/telegramserver/callback"
+
 	"github.com/go-telegram/bot/models"
 )
 
@@ -12,36 +14,41 @@ func MainMenu() *models.InlineKeyboardMarkup {
 
 			{
 				{
-					Text:         "⭐ Telegram Stars",
-					CallbackData: "stars",
+					Text:         "Telegram Stars",
+					CallbackData: callback.Stars,
+					Style:        "primary",
 				},
 			},
 
 			{
 				{
 					Text:         "👑 Telegram Premium",
-					CallbackData: "premium",
+					CallbackData: callback.Premium,
+					Style:        "primary",
 				},
 			},
 
 			{
 				{
 					Text:         "📢 Telegram Ads",
-					CallbackData: "ads",
+					CallbackData: callback.Ads,
+					Style:        "primary",
 				},
 			},
 
 			{
 				{
 					Text:         "💎 Wallet",
-					CallbackData: "wallet",
+					CallbackData: callback.Wallet,
+					Style:        "success",
 				},
 			},
 
 			{
 				{
 					Text:         "🎁 Gift",
-					CallbackData: "gift",
+					CallbackData: callback.Gift,
+					Style:        "success",
 				},
 			},
 		},
