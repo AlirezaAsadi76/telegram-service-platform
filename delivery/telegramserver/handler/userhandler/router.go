@@ -1,8 +1,14 @@
 package userhandler
 
-import "github.com/go-telegram/bot"
+import (
+	"log"
+
+	"github.com/go-telegram/bot"
+)
 
 func (h Handler) RegisterRoutes(b *bot.Bot) {
+	log.Println("register handler")
+
 	b.RegisterHandler(
 		bot.HandlerTypeMessageText,
 		"/start",

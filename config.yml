@@ -13,7 +13,7 @@ postgres:
   sslmode: "disable"
 
 telegram:
-  token: ""
+  token: "8873841525:AAGdvvgTW1hAzVjONNZ5apyXGmhEDVKbtZM"
   debug: false
 
 

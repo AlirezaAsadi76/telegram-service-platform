@@ -1,6 +1,11 @@
 package main
 
 import (
+	"context"
+	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 	"telegram-service-platform/config"
 	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
@@ -11,8 +16,16 @@ import (
 )
 
 func main() {
-	cfg := config.Load("config.yml")
 
+	ctx, cancel := signal.NotifyContext(
+		context.Background(),
+		os.Interrupt,
+		syscall.SIGTERM,
+	)
+
+	defer cancel()
+	cfg := config.Load("config.yml")
+	fmt.Println("config : ", cfg)
 	//mi := migrator.New(cfg.Postgres)
 	//
 	//if err := mi.Up(); err != nil {
@@ -27,9 +40,16 @@ func main() {
 	userSvc := userservice.New(userRepo)
 	userValidator := uservalidator.New()
 	userHandler := userhandler.New(userSvc, userValidator)
-	bot, tErr := telegramserver.New(cfg.Telegram, userHandler)
+
+	telegramBot, tErr := telegramserver.New(
+		cfg.Telegram,
+		userHandler,
+	)
+
 	if tErr != nil {
 		panic(tErr)
 	}
+
+	telegramBot.Start(ctx)
 
 }

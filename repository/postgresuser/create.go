@@ -12,7 +12,7 @@ func (db *DB) Create(ctx context.Context, user *entity.User) error {
 
 	err := db.Pool.QueryRow(ctx, `
 							INSERT INTO users (telegram_id, first_name, last_name, username, role) 
-							VALUES ($1, $2, $3, $4) RETURNING id, created_at, updated_at`,
+							VALUES ($1, $2, $3, $4, $5) RETURNING id, created_at, updated_at`,
 		user.TelegramID, user.FirstName, user.LastName, user.Username, user.Role).
 		Scan(&user.ID, &user.CreatedAt, &user.UpdatedAt)
 

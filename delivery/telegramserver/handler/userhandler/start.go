@@ -15,7 +15,7 @@ func (h Handler) start(
 	b *bot.Bot,
 	update *models.Update,
 ) {
-
+	log.Println("userHandler start")
 	tgUser := update.Message.From
 
 	request := params.GetOrRegisterRequest{
