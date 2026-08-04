@@ -25,4 +25,5 @@ const (
 
 	TelegramOperationFailed = "telegram operation failed"
 	Unexpected              = "unexpected"
+	TelegramIdInvalid       = "telegram id invalid"
 )

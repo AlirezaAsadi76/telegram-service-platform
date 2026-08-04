@@ -16,4 +16,6 @@ const (
 	KindConflict
 
 	KindUnexpected
+
+	KindInvalid
 )
