@@ -24,4 +24,5 @@ const (
 	PaymentAlreadyProcessed = "payment already processed"
 
 	TelegramOperationFailed = "telegram operation failed"
+	Unexpected              = "unexpected"
 )
