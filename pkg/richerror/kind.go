@@ -1,5 +1,7 @@
 package richerror
 
+import "errors"
+
 type Kind uint8
 
 const (
@@ -19,3 +21,17 @@ const (
 
 	KindInvalid
 )
+
+func IsKind(
+	err error,
+	kind Kind,
+) bool {
+
+	var rErr *RichError
+
+	if !errors.As(err, &rErr) {
+		return false
+	}
+
+	return rErr.Kind() == kind
+}

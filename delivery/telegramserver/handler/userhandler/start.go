@@ -3,11 +3,10 @@ package userhandler
 import (
 	"context"
 	"log"
+	"telegram-service-platform/pkg/mapper"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
-
-	"telegram-service-platform/params"
 )
 
 func (h Handler) start(
@@ -16,22 +15,17 @@ func (h Handler) start(
 	update *models.Update,
 ) {
 	log.Println("userHandler start")
-	tgUser := update.Message.From
-
-	request := params.GetOrRegisterRequest{
-
-		TelegramID: tgUser.ID,
-		Username:   tgUser.Username,
-		FirstName:  tgUser.FirstName,
-		LastName:   tgUser.LastName,
+	if update.Message == nil {
+		return
 	}
+	request := mapper.MapTelegramUserToRegisterRequest(update.Message.From)
 
 	err := h.userValidator.GetOrRegister(request)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	_, gErr := h.userService.GetOrRegister(
+	user, gErr := h.userService.GetOrRegister(
 		ctx,
 		request,
 	)
@@ -52,4 +46,8 @@ func (h Handler) start(
 		log.Println(err)
 		return
 	}
+	log.Println(
+		"registered user:",
+		user.UserInfo,
+	)
 }

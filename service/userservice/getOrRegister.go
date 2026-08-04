@@ -14,9 +14,8 @@ func (s Service) GetOrRegister(ctx context.Context, request params.GetOrRegister
 	const Op = "userservice.GetOrRegister"
 
 	existingUser, fErr := s.repository.FindUserByTelegramID(ctx, request.TelegramID)
-	fmt.Println("existingUser : ", existingUser)
-	fmt.Println("fErr : ", fErr)
-	if fErr != nil {
+
+	if fErr != nil && !richerror.IsKind(fErr, richerror.KindNotFound) {
 		return params.GetOrRegisterResponse{}, richerror.New(Op, fErr)
 	}
 	if existingUser != nil {
