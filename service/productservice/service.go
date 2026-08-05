@@ -1,17 +1,20 @@
-package priceservice
+package productservice
 
 import (
 	"context"
+	"telegram-service-platform/entity"
 	"time"
 )
 
 type Provider interface {
 	GetTonPrice(ctx context.Context) (float64, error)
+	GetUsdToTomanPrice(ctx context.Context) (float64, error)
 }
 
 type Repository interface {
-	SetTonPrice(ctx context.Context, price float64, expTime time.Duration) error
-	GetTonPrice(ctx context.Context) (float64, error)
+	GetStarsPackage(ctx context.Context) ([]entity.StarPackage, error)
+	GetPremiumPlans(ctx context.Context) ([]entity.PremiumPlan, error)
+	GetAdsPlans(ctx context.Context) ([]entity.AdsPlan, error)
 }
 
 type Config struct {
