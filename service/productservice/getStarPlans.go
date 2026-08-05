@@ -28,5 +28,5 @@ func (s Service) GetStarPlans(ctx context.Context) (params.GetStarPlansResponse,
 				)
 	}
 	//TODO - add price to plans response
-	return mapper.MapStarPlansToGetStarPlansResponse(plans), nil
+	return mapper.MapStarPlansResponse(plans), nil
 }

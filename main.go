@@ -10,7 +10,9 @@ import (
 	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
 	"telegram-service-platform/repository/postgres"
+	"telegram-service-platform/repository/postgresproduct"
 	"telegram-service-platform/repository/postgresuser"
+	"telegram-service-platform/service/productservice"
 	"telegram-service-platform/service/userservice"
 	"telegram-service-platform/validator/uservalidator"
 )
@@ -37,10 +39,14 @@ func main() {
 	if nErr != nil {
 		panic(nErr)
 	}
+
 	userRepo := postgresuser.New(postgresRepo)
 	userSvc := userservice.New(userRepo)
 	userValidator := uservalidator.New()
 	userHandler := userhandler.New(userSvc, userValidator)
+
+	productRepo := postgresproduct.New(postgresRepo)
+	productSvc := productservice.New(productRepo)
 
 	telegramBot, tErr := telegramserver.New(
 		cfg.Telegram,

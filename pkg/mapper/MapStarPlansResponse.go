@@ -5,7 +5,7 @@ import (
 	"telegram-service-platform/params"
 )
 
-func MapStarPlansToGetStarPlansResponse(plans []entity.StarPackage) params.GetStarPlansResponse {
+func MapStarPlansResponse(plans []entity.StarPackage) params.GetStarPlansResponse {
 
 	res := params.GetStarPlansResponse{}
 
