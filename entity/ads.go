@@ -1,7 +1,14 @@
 package entity
 
+import "time"
+
 type AdsPlan struct {
-	View  int64   `json:"view"`
-	CPM   float64 `json:"cpm"`
-	Price float64 `json:"price"`
+	ID        uint64
+	Views     uint64
+	CPM       float64
+	Price     float64
+	DailyShow uint8
+	Active    bool
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }

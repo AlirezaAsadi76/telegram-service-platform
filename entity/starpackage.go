@@ -1,6 +1,11 @@
 package entity
 
+import "time"
+
 type StarPackage struct {
-	Amount   int64   `json:"amount"`
-	UsdPrice float64 `json:"usd_price"`
+	ID        uint64
+	Amount    uint32
+	Active    bool
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
