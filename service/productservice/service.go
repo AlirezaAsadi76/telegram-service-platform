@@ -12,7 +12,7 @@ type Provider interface {
 }
 
 type Repository interface {
-	GetStarsPackage(ctx context.Context) ([]entity.StarPackage, error)
+	GetStarPlans(ctx context.Context) ([]entity.StarPackage, error)
 	GetPremiumPlans(ctx context.Context) ([]entity.PremiumPlan, error)
 	GetAdsPlans(ctx context.Context) ([]entity.AdsPlan, error)
 }
