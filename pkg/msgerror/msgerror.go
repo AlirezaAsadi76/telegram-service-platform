@@ -29,4 +29,5 @@ const (
 	CacheReadFailed         = "failed to read cache"
 	CacheWriteFailed        = "failed to write cache"
 	CacheParseFailed        = "failed to parse cache value"
+	QueryFailed             = "failed to query"
 )

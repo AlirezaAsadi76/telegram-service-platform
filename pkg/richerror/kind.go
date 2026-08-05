@@ -20,6 +20,8 @@ const (
 	KindUnexpected
 
 	KindInvalid
+
+	KindQueryFailure
 )
 
 func IsKind(
