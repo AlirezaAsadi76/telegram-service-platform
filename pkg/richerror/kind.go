@@ -22,6 +22,8 @@ const (
 	KindInvalid
 
 	KindQueryFailure
+
+	KindScanFailure
 )
 
 func IsKind(
