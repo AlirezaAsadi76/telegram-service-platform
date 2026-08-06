@@ -5,24 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/service/priceservice/interfaces.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/go.imports.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/telegram-service-platform.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapter/exchangerate/adapter.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/exchangerate/adapter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapter/exchangerate/getTonUsdPrice.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/exchangerate/getTonUsdPrice.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapter/exchangerate/getUsdTomanPrice.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/exchangerate/getUsdTomanPrice.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapter/exchangerate/model.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/exchangerate/model.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapter/fzrcards/telegramproduct/adapter.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/fzrcards/telegramproduct/adapter.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapter/fzrcards/telegramproduct/getPremiumPrices.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/fzrcards/telegramproduct/getPremiumPrices.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapter/fzrcards/telegramproduct/getStarsPrice.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/fzrcards/telegramproduct/getStarsPrice.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/productentity/stars.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/productentity/stars.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/priceservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/priceservice/service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/productservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/interfaces.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
