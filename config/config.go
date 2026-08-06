@@ -19,12 +19,12 @@ type Application struct {
 }
 
 type Config struct {
-	HttpServer   HttpServer            `koanf:"httpServer"`
-	Application  Application           `koanf:"application"`
-	Postgres     postgres.DBConfig     `koanf:"postgres"`
-	Telegram     telegramserver.Config `koanf:"telegram"`
-	redisCli     redisadapter.Config   `koanf:"redis"`
-	priceService productservice.Config `koanf:"priceService"`
-	fzr          fzrcards.Config       `koanf:"fzr"`
-	exchangeRate exchangerate.Config   `koanf:"exchangeRate"`
+	HttpServer     HttpServer            `koanf:"httpServer"`
+	Application    Application           `koanf:"application"`
+	Postgres       postgres.DBConfig     `koanf:"postgres"`
+	Telegram       telegramserver.Config `koanf:"telegram"`
+	RedisCli       redisadapter.Config   `koanf:"redis"`
+	ProductService productservice.Config `koanf:"productService"`
+	Fzr            fzrcards.Config       `koanf:"fzr"`
+	ExchangeRate   exchangerate.Config   `koanf:"exchangeRate"`
 }

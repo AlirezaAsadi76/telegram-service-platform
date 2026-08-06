@@ -1,8 +1,11 @@
 package fzrcards
 
+import "time"
+
 type Config struct {
-	BaseURL string `koanf:"base_url"`
-	ApiKey  string `koanf:"api_key"`
+	BaseURL string        `koanf:"base_url"`
+	ApiKey  string        `koanf:"api_key"`
+	Timeout time.Duration `koanf:"timeout"`
 }
 
 func (a FzrClient) BaseURL() string {

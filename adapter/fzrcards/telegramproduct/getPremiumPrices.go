@@ -5,13 +5,12 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-
-	"telegram-service-platform/pkg/productprice"
+	"telegram-service-platform/entity/productentity"
 )
 
-func (a Adapter) GetPremiumPrices(
+func (a *Adapter) GetPremiumPrices(
 	ctx context.Context,
-) ([]productprice.PremiumPrice, error) {
+) ([]productentity.PremiumPrice, error) {
 
 	req, err := http.NewRequestWithContext(
 		ctx,
@@ -38,7 +37,7 @@ func (a Adapter) GetPremiumPrices(
 		return nil, err
 	}
 
-	prices := make([]productprice.PremiumPrice, 0, len(result.Plans))
+	prices := make([]productentity.PremiumPrice, 0, len(result.Plans))
 
 	for _, plan := range result.Plans {
 
@@ -53,7 +52,7 @@ func (a Adapter) GetPremiumPrices(
 
 		prices = append(
 			prices,
-			productprice.PremiumPrice{
+			productentity.PremiumPrice{
 				Months:   plan.Months,
 				PriceUSD: price,
 			},

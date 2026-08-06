@@ -15,7 +15,7 @@ func MapPremiumPlansResponse(plans []entity.PremiumPlan) params.GetPremiumPlansR
 			result,
 			params.PremiumPlanInfo{
 				ID:     plan.ID,
-				Months: plan.Months,
+				Months: plan.Duration.Months(),
 			},
 		)
 	}

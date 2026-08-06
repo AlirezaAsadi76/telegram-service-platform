@@ -1,15 +1,19 @@
 package exchangerate
 
-import "net/http"
+import (
+	"net/http"
+)
 
 type Adapter struct {
 	client *http.Client
 	config Config
 }
 
-func New(cfg Config, httpClient *http.Client) Adapter {
+func New(cfg Config) Adapter {
 	return Adapter{
-		client: httpClient,
+		client: &http.Client{
+			Timeout: cfg.Timeout,
+		},
 		config: cfg,
 	}
 }

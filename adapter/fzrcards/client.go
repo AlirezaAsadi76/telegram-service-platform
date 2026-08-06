@@ -9,8 +9,11 @@ type FzrClient struct {
 	config Config
 }
 
-func New(cfg Config, client *http.Client) FzrClient {
-	return FzrClient{
+func New(cfg Config) *FzrClient {
+	client := &http.Client{
+		Timeout: cfg.Timeout,
+	}
+	return &FzrClient{
 		client: client,
 		config: cfg,
 	}

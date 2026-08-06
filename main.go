@@ -6,6 +6,9 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"telegram-service-platform/adapter/exchangerate"
+	"telegram-service-platform/adapter/fzrcards"
+	"telegram-service-platform/adapter/fzrcards/telegramproduct"
 	"telegram-service-platform/config"
 	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
@@ -40,13 +43,17 @@ func main() {
 		panic(nErr)
 	}
 
+	fzrClient := fzrcards.New(cfg.Fzr)
+	telegramProvider := telegramproduct.New(fzrClient)
+	exchangeRateProvider := exchangerate.New(cfg.ExchangeRate)
+
 	userRepo := postgresuser.New(postgresRepo)
 	userSvc := userservice.New(userRepo)
 	userValidator := uservalidator.New()
 	userHandler := userhandler.New(userSvc, userValidator)
 
 	productRepo := postgresproduct.New(postgresRepo)
-	productSvc := productservice.New(productRepo)
+	productSvc := productservice.New(cfg.ProductService, telegramProvider, exchangeRateProvider, productRepo)
 
 	telegramBot, tErr := telegramserver.New(
 		cfg.Telegram,

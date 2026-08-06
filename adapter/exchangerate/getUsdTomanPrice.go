@@ -11,7 +11,7 @@ import (
 func (e *Adapter) GetUsdTomanPrice(ctx context.Context) (float64, error) {
 	const Op = "exchangerate.getUsdTomanPrice"
 
-	req, nErr := http.NewRequestWithContext(ctx, http.MethodGet, wallexUsdIRREndPoint, nil)
+	req, nErr := http.NewRequestWithContext(ctx, http.MethodGet, e.config.UsdIrURL, nil)
 	if nErr != nil {
 		return 0, nErr
 	}
