@@ -3,22 +3,28 @@ package telegramproduct
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
+	"telegram-service-platform/entity/productentity"
 )
 
-func (a *Adapter) GetStarPrice(ctx context.Context) (float64, error) {
+func (a *Adapter) GetStarPrice(ctx context.Context) (productentity.StarPrice, error) {
 	const Op = "telegramproduct.GetStarPrice"
 
 	req, nErr := http.NewRequestWithContext(ctx, getStarsPriceMethod, a.createURL(getStarsPricePath), nil)
+	req.Header.Add("x-api-key", a.client.APIKey())
+
+	fmt.Println(a.createURL(getStarsPricePath))
 
 	if nErr != nil {
-		return 0, nErr
+		return productentity.StarPrice{}, nErr
 	}
 
 	resp, cErr := a.client.Connection().Do(req)
+
 	if cErr != nil {
-		return 0, cErr
+		return productentity.StarPrice{}, cErr
 	}
 
 	defer resp.Body.Close()
@@ -26,7 +32,7 @@ func (a *Adapter) GetStarPrice(ctx context.Context) (float64, error) {
 	var result starsPriceResponse
 
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		return 0, err
+		return productentity.StarPrice{}, err
 	}
 
 	price, err := strconv.ParseFloat(
@@ -35,8 +41,10 @@ func (a *Adapter) GetStarPrice(ctx context.Context) (float64, error) {
 	)
 
 	if err != nil {
-		return 0, err
+		return productentity.StarPrice{}, err
 	}
 
-	return price, nil
+	return productentity.StarPrice{
+		PricePerStar: price,
+	}, nil
 }

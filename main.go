@@ -54,6 +54,11 @@ func main() {
 
 	productRepo := postgresproduct.New(postgresRepo)
 	productSvc := productservice.New(cfg.ProductService, telegramProvider, exchangeRateProvider, productRepo)
+	_ = productSvc
+
+	value, err := exchangeRateProvider.GetUsdTomanPrice(ctx)
+
+	fmt.Println(value, err)
 
 	telegramBot, tErr := telegramserver.New(
 		cfg.Telegram,

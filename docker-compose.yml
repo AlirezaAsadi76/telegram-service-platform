@@ -28,11 +28,10 @@ services:
 
   redis:
     image: redis:7.4
-    container_name: gameapp_redis
+    container_name: tel_redis
 
     env_file:
       - .env
-      -
     ports:
       - "${REDIS_PORT}:6379"
 
@@ -44,8 +43,10 @@ services:
       - "${REDIS_PASSWORD}"
 
     volumes:
-      - gameapp_redis_data:/data
+      - tel_redis_data:/data
 
     restart: unless-stopped
+
 volumes:
   postgres_data:
+  tel_redis_data:

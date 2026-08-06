@@ -8,7 +8,7 @@ import (
 	"telegram-service-platform/entity/productentity"
 )
 
-func (a *Adapter) GetPremiumPrices(
+func (a *Adapter) GetPremiumPlans(
 	ctx context.Context,
 ) ([]productentity.PremiumPrice, error) {
 
@@ -18,6 +18,7 @@ func (a *Adapter) GetPremiumPrices(
 		a.createURL(getPremiumPath),
 		nil,
 	)
+	req.Header.Add("x-api-key", a.client.APIKey())
 
 	if err != nil {
 		return nil, err

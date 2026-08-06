@@ -9,8 +9,8 @@ type Adapter struct {
 	config Config
 }
 
-func New(cfg Config) Adapter {
-	return Adapter{
+func New(cfg Config) *Adapter {
+	return &Adapter{
 		client: &http.Client{
 			Timeout: cfg.Timeout,
 		},

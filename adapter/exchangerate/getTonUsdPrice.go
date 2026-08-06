@@ -11,7 +11,6 @@ func (e *Adapter) GetTonUsdPrice(ctx context.Context) (float64, error) {
 	const Op = "exchangerate.GetTonUsdPrice"
 
 	req, nErr := http.NewRequestWithContext(ctx, http.MethodGet, e.config.TonUsdURL, nil)
-
 	if nErr != nil {
 		return 0, nErr
 	}

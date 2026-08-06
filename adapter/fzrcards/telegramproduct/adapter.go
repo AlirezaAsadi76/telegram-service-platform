@@ -9,8 +9,8 @@ type Adapter struct {
 	client *fzrcards.FzrClient
 }
 
-func New(client *fzrcards.FzrClient) Adapter {
-	return Adapter{
+func New(client *fzrcards.FzrClient) *Adapter {
+	return &Adapter{
 		client: client,
 	}
 }

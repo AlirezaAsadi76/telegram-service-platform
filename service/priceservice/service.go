@@ -1,18 +1,13 @@
 package priceservice
 
-import "context"
-
-type CurrencyProvider interface {
-	GetTonUsdPrice(ctx context.Context) (float64, error)
-	GetUsdTomanPrice(ctx context.Context) (float64, error)
-}
-
 type Service struct {
-	currency CurrencyProvider
+	currency    CurrencyProvider
+	telegramPrv TelegramProductProvider
 }
 
-func New(currency CurrencyProvider) Service {
+func New(telegramPrv TelegramProductProvider, currency CurrencyProvider) Service {
 	return Service{
-		currency: currency,
+		currency:    currency,
+		telegramPrv: telegramPrv,
 	}
 }
