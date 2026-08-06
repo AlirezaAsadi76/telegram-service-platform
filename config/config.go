@@ -1,6 +1,7 @@
 package config
 
 import (
+	"telegram-service-platform/adapter/exchangerate"
 	"telegram-service-platform/adapter/fzrcards"
 	"telegram-service-platform/adapter/redisadapter"
 	"telegram-service-platform/delivery/telegramserver"
@@ -25,4 +26,5 @@ type Config struct {
 	redisCli     redisadapter.Config   `koanf:"redis"`
 	priceService productservice.Config `koanf:"priceService"`
 	fzr          fzrcards.Config       `koanf:"fzr"`
+	exchangeRate exchangerate.Config   `koanf:"exchangeRate"`
 }

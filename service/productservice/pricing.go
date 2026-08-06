@@ -2,7 +2,7 @@ package productservice
 
 import (
 	"context"
-	"telegram-service-platform/entity"
+	"telegram-service-platform/entity/productentity"
 
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
@@ -11,27 +11,27 @@ import (
 func (s Service) calculatePrice(
 	ctx context.Context,
 	usd float64,
-) (entity.ProductPrice, error) {
+) (productentity.Price, error) {
 
 	const Op = "productservice.calculatePrice"
 
-	tonPrice, guErr := s.provider.GetTonUsdPrice(ctx)
+	tonPrice, guErr := s.currencyProvider.GetTonUsdPrice(ctx)
 	if guErr != nil {
-		return entity.ProductPrice{},
+		return productentity.Price{},
 			richerror.New(Op, guErr).
 				WithKind(richerror.KindUnexpected).
 				WithMessage(msgerror.Unexpected)
 	}
 
-	tomanPrice, gtErr := s.provider.GetUsdTomanPrice(ctx)
+	tomanPrice, gtErr := s.currencyProvider.GetUsdTomanPrice(ctx)
 	if gtErr != nil {
-		return entity.ProductPrice{},
+		return productentity.Price{},
 			richerror.New(Op, gtErr).
 				WithKind(richerror.KindUnexpected).
 				WithMessage(msgerror.Unexpected)
 	}
 
-	return entity.ProductPrice{
+	return productentity.Price{
 		USD:   usd,
 		USDT:  usd,
 		TON:   usd / tonPrice,

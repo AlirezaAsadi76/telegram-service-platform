@@ -1,5 +1,5 @@
 package redisprice
 
 const (
-	TonPriceKey = "crypto:price:ton"
+	TonPriceKey = "exchangerate:price:ton"
 )
