@@ -31,4 +31,6 @@ const (
 	CacheParseFailed        = "failed to parse cache value"
 	QueryFailed             = "failed to query"
 	QueryScanFailed         = "failed to query scan"
+
+	ExternalServiceFailed = "external service failed"
 )

@@ -1,16 +1,22 @@
 package priceservice
 
-import "context"
+import (
+	"context"
+	"telegram-service-platform/pkg/msgerror"
+	"telegram-service-platform/pkg/richerror"
+)
 
 func (s Service) RefreshPricePremium(ctx context.Context) error {
 	const Op = "priceservice.RefreshPricePremium"
 	starsPricePrv, gErr := s.telegramPrv.GetPremiumPlans(ctx)
 	if gErr != nil {
-		return gErr
+		return richerror.New(Op, gErr).WithKind(richerror.KindDependency).WithMessage(msgerror.ExternalServiceFailed)
 	}
-	sErr := s.repository.SetPremiumPrices(ctx, starsPricePrv)
+	sErr := s.repository.SetPremiumPrices(ctx, starsPricePrv, s.config.PremiumPriceTTL)
 	if sErr != nil {
-		return sErr
+		return richerror.New(Op, sErr).
+			WithKind(richerror.KindInfrastructure).
+			WithMessage(msgerror.CacheWriteFailed)
 	}
 	return nil
 

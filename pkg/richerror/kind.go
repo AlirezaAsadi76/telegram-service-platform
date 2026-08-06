@@ -26,6 +26,10 @@ const (
 	KindScanFailure
 
 	KindInternal
+
+	KindDependency
+
+	KindInfrastructure
 )
 
 func IsKind(

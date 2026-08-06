@@ -17,7 +17,7 @@ func (d DB) SetPremiumPrices(ctx context.Context, prices []productentity.Premium
 		return richerror.New(Op, mErr).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}
 
-	if err := d.adapter.Client().Set(ctx, StarPriceKey, data, expiration).Err(); err != nil {
+	if err := d.adapter.Client().Set(ctx, PremiumPriceKey, data, expiration).Err(); err != nil {
 		return richerror.New(Op, err).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}
 	return nil

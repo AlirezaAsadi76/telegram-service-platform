@@ -16,7 +16,7 @@ func (d DB) SetTonUsdPrice(ctx context.Context, price float64, expiration time.D
 		return richerror.New(Op, mErr).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}
 
-	if err := d.adapter.Client().Set(ctx, StarPriceKey, data, expiration).Err(); err != nil {
+	if err := d.adapter.Client().Set(ctx, TonUsdPriceKey, data, expiration).Err(); err != nil {
 		return richerror.New(Op, err).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}
 	return nil
