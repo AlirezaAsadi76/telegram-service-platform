@@ -6,9 +6,9 @@ import (
 	"time"
 )
 
-type Provider interface {
-	GetTonPrice(ctx context.Context) (float64, error)
-	GetUsdToTomanPrice(ctx context.Context) (float64, error)
+type PriceProvider interface {
+	GetTonUsdPrice(ctx context.Context) (float64, error)
+	GetUsdTomanPrice(ctx context.Context) (float64, error)
 }
 
 type Repository interface {
@@ -18,15 +18,15 @@ type Repository interface {
 }
 
 type Config struct {
-	ExpTime time.Duration `koanf:"expTime"`
+	PriceCacheTTL time.Duration `koanf:"priceCacheTTL"`
 }
 type Service struct {
-	provider   Provider
+	provider   PriceProvider
 	repository Repository
 	config     Config
 }
 
-func New(config Config, provider Provider, repository Repository) Service {
+func New(config Config, provider PriceProvider, repository Repository) Service {
 	return Service{
 		provider:   provider,
 		repository: repository,

@@ -16,16 +16,7 @@ func (s Service) GetStarPlans(ctx context.Context) (params.GetStarPlansResponse,
 	if err != nil {
 
 		return params.GetStarPlansResponse{},
-			richerror.New(
-				Op,
-				err,
-			).
-				WithKind(
-					richerror.KindUnexpected,
-				).
-				WithMessage(
-					msgerror.Unexpected,
-				)
+			richerror.New(Op, err).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}
 	//TODO - add price to plans response
 	return mapper.MapStarPlansResponse(plans), nil

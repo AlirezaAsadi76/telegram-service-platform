@@ -23,4 +23,8 @@ redis:
   db: 0
 
 priceService:
-  expTime: "60m"
+  PriceCacheTTL: "60m"
+
+fzr:
+  base_url: "https://api.fzr.cards/api/v2"
+  api_key: "fc_1c000a69d23825314267b0d9"

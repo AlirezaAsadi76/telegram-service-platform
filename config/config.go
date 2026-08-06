@@ -1,6 +1,7 @@
 package config
 
 import (
+	"telegram-service-platform/adapter/fzrcards"
 	"telegram-service-platform/adapter/redisadapter"
 	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/repository/postgres"
@@ -23,4 +24,5 @@ type Config struct {
 	Telegram     telegramserver.Config `koanf:"telegram"`
 	redisCli     redisadapter.Config   `koanf:"redis"`
 	priceService productservice.Config `koanf:"priceService"`
+	fzr          fzrcards.Config       `koanf:"fzr"`
 }
