@@ -9,10 +9,10 @@ import (
 	"time"
 )
 
-func (d DB) SetStarPrice(ctx context.Context, price productentity.StarPrice, expiration time.Duration) error {
-	const Op = "redisprice.SetStarPrice"
+func (d DB) SetPremiumPrices(ctx context.Context, prices []productentity.PremiumPrice, expiration time.Duration) error {
+	const Op = "redisprice.SetPremiumPrices"
 
-	data, mErr := json.Marshal(price)
+	data, mErr := json.Marshal(prices)
 	if mErr != nil {
 		return richerror.New(Op, mErr).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}

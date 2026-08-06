@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/repository/redis/redisprice/getPriceStars.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/redis/redisprice/setPriceStars.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/priceservice/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/richerror/kind.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/richerror/kind.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/redisprice/constant.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisprice/constants.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/redisprice/getTonPrice.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/redisprice/setTonPrice.go" beforeDir="false" />
-    </list>
+    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

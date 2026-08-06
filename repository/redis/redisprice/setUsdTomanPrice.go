@@ -3,14 +3,13 @@ package redisprice
 import (
 	"context"
 	"encoding/json"
-	"telegram-service-platform/entity/productentity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 	"time"
 )
 
-func (d DB) SetStarPrice(ctx context.Context, price productentity.StarPrice, expiration time.Duration) error {
-	const Op = "redisprice.SetStarPrice"
+func (d DB) SetUsdTomanPrice(ctx context.Context, price float64, expiration time.Duration) error {
+	const Op = "redisprice.SetUsdTomanPrice"
 
 	data, mErr := json.Marshal(price)
 	if mErr != nil {
