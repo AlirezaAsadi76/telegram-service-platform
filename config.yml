@@ -34,3 +34,8 @@ exchangeRate:
   ton_usd_url: "https://api.coingecko.com/api/v3/simple/price?ids=the-open-network&vs_currencies=usd"
   usd_irr_url: "https://api.wallex.ir/v1/otc/markets"
   timeout: "10s"
+
+priceService:
+  stars_price_ttl: "2h"
+  premium_price_ttl: "2h"
+  currency_ttl: "2h"

@@ -3,6 +3,7 @@ package priceservice
 import (
 	"context"
 	"telegram-service-platform/entity/productentity"
+	"time"
 )
 
 type CurrencyProvider interface {
@@ -16,11 +17,11 @@ type TelegramProductProvider interface {
 }
 
 type PriceRepository interface {
-	SetStarPrice(ctx context.Context, price productentity.StarPrice) error
+	SetStarPrice(ctx context.Context, price productentity.StarPrice, expiration time.Duration) error
 
-	SetPremiumPrices(ctx context.Context, prices []productentity.PremiumPrice) error
+	SetPremiumPrices(ctx context.Context, prices []productentity.PremiumPrice, expiration time.Duration) error
 
-	SetTonUsdPrice(ctx context.Context, price float64) error
+	SetTonUsdPrice(ctx context.Context, price float64, expiration time.Duration) error
 
-	SetUsdTomanPrice(ctx context.Context, price float64) error
+	SetUsdTomanPrice(ctx context.Context, price float64, expiration time.Duration) error
 }

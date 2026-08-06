@@ -24,6 +24,8 @@ const (
 	KindQueryFailure
 
 	KindScanFailure
+
+	KindInternal
 )
 
 func IsKind(
