@@ -5,13 +5,12 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-	"telegram-service-platform/params"
 )
 
 func (a *Adapter) GetStarPrice(ctx context.Context) (float64, error) {
 	const Op = "telegramproduct.GetStarPrice"
 
-	req, nErr := http.NewRequestWithContext(ctx, GetStarPriceMethod, a.createURL(GetStarPricePath), nil)
+	req, nErr := http.NewRequestWithContext(ctx, getStarsPriceMethod, a.createURL(getStarsPricePath), nil)
 
 	if nErr != nil {
 		return 0, nErr
@@ -24,7 +23,7 @@ func (a *Adapter) GetStarPrice(ctx context.Context) (float64, error) {
 
 	defer resp.Body.Close()
 
-	var result params.GetStarsPriceResponse
+	var result starsPriceResponse
 
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return 0, err

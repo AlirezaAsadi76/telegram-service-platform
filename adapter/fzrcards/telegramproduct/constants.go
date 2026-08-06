@@ -5,6 +5,11 @@ import (
 )
 
 const (
-	GetStarPricePath   = "telegram/stars"
-	GetStarPriceMethod = http.MethodGet
+	getStarsPricePath = "telegram/stars"
+	getPremiumPath    = "telegram/premium"
+)
+
+const (
+	getStarsPriceMethod = http.MethodGet
+	getPremiumMethod    = http.MethodGet
 )
