@@ -1,4 +1,4 @@
-package callbackhandler
+package producthandler
 
 import (
 	"log"
@@ -7,11 +7,11 @@ import (
 )
 
 func (h Handler) RegisterRoutes(b *bot.Bot) {
-	log.Println("callback handler")
+	log.Println("product handler")
 
 	b.RegisterHandler(
 		bot.HandlerTypeCallbackQueryData,
-		Stars,
+		ProductPrefixCallBack,
 		bot.MatchTypePrefix,
 		h.callback,
 	)

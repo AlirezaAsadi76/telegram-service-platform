@@ -1,12 +1,10 @@
 package producthandler
 
-import "telegram-service-platform/service/productservice"
-
 type Handler struct {
-	productService productservice.Service
+	productService ProductService
 }
 
-func New(productService productservice.Service) Handler {
+func New(productService ProductService) Handler {
 	return Handler{
 		productService: productService,
 	}

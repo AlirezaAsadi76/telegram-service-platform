@@ -1,7 +1,7 @@
 package keyboard
 
 import (
-	"telegram-service-platform/delivery/telegramserver/handler/callbackhandler"
+	"telegram-service-platform/delivery/telegramserver/handler/producthandler"
 
 	"github.com/go-telegram/bot/models"
 )
@@ -15,7 +15,7 @@ func MainMenu() *models.InlineKeyboardMarkup {
 			{
 				{
 					Text:         "Telegram Stars",
-					CallbackData: callbackhandler.Stars,
+					CallbackData: producthandler.ProductStarsCallBack,
 					Style:        "primary",
 				},
 			},
@@ -23,7 +23,7 @@ func MainMenu() *models.InlineKeyboardMarkup {
 			{
 				{
 					Text:         "👑 Telegram Premium",
-					CallbackData: callbackhandler.Premium,
+					CallbackData: producthandler.ProductPremiumCallBack,
 					Style:        "primary",
 				},
 			},
@@ -31,7 +31,7 @@ func MainMenu() *models.InlineKeyboardMarkup {
 			{
 				{
 					Text:         "📢 Telegram Ads",
-					CallbackData: callbackhandler.Ads,
+					CallbackData: producthandler.ProductAdsCallBack,
 					Style:        "primary",
 				},
 			},
@@ -39,7 +39,7 @@ func MainMenu() *models.InlineKeyboardMarkup {
 			{
 				{
 					Text:         "💎 Wallet",
-					CallbackData: callbackhandler.Wallet,
+					CallbackData: producthandler.Wallet,
 					Style:        "success",
 				},
 			},
@@ -47,7 +47,7 @@ func MainMenu() *models.InlineKeyboardMarkup {
 			{
 				{
 					Text:         "🎁 Gift",
-					CallbackData: callbackhandler.Gift,
+					CallbackData: producthandler.Gift,
 					Style:        "success",
 				},
 			},

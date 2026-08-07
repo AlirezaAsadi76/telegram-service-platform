@@ -12,10 +12,8 @@ import (
 	"telegram-service-platform/adapter/redisadapter"
 	"telegram-service-platform/config"
 	"telegram-service-platform/delivery/telegramserver"
-	"telegram-service-platform/delivery/telegramserver/handler/callbackhandler"
 	"telegram-service-platform/delivery/telegramserver/handler/producthandler"
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
-	"telegram-service-platform/repository/migrator"
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/repository/postgresproduct"
 	"telegram-service-platform/repository/postgresuser"
@@ -39,11 +37,11 @@ func main() {
 	cfg := config.Load("config.yml")
 	fmt.Println("config : ", cfg)
 
-	mi := migrator.New(cfg.Postgres)
-	mi.Down()
-	if err := mi.Up(); err != nil {
-		panic(err)
-	}
+	//mi := migrator.New(cfg.Postgres)
+	//mi.Down()
+	//if err := mi.Up(); err != nil {
+	//	panic(err)
+	//}
 
 	postgresRepo, nErr := postgres.New(cfg.Postgres)
 	if nErr != nil {
@@ -72,13 +70,11 @@ func main() {
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo)
 
 	productHandler := producthandler.New(productSvc)
-	_ = productHandler
-	callbackHandler := callbackhandler.New()
 
 	telegramBot, tErr := telegramserver.New(
 		cfg.Telegram,
 		userHandler,
-		callbackHandler,
+		productHandler,
 	)
 
 	if tErr != nil {
