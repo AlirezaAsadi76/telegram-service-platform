@@ -41,5 +41,20 @@ func main() {
 	}
 
 	<-ctx.Done()
+	shutdownCtx, shutdownCancel := context.WithTimeout(
+		context.Background(),
+		cfg.Application.GracefulShutdownTimeout,
+	)
+
+	defer shutdownCancel()
+
+	if err := application.Shutdown(shutdownCtx); err != nil {
+
+		fmt.Println(
+			"graceful shutdown failed:",
+			err,
+		)
+
+	}
 
 }

@@ -1,23 +1,40 @@
 package app
 
-import "context"
+import (
+	"context"
+	"log"
+)
 
 func (a *App) Start(ctx context.Context) error {
 
 	go func() {
 
-		a.telegramBot.Start(ctx)
+		if err := a.telegramBot.Start(ctx); err != nil {
+			log.Println(err)
+		}
 
 	}()
 
-	if err := a.scheduler.Shutdown(); err != nil {
+	a.scheduler.Start()
+
+	return nil
+}
+
+func (a *App) Shutdown(ctx context.Context) error {
+
+	if err := a.telegramBot.Shutdown(ctx); err != nil {
 		return err
 	}
 
-	_ = a.redis.Close()
+	if err := a.scheduler.Shutdown(ctx); err != nil {
+		return err
+	}
+
+	if err := a.redis.Close(); err != nil {
+		return err
+	}
 
 	a.postgres.Close()
 
 	return nil
-
 }
