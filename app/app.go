@@ -23,13 +23,15 @@ import (
 )
 
 type App struct {
-	telegram  *telegramserver.Bot
-	scheduler *scheduler.Scheduler
+	telegramBot *telegramserver.Bot
+	scheduler   *scheduler.Scheduler
+	postgres    *postgres.DB
+	redis       redisadapter.Adapter
 }
 
 func New(cfg config.Config) (*App, error) {
 
-	postgresRepo, nErr := postgres.New(cfg.Postgres)
+	postgresClient, nErr := postgres.New(cfg.Postgres)
 	if nErr != nil {
 		panic(nErr)
 	}
@@ -40,7 +42,7 @@ func New(cfg config.Config) (*App, error) {
 	telegramProvider := telegramproduct.New(fzrClient)
 	exchangeRateProvider := exchangerate.New(cfg.ExchangeRate)
 
-	userRepo := postgresuser.New(postgresRepo)
+	userRepo := postgresuser.New(postgresClient)
 	userSvc := userservice.New(userRepo)
 	userValidator := uservalidator.New()
 	userHandler := userhandler.New(userSvc, userValidator)
@@ -52,7 +54,7 @@ func New(cfg config.Config) (*App, error) {
 
 	pricingSvc := pricingservice.New(priceRepo)
 
-	productRepo := postgresproduct.New(postgresRepo)
+	productRepo := postgresproduct.New(postgresClient)
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo)
 
 	productHandler := producthandler.New(productSvc)
@@ -75,9 +77,10 @@ func New(cfg config.Config) (*App, error) {
 
 	return &App{
 
-		telegram: telegramBot,
-
-		scheduler: schedulerObj,
+		telegramBot: telegramBot,
+		postgres:    postgresClient,
+		redis:       redisAdapter,
+		scheduler:   schedulerObj,
 	}, nil
 
 }

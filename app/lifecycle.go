@@ -6,11 +6,18 @@ func (a *App) Start(ctx context.Context) error {
 
 	go func() {
 
-		a.telegram.Start(ctx)
+		a.telegramBot.Start(ctx)
 
 	}()
 
-	a.scheduler.Start(ctx)
+	if err := a.scheduler.Shutdown(); err != nil {
+		return err
+	}
+
+	_ = a.redis.Close()
+
+	a.postgres.Close()
 
 	return nil
+
 }

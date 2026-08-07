@@ -1,12 +1,14 @@
 package postgresproduct
 
-import "github.com/jackc/pgx/v5/pgxpool"
+import (
+	"telegram-service-platform/repository/postgres"
+)
 
 type DB struct {
-	Pool *pgxpool.Pool
+	Pool *postgres.DB
 }
 
-func New(pool *pgxpool.Pool) *DB {
+func New(pool *postgres.DB) *DB {
 
 	return &DB{Pool: pool}
 }

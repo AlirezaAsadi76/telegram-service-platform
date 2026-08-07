@@ -7,7 +7,11 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func New(cfg DBConfig) (*pgxpool.Pool, error) {
+type DB struct {
+	db *pgxpool.Pool
+}
+
+func New(cfg DBConfig) (*DB, error) {
 
 	dsn := fmt.Sprintf(
 		"host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
@@ -29,5 +33,7 @@ func New(cfg DBConfig) (*pgxpool.Pool, error) {
 		return nil, err
 	}
 
-	return db, nil
+	return &DB{
+		db: db,
+	}, nil
 }
