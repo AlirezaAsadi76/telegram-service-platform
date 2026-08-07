@@ -39,3 +39,8 @@ priceService:
   stars_price_ttl: "2h"
   premium_price_ttl: "2h"
   currency_ttl: "2h"
+
+scheduler:
+  currency_refresh_interval: "1h"
+  stars_refresh_interval: "1h"
+  premium_refresh_interval: "1h"
