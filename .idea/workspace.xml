@@ -10,10 +10,9 @@
       <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/router.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/showPremium.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/showStars.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scheduler/jobs/job.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/job.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/run.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scheduler/scheduler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/scheduler/register.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
@@ -23,10 +22,12 @@
       <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/callbackhandler/router.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/priceservice/refreshCurrency.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/priceservice/refreshPremiumPrices.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/scheduler.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/scheduler.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
