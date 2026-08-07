@@ -42,19 +42,19 @@ func (a *Adapter) GetPremiumPlans(
 
 	for _, plan := range result.Plans {
 
-		price, err := strconv.ParseFloat(
+		price, pErr := strconv.ParseFloat(
 			plan.PriceUSD,
 			64,
 		)
 
-		if err != nil {
-			return nil, err
+		if pErr != nil {
+			return nil, pErr
 		}
 
 		prices = append(
 			prices,
 			productentity.PremiumPrice{
-				Months:   plan.Months,
+				Months:   uint8(plan.Months),
 				PriceUSD: price,
 			},
 		)

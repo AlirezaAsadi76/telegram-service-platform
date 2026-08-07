@@ -9,12 +9,18 @@ import (
 	"telegram-service-platform/adapter/exchangerate"
 	"telegram-service-platform/adapter/fzrcards"
 	"telegram-service-platform/adapter/fzrcards/telegramproduct"
+	"telegram-service-platform/adapter/redisadapter"
 	"telegram-service-platform/config"
 	"telegram-service-platform/delivery/telegramserver"
+	"telegram-service-platform/delivery/telegramserver/handler/callbackhandler"
+	"telegram-service-platform/delivery/telegramserver/handler/producthandler"
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/repository/postgresproduct"
 	"telegram-service-platform/repository/postgresuser"
+	"telegram-service-platform/repository/redis/redisprice"
+	"telegram-service-platform/service/priceservice"
+	"telegram-service-platform/service/pricingservice"
 	"telegram-service-platform/service/productservice"
 	"telegram-service-platform/service/userservice"
 	"telegram-service-platform/validator/uservalidator"
@@ -43,6 +49,8 @@ func main() {
 		panic(nErr)
 	}
 
+	redisAdapter := redisadapter.New(cfg.RedisCli)
+
 	fzrClient := fzrcards.New(cfg.Fzr)
 	telegramProvider := telegramproduct.New(fzrClient)
 	exchangeRateProvider := exchangerate.New(cfg.ExchangeRate)
@@ -52,17 +60,24 @@ func main() {
 	userValidator := uservalidator.New()
 	userHandler := userhandler.New(userSvc, userValidator)
 
+	priceRepo := redisprice.New(redisAdapter)
+
+	priceService := priceservice.New(cfg.PriceService, priceRepo, telegramProvider, exchangeRateProvider)
+	_ = priceService
+
+	pricingSvc := pricingservice.New(priceRepo)
+
 	productRepo := postgresproduct.New(postgresRepo)
-	productSvc := productservice.New(cfg.ProductService, telegramProvider, exchangeRateProvider, productRepo)
-	_ = productSvc
+	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo)
 
-	value, err := exchangeRateProvider.GetUsdTomanPrice(ctx)
-
-	fmt.Println(value, err)
+	productHandler := producthandler.New(productSvc)
+	_ = productHandler
+	callbackHandler := callbackhandler.New()
 
 	telegramBot, tErr := telegramserver.New(
 		cfg.Telegram,
 		userHandler,
+		callbackHandler,
 	)
 
 	if tErr != nil {

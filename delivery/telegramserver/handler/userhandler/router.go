@@ -7,7 +7,7 @@ import (
 )
 
 func (h Handler) RegisterRoutes(b *bot.Bot) {
-	log.Println("register handler")
+	log.Println("userHandler handler")
 
 	b.RegisterHandler(
 		bot.HandlerTypeMessageText,
@@ -16,10 +16,4 @@ func (h Handler) RegisterRoutes(b *bot.Bot) {
 		h.start,
 	)
 
-	b.RegisterHandler(
-		bot.HandlerTypeCallbackQueryData,
-		"",
-		bot.MatchTypePrefix,
-		h.callback,
-	)
 }

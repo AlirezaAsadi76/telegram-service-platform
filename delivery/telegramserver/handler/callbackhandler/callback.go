@@ -1,4 +1,4 @@
-package userhandler
+package callbackhandler
 
 import (
 	"context"
@@ -13,7 +13,10 @@ func (h Handler) callback(ctx context.Context, b *bot.Bot, update *models.Update
 	if update.CallbackQuery == nil {
 		return
 	}
+
 	log.Println(
-		"callback:", update.CallbackQuery.Data)
+		"callback:",
+		update.CallbackQuery.Data,
+	)
 
 }
