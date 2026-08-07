@@ -3,7 +3,7 @@ package scheduler
 import "time"
 
 type Config struct {
-	currencyRefreshInterval time.Duration `koanf:"currency_refresh_interval"`
-	starsRefreshInterval    time.Duration `koanf:"stars_refresh_interval"`
-	premiumRefreshInterval  time.Duration `koanf:"premium_refresh_interval"`
+	CurrencyRefreshInterval time.Duration `koanf:"currency_refresh_interval"`
+	StarsRefreshInterval    time.Duration `koanf:"stars_refresh_interval"`
+	PremiumRefreshInterval  time.Duration `koanf:"premium_refresh_interval"`
 }
