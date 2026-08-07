@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/repository/redis/redisprice/getPremiumPrices.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/redisprice/constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisprice/constants.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/redisprice/getPriceStars.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisprice/getPriceStars.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/redisprice/setUsdTomanPrice.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisprice/setUsdTomanPrice.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/pricingservice/calculatePremiumPrice.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/pricingservice/calculateStarsPrice.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/pricingservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/pricingservice/interfaces.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/productservice/getPremiumPlans.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/getPremiumPlans.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/productservice/getStarPlans.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/getStarPlans.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/productservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/interfaces.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/productservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

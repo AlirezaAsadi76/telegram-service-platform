@@ -12,11 +12,7 @@ type Repository interface {
 	GetAdsPlans(ctx context.Context) ([]entity.AdsPlan, error)
 }
 
-type PriceRepository interface {
-	GetStarPrice(ctx context.Context) (productentity.StarPrice, error)
-	GetPremiumPrices(ctx context.Context) ([]productentity.PremiumPrice, error)
-}
-
 type PricingService interface {
-	CalculatePrice(ctx context.Context, usd float64) (productentity.Price, error)
+	CalculateStarsPrice(ctx context.Context, amount float64) (productentity.Price, error)
+	CalculatePremiumPrices(ctx context.Context) (map[uint8]productentity.Price, error)
 }
