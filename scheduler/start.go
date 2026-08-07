@@ -1,14 +1,12 @@
 package scheduler
 
-import "context"
-
-func (s *Scheduler) Start(ctx context.Context) {
+func (s *Scheduler) Start() {
 
 	s.engine.Start()
 
 	go func() {
 
-		<-ctx.Done()
+		<-s.ctx.Done()
 
 		s.engine.Shutdown()
 

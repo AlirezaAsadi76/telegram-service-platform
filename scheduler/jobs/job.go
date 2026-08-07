@@ -1,6 +1,8 @@
 package jobs
 
-import "context"
+import (
+	"context"
+)
 
 type Job interface {
 	Name() string

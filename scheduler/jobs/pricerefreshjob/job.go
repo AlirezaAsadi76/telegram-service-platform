@@ -10,8 +10,8 @@ type Job struct {
 	mutex        sync.Mutex
 }
 
-func New(priceService priceservice.Service) Job {
-	return Job{
+func New(priceService priceservice.Service) *Job {
+	return &Job{
 		priceService: priceService,
 	}
 }
