@@ -34,4 +34,6 @@ const (
 
 	ExternalServiceFailed = "external service failed"
 	PremiumPriceNotFound  = "premium price not found"
+
+	InvalidPrice = "invalid price"
 )

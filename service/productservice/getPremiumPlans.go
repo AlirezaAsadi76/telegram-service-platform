@@ -38,7 +38,7 @@ func (s Service) GetPremiumPlans(ctx context.Context) (params.GetPremiumPlansRes
 					WithMessage(msgerror.PremiumPriceNotFound)
 		}
 
-		calculatedPrice, cErr := s.calculatePrice(ctx, price.PriceUSD)
+		calculatedPrice, cErr := s.pricingSVc.CalculatePrice(ctx, price.PriceUSD)
 		if cErr != nil {
 			return response,
 				richerror.New(Op, cErr).

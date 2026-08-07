@@ -15,6 +15,8 @@ type Repository interface {
 type PriceRepository interface {
 	GetStarPrice(ctx context.Context) (productentity.StarPrice, error)
 	GetPremiumPrices(ctx context.Context) ([]productentity.PremiumPrice, error)
-	GetTonUsdPrice(ctx context.Context) (float64, error)
-	GetUsdTomanPrice(ctx context.Context) (float64, error)
+}
+
+type PricingService interface {
+	CalculatePrice(ctx context.Context, usd float64) (productentity.Price, error)
 }

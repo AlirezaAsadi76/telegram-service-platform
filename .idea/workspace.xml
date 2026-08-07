@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/entity/starpackage.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/starpackage.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/get_star_package.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/get_star_package.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/productservice/getStarPlans.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/getStarPlans.go" afterDir="false" />
-    </list>
+    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
