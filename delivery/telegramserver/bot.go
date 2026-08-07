@@ -14,17 +14,13 @@ type Config struct {
 	Debug bool   `koanf:"debug"`
 }
 
-type Handler interface {
-	RegisterRoutes(b *bot.Bot)
-}
-
 type Bot struct {
 	client   *bot.Bot
 	config   Config
 	handlers []handler.Handler
 }
 
-func New(cfg Config, handler ...handler.Handler) (*Bot, error) {
+func New(cfg Config, handlers ...handler.Handler) (*Bot, error) {
 
 	client, err := bot.New(
 		cfg.Token,
@@ -44,7 +40,7 @@ func New(cfg Config, handler ...handler.Handler) (*Bot, error) {
 
 	server := &Bot{
 		client:   client,
-		handlers: handler,
+		handlers: handlers,
 		config:   cfg,
 	}
 
