@@ -33,4 +33,5 @@ const (
 	QueryScanFailed         = "failed to query scan"
 
 	ExternalServiceFailed = "external service failed"
+	PremiumPriceNotFound  = "premium price not found"
 )

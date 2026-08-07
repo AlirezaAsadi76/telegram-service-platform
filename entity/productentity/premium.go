@@ -1,6 +1,6 @@
 package productentity
 
 type PremiumPrice struct {
-	Months   int
+	Months   uint8
 	PriceUSD float64
 }

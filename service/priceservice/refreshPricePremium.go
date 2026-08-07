@@ -8,6 +8,7 @@ import (
 
 func (s Service) RefreshPricePremium(ctx context.Context) error {
 	const Op = "priceservice.RefreshPricePremium"
+
 	starsPricePrv, gErr := s.telegramPrv.GetPremiumPlans(ctx)
 	if gErr != nil {
 		return richerror.New(Op, gErr).WithKind(richerror.KindDependency).WithMessage(msgerror.ExternalServiceFailed)

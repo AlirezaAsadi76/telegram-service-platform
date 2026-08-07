@@ -36,7 +36,8 @@ func (db *DB) GetPremiumPlans(ctx context.Context) ([]entity.PremiumPlan, error)
 			richerror.New(
 				Op,
 				err,
-			).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
+			).WithKind(richerror.KindQueryFailure).
+				WithMessage(msgerror.QueryFailed)
 	}
 
 	defer rows.Close()
@@ -51,10 +52,16 @@ func (db *DB) GetPremiumPlans(ctx context.Context) ([]entity.PremiumPlan, error)
 			return nil,
 				richerror.New(
 					Op,
-					err,
+					sErr,
 				).WithKind(richerror.KindScanFailure).WithMessage(msgerror.QueryScanFailed)
 		}
 		plans = append(plans, plan)
+	}
+
+	if rErr := rows.Err(); rErr != nil {
+		return nil, richerror.New(Op, rErr).
+			WithKind(richerror.KindQueryFailure).
+			WithMessage(msgerror.QueryFailed)
 	}
 
 	return plans, nil
