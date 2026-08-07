@@ -3,8 +3,7 @@ package telegramserver
 import (
 	"context"
 	"log"
-
-	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
+	"telegram-service-platform/delivery/telegramserver/handler"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -15,26 +14,22 @@ type Config struct {
 	Debug bool   `koanf:"debug"`
 }
 
-type Bot struct {
-	client      *bot.Bot
-	userHandler userhandler.Handler
-	config      Config
+type Handler interface {
+	RegisterRoutes(b *bot.Bot)
 }
 
-func New(
-	cfg Config,
-	userHandler userhandler.Handler,
-) (*Bot, error) {
+type Bot struct {
+	client   *bot.Bot
+	config   Config
+	handlers []handler.Handler
+}
+
+func New(cfg Config, handler ...handler.Handler) (*Bot, error) {
 
 	client, err := bot.New(
-
 		cfg.Token,
 		bot.WithDefaultHandler(
-			func(
-				ctx context.Context,
-				b *bot.Bot,
-				update *models.Update,
-			) {
+			func(ctx context.Context, b *bot.Bot, update *models.Update) {
 				log.Printf(
 					"unknown update: %+v",
 					update,
@@ -48,9 +43,9 @@ func New(
 	}
 
 	server := &Bot{
-		client:      client,
-		userHandler: userHandler,
-		config:      cfg,
+		client:   client,
+		handlers: handler,
+		config:   cfg,
 	}
 
 	server.registerRoutes()

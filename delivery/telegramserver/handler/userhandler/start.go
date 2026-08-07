@@ -10,12 +10,9 @@ import (
 	"github.com/go-telegram/bot/models"
 )
 
-func (h Handler) start(
-	ctx context.Context,
-	b *bot.Bot,
-	update *models.Update,
-) {
+func (h Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) {
 	log.Println("userHandler start")
+
 	if update.Message == nil {
 		return
 	}
@@ -26,10 +23,8 @@ func (h Handler) start(
 		log.Println(err)
 		return
 	}
-	user, gErr := h.userService.GetOrRegister(
-		ctx,
-		request,
-	)
+
+	user, gErr := h.userService.GetOrRegister(ctx, request)
 	if gErr != nil {
 		return
 	}
@@ -47,6 +42,7 @@ func (h Handler) start(
 		log.Println(err)
 		return
 	}
+
 	log.Println(
 		"registered user:",
 		user.UserInfo,
