@@ -15,7 +15,7 @@ func (s Service) calculatePrice(
 
 	const Op = "productservice.calculatePrice"
 
-	tonPrice, guErr := s.currencyProvider.GetTonUsdPrice(ctx)
+	tonPrice, guErr := s.priceRepo.GetTonUsdPrice(ctx)
 	if guErr != nil {
 		return productentity.Price{},
 			richerror.New(Op, guErr).
@@ -23,7 +23,7 @@ func (s Service) calculatePrice(
 				WithMessage(msgerror.Unexpected)
 	}
 
-	tomanPrice, gtErr := s.currencyProvider.GetUsdTomanPrice(ctx)
+	tomanPrice, gtErr := s.priceRepo.GetUsdTomanPrice(ctx)
 	if gtErr != nil {
 		return productentity.Price{},
 			richerror.New(Op, gtErr).

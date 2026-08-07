@@ -8,17 +8,16 @@ type Config struct {
 	PriceCacheTTL time.Duration `koanf:"priceCacheTTL"`
 }
 type Service struct {
-	currencyProvider CurrencyProvider
-	telegramProvider TelegramProductProvider
-	repository       Repository
-	config           Config
+	repository Repository
+	priceRepo  PriceRepository
+	config     Config
 }
 
-func New(config Config, telegramProvider TelegramProductProvider, currencyProvider CurrencyProvider, repository Repository) Service {
+func New(config Config, repository Repository, priceRepo PriceRepository) Service {
 	return Service{
-		currencyProvider: currencyProvider,
-		telegramProvider: telegramProvider,
-		repository:       repository,
-		config:           config,
+
+		repository: repository,
+		priceRepo:  priceRepo,
+		config:     config,
 	}
 }
