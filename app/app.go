@@ -1,0 +1,83 @@
+package app
+
+import (
+	"telegram-service-platform/adapter/exchangerate"
+	"telegram-service-platform/adapter/fzrcards"
+	"telegram-service-platform/adapter/fzrcards/telegramproduct"
+	"telegram-service-platform/adapter/redisadapter"
+	"telegram-service-platform/config"
+	"telegram-service-platform/delivery/telegramserver"
+	"telegram-service-platform/delivery/telegramserver/handler/producthandler"
+	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
+	"telegram-service-platform/repository/postgres"
+	"telegram-service-platform/repository/postgresproduct"
+	"telegram-service-platform/repository/postgresuser"
+	"telegram-service-platform/repository/redis/redisprice"
+	"telegram-service-platform/scheduler"
+	"telegram-service-platform/scheduler/jobs/pricerefreshjob"
+	"telegram-service-platform/service/priceservice"
+	"telegram-service-platform/service/pricingservice"
+	"telegram-service-platform/service/productservice"
+	"telegram-service-platform/service/userservice"
+	"telegram-service-platform/validator/uservalidator"
+)
+
+type App struct {
+	telegram  *telegramserver.Bot
+	scheduler *scheduler.Scheduler
+}
+
+func New(cfg config.Config) (*App, error) {
+
+	postgresRepo, nErr := postgres.New(cfg.Postgres)
+	if nErr != nil {
+		panic(nErr)
+	}
+
+	redisAdapter := redisadapter.New(cfg.RedisCli)
+
+	fzrClient := fzrcards.New(cfg.Fzr)
+	telegramProvider := telegramproduct.New(fzrClient)
+	exchangeRateProvider := exchangerate.New(cfg.ExchangeRate)
+
+	userRepo := postgresuser.New(postgresRepo)
+	userSvc := userservice.New(userRepo)
+	userValidator := uservalidator.New()
+	userHandler := userhandler.New(userSvc, userValidator)
+
+	priceRepo := redisprice.New(redisAdapter)
+
+	priceService := priceservice.New(cfg.PriceService, priceRepo, telegramProvider, exchangeRateProvider)
+	_ = priceService
+
+	pricingSvc := pricingservice.New(priceRepo)
+
+	productRepo := postgresproduct.New(postgresRepo)
+	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo)
+
+	productHandler := producthandler.New(productSvc)
+
+	priceRefreshJob := pricerefreshjob.New(priceService)
+	schedulerObj, sErr := scheduler.New(cfg.Scheduler, priceRefreshJob)
+
+	telegramBot, tErr := telegramserver.New(
+		cfg.Telegram,
+		userHandler,
+		productHandler,
+	)
+
+	if tErr != nil {
+		panic(tErr)
+	}
+	if sErr != nil {
+		panic(sErr)
+	}
+
+	return &App{
+
+		telegram: telegramBot,
+
+		scheduler: schedulerObj,
+	}, nil
+
+}

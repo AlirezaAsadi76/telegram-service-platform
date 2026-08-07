@@ -5,14 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/app.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/dependency.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/constants.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/interfaces.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/router.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/showPremium.go" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/showStars.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/job.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/run.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/scheduler/register.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
@@ -25,8 +24,11 @@
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/jobs/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/job.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/priceservice/refreshCurrency.go" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/priceservice/refreshPremiumPrices.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/register.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/scheduler.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/scheduler.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
