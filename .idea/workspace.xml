@@ -5,8 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/get_permium_plans.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/get_permium_plans.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/productservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/interfaces.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/starpackage.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/starpackage.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/get_star_package.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/get_star_package.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/productservice/getStarPlans.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/getStarPlans.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
