@@ -1,4 +1,3 @@
-package migrations
 -- +migrate Up
 
 CREATE TABLE star_plans (
@@ -11,7 +10,9 @@ CREATE TABLE star_plans (
 
                             created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 
-                            updated_at TIMESTAMP NOT NULL DEFAULT NOW()
+                            updated_at TIMESTAMP NOT NULL DEFAULT NOW(),
+
+                            CONSTRAINT unique_star_amount UNIQUE(amount)
 
 );
 

@@ -5,13 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/callbackhandler/callback.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/callbackhandler/handler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/callbackhandler/router.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/seed/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/seeder/product/premiumPlans.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/seeder/product/starPlans.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/seeder/seeder.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/callback.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/router.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/migrator/migrations/1785949653_star_plans_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/repository/migrator/migrations/1785949653_star_plans_table.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/migrator/migrations/1785999118_create_premium_plans_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/repository/migrator/migrations/1785999118_create_premium_plans_table.sql" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,6 +72,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/delivery/telegramserver/handler/callbackhandler" />
       <recent name="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler" />
       <recent name="$PROJECT_DIR$/repository/migrator" />
       <recent name="$PROJECT_DIR$" />

@@ -15,6 +15,7 @@ import (
 	"telegram-service-platform/delivery/telegramserver/handler/callbackhandler"
 	"telegram-service-platform/delivery/telegramserver/handler/producthandler"
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
+	"telegram-service-platform/repository/migrator"
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/repository/postgresproduct"
 	"telegram-service-platform/repository/postgresuser"
@@ -38,11 +39,11 @@ func main() {
 	cfg := config.Load("config.yml")
 	fmt.Println("config : ", cfg)
 
-	//mi := migrator.New(cfg.Postgres)
-	//mi.Down()
-	//if err := mi.Up(); err != nil {
-	//	panic(err)
-	//}
+	mi := migrator.New(cfg.Postgres)
+	mi.Down()
+	if err := mi.Up(); err != nil {
+		panic(err)
+	}
 
 	postgresRepo, nErr := postgres.New(cfg.Postgres)
 	if nErr != nil {
