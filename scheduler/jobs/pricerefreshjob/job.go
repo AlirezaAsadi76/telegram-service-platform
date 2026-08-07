@@ -1,9 +1,13 @@
 package pricerefreshjob
 
-import "telegram-service-platform/service/priceservice"
+import (
+	"sync"
+	"telegram-service-platform/service/priceservice"
+)
 
 type Job struct {
 	priceService priceservice.Service
+	mutex        sync.Mutex
 }
 
 func New(priceService priceservice.Service) Job {
@@ -12,6 +16,6 @@ func New(priceService priceservice.Service) Job {
 	}
 }
 
-func (j Job) Name() string {
+func (j *Job) Name() string {
 	return "price-refresh"
 }
