@@ -13,6 +13,7 @@ func (d DB) SetStarPrice(ctx context.Context, price productentity.StarPrice, exp
 	const Op = "redisprice.SetStarPrice"
 
 	data, mErr := json.Marshal(price)
+
 	if mErr != nil {
 		return richerror.New(Op, mErr).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}

@@ -13,6 +13,7 @@ func (d DB) SetPremiumPrices(ctx context.Context, prices []productentity.Premium
 	const Op = "redisprice.SetPremiumPrices"
 
 	data, mErr := json.Marshal(prices)
+
 	if mErr != nil {
 		return richerror.New(Op, mErr).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}

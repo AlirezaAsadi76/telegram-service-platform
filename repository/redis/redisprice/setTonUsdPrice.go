@@ -12,6 +12,7 @@ func (d DB) SetTonUsdPrice(ctx context.Context, price float64, expiration time.D
 	const Op = "redisprice.SetTonUsdPrice"
 
 	data, mErr := json.Marshal(price)
+
 	if mErr != nil {
 		return richerror.New(Op, mErr).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}

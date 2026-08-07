@@ -7,38 +7,37 @@ import (
 
 	"github.com/redis/go-redis/v9"
 
-	"telegram-service-platform/entity/productentity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (d DB) GetStarPrice(ctx context.Context) (productentity.StarPrice, error) {
+func (d DB) GetTonUsdPrice(ctx context.Context) (float64, error) {
 
-	const Op = "redisprice.GetStarPrice"
+	const Op = "redisprice.GetTonUsdPrice"
 
-	data, err := d.adapter.Client().Get(ctx, StarPriceKey).Bytes()
+	data, err := d.adapter.Client().Get(ctx, TonUsdPriceKey).Bytes()
 
 	if err != nil {
 
 		if errors.Is(err, redis.Nil) {
-			return productentity.StarPrice{},
+			return 0,
 				richerror.New(Op, err).
 					WithKind(richerror.KindNotFound).
 					WithMessage(msgerror.CacheNotFound)
 		}
 
-		return productentity.StarPrice{},
+		return 0,
 			richerror.New(Op, err).
 				WithKind(richerror.KindInfrastructure).
 				WithMessage(msgerror.CacheReadFailed)
 	}
 
-	var price productentity.StarPrice
+	var price float64
 
 	err = json.Unmarshal(data, &price)
 	if err != nil {
 
-		return productentity.StarPrice{},
+		return 0,
 			richerror.New(Op, err).
 				WithKind(richerror.KindInvalid).
 				WithMessage(msgerror.CacheParseFailed)

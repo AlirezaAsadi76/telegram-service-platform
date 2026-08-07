@@ -4,7 +4,13 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="" />
+    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/repository/redis/redisprice/getPremiumPrices.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/redis/redisprice/constants.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisprice/constants.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/redis/redisprice/getPriceStars.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisprice/getPriceStars.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/redis/redisprice/setUsdTomanPrice.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisprice/setUsdTomanPrice.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

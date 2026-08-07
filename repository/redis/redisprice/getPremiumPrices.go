@@ -12,33 +12,33 @@ import (
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (d DB) GetStarPrice(ctx context.Context) (productentity.StarPrice, error) {
+func (d DB) GetPremiumPrices(ctx context.Context) ([]productentity.PremiumPrice, error) {
 
-	const Op = "redisprice.GetStarPrice"
+	const Op = "redisprice.GetPremiumPrices"
 
-	data, err := d.adapter.Client().Get(ctx, StarPriceKey).Bytes()
+	data, err := d.adapter.Client().Get(ctx, PremiumPriceKey).Bytes()
 
 	if err != nil {
 
 		if errors.Is(err, redis.Nil) {
-			return productentity.StarPrice{},
+			return nil,
 				richerror.New(Op, err).
 					WithKind(richerror.KindNotFound).
 					WithMessage(msgerror.CacheNotFound)
 		}
 
-		return productentity.StarPrice{},
+		return nil,
 			richerror.New(Op, err).
 				WithKind(richerror.KindInfrastructure).
 				WithMessage(msgerror.CacheReadFailed)
 	}
 
-	var price productentity.StarPrice
+	var price []productentity.PremiumPrice
 
 	err = json.Unmarshal(data, &price)
 	if err != nil {
 
-		return productentity.StarPrice{},
+		return nil,
 			richerror.New(Op, err).
 				WithKind(richerror.KindInvalid).
 				WithMessage(msgerror.CacheParseFailed)
