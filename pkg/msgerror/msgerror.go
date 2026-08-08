@@ -1,28 +1,17 @@
 package msgerror
 
 const (
-	InternalServerError = "something went wrong"
-
-	UserNotFound = "user not found"
-
-	UserAlreadyExists = "user already exists"
-
-	InvalidInput = "invalid input"
-
-	Unauthorized = "unauthorized"
-
-	Forbidden = "access forbidden"
-
-	ProductNotFound = "productkeyboard not found"
-
-	OrderNotFound = "order not found"
-
-	OrderAlreadyPaid = "order already paid"
-
-	PaymentFailed = "payment failed"
-
+	InternalServerError     = "something went wrong"
+	UserNotFound            = "user not found"
+	UserAlreadyExists       = "user already exists"
+	InvalidInput            = "invalid input"
+	Unauthorized            = "unauthorized"
+	Forbidden               = "access forbidden"
+	ProductNotFound         = "productkeyboard not found"
+	OrderNotFound           = "order not found"
+	OrderAlreadyPaid        = "order already paid"
+	PaymentFailed           = "payment failed"
 	PaymentAlreadyProcessed = "payment already processed"
-
 	TelegramOperationFailed = "telegram operation failed"
 	Unexpected              = "unexpected"
 	TelegramIdInvalid       = "telegram id invalid"
@@ -31,10 +20,10 @@ const (
 	CacheParseFailed        = "failed to parse cache value"
 	QueryFailed             = "failed to query"
 	QueryScanFailed         = "failed to query scan"
-
-	ExternalServiceFailed = "external service failed"
-	PremiumPriceNotFound  = "premium price not found"
-
-	InvalidPrice  = "invalid price"
-	CacheNotFound = "cache not found"
+	ExternalServiceFailed   = "external service failed"
+	PremiumPriceNotFound    = "premium price not found"
+	InvalidPrice            = "invalid price"
+	CacheNotFound           = "cache not found"
+	MarshalFailed           = "marshal failed"
+	UnmarshalFailed         = "unmarshal failed"
 )

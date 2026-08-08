@@ -7,6 +7,7 @@ import (
 	"telegram-service-platform/entity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
+	"telegram-service-platform/repository/postgres"
 )
 
 func (db *DB) FindUserByTelegramID(ctx context.Context, telegramID int64) (*entity.User, error) {
@@ -23,10 +24,9 @@ func (db *DB) FindUserByTelegramID(ctx context.Context, telegramID int64) (*enti
 			updated_at
 		FROM users
 		WHERE telegram_id = $1`
-	var user entity.User
-	err := db.Pool.Connection().QueryRow(ctx, query, telegramID).
-		Scan(&user.ID, &user.TelegramID, &user.Username, &user.FirstName,
-			&user.LastName, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+
+	row := db.Pool.Connection().QueryRow(ctx, query, telegramID)
+	userCreated, err := scanUser(row)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, richerror.New(Op, err).
@@ -35,5 +35,14 @@ func (db *DB) FindUserByTelegramID(ctx context.Context, telegramID int64) (*enti
 		}
 		return nil, richerror.New(Op, err).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}
-	return &user, nil
+	return &userCreated, nil
+}
+
+func scanUser(row postgres.Scanner) (entity.User, error) {
+	user := entity.User{}
+	err := row.Scan(&user.ID, &user.TelegramID, &user.Username, &user.FirstName,
+		&user.LastName, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+
+	return user, err
+
 }
