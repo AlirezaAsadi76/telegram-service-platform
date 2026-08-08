@@ -2,6 +2,7 @@ package productkeyboard
 
 import (
 	"fmt"
+	"telegram-service-platform/delivery/telegramserver/callback"
 
 	"telegram-service-platform/params"
 
@@ -23,7 +24,8 @@ func StarsPlans(response params.GetStarPlansResponse) *models.InlineKeyboardMark
 						plan.Price.USDT,
 					),
 					CallbackData: fmt.Sprintf(
-						"product:stars:select:%d",
+						"%s:%d",
+						callback.ProductStarsSelectCallBack,
 						plan.ID,
 					),
 					Style: "primary",

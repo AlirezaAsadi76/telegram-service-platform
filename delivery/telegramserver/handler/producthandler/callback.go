@@ -19,8 +19,18 @@ func (h Handler) callback(ctx context.Context, b *bot.Bot, update *models.Update
 	switch {
 	case strings.HasPrefix(data, callback.ProductStarsCallBack):
 		h.showStars(ctx, b, update)
+	case strings.HasPrefix(data, callback.ProductStarsSelectCallBack):
+		h.showStars(ctx, b, update) //TODO - must be complete
+	case strings.HasPrefix(data, callback.ProductStarsBuyCallBack):
+		h.showStars(ctx, b, update) //TODO - must be complete
+
 	case strings.HasPrefix(data, callback.ProductPremiumCallBack):
 		h.showPremium(ctx, b, update)
+	case strings.HasPrefix(data, callback.ProductPremiumSelectCallBack):
+		h.showPremium(ctx, b, update) //TODO - must be complete
+	case strings.HasPrefix(data, callback.ProductPremiumBuyCallBack):
+		h.showPremium(ctx, b, update) //TODO - must be complete
+
 	}
 
 }
