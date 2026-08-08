@@ -5,11 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/premiumhandler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/starshandler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/messege/fa.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/messege/messege.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/messege/style.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmd/seed/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/seed/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/callback.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/callback.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
