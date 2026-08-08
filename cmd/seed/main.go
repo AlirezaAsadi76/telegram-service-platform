@@ -25,14 +25,14 @@ func main() {
 
 	if err := product.SeedStarPlans(
 		ctx,
-		db,
+		db.Connection(),
 	); err != nil {
 		log.Fatal(err)
 	}
 
 	if err := product.SeedPremiumPlans(
 		ctx,
-		db,
+		db.Connection(),
 	); err != nil {
 		log.Fatal(err)
 	}

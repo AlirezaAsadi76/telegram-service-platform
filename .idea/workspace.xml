@@ -5,23 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/middleware/public.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/premiumhandler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/starshandler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/bot.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/bot.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/router.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgres/close.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgres/close.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgres/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgres/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/get_ads_plans.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/get_ads_plans.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/get_permium_plans.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/get_permium_plans.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/get_star_plans.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/get_star_plans.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresuser/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresuser/create.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresuser/find_user_by_telegram_id.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresuser/find_user_by_telegram_id.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/register.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/seed/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/seed/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/callback.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/callback.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
