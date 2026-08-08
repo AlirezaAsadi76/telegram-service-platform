@@ -4,6 +4,7 @@
     <inspection_tool class="GoDfaErrorMayBeNotNil" enabled="true" level="WARNING" enabled_by_default="true">
       <functions>
         <function importPath="net/http" name="NewRequestWithContext" />
+        <function importPath="telegram-service-platform/scheduler" name="New" />
       </functions>
     </inspection_tool>
   </profile>

@@ -25,7 +25,7 @@ func (db *DB) GetPremiumPlans(ctx context.Context) ([]entity.PremiumPlan, error)
 		ORDER BY duration ASC
 	`
 
-	rows, err := db.Pool.Query(
+	rows, err := db.Pool.Connection().Query(
 		ctx,
 		query,
 	)

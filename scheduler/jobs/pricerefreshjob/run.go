@@ -1,8 +1,12 @@
 package pricerefreshjob
 
-import "context"
+import (
+	"context"
+	"log"
+)
 
 func (j *Job) Run(ctx context.Context) error {
+	log.Println("job run")
 
 	j.mutex.Lock()
 	defer j.mutex.Unlock()

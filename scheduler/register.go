@@ -2,12 +2,15 @@ package scheduler
 
 import (
 	"context"
+	"fmt"
 	"log"
 
 	"github.com/go-co-op/gocron/v2"
 )
 
 func (s *Scheduler) Register() error {
+
+	fmt.Println("scheduler register start")
 
 	for _, job := range s.jobs {
 
@@ -17,20 +20,19 @@ func (s *Scheduler) Register() error {
 			),
 			gocron.NewTask(
 				func() {
-
 					ctx := context.Background()
 
 					if err := job.Run(ctx); err != nil {
-
 						log.Printf(
 							"job %s failed: %v",
 							job.Name(),
 							err,
 						)
-
 					}
-
 				},
+			),
+			gocron.WithStartAt(
+				gocron.WithStartImmediately(),
 			),
 		)
 

@@ -1,19 +1,20 @@
 package producthandler
 
 import (
-	"log"
+	"telegram-service-platform/delivery/telegramserver/callback"
+	"telegram-service-platform/delivery/telegramserver/middleware"
 
 	"github.com/go-telegram/bot"
 )
 
 func (h Handler) RegisterRoutes(b *bot.Bot) {
-	log.Println("product handler")
 
 	b.RegisterHandler(
 		bot.HandlerTypeCallbackQueryData,
-		ProductPrefixCallBack,
+		callback.ProductPrefixCallBack,
 		bot.MatchTypePrefix,
 		h.callback,
+		middleware.Public()...,
 	)
 
 }

@@ -5,39 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/adapter/redisadapter/close.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/dependency.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/close.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/constants.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/interfaces.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/router.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/showPremium.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/showStars.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/postgres/close.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/middleware/public.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/lifecycle.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/lifecycle.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/callbackhandler/callback.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/callbackhandler/constants.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/callbackhandler/handler.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/callbackhandler/router.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/handler.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/bot.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/bot.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler/router.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/router.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/router.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/lifecycle.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/lifecycle.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgres/close.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgres/close.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/postgres/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgres/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/job.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/job.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/priceservice/refreshCurrency.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/priceservice/refreshPremiumPrices.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/get_ads_plans.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/get_ads_plans.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/get_permium_plans.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/get_permium_plans.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/get_star_plans.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/get_star_plans.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresuser/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresuser/create.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresuser/find_user_by_telegram_id.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresuser/find_user_by_telegram_id.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/run.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/register.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/scheduler.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/scheduler.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/shutdown.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/shutdown.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/start.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/start.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,33 +47,33 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultGoTemplateProperty": "Go File",
-    "Go Build.go build telegram-service-platform/cmd/fragmentclient.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.GoLinterPluginOnboardingV2": "true",
-    "RunOnceActivity.GoLinterPluginStorageMigration": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.go.analysis.ui.options.defaults": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "go.sdk.automatically.set": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/prince/golangproject/gameApp",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "go.vgo",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;Go Build.go build telegram-service-platform/cmd/fragmentclient.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.GoLinterPluginOnboardingV2&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.GoLinterPluginStorageMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.analysis.ui.options.defaults&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/prince/golangproject/gameApp&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;go.vgo&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/repository/postgresproduct" />

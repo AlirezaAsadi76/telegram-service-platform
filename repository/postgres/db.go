@@ -37,3 +37,7 @@ func New(cfg DBConfig) (*DB, error) {
 		db: db,
 	}, nil
 }
+
+func (d *DB) Connection() *pgxpool.Pool {
+	return d.db
+}

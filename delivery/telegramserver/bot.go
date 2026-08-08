@@ -32,6 +32,7 @@ func New(cfg Config, handlers ...handler.Handler) (*Bot, error) {
 				)
 			},
 		),
+		//bot.WithDebug(),
 	)
 
 	if err != nil {

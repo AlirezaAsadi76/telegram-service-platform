@@ -13,7 +13,7 @@ const (
 
 	Forbidden = "access forbidden"
 
-	ProductNotFound = "product not found"
+	ProductNotFound = "productkeyboard not found"
 
 	OrderNotFound = "order not found"
 

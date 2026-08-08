@@ -24,7 +24,7 @@ func (db *DB) FindUserByTelegramID(ctx context.Context, telegramID int64) (*enti
 		FROM users
 		WHERE telegram_id = $1`
 	var user entity.User
-	err := db.Pool.QueryRow(ctx, query, telegramID).
+	err := db.Pool.Connection().QueryRow(ctx, query, telegramID).
 		Scan(&user.ID, &user.TelegramID, &user.Username, &user.FirstName,
 			&user.LastName, &user.Role, &user.CreatedAt, &user.UpdatedAt)
 	if err != nil {

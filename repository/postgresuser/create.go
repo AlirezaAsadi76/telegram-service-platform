@@ -10,7 +10,7 @@ import (
 func (db *DB) Create(ctx context.Context, user *entity.User) error {
 	const Op = "postgresuser.create"
 
-	err := db.Pool.QueryRow(ctx, `
+	err := db.Pool.Connection().QueryRow(ctx, `
 							INSERT INTO users (telegram_id, first_name, last_name, username, role) 
 							VALUES ($1, $2, $3, $4, $5) RETURNING id, created_at, updated_at`,
 		user.TelegramID, user.FirstName, user.LastName, user.Username, user.Role).

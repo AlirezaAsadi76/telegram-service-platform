@@ -26,7 +26,7 @@ func (db *DB) GetAdsPlans(ctx context.Context) ([]entity.AdsPlan, error) {
 		ORDER BY views ASC
 	`
 
-	rows, err := db.Pool.Query(ctx, query)
+	rows, err := db.Pool.Connection().Query(ctx, query)
 	if err != nil {
 		return nil, richerror.New(Op, err).
 			WithKind(richerror.KindQueryFailure).

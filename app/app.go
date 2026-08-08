@@ -61,6 +61,9 @@ func New(cfg config.Config) (*App, error) {
 
 	priceRefreshJob := pricerefreshjob.New(priceService)
 	schedulerObj, sErr := scheduler.New(cfg.Scheduler, priceRefreshJob)
+	if err := schedulerObj.Register(); err != nil {
+		return nil, err
+	}
 
 	telegramBot, tErr := telegramserver.New(
 		cfg.Telegram,

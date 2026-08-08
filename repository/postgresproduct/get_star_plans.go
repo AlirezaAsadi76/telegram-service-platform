@@ -22,7 +22,7 @@ func (db *DB) GetStarPlans(ctx context.Context) ([]entity.StarPackage, error) {
 		ORDER BY amount ASC
 	`
 
-	rows, qErr := db.Pool.Query(
+	rows, qErr := db.Pool.Connection().Query(
 		ctx,
 		query,
 	)

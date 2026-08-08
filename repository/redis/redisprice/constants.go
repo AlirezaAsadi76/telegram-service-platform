@@ -1,8 +1,8 @@
 package redisprice
 
 const (
-	StarPriceKey     = "product:price:star"
-	PremiumPriceKey  = "product:price:premium"
+	StarPriceKey     = "productkeyboard:price:star"
+	PremiumPriceKey  = "productkeyboard:price:premium"
 	TonUsdPriceKey   = "currency:price:ton_usd"
 	UsdTomanPriceKey = "currency:price:usd_toman"
 )
