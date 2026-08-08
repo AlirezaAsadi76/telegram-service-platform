@@ -3,6 +3,7 @@ package productkeyboard
 import (
 	"fmt"
 	"telegram-service-platform/delivery/telegramserver/callback"
+	"telegram-service-platform/delivery/telegramserver/keyboard"
 
 	"telegram-service-platform/params"
 
@@ -11,33 +12,33 @@ import (
 
 func PremiumPlans(response params.GetPremiumPlansResponse) *models.InlineKeyboardMarkup {
 
-	buttons := make([][]models.InlineKeyboardButton, 0, len(response.Plans))
-
+	buttons := make([]keyboard.Button, 0)
 	for _, plan := range response.Plans {
 
 		buttons = append(
 			buttons,
-			[]models.InlineKeyboardButton{
-				{
-					Text: fmt.Sprintf(
-						"👑 Telegram Premium %d Month - %.2f USDT",
-						plan.Months,
-						plan.Price.USDT,
-					),
+			keyboard.Button{
+				Text: fmt.Sprintf(
+					"👑 Telegram Premium %d Month - %.2f USDT",
+					plan.Months,
+					plan.Price.USDT,
+				),
 
-					CallbackData: fmt.Sprintf(
-						"%s:%d",
-						callback.ProductPremiumSelectCallBack,
-						plan.ID,
-					),
+				Data: fmt.Sprintf(
+					"%s:%d",
+					callback.ProductPremiumSelectCallBack,
+					plan.ID,
+				),
 
-					Style: "primary",
-				},
-			},
-		)
+				Style: keyboard.Primary,
+			})
 	}
 
-	return &models.InlineKeyboardMarkup{
-		InlineKeyboard: buttons,
-	}
+	builder := keyboard.NewBuilder()
+
+	builder.AddButtonsPerRow(buttons, 1)
+
+	builder.AddRow(keyboard.Back(callback.UserMainMenuCallBack))
+
+	return builder.Build()
 }

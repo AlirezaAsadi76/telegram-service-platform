@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -21,18 +22,25 @@ func Logger() Middleware {
 
 			start := time.Now()
 
-			log.Printf(
-				"telegram update received: %d",
-				update.ID,
-			)
+			var data string
+			if update.CallbackQuery != nil {
 
-			next(ctx, b, update)
+				data = fmt.Sprintf("callback query: %s", update.CallbackQuery.Data)
+			}
+			if update.Message != nil {
+				data = fmt.Sprintf("message: %s", update.Message.Text)
+			}
+			log.Printf(
+				"telegram update received: %d - %s",
+				update.ID,
+				data,
+			)
 
 			log.Printf(
 				"telegram update completed in %s",
 				time.Since(start),
 			)
-
+			next(ctx, b, update)
 		}
 
 	}

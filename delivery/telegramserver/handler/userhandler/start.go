@@ -11,7 +11,6 @@ import (
 )
 
 func (h Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) {
-	log.Println("userHandler start")
 
 	if update.Message == nil {
 		return
@@ -29,8 +28,9 @@ func (h Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) {
 		return
 	}
 
-	_, err = b.SendMessage(
+	merr := h.messenger.Send(
 		ctx,
+		b,
 		&bot.SendMessageParams{
 			ChatID:      update.Message.Chat.ID,
 			Text:        "به پنل خدمات تلگرام خوش آمدید 👋",
@@ -38,8 +38,8 @@ func (h Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) {
 		},
 	)
 
-	if err != nil {
-		log.Println(err)
+	if merr != nil {
+		log.Println(merr)
 		return
 	}
 

@@ -1,16 +1,16 @@
 package callback
 
 const (
-	ProductPrefixCallBack      = "productkeyboard:"
-	ProductStarsCallBack       = "productkeyboard:stars"
-	ProductStarsSelectCallBack = "productkeyboard:stars:select"
-	ProductStarsBuyCallBack    = "productkeyboard:stars:buy"
+	ProductPrefixCallBack      = "product"
+	ProductStarsCallBack       = "product:stars"
+	ProductStarsSelectCallBack = "product:stars:select"
+	ProductStarsBuyCallBack    = "product:stars:buy"
 
-	ProductPremiumCallBack       = "productkeyboard:premium"
-	ProductPremiumSelectCallBack = "productkeyboard:premium:select"
-	ProductPremiumBuyCallBack    = "productkeyboard:premium:buy"
+	ProductPremiumCallBack       = "product:premium"
+	ProductPremiumSelectCallBack = "product:premium:select"
+	ProductPremiumBuyCallBack    = "product:premium:buy"
 
-	ProductAdsCallBack = "productkeyboard:ads"
+	ProductAdsCallBack = "product:ads"
 	Wallet             = "wallet"
 	Orders             = "orders"
 	Support            = "support"

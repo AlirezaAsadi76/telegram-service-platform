@@ -9,6 +9,7 @@ import (
 	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/delivery/telegramserver/handler/producthandler"
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
+	"telegram-service-platform/delivery/telegramserver/messenger"
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/repository/postgresproduct"
 	"telegram-service-platform/repository/postgresuser"
@@ -45,7 +46,6 @@ func New(cfg config.Config) (*App, error) {
 	userRepo := postgresuser.New(postgresClient)
 	userSvc := userservice.New(userRepo)
 	userValidator := uservalidator.New()
-	userHandler := userhandler.New(userSvc, userValidator)
 
 	priceRepo := redisprice.New(redisAdapter)
 
@@ -57,7 +57,10 @@ func New(cfg config.Config) (*App, error) {
 	productRepo := postgresproduct.New(postgresClient)
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo)
 
-	productHandler := producthandler.New(productSvc)
+	messengerService := messenger.New()
+
+	productHandler := producthandler.New(productSvc, messengerService)
+	userHandler := userhandler.New(userSvc, userValidator, messengerService)
 
 	priceRefreshJob := pricerefreshjob.New(priceService)
 	schedulerObj, sErr := scheduler.New(cfg.Scheduler, priceRefreshJob)

@@ -19,7 +19,7 @@ func (h Handler) showStars(ctx context.Context, b *bot.Bot, update *models.Updat
 		return
 	}
 
-	_, err = b.SendMessage(ctx, &bot.SendMessageParams{
+	err = h.messenger.Send(ctx, b, &bot.SendMessageParams{
 		ChatID: update.CallbackQuery.Message.Message.Chat.ID,
 		Text:   "لطفا تعداد Telegram Stars را انتخاب کنید:",
 		ReplyMarkup: productkeyboard.StarsPlans(
