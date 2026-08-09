@@ -4,8 +4,6 @@ type PaymentMethod string
 
 const (
 	PaymentMethodGateway PaymentMethod = "GATEWAY"
-
-	PaymentMethodCrypto PaymentMethod = "CRYPTO"
-
-	PaymentMethodManual PaymentMethod = "MANUAL"
+	PaymentMethodCrypto  PaymentMethod = "CRYPTO"
+	PaymentMethodManual  PaymentMethod = "MANUAL"
 )
