@@ -3,6 +3,7 @@ package paymentservice
 import (
 	"context"
 	"telegram-service-platform/entity/paymententity"
+	"telegram-service-platform/params/paymentparams"
 )
 
 type Repository interface {
@@ -13,6 +14,6 @@ type Repository interface {
 }
 
 type Provider interface {
-	Create(ctx context.Context, request CreatePaymentRequest) (CreatePaymentResponse, error)
-	Verify(ctx context.Context, request VerifyPaymentRequest) (VerifyPaymentResponse, error)
+	Create(ctx context.Context, request paymentparams.CreatePaymentRequest) (paymentparams.CreatePaymentResponse, error)
+	Verify(ctx context.Context, request paymentparams.VerifyPaymentRequest) (paymentparams.VerifyPaymentResponse, error)
 }
