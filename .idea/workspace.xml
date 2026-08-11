@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/cmd/bot/main.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entity/Amount.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entity/walletentity/wallet.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entity/walletentity/wallet_transaction.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entity/walletentity/wallet_transaction_status.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entity/walletentity/wallet_transaction_type.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/start.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/start.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/order.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/order.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/orderparams/create_order.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/orderparams/create_order.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/orderparams/get_order_by_id.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/orderparams/get_order_by_id.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/paymententity/payment.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/paymententity/payment.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

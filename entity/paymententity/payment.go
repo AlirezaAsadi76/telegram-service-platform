@@ -6,16 +6,16 @@ import (
 )
 
 type Payment struct {
-	ID        uint64
-	OrderID   uint64
-	UserID    uint64
-	Method    PaymentMethod
-	Provider  string
-	Amount    float64
-	Currency  entity.Currency
-	Status    PaymentStatus
-	Reference string
-	Metadata  map[string]any
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	ID             uint64
+	OrderID        *uint64 // nullable: برای شارژ کیف پول null است
+	UserID         uint64
+	Method         PaymentMethod // GATEWAY / CRYPTO
+	Amount         entity.Amount
+	Currency       entity.Currency
+	Status         PaymentStatus // PENDING → PROCESSING → SUCCESS / FAILED / EXPIRED
+	ExternalID     string        // شناسه درگاه پرداخت
+	IdempotencyKey string
+	CallbackData   map[string]any // داده‌های کال‌بک
+	ExpiredAt      *time.Time     // برای crypto
+	CreatedAt      time.Time
 }
