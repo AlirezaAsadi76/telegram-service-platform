@@ -2,7 +2,7 @@ package postgresorder
 
 import (
 	"encoding/json"
-	"telegram-service-platform/entity"
+	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/repository/postgres"
 )
 
@@ -15,8 +15,8 @@ func New(pool *postgres.DB) *DB {
 	return &DB{Pool: pool}
 }
 
-func scanOrder(row postgres.Scanner) (entity.Order, error) {
-	order := entity.Order{}
+func scanOrder(row postgres.Scanner) (orderentity.Order, error) {
+	order := orderentity.Order{}
 	var metadata []byte
 	err := row.Scan(
 		&order.ID,

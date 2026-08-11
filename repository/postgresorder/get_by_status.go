@@ -3,11 +3,12 @@ package postgresorder
 import (
 	"context"
 	"telegram-service-platform/entity"
+	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (d *DB) GetByStatus(ctx context.Context, status entity.Status) ([]*entity.Order, error) {
+func (d *DB) GetByStatus(ctx context.Context, status entity.Status) ([]*orderentity.Order, error) {
 	const Op = "postgresorder.GetByStatus"
 
 	query := `
@@ -36,7 +37,7 @@ func (d *DB) GetByStatus(ctx context.Context, status entity.Status) ([]*entity.O
 
 	defer rows.Close()
 
-	orders := make([]*entity.Order, 0)
+	orders := make([]*orderentity.Order, 0)
 
 	for rows.Next() {
 

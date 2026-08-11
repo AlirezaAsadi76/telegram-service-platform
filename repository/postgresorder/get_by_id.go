@@ -2,13 +2,13 @@ package postgresorder
 
 import (
 	"context"
+	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/pkg/msgerror"
 
-	"telegram-service-platform/entity"
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (d *DB) GetByID(ctx context.Context, orderID uint64) (*entity.Order, error) {
+func (d *DB) GetByID(ctx context.Context, orderID uint64) (*orderentity.Order, error) {
 	const Op = "postgresorder.GetByID"
 
 	query := `

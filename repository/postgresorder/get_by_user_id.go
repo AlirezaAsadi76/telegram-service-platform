@@ -2,13 +2,12 @@ package postgresorder
 
 import (
 	"context"
+	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
-
-	"telegram-service-platform/entity"
 )
 
-func (d *DB) GetByUserID(ctx context.Context, userID uint64) ([]*entity.Order, error) {
+func (d *DB) GetByUserID(ctx context.Context, userID uint64) ([]*orderentity.Order, error) {
 	const Op = "postgresorder.GetByUserID"
 
 	query := `
@@ -37,7 +36,7 @@ func (d *DB) GetByUserID(ctx context.Context, userID uint64) ([]*entity.Order, e
 
 	defer rows.Close()
 
-	orders := make([]*entity.Order, 0)
+	orders := make([]*orderentity.Order, 0)
 
 	for rows.Next() {
 
