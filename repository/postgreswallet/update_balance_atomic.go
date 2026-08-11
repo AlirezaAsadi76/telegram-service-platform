@@ -3,11 +3,12 @@ package postgreswallet
 import (
 	"context"
 	"errors"
+	"telegram-service-platform/entity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (d *DB) UpdateBalanceAtomic(ctx context.Context, walletID uint64, newBalance, newVersion int64) error {
+func (d *DB) UpdateBalanceAtomic(ctx context.Context, walletID uint64, newBalance entity.Amount, newVersion int64) error {
 	const Op = "postgreswallet.UpdateBalanceAtomic"
 
 	query := `

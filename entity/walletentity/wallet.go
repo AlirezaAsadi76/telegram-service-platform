@@ -14,3 +14,10 @@ type Wallet struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+func (w Wallet) HasSufficient(amount entity.Amount) bool {
+	if w.Balance < amount {
+		return false
+	}
+	return true
+}

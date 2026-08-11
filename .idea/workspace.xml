@@ -5,16 +5,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/repository/postgreswallet/create.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/postgreswallet/create_transaction.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/postgreswallet/create_transaction_status.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/postgreswallet/db.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/postgreswallet/get_by_user_id.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/postgreswallet/get_for_update.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/postgreswallet/get_transaction_by_idempotencykey.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/postgreswallet/update_balance_atomic.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/params/walletparam/credit.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/params/walletparam/debit.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/walletservice/credit.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/walletservice/debit.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/walletservice/interfaces.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/walletservice/service.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresuser/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresuser/create.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/Amount.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/Amount.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/walletentity/wallet_transaction_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/walletentity/wallet_transaction_status.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/walletentity/wallet_transaction_type.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/walletentity/wallet_transaction_type.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/richerror/kind.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/richerror/kind.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgreswallet/update_balance_atomic.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgreswallet/update_balance_atomic.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

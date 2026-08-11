@@ -5,7 +5,7 @@ type WalletTransactionType string
 // DEPOSIT / WITHDRAW / REFUND
 
 const (
-	WalletTransactionDeposit  WalletTransactionType = "DEPOSIT"
-	WalletTransactionWithdraw WalletTransactionType = "WITHDRAW"
-	WalletTransactionRefund   WalletTransactionType = "REFUND"
+	WalletTransactionTypeDeposit  WalletTransactionType = "DEPOSIT"
+	WalletTransactionTypeWithdraw WalletTransactionType = "WITHDRAW"
+	WalletTransactionTypeRefund   WalletTransactionType = "REFUND"
 )

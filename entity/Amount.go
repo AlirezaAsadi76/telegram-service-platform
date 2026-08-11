@@ -1,5 +1,3 @@
 package entity
 
-import "github.com/shopspring/decimal"
-
-type Amount decimal.Decimal
+type Amount int64
