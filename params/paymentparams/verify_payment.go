@@ -1,9 +1,13 @@
 package paymentparams
 
-type VerifyPaymentRequest struct {
-	PaymentID   uint64
-	ReferenceID string
+import "telegram-service-platform/entity/paymententity"
+
+type VerifyRequest struct {
+	PaymentID    uint64
+	ExternalID   string
+	CallbackData map[string]any
 }
 
-type VerifyPaymentResponse struct {
+type VerifyResponse struct {
+	Status paymententity.PaymentStatus
 }

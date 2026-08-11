@@ -14,6 +14,10 @@ type Repository interface {
 }
 
 type Provider interface {
-	Create(ctx context.Context, request paymentparams.CreatePaymentRequest) (paymentparams.CreatePaymentResponse, error)
-	Verify(ctx context.Context, request paymentparams.VerifyPaymentRequest) (paymentparams.VerifyPaymentResponse, error)
+	Create(ctx context.Context, request paymentparams.CreateRequest) (paymentparams.CreateResponse, error)
+	Verify(ctx context.Context, request paymentparams.VerifyRequest) (paymentparams.VerifyResponse, error)
+}
+
+type IdempotencyChecker interface {
+	SetIfNotExists(ctx context.Context, key string, value string, ttlSeconds int) (bool, error)
 }

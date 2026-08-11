@@ -32,6 +32,7 @@ const (
 	KindInfrastructure
 	KindSerializationFailure
 	KindIdempotencyFailure
+	KindCreateFailed
 )
 
 func IsKind(

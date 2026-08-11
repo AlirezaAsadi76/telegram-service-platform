@@ -5,15 +5,18 @@ import (
 	"telegram-service-platform/entity/paymententity"
 )
 
-type CreatePaymentRequest struct {
-	OrderID  uint64
-	UserID   uint64
-	Method   paymententity.PaymentMethod
-	Amount   float64
-	Currency entity.Currency
+type CreateRequest struct {
+	OrderID        *uint64
+	UserID         uint64
+	Method         paymententity.PaymentMethod
+	Amount         entity.Amount
+	Currency       entity.Currency
+	IdempotencyKey string
+	ExpiredAt      *interface{}
 }
-type CreatePaymentResponse struct {
-	PaymentID uint64
-	Status    string
-	Action    string
+
+type CreateResponse struct {
+	PaymentID  uint64
+	PaymentURL string
+	ExternalID string
 }

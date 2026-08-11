@@ -3,6 +3,7 @@ package msgerror
 const (
 	InternalServerError          = "something went wrong"
 	UserNotFound                 = "user not found"
+	PaymentNotFound              = "payment not found"
 	WalletNotFound               = "wallet not found"
 	IdempotencyAlreadyProcessing = "idempotency already processing"
 	UserAlreadyExists            = "user already exists"
@@ -28,4 +29,5 @@ const (
 	CacheNotFound                = "cache not found"
 	MarshalFailed                = "marshal failed"
 	UnmarshalFailed              = "unmarshal failed"
+	ProviderCreateFailed         = "provider create failed"
 )
