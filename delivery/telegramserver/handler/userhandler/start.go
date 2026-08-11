@@ -18,6 +18,7 @@ func (h Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) {
 	request := mapper.MapTelegramUserToRegisterRequest(update.Message.From)
 
 	err := h.userValidator.GetOrRegister(request)
+	//TODO - create users wallet
 	if err != nil {
 		log.Println(err)
 		return

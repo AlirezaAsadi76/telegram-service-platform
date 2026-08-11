@@ -3,6 +3,8 @@ package entity
 import (
 	"telegram-service-platform/entity/productentity"
 	"time"
+
+	"github.com/shopspring/decimal"
 )
 
 type Order struct {
@@ -16,7 +18,7 @@ type Order struct {
 
 	Quantity int64
 
-	Amount float64
+	Amount decimal.Decimal
 
 	Currency Currency
 

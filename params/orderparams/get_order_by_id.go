@@ -4,6 +4,8 @@ import (
 	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/productentity"
 	"time"
+
+	"github.com/shopspring/decimal"
 )
 
 type GetOrderByIdRequest struct {
@@ -19,7 +21,7 @@ type OrderInfo struct {
 	ProductId   uint64
 	ProductType productentity.ProductType
 	Quantity    uint64
-	Amount      float64
+	Amount      decimal.Decimal
 	Currency    string
 	Status      entity.Status
 	Metadata    map[string]any
