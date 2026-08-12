@@ -17,7 +17,6 @@ func (d *DB) GetByStatus(ctx context.Context, status orderentity.OrderStatus) ([
 	`
 
 	rows, qErr := d.Pool.Connection().Query(ctx, query, status)
-
 	if qErr != nil {
 		return nil, richerror.New(Op, qErr).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
 	}

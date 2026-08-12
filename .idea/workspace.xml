@@ -5,9 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/repository/postgresorder/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresorder/db.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresorder/get_by_id.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresorder/get_by_id.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgrespayment/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgrespayment/create.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/params/orderparams/create_order_adapter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/postgresprovider/db.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/postgresprovider/get_active_providers.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/smmproviderservice/circuitbreaker.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/smmproviderservice/fulFillOrder.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/smmproviderservice/interfaces.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/smmproviderservice/registerProvider.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/service/smmproviderservice/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/provider_type.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/providerentity/provider_type.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresorder/get_by_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresorder/get_by_status.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,11 +77,11 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/entity/providerentity" />
       <recent name="$PROJECT_DIR$/entity/orderentity" />
       <recent name="$PROJECT_DIR$/scheduler/jobs" />
       <recent name="$PROJECT_DIR$/scheduler/jobs/priceservice/pricerefresh" />
       <recent name="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler" />
-      <recent name="$PROJECT_DIR$/delivery/telegramserver/handler" />
     </key>
   </component>
   <component name="RunManager">

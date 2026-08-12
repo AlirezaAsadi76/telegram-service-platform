@@ -1,4 +1,4 @@
-package entity
+package providerentity
 
 type ProviderType string
 
