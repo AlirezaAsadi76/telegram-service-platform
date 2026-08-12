@@ -6,7 +6,9 @@ const (
 	OrderStatusPending    OrderStatus = "PENDING"
 	OrderStatusProcessing OrderStatus = "PROCESSING"
 	OrderStatusSuccess    OrderStatus = "SUCCESS"
-	OrderStatusFailed     OrderStatus = "FAILED"
-	OrderStatusCanceled   OrderStatus = "CANCELED"
-	OrderStatusExpired    OrderStatus = "EXPIRED"
+	OrderStatusPaid       OrderStatus = "PAID"
+
+	OrderStatusFailed   OrderStatus = "FAILED"
+	OrderStatusCanceled OrderStatus = "CANCELED"
+	OrderStatusExpired  OrderStatus = "EXPIRED"
 )
