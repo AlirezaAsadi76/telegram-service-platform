@@ -17,6 +17,8 @@ func New(pool *postgres.DB) *DB {
 
 func scanOrder(row postgres.Scanner) (orderentity.Order, error) {
 	order := orderentity.Order{}
+	var providerID *uint64
+
 	var metadata []byte
 	err := row.Scan(
 		&order.ID,
@@ -24,12 +26,17 @@ func scanOrder(row postgres.Scanner) (orderentity.Order, error) {
 		&order.ProductType,
 		&order.ProductID,
 		&order.Quantity,
+		&order.TargetLink,
 		&order.Amount,
 		&order.Currency,
 		&order.Status,
+		&order.ExternalOrderID,
+		&providerID,
 		&metadata,
 		&order.CreatedAt,
 		&order.UpdatedAt)
+	
+	order.ProviderID = providerID
 
 	if len(metadata) > 0 {
 

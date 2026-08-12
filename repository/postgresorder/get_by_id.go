@@ -12,20 +12,9 @@ func (d *DB) GetByID(ctx context.Context, orderID uint64) (*orderentity.Order, e
 	const Op = "postgresorder.GetByID"
 
 	query := `
-	SELECT
-		id,
-		user_id,
-		product_type,
-		product_id,
-		quantity,
-		amount,
-		currency,
-		status,
-		metadata,
-		created_at,
-		updated_at
-	FROM orders
-	WHERE id=$1
+		SELECT id, user_id, product_type, product_id, quantity, target_link, amount, currency, status,
+		       external_order_id, provider_id, metadata, created_at, updated_at
+		FROM orders WHERE id = $1
 	`
 
 	row := d.Pool.Connection().QueryRow(ctx, query, orderID)

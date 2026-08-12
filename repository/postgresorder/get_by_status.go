@@ -2,31 +2,18 @@ package postgresorder
 
 import (
 	"context"
-	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (d *DB) GetByStatus(ctx context.Context, status entity.Status) ([]*orderentity.Order, error) {
+func (d *DB) GetByStatus(ctx context.Context, status orderentity.OrderStatus) ([]*orderentity.Order, error) {
 	const Op = "postgresorder.GetByStatus"
 
 	query := `
-	SELECT
-		id,
-		user_id,
-		product_type,
-		product_id,
-		quantity,
-		amount,
-		currency,
-		status,
-		metadata,
-		created_at,
-		updated_at
-	FROM orders
-	WHERE status=$1
-	ORDER BY created_at DESC
+		SELECT id, user_id, product_type, product_id, quantity, target_link, amount, currency, status,
+		       external_order_id, provider_id, metadata, created_at, updated_at
+		FROM orders WHERE status = $1
 	`
 
 	rows, qErr := d.Pool.Connection().Query(ctx, query, status)

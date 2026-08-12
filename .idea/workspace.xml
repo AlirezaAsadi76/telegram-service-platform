@@ -5,23 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/params/orderparams/update_status.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/orderservice/updateStatus.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/orderentity/order_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/orderentity/order_status.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/orderparams/create_order.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/orderparams/create_order.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/orderparams/get_order_by_id.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/orderparams/get_orders_by_status.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/orderparams/get_orders_by_user_id.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/orderparams/update_order_status_by_id.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/orderservice/createOrder.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/orderservice/createOrder.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/orderservice/getOrderByID.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/orderservice/getOrdersByCustomerID.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/orderservice/getOrdersByStatus.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/orderservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/orderservice/interfaces.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/orderservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/orderservice/service.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/orderservice/updateOrderStatusByID.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresorder/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresorder/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresorder/get_by_id.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresorder/get_by_id.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgrespayment/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgrespayment/create.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
