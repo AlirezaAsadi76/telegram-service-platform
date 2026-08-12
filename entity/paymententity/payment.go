@@ -18,4 +18,5 @@ type Payment struct {
 	CallbackData   map[string]any // داده‌های کال‌بک
 	ExpiredAt      *time.Time     // برای crypto
 	CreatedAt      time.Time
+	UpdatedAt      time.Time
 }

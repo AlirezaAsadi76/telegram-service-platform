@@ -5,18 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/service/paymentservice/create.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/paymentservice/getprovider.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/paymentservice/verify.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/postgrespayment/create.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/postgrespayment/db.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/postgrespayment/get_by_Id.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/paymententity/paymentmethod.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/paymententity/paymentmethod.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/paymententity/paymentstatus.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/paymententity/paymentstatus.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/paymentparams/create_payment.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/paymentparams/create_payment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/paymentparams/verify_payment.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/paymentparams/verify_payment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/richerror/kind.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/richerror/kind.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/paymentservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/paymentservice/interfaces.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/paymentservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/paymentservice/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/paymententity/payment.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/paymententity/payment.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -154,5 +147,16 @@
         </entry>
       </map>
     </upgrades>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/repository/postgrespayment/get_by_Id.go</url>
+          <line>13</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
