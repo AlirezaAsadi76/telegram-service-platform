@@ -3,10 +3,10 @@ package orderentity
 type OrderStatus string
 
 const (
-	OrderPending    OrderStatus = "PENDING"
-	OrderProcessing OrderStatus = "PROCESSING"
-	OrderSuccess    OrderStatus = "SUCCESS"
-	OrderFailed     OrderStatus = "FAILED"
-	OrderCanceled   OrderStatus = "CANCELED"
-	OrderExpired    OrderStatus = "EXPIRED"
+	OrderStatusPending    OrderStatus = "PENDING"
+	OrderStatusProcessing OrderStatus = "PROCESSING"
+	OrderStatusSuccess    OrderStatus = "SUCCESS"
+	OrderStatusFailed     OrderStatus = "FAILED"
+	OrderStatusCanceled   OrderStatus = "CANCELED"
+	OrderStatusExpired    OrderStatus = "EXPIRED"
 )

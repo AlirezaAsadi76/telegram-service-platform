@@ -3,22 +3,18 @@ package orderparams
 import (
 	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/productentity"
-
-	"github.com/shopspring/decimal"
 )
 
-type CreateOrderRequest struct {
+type CreateRequest struct {
 	UserID      uint64
-	ProductType productentity.ProductType
+	ProductType productentity.ProductType // from productentity
 	ProductID   uint64
 	Quantity    int64
-	Amount      decimal.Decimal
+	TargetLink  string
+	Amount      entity.Amount
 	Currency    entity.Currency
-	Status      entity.Status
-	Metadata    map[string]any
 }
 
-type CreateOrderResponse struct {
-	Id     uint64
-	Status entity.Status
+type CreateResponse struct {
+	OrderID uint64
 }

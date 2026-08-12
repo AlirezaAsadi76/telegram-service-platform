@@ -5,7 +5,5 @@ type Service struct {
 }
 
 func New(repo Repository) *Service {
-	return &Service{
-		repo: repo,
-	}
+	return &Service{repo: repo}
 }
