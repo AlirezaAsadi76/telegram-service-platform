@@ -6,7 +6,7 @@ import (
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (d *DB) Delete(ctx context.Context, idempotencyKey string) error {
+func (d DB) Delete(ctx context.Context, idempotencyKey string) error {
 	const Op = "redisidempotency.Delete"
 
 	if err := d.adapter.Client().Del(ctx, idempotencyKey).Err(); err != nil {

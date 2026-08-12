@@ -4,11 +4,11 @@ import (
 	"context"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/entity/providerentity"
-	"telegram-service-platform/params/orderparams"
+	"telegram-service-platform/params/smmprams"
 )
 
 type SMMProvider interface {
-	CreateOrder(ctx context.Context, req orderparams.CreateOrderAdapterRequest) (orderparams.CreateOrderAdapterResponse, error)
+	Create(ctx context.Context, req smmprams.CreateOrderAdapterRequest) (smmprams.CreateOrderAdapterResponse, error)
 	GetOrderStatus(ctx context.Context, externalOrderID string) (orderentity.OrderStatus, error)
 }
 

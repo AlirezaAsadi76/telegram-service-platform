@@ -1,9 +1,6 @@
 package checkoutservice
 
 import (
-	"context"
-	"fmt"
-	"telegram-service-platform/entity"
 	"telegram-service-platform/service/orderservice"
 	"telegram-service-platform/service/paymentservice"
 	"telegram-service-platform/service/smmproviderservice"
@@ -11,12 +8,11 @@ import (
 )
 
 type Service struct {
-	walletSvc   *walletservice.Service
-	paymentSvc  *paymentservice.Service
-	orderSvc    *orderservice.Service
-	smmSvc      *smmproviderservice.Service
-	messenger   Messenger
-	idempotency IdempotencyChecker
+	walletSvc  *walletservice.Service
+	paymentSvc *paymentservice.Service
+	orderSvc   *orderservice.Service
+	smmSvc     *smmproviderservice.Service
+	messenger  Messenger
 }
 
 func New(
@@ -25,14 +21,12 @@ func New(
 	orderSvc *orderservice.Service,
 	smmSvc *smmproviderservice.Service,
 	messenger Messenger,
-	idempotency IdempotencyChecker,
 ) *Service {
 	return &Service{
-		walletSvc:   walletSvc,
-		paymentSvc:  paymentSvc,
-		orderSvc:    orderSvc,
-		smmSvc:      smmSvc,
-		messenger:   messenger,
-		idempotency: idempotency,
+		walletSvc:  walletSvc,
+		paymentSvc: paymentSvc,
+		orderSvc:   orderSvc,
+		smmSvc:     smmSvc,
+		messenger:  messenger,
 	}
 }

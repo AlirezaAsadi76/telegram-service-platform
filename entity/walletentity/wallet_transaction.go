@@ -15,4 +15,5 @@ type WalletTransaction struct {
 	ReferenceID    string                  // payment_id یا order_id
 	IdempotencyKey string                  // کلید یکتای idempotency
 	CreatedAt      time.Time
+	UpdatedAt      time.Time
 }

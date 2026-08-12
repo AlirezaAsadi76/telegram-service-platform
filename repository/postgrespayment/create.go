@@ -14,7 +14,7 @@ func (d *DB) Create(ctx context.Context, payment *paymententity.Payment) error {
 
 	metadata, err := json.Marshal(payment.CallbackData)
 	if err != nil {
-		return richerror.New(Op, err).WithKind(richerror.KindSerializationFailure).WithMessage(msgerror.MarshalFailed)
+		return richerror.New(Op, err).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
 	}
 
 	query := `

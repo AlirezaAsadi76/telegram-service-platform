@@ -4,6 +4,7 @@ import (
 	"context"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/walletentity"
+	"time"
 )
 
 type Repository interface {
@@ -20,7 +21,8 @@ type TransactionRepository interface {
 }
 
 type IdempotencyChecker interface {
-	SetIfNotExists(ctx context.Context, key string, value string, ttlSeconds int) (bool, error)
+	SetIfNotExists(ctx context.Context, idempotencyKey string, Value string, ttl time.Duration) (bool, error)
 	Get(ctx context.Context, key string) (string, error)
 	Delete(ctx context.Context, key string) error
+	Set(ctx context.Context, idempotencyKey string, Value string, ttl time.Duration) error
 }

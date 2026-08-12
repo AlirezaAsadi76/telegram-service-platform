@@ -7,7 +7,7 @@ import (
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (d *DB) UpdateStatus(ctx context.Context, id uint64, status orderentity.Order, externalOrderID string, providerID *uint64) error {
+func (d *DB) UpdateStatus(ctx context.Context, id uint64, status orderentity.OrderStatus, externalOrderID string, providerID *uint64) error {
 	const Op = "postgresorder.UpdateStatus"
 
 	query := `

@@ -22,6 +22,7 @@ func scanWallet(row postgres.Scanner) (walletentity.Wallet, error) {
 		&wallet.UserID,
 		&wallet.Balance,
 		&wallet.Currency,
+		&wallet.Version,
 		&wallet.CreatedAt,
 		&wallet.UpdatedAt)
 
@@ -36,11 +37,13 @@ func scanWalletTransaction(row postgres.Scanner) (walletentity.WalletTransaction
 		&walletTr.ID,
 		&walletTr.WalletID,
 		&walletTr.UserID,
+		&walletTr.Type,
 		&walletTr.Amount,
 		&walletTr.Status,
 		&walletTr.ReferenceID,
 		&walletTr.IdempotencyKey,
 		&walletTr.CreatedAt,
+		&walletTr.UpdatedAt,
 	)
 
 	return walletTr, err

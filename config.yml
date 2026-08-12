@@ -1,6 +1,10 @@
 ---
 type: yml
 
+env_file:
+    - .env
+
+
 httpServer:
   port: 7660
 
@@ -13,7 +17,7 @@ postgres:
   sslmode: "disable"
 
 telegram:
-  token: "8873841525:AAGdvvgTW1hAzVjONNZ5apyXGmhEDVKbtZM"
+  token: ${TELEGRAM_BOT_TOKEN}
   debug: false
 
 redis:

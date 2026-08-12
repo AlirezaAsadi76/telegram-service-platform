@@ -5,24 +5,32 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/params/checkoutparams/productPurchase.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/params/checkoutparams/walletrecharge.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/db.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/delete.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/get.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/set.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/setIfNotExists.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/checkoutservice/fulfillOrderAsync.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/checkoutservice/interfaces.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/checkoutservice/processProductPurchase.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/checkoutservice/processRechargeCallback.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/checkoutservice/processWalletRecharge.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/checkoutservice/service.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/orderservice/getById.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/paymentservice/getbyid.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/params/checkoutparams/processRechargeCallback.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/orderentity/order_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/orderentity/order_status.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/orderservice/createOrder.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/orderservice/create.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dependency.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/dependency.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/walletentity/wallet_transaction.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/walletentity/wallet_transaction.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/orderparams/create_order_adapter.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/smmprams/create_order_adapter.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresorder/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresorder/create.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresorder/update_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresorder/update_status.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgrespayment/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgrespayment/create.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgrespayment/get_by_Id.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgrespayment/get_by_Id.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgreswallet/create_transaction.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgreswallet/create_transaction.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgreswallet/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgreswallet/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/redis/redisidempotency/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/redis/redisidempotency/delete.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/delete.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/redis/redisidempotency/get.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/get.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/redis/redisidempotency/set.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/set.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/redis/redisidempotency/setIfNotExists.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/setIfNotExists.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processProductPurchase.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processProductPurchase.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processRechargeCallback.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processRechargeCallback.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processWalletRecharge.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processWalletRecharge.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/smmproviderservice/fulFillOrder.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/smmproviderservice/fulFillOrder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/smmproviderservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/smmproviderservice/interfaces.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/walletservice/credit.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/walletservice/credit.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/walletservice/debit.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/walletservice/debit.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/walletservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/walletservice/interfaces.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,47 +56,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "DefaultGoTemplateProperty": "Go File",
-    "Go Build.go build telegram-service-platform/cmd/fragmentclient.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.GoLinterPluginOnboardingV2": "true",
-    "RunOnceActivity.GoLinterPluginStorageMigration": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.go.analysis.ui.options.defaults": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "main",
-    "go.sdk.automatically.set": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/prince/bots/telegram-service-platform/repository/redis/redisidenporency",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "go.vgo",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
+    &quot;Go Build.go build telegram-service-platform/cmd/fragmentclient.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.GoLinterPluginOnboardingV2&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.GoLinterPluginStorageMigration&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.analysis.ui.options.defaults&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/prince/bots/telegram-service-platform&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;go.vgo&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/repository/redis/redisidenporency" />
       <recent name="$PROJECT_DIR$/repository/postgreswallet" />
       <recent name="$PROJECT_DIR$/repository/postgresorder" />
       <recent name="$PROJECT_DIR$/repository/postgresproduct" />
-      <recent name="$PROJECT_DIR$/repository" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/params/smmprams" />
       <recent name="$PROJECT_DIR$/entity/providerentity" />
       <recent name="$PROJECT_DIR$/entity/orderentity" />
       <recent name="$PROJECT_DIR$/scheduler/jobs" />
       <recent name="$PROJECT_DIR$/scheduler/jobs/priceservice/pricerefresh" />
-      <recent name="$PROJECT_DIR$/delivery/telegramserver/handler/producthandler" />
     </key>
   </component>
   <component name="RunManager">

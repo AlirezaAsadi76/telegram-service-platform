@@ -8,7 +8,7 @@ import (
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (d *DB) CreateOrder(ctx context.Context, order *orderentity.Order) error {
+func (d *DB) Create(ctx context.Context, order *orderentity.Order) error {
 	const Op = "postgresorder.CreateOrder"
 	metadata, err := json.Marshal(order.Metadata)
 	if err != nil {

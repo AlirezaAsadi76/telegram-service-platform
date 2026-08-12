@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func (d *DB) Set(ctx context.Context, idempotencyKey string, Value string, ttl time.Duration) error {
+func (d DB) Set(ctx context.Context, idempotencyKey string, Value string, ttl time.Duration) error {
 	const Op = "redisidempotency.Set"
 
 	if err := d.adapter.Client().Set(ctx, idempotencyKey, Value, ttl).Err(); err != nil {

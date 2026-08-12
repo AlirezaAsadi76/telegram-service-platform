@@ -11,10 +11,12 @@ import (
 	"telegram-service-platform/params/orderparams"
 	"telegram-service-platform/params/paymentparams"
 	"telegram-service-platform/params/walletparam"
+	"telegram-service-platform/pkg/richerror"
 	"time"
 )
 
 func (s *Service) ProcessProductPurchase(ctx context.Context, req checkoutparams.ProcessProductPurchaseRequest) error {
+	const Op = "CheckoutService.ProcessProductPurchase"
 	// 1. Create order
 	orderResp, err := s.orderSvc.Create(ctx, orderparams.CreateRequest{
 		UserID:      req.UserID,
@@ -42,25 +44,35 @@ func (s *Service) ProcessProductPurchase(ctx context.Context, req checkoutparams
 			ReferenceID:    fmt.Sprintf("order:%d", orderResp.OrderID),
 			IdempotencyKey: idempotencyKey,
 		}
-		_, err := s.walletSvc.Debit(ctx, debitReq)
-		if err != nil {
+		_, dErr := s.walletSvc.Debit(ctx, debitReq)
+		if dErr != nil {
 			// Cancel order
-			s.orderSvc.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
+			uErr := s.orderSvc.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
 				OrderID: orderResp.OrderID,
 				Status:  orderentity.OrderStatusCanceled,
 			})
-			return fmt.Errorf("insufficient wallet balance: %w", err)
+			if uErr != nil {
+				return uErr
+			}
+			return fmt.Errorf("insufficient wallet balance: %w", dErr)
 		}
 
 		// Mark as paid and fulfill
-		s.orderSvc.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
+		uErr := s.orderSvc.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
 			OrderID: orderResp.OrderID,
 			Status:  orderentity.OrderStatusPaid,
 		})
 
+		if uErr != nil {
+			return uErr
+		}
+
 		// Fulfill via SMM provider (async - push to queue)
 		// In real implementation, this would be a background job
-		order, _ := s.orderSvc.GetById(ctx, orderResp.OrderID)
+		order, ogErr := s.orderSvc.GetById(ctx, orderResp.OrderID)
+		if ogErr != nil {
+			return richerror.New(Op, ogErr).WithKind(richerror.KindInfrastructure)
+		}
 		go s.fulfillOrderAsync(order)
 
 	} else {

@@ -72,7 +72,7 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 	}
 
 	// 7. Mark idempotency as completed
-	_, _ = s.idempotencyRepo.SetIfNotExists(ctx, req.IdempotencyKey, "completed", 86400) // 24h retention
+	_ = s.idempotencyRepo.Set(ctx, req.IdempotencyKey, "completed", 86400) // 24h retention
 
 	return &walletparam.CreditResponse{
 		TransactionID: tx.ID,

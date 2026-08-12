@@ -3,7 +3,7 @@ package paymentservice
 import (
 	"context"
 	"telegram-service-platform/entity/paymententity"
-	"telegram-service-platform/params/paymentparams"
+	"telegram-service-platform/params/paymentproviderparams"
 )
 
 type Repository interface {
@@ -14,8 +14,8 @@ type Repository interface {
 }
 
 type Provider interface {
-	Create(ctx context.Context, request paymentparams.CreateRequest) (paymentparams.CreateResponse, error)
-	Verify(ctx context.Context, request paymentparams.VerifyRequest) (paymentparams.VerifyResponse, error)
+	Create(ctx context.Context, request paymentproviderparams.CreateRequest) (paymentproviderparams.CreateResponse, error)
+	Verify(ctx context.Context, request paymentproviderparams.VerifyRequest) (paymentproviderparams.VerifyResponse, error)
 }
 
 type IdempotencyChecker interface {

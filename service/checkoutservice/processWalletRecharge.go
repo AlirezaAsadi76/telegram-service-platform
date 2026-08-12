@@ -5,12 +5,8 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"telegram-service-platform/entity"
-	"telegram-service-platform/entity/paymententity"
 	"telegram-service-platform/params/checkoutparams"
 	"telegram-service-platform/params/paymentparams"
-	"telegram-service-platform/service/paymentservice"
-	"telegram-service-platform/service/walletservice"
 	"time"
 )
 

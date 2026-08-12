@@ -7,11 +7,13 @@ import (
 	"time"
 )
 
-func (d *DB) SetIfNotExists(ctx context.Context, idempotencyKey string, Value string, ttl time.Duration) error {
+func (d DB) SetIfNotExists(ctx context.Context, idempotencyKey string, Value string, ttl time.Duration) (bool, error) {
 	const Op = "redisidempotency.Set"
 
-	if err := d.adapter.Client().SetNX(ctx, idempotencyKey, Value, ttl).Err(); err != nil {
-		return richerror.New(Op, err).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
+	exist, err := d.adapter.Client().SetNX(ctx, idempotencyKey, Value, ttl).Result()
+
+	if err != nil {
+		return false, richerror.New(Op, err).WithKind(richerror.KindUnexpected).WithMessage(msgerror.Unexpected)
 	}
-	return nil
+	return exist, nil
 }

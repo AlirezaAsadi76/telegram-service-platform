@@ -11,7 +11,7 @@ func (d *DB) GetByID(ctx context.Context, id uint64) (*paymententity.Payment, er
 	const Op = "postgrespayment.getbyid"
 
 	query := `
-		SELECT id, order_id, user_id, method, amount, currency, status, external_id, idempotency_key,CallbackData , ExpiredAt, created_at, updated_at
+		SELECT id, order_id, user_id, method, amount, currency, status, external_id, idempotency_key, callback_data, expired_at, created_at, updated_at
 		FROM payments WHERE id = $1
 	`
 

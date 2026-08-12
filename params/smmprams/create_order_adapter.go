@@ -1,4 +1,4 @@
-package orderparams
+package smmprams
 
 import "telegram-service-platform/entity/orderentity"
 

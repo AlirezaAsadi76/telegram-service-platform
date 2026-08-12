@@ -2,6 +2,7 @@ package paymentservice
 
 import (
 	"context"
+	"telegram-service-platform/params/paymentproviderparams"
 	"telegram-service-platform/pkg/msgerror"
 
 	"telegram-service-platform/entity/paymententity"
@@ -15,7 +16,7 @@ func (s *Service) Create(ctx context.Context, req paymentparams.CreateRequest) (
 	provider := s.getProvider(req.Method)
 
 	// Create external payment
-	providerReq := paymentparams.CreateRequest{
+	providerReq := paymentproviderparams.CreateRequest{
 		Amount:   req.Amount,
 		Currency: req.Currency,
 	}

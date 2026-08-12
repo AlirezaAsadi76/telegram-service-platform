@@ -4,16 +4,17 @@ import (
 	"context"
 	"fmt"
 	"telegram-service-platform/entity/paymententity"
+	"telegram-service-platform/params/checkoutparams"
 	"telegram-service-platform/params/paymentparams"
 	"telegram-service-platform/params/walletparam"
 )
 
-func (s *Service) ProcessRechargeCallback(ctx context.Context, paymentID uint64, externalID string, callbackData map[string]any) error {
+func (s *Service) ProcessRechargeCallback(ctx context.Context, req checkoutparams.ProcessRechargeCallbackRequest) error {
 	// 1. Verify payment
 	verifyResp, err := s.paymentSvc.Verify(ctx, paymentparams.VerifyRequest{
-		PaymentID:    paymentID,
-		ExternalID:   externalID,
-		CallbackData: callbackData,
+		PaymentID:    req.PaymentID,
+		ExternalID:   req.ExternalID,
+		CallbackData: req.CallbackData,
 	})
 	if err != nil {
 		return fmt.Errorf("payment verification failed: %w", err)
@@ -21,12 +22,13 @@ func (s *Service) ProcessRechargeCallback(ctx context.Context, paymentID uint64,
 
 	if verifyResp.Status != paymententity.PaymentStatusSuccess {
 		// Payment failed or pending - notify user
-		s.messenger.SendToUser(ctx, int64(paymentID), "Payment failed. Please try again.")
+
+		s.messenger.SendToUser(ctx, int64(req.UserId), "Payment failed. Please try again.")
 		return nil
 	}
 
 	// 2. Get payment details to find amount
-	payment, _ := s.paymentSvc.GetById(ctx, paymentID)
+	payment, _ := s.paymentSvc.GetById(ctx, req.PaymentID)
 
 	// 3. Credit wallet (idempotent)
 	creditReq := walletparam.CreditRequest{

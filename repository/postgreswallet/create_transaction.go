@@ -1,4 +1,3 @@
-// repository/postgreswallet/createTransaction.go
 package postgreswallet
 
 import (
@@ -21,7 +20,7 @@ func (d *DB) CreateTransaction(ctx context.Context, tx *walletentity.WalletTrans
 	sErr := d.Pool.Connection().QueryRow(ctx, query,
 		tx.WalletID, tx.UserID, tx.Type, tx.Amount, tx.Status,
 		tx.ReferenceID, tx.IdempotencyKey,
-	).Scan(&tx.ID, &tx.CreatedAt)
+	).Scan(&tx.ID, &tx.CreatedAt, &tx.UpdatedAt)
 
 	if sErr != nil {
 		return richerror.New(Op, sErr).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryScanFailed)

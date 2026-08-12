@@ -1,4 +1,3 @@
-// service/walletservice/debit.go
 package walletservice
 
 import (
@@ -22,7 +21,15 @@ func (s *Service) Debit(ctx context.Context, req walletparam.DebitRequest) (*wal
 			NewBalance:    wallet.Balance,
 		}, nil
 	}
-
+	// 2. Set idempotency key in Redis (prevents concurrent processing)
+	ok, ifErr := s.idempotencyRepo.SetIfNotExists(ctx, req.IdempotencyKey, "processing", 300)
+	if ifErr != nil {
+		return nil, richerror.New(Op, ifErr).WithKind(richerror.KindIdempotencyFailure).WithMessage(msgerror.IdempotencyAlreadyProcessing)
+	}
+	if !ok {
+		// Another process is handling this
+		return nil, richerror.New(Op, ifErr).WithKind(richerror.KindIdempotencyFailure).WithMessage(msgerror.IdempotencyAlreadyProcessing)
+	}
 	// 2. Lock wallet
 	wallet, gfErr := s.repo.GetForUpdate(ctx, req.UserID)
 	if gfErr != nil {

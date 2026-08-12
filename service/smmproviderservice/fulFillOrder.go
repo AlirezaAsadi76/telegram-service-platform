@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/entity/providerentity"
-	"telegram-service-platform/params/orderparams"
+	"telegram-service-platform/params/smmprams"
 	"telegram-service-platform/pkg/richerror"
 )
 
@@ -40,12 +40,12 @@ func (s *Service) FulfillOrder(ctx context.Context, order *orderentity.Order) er
 	}
 
 	// Create external order
-	req := orderparams.CreateOrderAdapterRequest{
+	req := smmprams.CreateOrderAdapterRequest{
 		ServiceID: fmt.Sprintf("%d", order.ProductID),
 		Link:      order.TargetLink,
 		Quantity:  order.Quantity,
 	}
-	resp, err := selectedAdapter.CreateOrder(ctx, req)
+	resp, err := selectedAdapter.Create(ctx, req)
 	if err != nil {
 		s.breakers[selectedProvider].RecordFailure()
 		return fmt.Errorf("provider %s failed: %w", selectedProvider, err)
