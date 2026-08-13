@@ -3,6 +3,7 @@ package walletservice
 import (
 	"context"
 	"fmt"
+	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/walletentity"
 	"telegram-service-platform/params/walletparam"
 	"telegram-service-platform/pkg/msgerror"
@@ -22,7 +23,7 @@ func (s *Service) Debit(ctx context.Context, req walletparam.DebitRequest) (*wal
 		}, nil
 	}
 	// 2. Set idempotency key in Redis (prevents concurrent processing)
-	ok, ifErr := s.idempotencyRepo.SetIfNotExists(ctx, req.IdempotencyKey, "processing", 300)
+	ok, ifErr := s.idempotencyRepo.SetIfNotExists(ctx, req.IdempotencyKey, entity.IdempotencyStatusProcessing, s.config.IdempotencyProcessingTTL)
 	if ifErr != nil {
 		return nil, richerror.New(Op, ifErr).WithKind(richerror.KindIdempotencyFailure).WithMessage(msgerror.IdempotencyAlreadyProcessing)
 	}
@@ -39,6 +40,7 @@ func (s *Service) Debit(ctx context.Context, req walletparam.DebitRequest) (*wal
 
 	// 3. Check sufficient balance
 	if !wallet.HasSufficient(req.Amount) {
+		_ = s.idempotencyRepo.Delete(ctx, req.IdempotencyKey)
 		return nil, richerror.New(Op, fmt.Errorf("insufficient balance: have %d, need %d", wallet.Balance, req.Amount))
 	}
 
@@ -61,6 +63,7 @@ func (s *Service) Debit(ctx context.Context, req walletparam.DebitRequest) (*wal
 	newBalance := wallet.Balance - req.Amount
 	newVersion := wallet.Version + 1
 	if err := s.repo.UpdateBalanceAtomic(ctx, wallet.ID, newBalance, newVersion); err != nil {
+		_ = s.idempotencyRepo.Delete(ctx, req.IdempotencyKey)
 		return nil, fmt.Errorf("concurrent update: %w", err)
 	}
 
@@ -71,7 +74,7 @@ func (s *Service) Debit(ctx context.Context, req walletparam.DebitRequest) (*wal
 	}
 
 	// 7. Mark idempotency as completed
-	_, _ = s.idempotencyRepo.SetIfNotExists(ctx, req.IdempotencyKey, "completed", 86400) // 24h retention
+	_ = s.idempotencyRepo.Set(ctx, req.IdempotencyKey, entity.IdempotencyStatusComplete, s.config.IdempotencyCompletedTTL) // 24h retention
 
 	return &walletparam.DebitResponse{
 		TransactionID: tx.ID,

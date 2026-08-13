@@ -21,8 +21,8 @@ type TransactionRepository interface {
 }
 
 type IdempotencyChecker interface {
-	SetIfNotExists(ctx context.Context, idempotencyKey string, Value string, ttl time.Duration) (bool, error)
+	SetIfNotExists(ctx context.Context, idempotencyKey string, Value entity.IdempotencyStatus, ttl time.Duration) (bool, error)
 	Get(ctx context.Context, key string) (string, error)
 	Delete(ctx context.Context, key string) error
-	Set(ctx context.Context, idempotencyKey string, Value string, ttl time.Duration) error
+	Set(ctx context.Context, idempotencyKey string, Value entity.IdempotencyStatus, ttl time.Duration) error
 }

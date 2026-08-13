@@ -21,7 +21,7 @@ func (d *DB) UpdateBalanceAtomic(ctx context.Context, walletID uint64, newBalanc
 		return richerror.New(Op, err).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
 	}
 	if tag.RowsAffected() == 0 {
-		return richerror.New(Op, errors.New("ErrConcurrentUpdate")).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
+		return richerror.New(Op, errors.New("concurrent update detected")).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
 	}
 	return nil
 }

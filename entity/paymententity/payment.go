@@ -7,7 +7,7 @@ import (
 
 type Payment struct {
 	ID             uint64
-	OrderID        *uint64 // nullable: برای شارژ کیف پول null است
+	OrderID        uint64
 	UserID         uint64
 	Method         PaymentMethod // GATEWAY / CRYPTO
 	Amount         entity.Amount

@@ -9,6 +9,7 @@ import (
 	"telegram-service-platform/scheduler"
 	"telegram-service-platform/service/priceservice"
 	"telegram-service-platform/service/productservice"
+	"telegram-service-platform/service/walletservice"
 	"time"
 )
 
@@ -31,4 +32,5 @@ type Config struct {
 	Fzr            fzrcards.Config       `koanf:"fzr"`
 	ExchangeRate   exchangerate.Config   `koanf:"exchangeRate"`
 	Scheduler      scheduler.Config      `koanf:"scheduler"`
+	WalletSvc      walletservice.Config  `koanf:"wallet"`
 }

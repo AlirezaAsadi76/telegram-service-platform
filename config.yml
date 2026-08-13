@@ -48,3 +48,7 @@ scheduler:
   currency_refresh_interval: "1h"
   stars_refresh_interval: "1h"
   premium_refresh_interval: "1h"
+
+wallet:
+  idempotency_processing_ttl: "5m"
+  idempotency_completed_ttl: "24h"

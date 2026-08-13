@@ -3,6 +3,7 @@ package walletservice
 
 import (
 	"context"
+	"telegram-service-platform/entity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 
@@ -26,7 +27,7 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 	}
 
 	// 2. Set idempotency key in Redis (prevents concurrent processing)
-	ok, ifErr := s.idempotencyRepo.SetIfNotExists(ctx, req.IdempotencyKey, "processing", 300)
+	ok, ifErr := s.idempotencyRepo.SetIfNotExists(ctx, req.IdempotencyKey, entity.IdempotencyStatusProcessing, s.config.IdempotencyProcessingTTL)
 	if ifErr != nil {
 		return nil, richerror.New(Op, ifErr).WithKind(richerror.KindIdempotencyFailure).WithMessage(msgerror.IdempotencyAlreadyProcessing)
 	}
@@ -72,7 +73,7 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 	}
 
 	// 7. Mark idempotency as completed
-	_ = s.idempotencyRepo.Set(ctx, req.IdempotencyKey, "completed", 86400) // 24h retention
+	_ = s.idempotencyRepo.Set(ctx, req.IdempotencyKey, entity.IdempotencyStatusComplete, s.config.IdempotencyCompletedTTL) // 24h retention
 
 	return &walletparam.CreditResponse{
 		TransactionID: tx.ID,
