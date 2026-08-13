@@ -61,3 +61,4 @@ smmProviderSvc:
 checkoutSvc:
   PrefixIdempotencyKey: "DirectIdempotency"
   prefix_wallet_idempotency_key: "WalletIdempotency"
+  prefix_Manual_idempotency_key: "ManualIdempotency"

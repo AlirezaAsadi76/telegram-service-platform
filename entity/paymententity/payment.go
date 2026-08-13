@@ -16,7 +16,7 @@ type Payment struct {
 	ExternalID     string        // شناسه درگاه پرداخت
 	IdempotencyKey string
 	CallbackData   map[string]any // داده‌های کال‌بک
-	ExpiredAt      *time.Time     // برای crypto
+	ExpiredAt      time.Time      // برای crypto
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }

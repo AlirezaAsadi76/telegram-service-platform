@@ -37,7 +37,7 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		Currency:    req.Currency,
 	})
 	if oErr != nil {
-		return richerror.New(Op, err)
+		return richerror.New(Op, oErr)
 	}
 
 	// 3. Generate idempotency key

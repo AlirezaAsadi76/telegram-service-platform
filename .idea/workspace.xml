@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/repository/migrator/migrations/1786300000_create_wallets_table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/migrator/migrations/1786300001_create_wallet_transactions_table.sql" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/repository/migrator/migrations/1786300002_create_providers_table.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/dependency.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/dependency.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/migrator/migrations/1786209872_create_orders_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/repository/migrator/migrations/1786209872_create_orders_table.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/migrator/migrations/1786259815_create_payments_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/repository/migrator/migrations/1786259815_create_payments_table.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresorder/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresorder/create.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/paymententity/payment.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/paymententity/payment.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processDirectPaymentPurchase.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processDirectPaymentPurchase.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processManualWalletRecharge.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processManualWalletRecharge.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processWalletPurchase.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processWalletPurchase.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/smmproviderservice/fulFillOrder.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/smmproviderservice/fulFillOrder.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

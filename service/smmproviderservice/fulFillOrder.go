@@ -15,7 +15,7 @@ func (s *Service) FulfillOrder(ctx context.Context, order *orderentity.Order) er
 	dbProviders, err := s.repo.GetActiveByType(ctx, providerentity.ProviderTypeSMM)
 	if err != nil {
 		return richerror.New(Op, err).
-			WithKind(richerror.KindQueryFailure).WithMessage(msgerror.ProviderQueryFailed)
+			WithKind(richerror.KindQueryFailure)
 	}
 
 	for _, p := range dbProviders {
@@ -42,6 +42,7 @@ func (s *Service) FulfillOrder(ctx context.Context, order *orderentity.Order) er
 
 		cb.RecordSuccess()
 		order.ExternalOrderID = resp.ExternalOrderID
+		order.ProviderID = &p.ID
 		order.Status = orderentity.OrderStatusProcessing
 		return nil
 	}

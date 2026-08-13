@@ -30,7 +30,7 @@ func (s *Service) ProcessDirectPaymentPurchase(ctx context.Context, req checkout
 
 	// 2. Generate idempotency key
 	idempotencyKey := hashing.EncodeStringToSHA256(
-		fmt.Sprintf("%s:%d:%d:%d", s.config.PrefixIdempotencyKey, req.UserID, orderResp.OrderID, ts.Now()),
+		fmt.Sprintf("%s:%d:%d:%d", s.config.PrefixDirectIdempotencyKey, req.UserID, orderResp.OrderID, ts.Now()),
 	)
 
 	// 3. Create Payment
@@ -43,7 +43,7 @@ func (s *Service) ProcessDirectPaymentPurchase(ctx context.Context, req checkout
 		IdempotencyKey: idempotencyKey,
 	})
 	if cpErr != nil {
-		return nil, richerror.New(Op, err)
+		return nil, richerror.New(Op, cpErr)
 	}
 
 	return &checkoutparams.PaymentURLResponse{
