@@ -1,4 +1,3 @@
-// service/smmproviderservice/circuitbreaker.go
 package smmproviderservice
 
 import (

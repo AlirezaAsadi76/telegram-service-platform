@@ -4,7 +4,18 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="" />
+    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/service/smmproviderservice/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/smmproviderservice/circuitbreaker.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/smmproviderservice/circuitbreaker.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/smmproviderservice/fulFillOrder.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/smmproviderservice/fulFillOrder.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/smmproviderservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/smmproviderservice/interfaces.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/smmproviderservice/registerProvider.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/smmproviderservice/registerProvider.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/smmproviderservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/smmproviderservice/service.go" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

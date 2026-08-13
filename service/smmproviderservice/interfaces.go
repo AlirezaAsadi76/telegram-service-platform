@@ -12,6 +12,6 @@ type SMMProvider interface {
 	GetOrderStatus(ctx context.Context, externalOrderID string) (orderentity.OrderStatus, error)
 }
 
-type Repository interface {
+type ProviderRepository interface {
 	GetActiveByType(ctx context.Context, providerType providerentity.ProviderType) ([]*providerentity.Provider, error)
 }

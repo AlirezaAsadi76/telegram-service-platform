@@ -52,3 +52,8 @@ scheduler:
 wallet:
   idempotency_processing_ttl: "5m"
   idempotency_completed_ttl: "24h"
+
+smmProviderSvc:
+  failure-threshold: 5
+  success-threshold: 3
+  circuit-timeout: "30s"
