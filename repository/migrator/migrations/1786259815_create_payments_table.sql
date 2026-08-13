@@ -5,12 +5,13 @@ CREATE TABLE payments (
                           order_id BIGINT NOT NULL,
                           user_id BIGINT NOT NULL,
                           method VARCHAR(30) NOT NULL,
-                          provider VARCHAR(50),
                           amount NUMERIC(18,8) NOT NULL,
                           currency VARCHAR(20) NOT NULL,
                           status VARCHAR(30) NOT NULL,
-                          reference VARCHAR(255),
-                          metadata JSONB,
+                          external_id VARCHAR(255),
+                          idempotency_key varchar(255),
+                          callback_data JSONB,
+                          expired_at TIMESTAMP,
                           created_at TIMESTAMP NOT NULL DEFAULT NOW(),
                           updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 
@@ -20,8 +21,8 @@ CREATE INDEX idx_payments_order_id
     ON payments(order_id);
 
 
-CREATE INDEX idx_payments_reference
-    ON payments(reference);
+CREATE INDEX idx_payments_external_id
+    ON payments(external_id);
 
 
 CREATE INDEX idx_payments_status

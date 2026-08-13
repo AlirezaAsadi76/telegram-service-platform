@@ -6,9 +6,12 @@ CREATE TABLE orders (
                         product_type VARCHAR(50) NOT NULL,
                         product_id BIGINT NOT NULL,
                         quantity BIGINT NOT NULL DEFAULT 1,
-                        amount NUMERIC(18,8) NOT NULL,
+                        target_link VARCHAR(500),
+                        amount NUMERIC(18,5) NOT NULL,
                         currency VARCHAR(20) NOT NULL,
                         status VARCHAR(30) NOT NULL DEFAULT 'PENDING',
+                        external_order_id VARCHAR(255),
+                        provider_id BIGINT,
                         metadata JSONB,
                         created_at TIMESTAMP NOT NULL DEFAULT NOW(),
                         updated_at TIMESTAMP NOT NULL DEFAULT NOW()
