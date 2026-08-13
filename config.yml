@@ -57,3 +57,7 @@ smmProviderSvc:
   failure-threshold: 5
   success-threshold: 3
   circuit-timeout: "30s"
+
+checkoutSvc:
+  PrefixIdempotencyKey: "DirectIdempotency"
+  prefix_wallet_idempotency_key: "WalletIdempotency"

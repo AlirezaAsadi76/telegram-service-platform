@@ -6,7 +6,7 @@ import (
 	"telegram-service-platform/entity/productentity"
 )
 
-type ProcessProductPurchaseRequest struct {
+type DirectPaymentPurchase struct {
 	UserID      uint64
 	ProductType productentity.ProductType
 	ProductID   uint64
@@ -14,5 +14,11 @@ type ProcessProductPurchaseRequest struct {
 	TargetLink  string
 	Amount      entity.Amount
 	Currency    entity.Currency
-	Method      paymententity.PaymentMethod // WALLET, ZARINPAL, CRYPTO
+	Method      paymententity.PaymentMethod
+}
+
+type PaymentURLResponse struct {
+	OrderID    uint64
+	PaymentID  uint64
+	PaymentURL string
 }

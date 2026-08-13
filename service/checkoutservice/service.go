@@ -8,11 +8,13 @@ import (
 )
 
 type Service struct {
-	walletSvc  *walletservice.Service
-	paymentSvc *paymentservice.Service
-	orderSvc   *orderservice.Service
-	smmSvc     *smmproviderservice.Service
-	messenger  Messenger
+	walletSvc   *walletservice.Service
+	paymentSvc  *paymentservice.Service
+	orderSvc    *orderservice.Service
+	smmSvc      *smmproviderservice.Service
+	messenger   Messenger
+	idempotency IdempotencyChecker
+	config      Config
 }
 
 func New(
@@ -21,12 +23,16 @@ func New(
 	orderSvc *orderservice.Service,
 	smmSvc *smmproviderservice.Service,
 	messenger Messenger,
+	idempotency IdempotencyChecker,
+	config Config,
 ) *Service {
 	return &Service{
-		walletSvc:  walletSvc,
-		paymentSvc: paymentSvc,
-		orderSvc:   orderSvc,
-		smmSvc:     smmSvc,
-		messenger:  messenger,
+		walletSvc:   walletSvc,
+		paymentSvc:  paymentSvc,
+		orderSvc:    orderSvc,
+		smmSvc:      smmSvc,
+		messenger:   messenger,
+		idempotency: idempotency,
+		config:      config,
 	}
 }

@@ -35,6 +35,6 @@ const (
 	PaymentVerifyFailed     = "payment verify failed"
 	OrderCreateFailed       = "order create failed"
 	OrderUpdateFailed       = "order update failed"
-	ProviderQueryFailed
-	NoAvailableAdapter = "no available adapter"
+	NoAvailableAdapter      = "no available adapter"
+	InsufficientBalance     = "insufficient balance"
 )

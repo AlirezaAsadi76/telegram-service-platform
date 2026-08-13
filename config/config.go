@@ -7,6 +7,7 @@ import (
 	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/scheduler"
+	"telegram-service-platform/service/checkoutservice"
 	"telegram-service-platform/service/priceservice"
 	"telegram-service-platform/service/productservice"
 	"telegram-service-platform/service/smmproviderservice"
@@ -35,4 +36,5 @@ type Config struct {
 	Scheduler      scheduler.Config          `koanf:"scheduler"`
 	WalletSvc      walletservice.Config      `koanf:"wallet"`
 	SmmSvc         smmproviderservice.Config `koanf:"smmProviderSvc"`
+	CheckoutSvc    checkoutservice.Config    `koanf:"checkoutSvc"`
 }
