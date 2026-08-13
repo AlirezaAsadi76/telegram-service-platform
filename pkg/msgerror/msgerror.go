@@ -12,7 +12,7 @@ const (
 	Forbidden                    = "access forbidden"
 	ProductNotFound              = "productkeyboard not found"
 	OrderNotFound                = "order not found"
-	
+
 	OrderAlreadyPaid        = "order already paid"
 	PaymentFailed           = "payment failed"
 	PaymentAlreadyProcessed = "payment already processed"
@@ -31,4 +31,6 @@ const (
 	MarshalFailed           = "marshal failed"
 	UnmarshalFailed         = "unmarshal failed"
 	ProviderCreateFailed    = "provider create failed"
+	PaymentProviderError    = "payment provider error"
+	PaymentVerifyFailed     = "payment verify failed"
 )

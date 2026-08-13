@@ -5,21 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/entity/idempotency.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/ts/timestamps.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/walletservice/config.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/service/walletservice/create.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/paymententity/payment.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/paymententity/payment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgreswallet/update_balance_atomic.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgreswallet/update_balance_atomic.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/redisidempotency/set.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/set.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/redisidempotency/setIfNotExists.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisidempotency/setIfNotExists.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/walletservice/credit.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/walletservice/credit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/walletservice/debit.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/walletservice/debit.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/walletservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/walletservice/interfaces.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/walletservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/walletservice/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/paymentparams/create_payment.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/paymentparams/create_payment.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/richerror/kind.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/richerror/kind.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/paymentservice/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/paymentservice/create.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/paymentservice/getprovider.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/paymentservice/getprovider.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/paymentservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/paymentservice/service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

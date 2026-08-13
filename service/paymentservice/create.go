@@ -22,7 +22,7 @@ func (s *Service) Create(ctx context.Context, req paymentparams.CreateRequest) (
 	}
 	providerResp, pcErr := provider.Create(ctx, providerReq)
 	if pcErr != nil {
-		return nil, richerror.New(Op, pcErr).WithKind(richerror.KindCreateFailed).WithMessage(msgerror.ProviderCreateFailed)
+		return nil, richerror.New(Op, pcErr).WithKind(richerror.KindExternalAPI).WithMessage(msgerror.PaymentProviderError)
 	}
 
 	// Save to DB

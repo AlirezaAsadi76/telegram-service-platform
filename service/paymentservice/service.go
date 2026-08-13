@@ -2,17 +2,15 @@
 package paymentservice
 
 type Service struct {
-	repo             Repository
-	zarinpalProvider Provider
-	cryptoProvider   Provider
-	idempotencyRepo  IdempotencyChecker
+	repo            Repository
+	zarinpalAdapter Provider
+	cryptoAdapter   Provider
 }
 
-func New(repo Repository, zarinpal, crypto Provider, idempotencyRepo IdempotencyChecker) *Service {
+func New(repo Repository, zarinpal, crypto Provider) *Service {
 	return &Service{
-		repo:             repo,
-		zarinpalProvider: zarinpal,
-		cryptoProvider:   crypto,
-		idempotencyRepo:  idempotencyRepo,
+		repo:            repo,
+		zarinpalAdapter: zarinpal,
+		cryptoAdapter:   crypto,
 	}
 }

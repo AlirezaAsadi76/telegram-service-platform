@@ -6,13 +6,12 @@ import (
 )
 
 type CreateRequest struct {
-	OrderID        *uint64
+	OrderID        uint64
 	UserID         uint64
 	Method         paymententity.PaymentMethod
 	Amount         entity.Amount
 	Currency       entity.Currency
 	IdempotencyKey string
-	ExpiredAt      *interface{}
 }
 
 type CreateResponse struct {

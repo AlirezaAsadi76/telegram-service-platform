@@ -33,6 +33,7 @@ const (
 	KindSerializationFailure
 	KindIdempotencyFailure
 	KindCreateFailed
+	KindExternalAPI
 )
 
 func IsKind(

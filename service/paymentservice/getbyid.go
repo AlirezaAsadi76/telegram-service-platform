@@ -11,7 +11,7 @@ func (s *Service) GetById(ctx context.Context, paymentID uint64) (*paymententity
 	const Op = "paymentservice.getById"
 	payment, iErr := s.repo.GetByID(ctx, paymentID)
 	if iErr != nil {
-		return nil, richerror.New(Op, iErr).WithKind(richerror.KindNotFound).WithMessage(msgerror.ProductNotFound)
+		return nil, richerror.New(Op, iErr).WithKind(richerror.KindNotFound).WithMessage(msgerror.PaymentNotFound)
 	}
 	return payment, nil
 }

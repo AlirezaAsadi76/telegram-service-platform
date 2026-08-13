@@ -4,6 +4,7 @@ import (
 	"context"
 	"telegram-service-platform/entity/paymententity"
 	"telegram-service-platform/params/paymentparams"
+	"telegram-service-platform/params/paymentproviderparams"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 )
@@ -21,13 +22,13 @@ func (s *Service) Verify(ctx context.Context, req paymentparams.VerifyRequest) (
 	}
 
 	provider := s.getProvider(payment.Method)
-	providerReq := paymentparams.VerifyRequest{
+	providerReq := paymentproviderparams.VerifyRequest{
 		ExternalID:   req.ExternalID,
 		CallbackData: req.CallbackData,
 	}
 	providerResp, pvErr := provider.Verify(ctx, providerReq)
 	if pvErr != nil {
-		return nil, richerror.New(Op, pvErr)
+		return nil, richerror.New(Op, pvErr).WithKind(richerror.KindExternalAPI).WithMessage(msgerror.PaymentVerifyFailed)
 	}
 
 	var newStatus paymententity.PaymentStatus
