@@ -5,6 +5,7 @@ import (
 	"context"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/params/orderparams"
+	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 )
 
@@ -22,7 +23,7 @@ func (s *Service) Create(ctx context.Context, req orderparams.CreateRequest) (*o
 		Status:      orderentity.OrderStatusPending,
 	}
 	if err := s.repo.Create(ctx, order); err != nil {
-		return nil, richerror.New(Op, err).WithKind(richerror.KindCreateFailed)
+		return nil, richerror.New(Op, err).WithKind(richerror.KindCreateFailed).WithMessage(msgerror.OrderCreateFailed)
 	}
 	return &orderparams.CreateResponse{OrderID: order.ID}, nil
 }

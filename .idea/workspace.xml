@@ -4,15 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/paymentparams/create_payment.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/paymentparams/create_payment.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/msgerror/msgerror.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pkg/richerror/kind.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/richerror/kind.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/paymentservice/create.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/paymentservice/create.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/paymentservice/getprovider.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/paymentservice/getprovider.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/paymentservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/paymentservice/service.go" afterDir="false" />
-    </list>
+    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

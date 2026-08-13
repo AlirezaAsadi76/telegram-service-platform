@@ -11,7 +11,7 @@ func (s *Service) GetById(ctx context.Context, orderId uint64) (*orderentity.Ord
 	const Op = "orderservice.getById"
 	order, iErr := s.repo.GetByID(ctx, orderId)
 	if iErr != nil {
-		return nil, richerror.New(Op, iErr).WithKind(richerror.KindNotFound).WithMessage(msgerror.ProductNotFound)
+		return nil, richerror.New(Op, iErr).WithKind(richerror.KindNotFound).WithMessage(msgerror.OrderNotFound)
 	}
 	return order, nil
 }

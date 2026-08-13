@@ -33,4 +33,6 @@ const (
 	ProviderCreateFailed    = "provider create failed"
 	PaymentProviderError    = "payment provider error"
 	PaymentVerifyFailed     = "payment verify failed"
+	OrderCreateFailed       = "order create failed"
+	OrderUpdateFailed       = "order update failed"
 )
