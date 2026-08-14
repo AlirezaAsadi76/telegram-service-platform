@@ -34,6 +34,7 @@ const (
 	KindIdempotencyFailure
 	KindCreateFailed
 	KindExternalAPI
+	KindRedisNil
 )
 
 func IsKind(

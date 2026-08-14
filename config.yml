@@ -48,6 +48,10 @@ scheduler:
   currency_refresh_interval: "1h"
   stars_refresh_interval: "1h"
   premium_refresh_interval: "1h"
+  payment_verify_interval: "1m"
+  status_sync_interval: "5m"
+  payment_expiry_interval: "2m"
+  queue_consumer_interval: "1s"
 
 wallet:
   idempotency_processing_ttl: "5m"
@@ -62,3 +66,17 @@ checkoutSvc:
   PrefixIdempotencyKey: "DirectIdempotency"
   prefix_wallet_idempotency_key: "WalletIdempotency"
   prefix_Manual_idempotency_key: "ManualIdempotency"
+
+notificationSvc:
+  queue_key: "queue:notifications:pending"
+paymentVerify:
+  queue_key: "queue:orders:paid"
+
+orderFulFiller:
+  queue_key: "queue:orders:paid"
+  timeout:  "5s"
+
+notificationJob:
+  queue_key: "queue:notifications:pending"
+  timeout:  "5s"
+  PendingLimit: 10

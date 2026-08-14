@@ -11,6 +11,8 @@ type Repository interface {
 	GetByID(ctx context.Context, id uint64) (*paymententity.Payment, error)
 	GetByOrderID(ctx context.Context, orderID uint64) (*paymententity.Payment, error)
 	UpdateStatus(ctx context.Context, id uint64, status paymententity.PaymentStatus) error
+	GetPending(ctx context.Context) ([]paymententity.Payment, error)
+	GetExpired(ctx context.Context) ([]paymententity.Payment, error)
 }
 
 type Provider interface {

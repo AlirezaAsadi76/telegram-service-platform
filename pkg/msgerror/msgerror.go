@@ -37,4 +37,5 @@ const (
 	OrderUpdateFailed       = "order update failed"
 	NoAvailableAdapter      = "no available adapter"
 	InsufficientBalance     = "insufficient balance"
+	CacheEmpty              = "cache empty"
 )

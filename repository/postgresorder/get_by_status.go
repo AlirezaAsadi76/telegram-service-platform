@@ -15,7 +15,6 @@ func (d *DB) GetByStatus(ctx context.Context, status orderentity.OrderStatus) ([
 		       external_order_id, provider_id, metadata, created_at, updated_at
 		FROM orders WHERE status = $1
 	`
-
 	rows, qErr := d.Pool.Connection().Query(ctx, query, status)
 	if qErr != nil {
 		return nil, richerror.New(Op, qErr).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)

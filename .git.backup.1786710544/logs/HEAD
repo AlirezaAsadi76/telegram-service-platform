@@ -1,0 +1,100 @@
+0000000000000000000000000000000000000000 99912776066a580532e8f894b66fc254d9682186 Nima <alirezaasadi@gmail.com> 1785670350 +0430	clone: from github-telegram:AlirezaAsadi76/telegram-service-platform.git
+99912776066a580532e8f894b66fc254d9682186 99912776066a580532e8f894b66fc254d9682186 Nima <alirezaasadi@gmail.com> 1785670537 +0430	checkout: moving from main to Nima
+99912776066a580532e8f894b66fc254d9682186 27fdbbe8ae7d6e3784143088209ea2349fc9de1a Nima <alirezaasadi@gmail.com> 1785671954 +0430	commit: chore: initialize telegram platform project structure
+27fdbbe8ae7d6e3784143088209ea2349fc9de1a 68748154155a4005cc200b626e66007a2df4583d Nima <alirezaasadi@gmail.com> 1785681092 +0430	commit: feat: introduce centralized rich error handling
+68748154155a4005cc200b626e66007a2df4583d 2a96b3974904e4dd35980db5317692aa703539ff Nima <alirezaasadi@gmail.com> 1785691140 +0430	commit: feat: implement user register or get use case
+2a96b3974904e4dd35980db5317692aa703539ff a1930a75bd558b53f25c18975214bcb8189d8faa Nima <alirezaasadi@gmail.com> 1785691918 +0430	commit: chore: add docker compose for postgresql
+a1930a75bd558b53f25c18975214bcb8189d8faa 70710319a4e1eabde47e65c7297808cb63a61e87 Nima <alirezaasadi@gmail.com> 1785692414 +0430	commit: chore: add config loader
+70710319a4e1eabde47e65c7297808cb63a61e87 bed67c932a4457e9b4133b7f95451ac32d564c62 Nima <alirezaasadi@gmail.com> 1785693344 +0430	commit: feat: add postgres connection pool
+bed67c932a4457e9b4133b7f95451ac32d564c62 bec6483300743bc05e1bf7991137c52231fa8765 Nima <alirezaasadi@gmail.com> 1785694279 +0430	commit: feat: implement role entity
+bec6483300743bc05e1bf7991137c52231fa8765 c25171e0a2af9a73c6ad6209c2f9d03087b89153 Nima <alirezaasadi@gmail.com> 1785696999 +0430	commit: feat: add postgres migration runner
+c25171e0a2af9a73c6ad6209c2f9d03087b89153 af3ea3049c3f25c90993b30d9692c62445a4ad3d Nima <alirezaasadi@gmail.com> 1785826763 +0430	commit: feat: implement user repository
+af3ea3049c3f25c90993b30d9692c62445a4ad3d 1671dbaa9aad032bf7b323bc45af0d024e89d94b Nima <alirezaasadi@gmail.com> 1785832378 +0430	commit: feat: create telegram user handler module
+1671dbaa9aad032bf7b323bc45af0d024e89d94b 9f7dffe3a53a8a1775f018d12239eaafe46cddc7 Nima <alirezaasadi@gmail.com> 1785837382 +0430	commit: refactor: simplify telegram bot route registration
+9f7dffe3a53a8a1775f018d12239eaafe46cddc7 cafbd1a8d9b1ace4c40b9f43cc75020cbab2013a Nima <alirezaasadi@gmail.com> 1785839479 +0430	commit: feat: initialize telegram bot application
+cafbd1a8d9b1ace4c40b9f43cc75020cbab2013a 7f55eb33788a0afcb8d6bf57cfeca67f73bc1b7b Nima <alirezaasadi@gmail.com> 1785839560 +0430	commit: feat: initialize telegram bot application
+7f55eb33788a0afcb8d6bf57cfeca67f73bc1b7b f3a51771594125f826edb6a4f5929ff559a12abf Nima <alirezaasadi@gmail.com> 1785841078 +0430	commit: feat: complete telegram user registration flow
+f3a51771594125f826edb6a4f5929ff559a12abf 0fc1fd2775979be2451a47d79a4cbeccf79e5ad5 Nima <alirezaasadi@gmail.com> 1785843008 +0430	commit: feat: add telegram main menu keyboard
+0fc1fd2775979be2451a47d79a4cbeccf79e5ad5 8bcb72df162acd30366f3729616f66bd79948e6d Nima <alirezaasadi@gmail.com> 1785847471 +0430	commit: feat: add telegram inline keyboard and callback handling
+8bcb72df162acd30366f3729616f66bd79948e6d f38a1feeb72d4ae2c6d7b1d252c12f89408d1ecd Nima <alirezaasadi@gmail.com> 1785851352 +0430	commit: feet: Add Price service
+f38a1feeb72d4ae2c6d7b1d252c12f89408d1ecd 662e634c8012af24adc1064cba6ee01e9beec14d Nima <alirezaasadi@gmail.com> 1785869280 +0430	commit: feet: Add redisAdapter and redis config
+662e634c8012af24adc1064cba6ee01e9beec14d 38072a532d543dbdd6b03b3492e4ba8fef93abad Nima <alirezaasadi@gmail.com> 1785871036 +0430	commit: feat: add redis repository for crypto price cache
+38072a532d543dbdd6b03b3492e4ba8fef93abad 6fd437ae0f21105136c0445f0146582cc8f74a7b Nima <alirezaasadi@gmail.com> 1785947329 +0430	commit: review code
+6fd437ae0f21105136c0445f0146582cc8f74a7b 40994cd6c1b6fa915a8001ec3fe20243543800e5 Nima <alirezaasadi@gmail.com> 1785948777 +0430	commit: refactor: replace price service with product service
+40994cd6c1b6fa915a8001ec3fe20243543800e5 8786068ee156155d97e75018555bfe9bc6cfe1ed Nima <alirezaasadi@gmail.com> 1785949341 +0430	commit: feat: add product entities
+8786068ee156155d97e75018555bfe9bc6cfe1ed 824eb246992fb49157d1319052939801330fa663 Nima <alirezaasadi@gmail.com> 1785950482 +0430	commit: feat: implement get star plans use case
+824eb246992fb49157d1319052939801330fa663 53a114408b98939c801b28ebfa214cbc34fa141f Nima <alirezaasadi@gmail.com> 1785951376 +0430	commit: feat: add postgres repository for star plans
+53a114408b98939c801b28ebfa214cbc34fa141f e231dd089ea98df591c3b46500ece2d4ca21894d Nima <alirezaasadi@gmail.com> 1785952229 +0430	commit: feat: add premium plans use case
+e231dd089ea98df591c3b46500ece2d4ca21894d cb1078f2fa36afbd56722fdc51d47a18a6fc2c5f Nima <alirezaasadi@gmail.com> 1785998714 +0430	commit: feat: add ads plans use case
+cb1078f2fa36afbd56722fdc51d47a18a6fc2c5f c5b39d48a55c2984cc8c99fb8d93d9fecd487436 Nima <alirezaasadi@gmail.com> 1786000578 +0430	commit: feat: add premium and ads database migrations
+c5b39d48a55c2984cc8c99fb8d93d9fecd487436 189d0c0c739dbfd6de02abdcd096ea6f08e6ddc5 Nima <alirezaasadi@gmail.com> 1786002005 +0430	commit: feat: add premium and ads repository
+189d0c0c739dbfd6de02abdcd096ea6f08e6ddc5 75dda529fa3efd15529ec1220ec63e6512d21d32 Nima <alirezaasadi@gmail.com> 1786015451 +0430	commit: feat: add fzr cards adapter structure
+75dda529fa3efd15529ec1220ec63e6512d21d32 99912776066a580532e8f894b66fc254d9682186 Nima <alirezaasadi@gmail.com> 1786015482 +0430	checkout: moving from Nima to main
+99912776066a580532e8f894b66fc254d9682186 75dda529fa3efd15529ec1220ec63e6512d21d32 Nima <alirezaasadi@gmail.com> 1786015505 +0430	merge Nima: Fast-forward
+75dda529fa3efd15529ec1220ec63e6512d21d32 75dda529fa3efd15529ec1220ec63e6512d21d32 Nima <alirezaasadi@gmail.com> 1786015533 +0430	checkout: moving from main to Nima
+75dda529fa3efd15529ec1220ec63e6512d21d32 54c77c423578fbc75df65ad103a538a19e5c3d32 Nima <alirezaasadi@gmail.com> 1786016077 +0430	commit: refactor: restructure fzr cards client adapter
+54c77c423578fbc75df65ad103a538a19e5c3d32 39cba2dc0b57308ae4e930eda4437c5292ee58b9 Nima <alirezaasadi@gmail.com> 1786030493 +0430	commit: feat: add exchangerate adapter structure
+39cba2dc0b57308ae4e930eda4437c5292ee58b9 82c8e7cf4228176b1b67e0f157fd5c68015268be Nima <alirezaasadi@gmail.com> 1786032341 +0430	commit: improve exchange Adapter
+82c8e7cf4228176b1b67e0f157fd5c68015268be 75dda529fa3efd15529ec1220ec63e6512d21d32 Nima <alirezaasadi@gmail.com> 1786032355 +0430	checkout: moving from Nima to main
+75dda529fa3efd15529ec1220ec63e6512d21d32 82c8e7cf4228176b1b67e0f157fd5c68015268be Nima <alirezaasadi@gmail.com> 1786032384 +0430	merge Nima: Fast-forward
+82c8e7cf4228176b1b67e0f157fd5c68015268be f62ed82a1358bd4d31b08b94d9d1f87ccb7acbc4 Nima <alirezaasadi@gmail.com> 1786045539 +0430	commit: refactor: introduce price service interfaces
+f62ed82a1358bd4d31b08b94d9d1f87ccb7acbc4 67476c8a0976f409d8f18440a023b7e8eff94595 Nima <alirezaasadi@gmail.com> 1786046070 +0430	commit: feat: add price service refresh star price usecase
+67476c8a0976f409d8f18440a023b7e8eff94595 366dcb4e2b39782a8c09b92f48fde7901048bfe6 Nima <alirezaasadi@gmail.com> 1786046396 +0430	commit: feat: price service refresh currency price and premium price usecase
+366dcb4e2b39782a8c09b92f48fde7901048bfe6 c07964c76fb15719db605b717b815816342b6d3d Nima <alirezaasadi@gmail.com> 1786047811 +0430	commit: refactor: move price cache ttl responsibility to price service
+c07964c76fb15719db605b717b815816342b6d3d 3cc5c78ddfe72aba0e1882d36b07b75493ec65b3 Nima <alirezaasadi@gmail.com> 1786048248 +0430	commit: feat: implement redis price repository
+3cc5c78ddfe72aba0e1882d36b07b75493ec65b3 c7d07c25976e48fccd7127a172be7784a1351be7 Nima <alirezaasadi@gmail.com> 1786049348 +0430	commit: feat: implement price refresh usecases
+c7d07c25976e48fccd7127a172be7784a1351be7 7518fe8128a5b029fcb6a07f8435d33c6e5be6a8 Nima <alirezaasadi@gmail.com> 1786075599 +0430	commit: refactor: decouple product service from currency provider
+7518fe8128a5b029fcb6a07f8435d33c6e5be6a8 cb30399a02f8ab48275a8463e60b7c472959ce14 Nima <alirezaasadi@gmail.com> 1786078529 +0430	commit: feat: add pricing flow to premium plans
+cb30399a02f8ab48275a8463e60b7c472959ce14 05262444523438f52aba9584bf8c1b844911b158 Nima <alirezaasadi@gmail.com> 1786079636 +0430	commit: feat: complete star and premium pricing flow
+05262444523438f52aba9584bf8c1b844911b158 833dc8569fbed9880f1253f8870e10260218e33a Nima <alirezaasadi@gmail.com> 1786080580 +0430	commit: refactor: extract pricing calculation service
+833dc8569fbed9880f1253f8870e10260218e33a 97c93df692e817d098fc28e25814cedc94d1c063 Nima <alirezaasadi@gmail.com> 1786081766 +0430	commit: feat: complete redis price repository get methods
+97c93df692e817d098fc28e25814cedc94d1c063 e02857fcfcdeb7225bfece7a57123a905fbfe13e Nima <alirezaasadi@gmail.com> 1786083927 +0430	commit: refactor: decouple product service from price repository
+e02857fcfcdeb7225bfece7a57123a905fbfe13e 44d975d617d3fb7af07a08b2ae43b8b5b7a5e6d3 Nima <alirezaasadi@gmail.com> 1786086145 +0430	commit: refactor: decouple telegram server from concrete handlers
+44d975d617d3fb7af07a08b2ae43b8b5b7a5e6d3 3fbcd33860cd8a26b954198f495e30b816196299 Nima <alirezaasadi@gmail.com> 1786086499 +0430	commit: refactor: decouple telegram server from concrete handlers
+3fbcd33860cd8a26b954198f495e30b816196299 fa327e6f9fbd972784adc837bbce4cc6062f315b Nima <alirezaasadi@gmail.com> 1786088669 +0430	commit: refactor: extract callback handler from user handler
+fa327e6f9fbd972784adc837bbce4cc6062f315b 0628c22a3b282e54ab387671a6a6aad8745579a2 Nima <alirezaasadi@gmail.com> 1786090517 +0430	commit: feat: add database seeders for product plans
+0628c22a3b282e54ab387671a6a6aad8745579a2 a7804797c21d8602f88800307d9bfae74ba040fe Nima <alirezaasadi@gmail.com> 1786094163 +0430	commit: feat: add scheduler infrastructure
+a7804797c21d8602f88800307d9bfae74ba040fe 1c498034e6a6fda389036f6c87c813d73bf2d89c Nima <alirezaasadi@gmail.com> 1786096998 +0430	commit: feat: add scheduler component using gocron
+1c498034e6a6fda389036f6c87c813d73bf2d89c dfcd327463e5ec7d751cbe9f96011bbe9f7a7cf6 Nima <alirezaasadi@gmail.com> 1786097889 +0430	commit: feat: add price refresh job
+dfcd327463e5ec7d751cbe9f96011bbe9f7a7cf6 f1521b61398b1919fba1b882bce5eb4d26bc8d27 Nima <alirezaasadi@gmail.com> 1786098299 +0430	commit: feat: integrate scheduler with gocron
+f1521b61398b1919fba1b882bce5eb4d26bc8d27 1a246005b6f43719a10ad77779d9bb8aa714f2ce Nima <alirezaasadi@gmail.com> 1786098592 +0430	commit: feat: add scheduler lifecycle and job concurrency control
+1a246005b6f43719a10ad77779d9bb8aa714f2ce 4319df92355229e41418d3933fabaef3fe0affe0 Nima <alirezaasadi@gmail.com> 1786099270 +0430	commit: refactor: improve scheduler job lifecycle and concurrency handling
+4319df92355229e41418d3933fabaef3fe0affe0 b2e49ba3fbca475d564f2dbda5d381aa110129f3 Nima <alirezaasadi@gmail.com> 1786101443 +0430	commit: refactor: introduce application lifecycle layer
+b2e49ba3fbca475d564f2dbda5d381aa110129f3 3e5ca4e5fd551649cbd0878d65b07e779a955656 Nima <alirezaasadi@gmail.com> 1786102350 +0430	commit: feat: add graceful resource shutdown
+3e5ca4e5fd551649cbd0878d65b07e779a955656 51256a82ce7f3178340efb2879a4ccb99833c220 Nima <alirezaasadi@gmail.com> 1786126379 +0430	commit: refactor: simplify scheduler and graceful shutdown flow
+51256a82ce7f3178340efb2879a4ccb99833c220 277b635f879bbeaf34e9a2e701658ae58fafbc80 Nima <alirezaasadi@gmail.com> 1786126733 +0430	commit: refactor: simplify scheduler and graceful shutdown flow
+277b635f879bbeaf34e9a2e701658ae58fafbc80 b8dbffece36f24849b10e61f588d468586fa6ca8 Nima <alirezaasadi@gmail.com> 1786127510 +0430	commit: refactor: add telegram handler middleware layer
+b8dbffece36f24849b10e61f588d468586fa6ca8 355990436292d1320aab0c8e16c72a79f66e36ac Nima <alirezaasadi@gmail.com> 1786175796 +0430	commit: feat(product): implement show premium plans usecase
+355990436292d1320aab0c8e16c72a79f66e36ac f320cd356eeefdffdea90d27779a15d8425066ad Nima <alirezaasadi@gmail.com> 1786178810 +0430	commit: refactor: add telegram messenger abstraction layer
+f320cd356eeefdffdea90d27779a15d8425066ad 4ebdf6bf72c1ddb6c9498e96f83860f3b38502e5 Nima <alirezaasadi@gmail.com> 1786183074 +0430	commit: refactor: add telegram keyboard builder
+4ebdf6bf72c1ddb6c9498e96f83860f3b38502e5 0aeb5112f8493210594aade01dbe6a7028dadebe Nima <alirezaasadi@gmail.com> 1786190650 +0430	commit: refactor: clean product callback flow
+0aeb5112f8493210594aade01dbe6a7028dadebe c1980df7bbb013c33ccf9839f1b7fd848321c4d5 Nima <alirezaasadi@gmail.com> 1786191053 +0430	commit: refactor: add telegram message layer
+c1980df7bbb013c33ccf9839f1b7fd848321c4d5 bab3d30eefefe775a6b48c9bd3536edca577b780 Nima <alirezaasadi@gmail.com> 1786218651 +0430	commit: feat: add order migrations and repository and service
+bab3d30eefefe775a6b48c9bd3536edca577b780 5f558bb9a961cfae8895d99f64a368618550915f Nima <alirezaasadi@gmail.com> 1786259505 +0430	commit: feat: add payment domain entities
+5f558bb9a961cfae8895d99f64a368618550915f d6b3c15ab2ce0981fce497ff3750f665d83ea014 Nima <alirezaasadi@gmail.com> 1786259794 +0430	commit: feat: add define payment provider contract
+d6b3c15ab2ce0981fce497ff3750f665d83ea014 8d586409e215ee515666607fc3ce9e9d8c6498f3 Nima <alirezaasadi@gmail.com> 1786259974 +0430	commit: feat: add payments table migration
+8d586409e215ee515666607fc3ce9e9d8c6498f3 70759c8dd97ac95689c3c89257c4db8196ece01a Nima <alirezaasadi@gmail.com> 1786355137 +0430	commit: ok
+70759c8dd97ac95689c3c89257c4db8196ece01a 17adb5589c5a95df120aa88669d7cfea45d4bde4 Nima <alirezaasadi@gmail.com> 1786453504 +0430	commit: feat: add wallet entity
+17adb5589c5a95df120aa88669d7cfea45d4bde4 723654d588f07f479984ba6693fb589add1909bb Nima <alirezaasadi@gmail.com> 1786453726 +0430	commit: recover: payment entity
+723654d588f07f479984ba6693fb589add1909bb 834f0c7435f30614938c64fb944911e4841e0f1b Nima <alirezaasadi@gmail.com> 1786454021 +0430	commit: recover: order entity
+834f0c7435f30614938c64fb944911e4841e0f1b 0e61cee07f7eea9930dd44047b3b5ec0d89fbc84 Nima <alirezaasadi@gmail.com> 1786454429 +0430	commit: feat: add provider entity
+0e61cee07f7eea9930dd44047b3b5ec0d89fbc84 63715cb6123e6848a0452c7e3657cb97977419fd Nima <alirezaasadi@gmail.com> 1786457250 +0430	commit: feat: add walletRepository
+63715cb6123e6848a0452c7e3657cb97977419fd f87052c7dd5ea09233887d4d4458b6cdf6fe9762 Nima <alirezaasadi@gmail.com> 1786474451 +0430	commit: feat: add wallet service
+f87052c7dd5ea09233887d4d4458b6cdf6fe9762 05bc87a4942be4e7524c7a3454d23c90f2c59e28 Nima <alirezaasadi@gmail.com> 1786477490 +0430	commit: feat: add paymentservice
+05bc87a4942be4e7524c7a3454d23c90f2c59e28 ba40ae65daa26879cf98d045aa805233f880947b Nima <alirezaasadi@gmail.com> 1786516232 +0430	commit: feat: add paymentrepository
+ba40ae65daa26879cf98d045aa805233f880947b e66216f793870e4d34fbe81760f2c7c28143698c Nima <alirezaasadi@gmail.com> 1786517081 +0430	commit: recover: order service
+e66216f793870e4d34fbe81760f2c7c28143698c 9c713d15d35e489e713a52f454c81eea3b1a8b0d Nima <alirezaasadi@gmail.com> 1786518065 +0430	commit: recover: order repository
+9c713d15d35e489e713a52f454c81eea3b1a8b0d c7466ab54f4c5a5e8630d3443a74744a3dff6949 Nima <alirezaasadi@gmail.com> 1786522191 +0430	commit: fear: add provider service and repository
+c7466ab54f4c5a5e8630d3443a74744a3dff6949 dbfb1dafcf4cb773c101addbf513f3bf6b882971 Nima <alirezaasadi@gmail.com> 1786528725 +0430	commit: fear: add checkout service
+dbfb1dafcf4cb773c101addbf513f3bf6b882971 fcde1ced0f2534e15d65c695b3121a0163904558 Nima <alirezaasadi@gmail.com> 1786528778 +0430	commit: fear: add zap logger
+fcde1ced0f2534e15d65c695b3121a0163904558 6c443c909faf9752685ae08d9626af051c721a20 Nima <alirezaasadi@gmail.com> 1786557118 +0430	commit: fear: Fix Critical
+6c443c909faf9752685ae08d9626af051c721a20 4fb97fe9a96555527ca0a167dcf38c7ca7ef74ef Nima <alirezaasadi@gmail.com> 1786598947 +0430	commit: recover: wallet service
+4fb97fe9a96555527ca0a167dcf38c7ca7ef74ef a298117f5bc863fa0b412197a0687b42ba0b6f36 Nima <alirezaasadi@gmail.com> 1786599637 +0430	commit: recover: payment service
+a298117f5bc863fa0b412197a0687b42ba0b6f36 b0a69e33160ca3335a85a6180d7e69b24b947ea8 Nima <alirezaasadi@gmail.com> 1786599876 +0430	commit: recover: order service
+b0a69e33160ca3335a85a6180d7e69b24b947ea8 d64276ea558ba12f1391d2662e287a91d822c71d Nima <alirezaasadi@gmail.com> 1786601570 +0430	commit: recover: smmprovider service
+d64276ea558ba12f1391d2662e287a91d822c71d ed7324bf367c9c195d79775602a4ea3022f90148 Nima <alirezaasadi@gmail.com> 1786604595 +0430	commit: recover: checkout service
+ed7324bf367c9c195d79775602a4ea3022f90148 f8d6f9b191dee72e486422b31c36a409f95aa645 Nima <alirezaasadi@gmail.com> 1786605674 +0430	commit: recover: migration
+f8d6f9b191dee72e486422b31c36a409f95aa645 e115eb1263930a930b8f2f681392a4d805b3e5e5 Nima <alirezaasadi@gmail.com> 1786616756 +0430	commit: recover: fix bugs
+e115eb1263930a930b8f2f681392a4d805b3e5e5 94ccba5ba2d5422ca7de8c964e3140af08f285d5 Nima <alirezaasadi@gmail.com> 1786623273 +0430	commit: feat: creat notification migration and entity
+94ccba5ba2d5422ca7de8c964e3140af08f285d5 35d79b8e78c281bc225da2e4b0de26f4bc59645f Nima <alirezaasadi@gmail.com> 1786624286 +0430	commit: feat: creat notification repository
+                                                                                                                                                                                              

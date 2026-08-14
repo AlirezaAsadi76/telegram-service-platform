@@ -10,7 +10,7 @@ func (s *Service) fulfillOrderAsync(order *orderentity.Order) {
 	ctx := context.Background()
 
 	if err := s.smmSvc.FulfillOrder(ctx, order); err != nil {
-		// Log error. StatusSyncJob will retry later.
+		// Log error. statussyncJob will retry later.
 		return
 	}
 

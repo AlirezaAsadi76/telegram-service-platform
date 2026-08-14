@@ -15,7 +15,12 @@ import (
 	"telegram-service-platform/repository/postgresuser"
 	"telegram-service-platform/repository/redis/redisprice"
 	"telegram-service-platform/scheduler"
+	"telegram-service-platform/scheduler/jobs/notificationdispatchjob"
+	"telegram-service-platform/scheduler/jobs/orderfulfillerjob"
+	"telegram-service-platform/scheduler/jobs/paymentexpiryjob"
+	"telegram-service-platform/scheduler/jobs/paymentverifyjob"
 	"telegram-service-platform/scheduler/jobs/pricerefreshjob"
+	statussyncjob "telegram-service-platform/scheduler/jobs/statussyncJob"
 	"telegram-service-platform/service/priceservice"
 	"telegram-service-platform/service/pricingservice"
 	"telegram-service-platform/service/productservice"
@@ -63,6 +68,12 @@ func New(cfg config.Config) (*App, error) {
 	userHandler := userhandler.New(userSvc, userValidator, messengerService)
 
 	priceRefreshJob := pricerefreshjob.New(priceService)
+	pvj := paymentverifyjob.New(paymentService, orderService, notificationService, a.redis)
+	ofj := orderfulfillerjob.New(a.orderService, a.smmProviderService, a.notificationService, a.redis)
+	ssj := statussyncjob.New(a.orderService, a.smmProviderService, a.notificationService, a.redis)
+	pej := paymentexpiryjob.New(a.paymentService, a.orderService, a.notificationService)
+	ndj := notificationdispatchjob.New(a.notificationService, a.redis, a.telegramBotAdapter)
+
 	schedulerObj, sErr := scheduler.New(cfg.Scheduler, priceRefreshJob)
 	if err := schedulerObj.Register(); err != nil {
 		return nil, err
