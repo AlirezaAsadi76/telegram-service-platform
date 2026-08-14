@@ -42,7 +42,7 @@ func (j *Job) Run(ctx context.Context) error {
 
 			// Push Order ID to Redis queue for OrderFulfillerJob
 			// TODO- we need key insert in config
-			if lErr := j.redis.LPush(ctx, j.config.queueKey, payment.OrderID); lErr != nil {
+			if lErr := j.redis.LPush(ctx, j.config.QueueKey, payment.OrderID); lErr != nil {
 				log.Printf("push to queue:orders:paid failed for order %d: %v", payment.OrderID, lErr)
 			}
 

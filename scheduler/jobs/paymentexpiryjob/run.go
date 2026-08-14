@@ -23,15 +23,15 @@ func (j *Job) Run(ctx context.Context) error {
 
 	for _, payment := range resp.Payments {
 		if err := j.paymentService.UpdateStatus(ctx, paymentparams.UpdateStatusRequest{
-			PymentId: payment.ID,
-			Status:   paymententity.PaymentStatusExpired,
+			PaymentId: payment.ID,
+			Status:    paymententity.PaymentStatusExpired,
 		}); err != nil {
 			log.Printf("update payment %d to expired failed: %v", payment.ID, err)
 			continue
 		}
 
 		if err := j.orderService.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
-			OrderID: payment.ID,
+			OrderID: payment.OrderID,
 			Status:  orderentity.OrderStatusCanceled,
 		}); err != nil {
 			log.Printf("cancel order %d failed: %v", payment.OrderID, err)

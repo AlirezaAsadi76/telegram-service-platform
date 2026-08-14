@@ -2,6 +2,7 @@ package orderfulfillerjob
 
 import (
 	"context"
+	"errors"
 	"log"
 	"telegram-service-platform/params/notificationparams"
 	"telegram-service-platform/params/orderparams"
@@ -10,15 +11,19 @@ import (
 
 	"telegram-service-platform/entity/notificationentity"
 	"telegram-service-platform/entity/orderentity"
+
+	"github.com/redis/go-redis/v9"
 )
 
 func (j *Job) Run(ctx context.Context) error {
 	j.mutex.Lock()
-	defer j.mutex.Unlock()
+	result, bErr := j.redis.BRPop(ctx, j.config.Timeout, j.config.QueueKey)
+	j.mutex.Unlock()
 
-	// BLPOP with 5s timeout — if empty, returns gracefully
-	result, bErr := j.redis.BRPop(ctx, j.config.QueueKey, j.config.Timeout)
 	if bErr != nil {
+		if errors.Is(bErr, redis.Nil) {
+			return nil
+		}
 		return bErr
 	}
 	orderID, uErr := unmarshal.UnmarshalToUint64(result[1])
@@ -58,8 +63,8 @@ func (j *Job) Run(ctx context.Context) error {
 			return nil
 		}
 
-		lastErr = err
-		log.Printf("fulfill order %d attempt %d failed: %v", order.ID, attempt+1, err)
+		lastErr = fulErr
+		log.Printf("fulfill order %d attempt %d failed: %v", order.ID, attempt+1, fulErr)
 	}
 
 	log.Printf("fulfill order %d failed after 3 retries: %v", order.ID, lastErr)

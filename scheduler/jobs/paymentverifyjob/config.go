@@ -1,5 +1,5 @@
 package paymentverifyjob
 
 type Config struct {
-	queueKey string `koanf:"queue_key"`
+	QueueKey string `koanf:"queue_key"`
 }

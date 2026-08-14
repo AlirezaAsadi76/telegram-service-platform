@@ -10,7 +10,7 @@ import (
 func (s *Service) UpdateStatus(ctx context.Context, request paymentparams.UpdateStatusRequest) error {
 
 	const Op = "paymentservice.UpdateStatus"
-	pErr := s.repo.UpdateStatus(ctx, request.PymentId, request.PaymentStatus)
+	pErr := s.repo.UpdateStatus(ctx, request.PaymentId, request.Status)
 	if pErr != nil {
 		return richerror.New(Op, pErr).WithKind(richerror.KindNotFound).WithMessage(msgerror.PaymentNotFound)
 	}

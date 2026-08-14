@@ -15,13 +15,13 @@ type Job struct {
 }
 
 func New(
-	notificationService notificationservice.Service,
+	notificationSvc notificationservice.Service,
 	redis RedisRepository,
 	bot TelegramSender,
 	config Config,
 ) *Job {
 	return &Job{
-		notificationService: notificationService,
+		notificationService: notificationSvc,
 		redis:               redis,
 		bot:                 bot,
 		config:              config,

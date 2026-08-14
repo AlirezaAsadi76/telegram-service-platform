@@ -10,7 +10,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-func (db DB) BRPop(ctx context.Context, key string, ttl time.Duration) ([]string, error) {
+func (db DB) BRPop(ctx context.Context, ttl time.Duration, key string) ([]string, error) {
 	const Op = "redis_repository.BRPop"
 
 	// BLPOP with 5s timeout — if empty, returns gracefully

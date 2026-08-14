@@ -11,5 +11,5 @@ type TelegramSender interface {
 }
 
 type RedisRepository interface {
-	BRPop(ctx context.Context, key string, ttl time.Duration) ([]string, error)
+	BRPop(ctx context.Context, ttl time.Duration, key string) ([]string, error)
 }

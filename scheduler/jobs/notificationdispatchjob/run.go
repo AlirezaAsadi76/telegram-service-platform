@@ -20,7 +20,7 @@ func (j *Job) Run(ctx context.Context) error {
 	fromQueue := false
 
 	// ۱. ابتدا Redis Queue
-	result, brErr := j.redis.BRPop(ctx, j.config.queueKey, j.config.timeout)
+	result, brErr := j.redis.BRPop(ctx, j.config.Timeout, j.config.QueueKey)
 
 	if brErr == nil && len(result) >= 2 {
 		if notify, unmarshalErr := unmarshal.UnmarshalToNotification(result[1]); unmarshalErr == nil {
