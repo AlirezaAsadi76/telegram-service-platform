@@ -3,7 +3,6 @@ package orderfulfillerjob
 import (
 	"context"
 	"errors"
-	"log"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/params/notificationparams"
 	"telegram-service-platform/params/orderparams"
@@ -46,7 +45,7 @@ func (j *Job) Run(ctx context.Context) error {
 
 	order, err := j.orderService.GetById(ctx, orderID)
 	if err != nil {
-		log.Printf("get order %d failed: %v", orderID, err)
+		logger.Logger.Error("get order failed", zap.Uint64("order_id", orderID), zap.Error(err))
 		return nil
 	}
 

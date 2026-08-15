@@ -9,18 +9,18 @@ import (
 )
 
 type Job struct {
-	paymentService      paymentservice.Service
-	orderService        orderservice.Service
-	notificationService notificationservice.Service
+	paymentService      *paymentservice.Service
+	orderService        *orderservice.Service
+	notificationService *notificationservice.Service
 	redis               RedisRepository
 	mutex               sync.Mutex
 	config              Config
 }
 
 func New(
-	paymentService paymentservice.Service,
-	orderService orderservice.Service,
-	notificationService notificationservice.Service,
+	paymentService *paymentservice.Service,
+	orderService *orderservice.Service,
+	notificationService *notificationservice.Service,
 	redis RedisRepository,
 	config Config,
 ) *Job {

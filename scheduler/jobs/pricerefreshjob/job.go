@@ -6,11 +6,11 @@ import (
 )
 
 type Job struct {
-	priceService priceservice.Service
+	priceService *priceservice.Service
 	mutex        sync.Mutex
 }
 
-func New(priceService priceservice.Service) *Job {
+func New(priceService *priceservice.Service) *Job {
 	return &Job{
 		priceService: priceService,
 	}

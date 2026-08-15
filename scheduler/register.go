@@ -33,6 +33,8 @@ func (s *Scheduler) Register() error {
 							zap.Error(err),
 							zap.Duration("duration", time.Since(start)),
 						)
+					} else {
+						metrics.WorkerRuns.WithLabelValues(jobName, "success").Inc()
 					}
 				},
 			),

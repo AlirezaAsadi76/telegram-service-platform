@@ -1,6 +1,7 @@
 package redisadapter
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/redis/go-redis/v9"
@@ -29,4 +30,8 @@ func New(config Config) Adapter {
 
 func (a Adapter) Client() *redis.Client {
 	return a.client
+}
+
+func (a Adapter) Ping(ctx context.Context) error {
+	return a.client.Ping(ctx).Err()
 }

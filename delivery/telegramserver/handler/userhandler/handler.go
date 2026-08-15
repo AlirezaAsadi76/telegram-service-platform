@@ -7,12 +7,12 @@ import (
 )
 
 type Handler struct {
-	userService   userservice.Service
+	userService   *userservice.Service
 	userValidator uservalidator.Validator
 	messenger     messenger.Messenger
 }
 
-func New(userService userservice.Service, userValidator uservalidator.Validator, messenger messenger.Messenger) Handler {
+func New(userService *userservice.Service, userValidator uservalidator.Validator, messenger messenger.Messenger) Handler {
 	return Handler{
 		userService:   userService,
 		userValidator: userValidator,

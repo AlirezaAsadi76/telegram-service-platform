@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
 	"telegram-service-platform/entity/notificationentity"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/params/notificationparams"
@@ -66,7 +65,11 @@ func (j *Job) Run(ctx context.Context) error {
 	text := j.buildMessage(notification)
 
 	if err := j.bot.SendText(ctx, int64(notification.UserID), text); err != nil {
-		log.Printf("send notification %d failed: %v", notification.ID, err)
+		
+		logger.Logger.Warn("send notification failed",
+			zap.Uint64("notification_id", notification.ID),
+			zap.Error(err),
+		)
 
 		if notification.RetryCount >= 2 {
 			_ = j.notificationService.UpdateStatus(ctx, notificationparams.UpdateStatusRequest{

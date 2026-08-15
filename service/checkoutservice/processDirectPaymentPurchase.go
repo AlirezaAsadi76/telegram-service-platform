@@ -59,7 +59,7 @@ func (s *Service) ProcessDirectPaymentPurchase(ctx context.Context, req checkout
 	if cpErr != nil {
 		metrics.OrdersCreated.WithLabelValues("direct_payment", "failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("direct_payment").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("checkout direct payment failed", zap.Error(err), zap.Uint64("order_id", orderResp.OrderID))
+		logger.Logger.Error("checkout direct payment failed", zap.Error(cpErr), zap.Uint64("order_id", orderResp.OrderID))
 		return nil, richerror.New(Op, cpErr)
 	}
 

@@ -1,9 +1,6 @@
 package app
 
 import (
-	"telegram-service-platform/adapter/exchangerate"
-	"telegram-service-platform/adapter/fzrcards"
-	"telegram-service-platform/adapter/fzrcards/telegramproduct"
 	"telegram-service-platform/adapter/redisadapter"
 	"telegram-service-platform/config"
 	"telegram-service-platform/delivery/httpserver"
@@ -12,9 +9,6 @@ import (
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
 	"telegram-service-platform/delivery/telegramserver/messenger"
 	"telegram-service-platform/repository/postgres"
-	"telegram-service-platform/repository/postgresproduct"
-	"telegram-service-platform/repository/postgresuser"
-	"telegram-service-platform/repository/redis/redisprice"
 	"telegram-service-platform/scheduler"
 	"telegram-service-platform/scheduler/jobs/notificationdispatchjob"
 	"telegram-service-platform/scheduler/jobs/orderfulfillerjob"
@@ -22,10 +16,6 @@ import (
 	"telegram-service-platform/scheduler/jobs/paymentverifyjob"
 	"telegram-service-platform/scheduler/jobs/pricerefreshjob"
 	statussyncjob "telegram-service-platform/scheduler/jobs/statussyncJob"
-	"telegram-service-platform/service/priceservice"
-	"telegram-service-platform/service/pricingservice"
-	"telegram-service-platform/service/productservice"
-	"telegram-service-platform/service/userservice"
 	"telegram-service-platform/validator/uservalidator"
 )
 
@@ -46,37 +36,24 @@ func New(cfg config.Config) (*App, error) {
 
 	redisAdapter := redisadapter.New(cfg.RedisCli)
 
-	fzrClient := fzrcards.New(cfg.Fzr)
-	telegramProvider := telegramproduct.New(fzrClient)
-	exchangeRateProvider := exchangerate.New(cfg.ExchangeRate)
+	dependencies, repositories := SetupDependencies(cfg, postgresClient, &redisAdapter)
 
-	userRepo := postgresuser.New(postgresClient)
-	userSvc := userservice.New(userRepo)
 	userValidator := uservalidator.New()
-
-	priceRepo := redisprice.New(redisAdapter)
-
-	priceService := priceservice.New(cfg.PriceService, priceRepo, telegramProvider, exchangeRateProvider)
-	_ = priceService
-
-	pricingSvc := pricingservice.New(priceRepo)
-
-	productRepo := postgresproduct.New(postgresClient)
-	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo)
 
 	messengerService := messenger.New()
 
-	productHandler := producthandler.New(productSvc, messengerService)
-	userHandler := userhandler.New(userSvc, userValidator, messengerService)
+	productHandler := producthandler.New(dependencies.ProductService, messengerService)
+	userHandler := userhandler.New(dependencies.UserService, userValidator, messengerService)
 
-	priceRefreshJob := pricerefreshjob.New(priceService)
-	pvj := paymentverifyjob.New(paymentService, orderService, notificationService, a.redis)
-	ofj := orderfulfillerjob.New(a.orderService, a.smmProviderService, a.notificationService, a.redis)
-	ssj := statussyncjob.New(a.orderService, a.smmProviderService, a.notificationService, a.redis)
-	pej := paymentexpiryjob.New(a.paymentService, a.orderService, a.notificationService)
-	ndj := notificationdispatchjob.New(a.notificationService, a.redis, a.telegramBotAdapter)
+	priceRefreshJob := pricerefreshjob.New(dependencies.PriceService)
+	pvj := paymentverifyjob.New(dependencies.PaymentService, dependencies.OrderService, dependencies.NotificationService, repositories.queueRepo, cfg.PaymentVerify)
+	ofj := orderfulfillerjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService, repositories.queueRepo, cfg.OrderFulFiller)
+	ssj := statussyncjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService)
+	pej := paymentexpiryjob.New(dependencies.PaymentService, dependencies.OrderService, dependencies.NotificationService)
+	ndj := notificationdispatchjob.New(dependencies.NotificationService, repositories.queueRepo, nil, cfg.NotificationJob)
 
-	schedulerObj, sErr := scheduler.New(cfg.Scheduler, priceRefreshJob)
+	schedulerObj, sErr := scheduler.New(cfg.Scheduler,
+		priceRefreshJob, pvj, ofj, ssj, pej, ndj)
 	if err := schedulerObj.Register(); err != nil {
 		return nil, err
 	}
@@ -98,11 +75,11 @@ func New(cfg config.Config) (*App, error) {
 	if cfg.MetricsServer.Enabled {
 		metricsServer = httpserver.New(
 			cfg.MetricsServer.Port,
-			postgresClient.Pool.Ping, // یا متد ping مناسب روی postgres.DB
-			redisAdapter.Ping,        // یا متد ping مناسب روی redis adapter
+			postgresClient.Connection().Ping, // یا متد ping مناسب روی postgres.DB
+			redisAdapter.Ping,                // یا متد ping مناسب روی redis adapter
 		)
 	}
-	
+
 	return &App{
 
 		telegramBot:   telegramBot,

@@ -7,8 +7,8 @@ type Service struct {
 	config      Config
 }
 
-func New(cfg Config, priceRepo PriceRepository, telegramPrv TelegramProductProvider, currency CurrencyProvider) Service {
-	return Service{
+func New(cfg Config, priceRepo PriceRepository, telegramPrv TelegramProductProvider, currency CurrencyProvider) *Service {
+	return &Service{
 		currency:    currency,
 		telegramPrv: telegramPrv,
 		repository:  priceRepo,

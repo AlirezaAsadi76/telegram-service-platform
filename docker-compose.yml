@@ -1,51 +1,61 @@
 services:
+  app:
+    build: .
+    container_name: telegram-service-platform-app
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "${APP_PORT:-8080}:8080"
+      - "${METRICS_PORT:-9090}:9090"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - smm-bot-network
+
   postgres:
     image: postgres:17
     container_name: telegram-service-platform-postgres
-
     restart: unless-stopped
-
     env_file:
       - .env
-
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-
     ports:
       - "${POSTGRES_PORT}:5432"
-
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 10s
       timeout: 5s
       retries: 5
-
+    networks:
+      - smm-bot-network
 
   redis:
     image: redis:7.4
     container_name: tel_redis
-
+    restart: unless-stopped
     env_file:
       - .env
     ports:
       - "${REDIS_PORT}:6379"
-
     command:
       - redis-server
       - --appendonly
       - "yes"
       - --requirepass
       - "${REDIS_PASSWORD}"
-
     volumes:
       - tel_redis_data:/data
-
-    restart: unless-stopped
+    networks:
+      - smm-bot-network
 
   prometheus:
     image: prom/prometheus:v3.0.0
@@ -63,7 +73,8 @@ services:
       - '--web.console.libraries=/etc/prometheus/console_libraries'
       - '--web.console.templates=/etc/prometheus/consoles'
       - '--web.enable-lifecycle'
-
+    networks:
+      - smm-bot-network
 
   grafana:
     image: grafana/grafana:11.3.0
@@ -81,11 +92,15 @@ services:
       - ./observability/grafana/dashboards:/var/lib/grafana/dashboards:ro
     depends_on:
       - prometheus
-
-
+    networks:
+      - smm-bot-network
 
 volumes:
   postgres_data:
   tel_redis_data:
   prometheus_data:
   grafana_data:
+
+networks:
+  smm-bot-network:
+    driver: bridge

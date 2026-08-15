@@ -31,7 +31,7 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 	balanceResp, err := s.walletSvc.GetBalance(ctx, walletparam.GetBalanceRequest{UserID: req.UserID})
 
 	if err != nil {
-		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
 		logger.Logger.Error("checkout wallet purchase failed", zap.Error(err), zap.Uint64("user_id", req.UserID),
 			zap.Duration("latency", time.Since(start)))
@@ -40,7 +40,7 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 
 	}
 	if balanceResp.Balance < req.Amount {
-		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
 		logger.Logger.Error("checkout wallet purchase failed", zap.Error(fmt.Errorf("insufficient balance")), zap.Uint64("user_id", req.UserID),
 			zap.Int64("balance", int64(balanceResp.Balance)),
@@ -61,8 +61,9 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		Amount:      req.Amount,
 		Currency:    req.Currency,
 	})
+
 	if oErr != nil {
-		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
 		logger.Logger.Error("checkout wallet purchase failed", zap.Error(oErr), zap.Uint64("user_id", req.UserID),
 			zap.Duration("latency", time.Since(start)))
@@ -77,23 +78,23 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		fmt.Sprintf("%s:%d:%d:%d", s.config.PrefixWalletIdempotencyKey, req.UserID, orderResp.OrderID, ts.Now()))
 
 	// 4. Debit Wallet
-	_, err = s.walletSvc.Debit(ctx, walletparam.DebitRequest{
+	_, debErr := s.walletSvc.Debit(ctx, walletparam.DebitRequest{
 		UserID:         req.UserID,
 		Amount:         req.Amount,
 		ReferenceID:    fmt.Sprintf("order:%d", orderResp.OrderID),
 		IdempotencyKey: idempotencyKey,
 	})
-	if err != nil {
+	if debErr != nil {
 		// Cancel order
 		_ = s.orderSvc.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
 			OrderID: orderResp.OrderID,
 			Status:  orderentity.OrderStatusCanceled,
 		})
-		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("checkout wallet purchase failed", zap.Error(err), zap.Uint64("order_id", orderResp.OrderID),
+		logger.Logger.Error("checkout wallet purchase failed", zap.Error(debErr), zap.Uint64("order_id", orderResp.OrderID),
 			zap.Duration("latency", time.Since(start)))
-		return richerror.New(Op, err)
+		return richerror.New(Op, debErr)
 	}
 
 	// 5. Update Order to PAID ✅ FIX: error handling
@@ -101,9 +102,9 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		OrderID: orderResp.OrderID,
 		Status:  orderentity.OrderStatusPaid,
 	}); ouErr != nil {
-		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("checkout wallet purchase failed", zap.Error(err), zap.Uint64("order_id", orderResp.OrderID),
+		logger.Logger.Error("checkout wallet purchase failed", zap.Error(ouErr), zap.Uint64("order_id", orderResp.OrderID),
 			zap.Duration("latency", time.Since(start)))
 		return richerror.New(Op, ouErr).
 			WithKind(richerror.KindQueryFailure).WithMessage(msgerror.OrderUpdateFailed)
@@ -112,9 +113,9 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 	// 6. Get order and fulfill
 	order, ogErr := s.orderSvc.GetById(ctx, orderResp.OrderID)
 	if ogErr != nil {
-		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("checkout wallet purchase failed", zap.Error(err), zap.Uint64("order_id", orderResp.OrderID),
+		logger.Logger.Error("checkout wallet purchase failed", zap.Error(ogErr), zap.Uint64("order_id", orderResp.OrderID),
 			zap.Duration("latency", time.Since(start)))
 		return richerror.New(Op, ogErr)
 	}

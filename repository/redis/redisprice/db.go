@@ -3,9 +3,9 @@ package redisprice
 import "telegram-service-platform/adapter/redisadapter"
 
 type DB struct {
-	adapter redisadapter.Adapter
+	adapter *redisadapter.Adapter
 }
 
-func New(adapter redisadapter.Adapter) DB {
+func New(adapter *redisadapter.Adapter) DB {
 	return DB{adapter: adapter}
 }

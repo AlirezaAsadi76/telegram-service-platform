@@ -8,16 +8,16 @@ import (
 )
 
 type Job struct {
-	paymentService      paymentservice.Service
-	orderService        orderservice.Service
-	notificationService notificationservice.Service
+	paymentService      *paymentservice.Service
+	orderService        *orderservice.Service
+	notificationService *notificationservice.Service
 	mutex               sync.Mutex
 }
 
 func New(
-	paymentService paymentservice.Service,
-	orderService orderservice.Service,
-	notificationService notificationservice.Service,
+	paymentService *paymentservice.Service,
+	orderService *orderservice.Service,
+	notificationService *notificationservice.Service,
 ) *Job {
 	return &Job{
 		paymentService:      paymentService,

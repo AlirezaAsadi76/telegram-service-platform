@@ -1,6 +1,7 @@
 package productservice
 
 import (
+	"telegram-service-platform/service/pricingservice"
 	"time"
 )
 
@@ -9,12 +10,12 @@ type Config struct {
 }
 type Service struct {
 	repository Repository
-	pricingSVc PricingService
+	pricingSVc *pricingservice.Service
 	config     Config
 }
 
-func New(config Config, pricingSVc PricingService, repository Repository) Service {
-	return Service{
+func New(config Config, pricingSVc *pricingservice.Service, repository Repository) *Service {
+	return &Service{
 
 		repository: repository,
 		config:     config,

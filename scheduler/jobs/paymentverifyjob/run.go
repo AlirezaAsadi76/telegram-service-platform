@@ -18,6 +18,7 @@ import (
 )
 
 func (j *Job) Run(ctx context.Context) error {
+
 	start := time.Now()
 	jobName := j.Name()
 	defer func() {
@@ -74,10 +75,11 @@ func (j *Job) Run(ctx context.Context) error {
 			// Push Order ID to Redis queue for OrderFulfillerJob
 			// TODO- we need key insert in config
 			if lErr := j.redis.LPush(ctx, j.config.QueueKey, payment.OrderID); lErr != nil {
-				logger.Logger.Error(fmt.Sprintf("push to %s failed for order %d", j.config.QueueKey, payment.OrderID),
-					zap.String("job", jobName),
-					zap.Uint64("payment_id", payment.ID),
-					zap.Error(lErr))
+				logger.Logger.Error("push to queue failed",
+					zap.String("queue", j.config.QueueKey),
+					zap.Uint64("order_id", payment.OrderID),
+					zap.Error(lErr),
+				)
 
 			}
 

@@ -42,7 +42,7 @@ func (s *Service) ProcessPaymentCallback(ctx context.Context, paymentID uint64, 
 	if err != nil {
 		metrics.PaymentsProcessed.WithLabelValues("gateway", "failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("payment_callback").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("payment callback failed", zap.Error(vErr), zap.Uint64("payment_id", paymentID))
+		logger.Logger.Error("payment callback failed", zap.Error(err), zap.Uint64("payment_id", paymentID))
 		return richerror.New(Op, err)
 	}
 
@@ -75,7 +75,7 @@ func (s *Service) ProcessPaymentCallback(ctx context.Context, paymentID uint64, 
 	if obErr != nil {
 		metrics.PaymentsProcessed.WithLabelValues("gateway", "failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("payment_callback").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("payment callback failed", zap.Error(vErr), zap.Uint64("order_id", payment.OrderID))
+		logger.Logger.Error("payment callback failed", zap.Error(obErr), zap.Uint64("order_id", payment.OrderID))
 		return richerror.New(Op, obErr)
 	}
 

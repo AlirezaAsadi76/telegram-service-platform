@@ -9,17 +9,17 @@ import (
 )
 
 type Job struct {
-	orderService        orderservice.Service
-	smmProviderService  smmproviderservice.Service
-	notificationService notificationservice.Service
+	orderService        *orderservice.Service
+	smmProviderService  *smmproviderservice.Service
+	notificationService *notificationservice.Service
 
 	mutex sync.Mutex
 }
 
 func New(
-	orderService orderservice.Service,
-	smmProviderService smmproviderservice.Service,
-	notificationService notificationservice.Service,
+	orderService *orderservice.Service,
+	smmProviderService *smmproviderservice.Service,
+	notificationService *notificationservice.Service,
 
 ) *Job {
 	return &Job{

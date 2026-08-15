@@ -7,7 +7,7 @@ import (
 )
 
 type Job struct {
-	notificationService notificationservice.Service
+	notificationService *notificationservice.Service
 	redis               RedisRepository
 	bot                 TelegramSender
 	mutex               sync.Mutex
@@ -15,7 +15,7 @@ type Job struct {
 }
 
 func New(
-	notificationSvc notificationservice.Service,
+	notificationSvc *notificationservice.Service,
 	redis RedisRepository,
 	bot TelegramSender,
 	config Config,

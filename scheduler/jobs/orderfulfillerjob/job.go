@@ -8,18 +8,18 @@ import (
 )
 
 type Job struct {
-	orderService        orderservice.Service
-	smmProviderService  smmproviderservice.Service
-	notificationService notificationservice.Service
+	orderService        *orderservice.Service
+	smmProviderService  *smmproviderservice.Service
+	notificationService *notificationservice.Service
 	redis               RedisRepository
 	mutex               sync.Mutex
 	config              Config
 }
 
 func New(
-	orderService orderservice.Service,
-	smmProviderService smmproviderservice.Service,
-	notificationService notificationservice.Service,
+	orderService *orderservice.Service,
+	smmProviderService *smmproviderservice.Service,
+	notificationService *notificationservice.Service,
 	redis RedisRepository,
 	config Config,
 ) *Job {

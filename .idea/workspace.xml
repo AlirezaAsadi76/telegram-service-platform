@@ -5,29 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/delivery/httpserver/healthhandler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/httpserver/readyhandler.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/delivery/httpserver/server.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/metrics/metrics.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pkg/metrics/record.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapter/redisadapter/adapter.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/redisadapter/adapter.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/dependency.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/dependency.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/lifecycle.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/lifecycle.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/handler.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/userhandler/handler.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/observability/grafana/provisioning/dashboards/dashboard.yml" beforeDir="false" afterPath="$PROJECT_DIR$/observability/grafana/dashboards/dashboard.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/observability/grafana/provisioning/dashboards/smm-bot.json" beforeDir="false" afterPath="$PROJECT_DIR$/observability/grafana/dashboards/smm-bot.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/redis/redisprice/db.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisprice/db.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/job.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/run.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/jobs/orderfulfillerjob/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/orderfulfillerjob/job.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/orderfulfillerjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/orderfulfillerjob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/paymentexpiryjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/paymentexpiryjob/run.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/jobs/paymentexpiryjob/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/paymentexpiryjob/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/jobs/paymentverifyjob/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/paymentverifyjob/job.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/paymentverifyjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/paymentverifyjob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/statussyncJob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/statussyncJob/run.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/pricerefreshjob/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/jobs/statussyncJob/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/statussyncJob/job.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/register.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/checkoutservice/processDirectPaymentPurchase.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processDirectPaymentPurchase.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processManualWalletRecharge.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processManualWalletRecharge.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/checkoutservice/processPaymentCallback.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processPaymentCallback.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/checkoutservice/processWalletPurchase.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processWalletPurchase.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/priceservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/priceservice/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/pricingservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/pricingservice/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/productservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/interfaces.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/productservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/service.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/userservice/service.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/userservice/service.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,11 +97,11 @@
       <recent name="$PROJECT_DIR$/repository/postgreswallet" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/observability/grafana" />
       <recent name="$PROJECT_DIR$/params/smmprams" />
       <recent name="$PROJECT_DIR$/entity/providerentity" />
       <recent name="$PROJECT_DIR$/entity/orderentity" />
       <recent name="$PROJECT_DIR$/scheduler/jobs" />
-      <recent name="$PROJECT_DIR$/scheduler/jobs/priceservice/pricerefresh" />
     </key>
   </component>
   <component name="RunManager">
