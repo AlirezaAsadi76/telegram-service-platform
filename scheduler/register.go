@@ -26,7 +26,7 @@ func (s *Scheduler) Register() error {
 					start := time.Now()
 					jobName := j.Name()
 
-					if err := job.Run(ctx); err != nil {
+					if err := j.Run(ctx); err != nil {
 						metrics.WorkerRuns.WithLabelValues(jobName, "error").Inc()
 						logger.Logger.Error("job execution failed",
 							zap.String("job", jobName),

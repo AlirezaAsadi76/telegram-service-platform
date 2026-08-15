@@ -90,7 +90,7 @@ func (s *Service) ProcessPaymentCallback(ctx context.Context, paymentID uint64, 
 	}()
 
 	metrics.PaymentsProcessed.WithLabelValues("gateway", "success").Inc()
-	metrics.ActiveOrders.WithLabelValues("paid").Dec()
+	metrics.ActiveOrders.WithLabelValues("paid").Inc()
 	metrics.ActiveOrders.WithLabelValues("processing").Inc()
 	logger.Logger.Info("payment callback completed",
 		zap.String("status", string(verifyResp.Status)),
@@ -101,6 +101,7 @@ func (s *Service) ProcessPaymentCallback(ctx context.Context, paymentID uint64, 
 		fmt.Sprintf("Payment successful! Order #%d is being processed.", order.ID))
 	_ = s.messenger.SendToAdminChannel(ctx,
 		fmt.Sprintf("New order #%d paid via %s", order.ID, payment.Method))
-
+	
+	metrics.CheckoutLatency.WithLabelValues("payment_callback").Observe(time.Since(start).Seconds())
 	return nil
 }

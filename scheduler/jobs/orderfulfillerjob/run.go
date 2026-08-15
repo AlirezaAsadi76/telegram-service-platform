@@ -77,7 +77,7 @@ func (j *Job) Run(ctx context.Context) error {
 			}
 
 			metrics.SMMProviderRequests.WithLabelValues("default", "success").Inc()
-			metrics.WorkerRuns.WithLabelValues(jobName, "success").Inc()
+
 			logger.Logger.Info("fulfill succeeded",
 				zap.String("job", jobName),
 				zap.Uint64("order_id", order.ID),

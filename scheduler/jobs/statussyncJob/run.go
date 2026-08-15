@@ -97,7 +97,7 @@ func (j *Job) Run(ctx context.Context) error {
 			logger.Logger.Info("No change - processing order status", zap.String("job", jobName))
 		}
 	}
-	metrics.WorkerRuns.WithLabelValues(jobName, "success").Inc()
+
 	logger.Logger.Info("worker completed", zap.String("job", jobName), zap.Duration("duration", time.Since(start)))
 	return nil
 }

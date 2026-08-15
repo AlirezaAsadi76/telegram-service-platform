@@ -65,7 +65,7 @@ func (j *Job) Run(ctx context.Context) error {
 	text := j.buildMessage(notification)
 
 	if err := j.bot.SendText(ctx, int64(notification.UserID), text); err != nil {
-		
+
 		logger.Logger.Warn("send notification failed",
 			zap.Uint64("notification_id", notification.ID),
 			zap.Error(err),
@@ -91,7 +91,6 @@ func (j *Job) Run(ctx context.Context) error {
 	})
 
 	metrics.NotificationsSent.WithLabelValues("success").Inc()
-	metrics.WorkerRuns.WithLabelValues(jobName, "success").Inc()
 	logger.Logger.Info("notification sent",
 		zap.String("job", jobName),
 		zap.Uint64("notification_id", notification.ID),

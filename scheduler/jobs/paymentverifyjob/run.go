@@ -24,7 +24,6 @@ func (j *Job) Run(ctx context.Context) error {
 	defer func() {
 		metrics.WorkerDuration.WithLabelValues(jobName).Observe(time.Since(start).Seconds())
 	}()
-	logger.Logger.Info("worker started", zap.String("job", jobName))
 
 	j.mutex.Lock()
 	defer j.mutex.Unlock()
@@ -117,7 +116,6 @@ func (j *Job) Run(ctx context.Context) error {
 		}
 	}
 
-	metrics.WorkerRuns.WithLabelValues(jobName, "success").Inc()
 	logger.Logger.Info("worker completed", zap.String("job", jobName), zap.Duration("duration", time.Since(start)))
 	return nil
 }

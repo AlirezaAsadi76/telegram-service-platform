@@ -73,8 +73,7 @@ func (j *Job) Run(ctx context.Context) error {
 		})
 	}
 
-	metrics.WorkerRuns.WithLabelValues(jobName, "success").Inc()
 	logger.Logger.Info("worker completed", zap.String("job", jobName), zap.Duration("duration", time.Since(start)))
-	
+
 	return nil
 }
