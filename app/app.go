@@ -6,6 +6,7 @@ import (
 	"telegram-service-platform/adapter/fzrcards/telegramproduct"
 	"telegram-service-platform/adapter/redisadapter"
 	"telegram-service-platform/config"
+	"telegram-service-platform/delivery/httpserver"
 	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/delivery/telegramserver/handler/producthandler"
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
@@ -29,10 +30,11 @@ import (
 )
 
 type App struct {
-	telegramBot *telegramserver.Bot
-	scheduler   *scheduler.Scheduler
-	postgres    *postgres.DB
-	redis       redisadapter.Adapter
+	telegramBot   *telegramserver.Bot
+	scheduler     *scheduler.Scheduler
+	postgres      *postgres.DB
+	redis         redisadapter.Adapter
+	metricsServer *httpserver.Server
 }
 
 func New(cfg config.Config) (*App, error) {
@@ -92,12 +94,22 @@ func New(cfg config.Config) (*App, error) {
 		panic(sErr)
 	}
 
+	var metricsServer *httpserver.Server
+	if cfg.MetricsServer.Enabled {
+		metricsServer = httpserver.New(
+			cfg.MetricsServer.Port,
+			postgresClient.Pool.Ping, // یا متد ping مناسب روی postgres.DB
+			redisAdapter.Ping,        // یا متد ping مناسب روی redis adapter
+		)
+	}
+	
 	return &App{
 
-		telegramBot: telegramBot,
-		postgres:    postgresClient,
-		redis:       redisAdapter,
-		scheduler:   schedulerObj,
+		telegramBot:   telegramBot,
+		postgres:      postgresClient,
+		redis:         redisAdapter,
+		scheduler:     schedulerObj,
+		metricsServer: metricsServer,
 	}, nil
 
 }

@@ -2,31 +2,54 @@ package paymentexpiryjob
 
 import (
 	"context"
-	"log"
+	"telegram-service-platform/logger"
 	"telegram-service-platform/params/notificationparams"
 	"telegram-service-platform/params/orderparams"
 	"telegram-service-platform/params/paymentparams"
+	"telegram-service-platform/pkg/metrics"
+	"time"
 
 	"telegram-service-platform/entity/notificationentity"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/entity/paymententity"
+
+	"go.uber.org/zap"
 )
 
 func (j *Job) Run(ctx context.Context) error {
+	start := time.Now()
+	jobName := j.Name()
+
+	defer func() {
+		metrics.WorkerDuration.WithLabelValues(jobName).Observe(time.Since(start).Seconds())
+	}()
+
+	logger.Logger.Info("worker started", zap.String("job", jobName))
+
 	j.mutex.Lock()
 	defer j.mutex.Unlock()
 
 	resp, gErr := j.paymentService.GetExpired(ctx)
 	if gErr != nil {
+		metrics.WorkerRuns.WithLabelValues(jobName, "error").Inc()
+		logger.Logger.Error("worker failed", zap.String("job", jobName), zap.Error(gErr))
 		return gErr
 	}
+
+	logger.Logger.Info("expired payments fetched",
+		zap.String("job", jobName),
+		zap.Int("count", len(resp.Payments)),
+	)
 
 	for _, payment := range resp.Payments {
 		if err := j.paymentService.UpdateStatus(ctx, paymentparams.UpdateStatusRequest{
 			PaymentId: payment.ID,
 			Status:    paymententity.PaymentStatusExpired,
 		}); err != nil {
-			log.Printf("update payment %d to expired failed: %v", payment.ID, err)
+			logger.Logger.Error("Update(EXPIRED) Status Payment failed",
+				zap.String("job", jobName), zap.Uint64("payment_id", payment.ID),
+				zap.Error(err))
+
 			continue
 		}
 
@@ -34,7 +57,9 @@ func (j *Job) Run(ctx context.Context) error {
 			OrderID: payment.OrderID,
 			Status:  orderentity.OrderStatusCanceled,
 		}); err != nil {
-			log.Printf("cancel order %d failed: %v", payment.OrderID, err)
+			logger.Logger.Error("Update(CANCELED) Status Payment failed",
+				zap.String("job", jobName), zap.Uint64("payment_id", payment.ID),
+				zap.Error(err))
 			continue
 		}
 
@@ -48,5 +73,8 @@ func (j *Job) Run(ctx context.Context) error {
 		})
 	}
 
+	metrics.WorkerRuns.WithLabelValues(jobName, "success").Inc()
+	logger.Logger.Info("worker completed", zap.String("job", jobName), zap.Duration("duration", time.Since(start)))
+	
 	return nil
 }

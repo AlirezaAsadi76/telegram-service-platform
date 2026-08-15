@@ -2,29 +2,56 @@ package paymentverifyjob
 
 import (
 	"context"
-	"log"
+	"fmt"
+	"telegram-service-platform/logger"
 	"telegram-service-platform/params/notificationparams"
 	"telegram-service-platform/params/orderparams"
 	"telegram-service-platform/params/paymentparams"
+	"telegram-service-platform/pkg/metrics"
+	"time"
 
 	"telegram-service-platform/entity/notificationentity"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/entity/paymententity"
+
+	"go.uber.org/zap"
 )
 
 func (j *Job) Run(ctx context.Context) error {
+	start := time.Now()
+	jobName := j.Name()
+	defer func() {
+		metrics.WorkerDuration.WithLabelValues(jobName).Observe(time.Since(start).Seconds())
+	}()
+	logger.Logger.Info("worker started", zap.String("job", jobName))
+
 	j.mutex.Lock()
 	defer j.mutex.Unlock()
 
 	res, geErr := j.paymentService.GetPending(ctx)
 	if geErr != nil {
+		metrics.WorkerRuns.WithLabelValues(jobName, "error").Inc()
+		logger.Logger.Error("worker failed", zap.String("job", jobName), zap.Error(geErr))
 		return geErr
 	}
+	logger.Logger.Info("worker pending payments fetched",
+		zap.String("job", jobName),
+		zap.Int("count", len(res.Payments)),
+	)
 
 	for _, payment := range res.Payments {
+		logger.Logger.Debug("verifying payment",
+			zap.String("job", jobName),
+			zap.Uint64("payment_id", payment.ID),
+		)
+
 		verifyResponse, err := j.paymentService.Verify(ctx, paymentparams.VerifyRequest{PaymentID: payment.ID})
 		if err != nil {
-			log.Printf("payment verify failed for payment %d: %v", payment.ID, err)
+			logger.Logger.Error("verify failed",
+				zap.String("job", jobName),
+				zap.Uint64("payment_id", payment.ID),
+				zap.Error(err))
+
 			continue
 		}
 
@@ -36,14 +63,22 @@ func (j *Job) Run(ctx context.Context) error {
 				OrderID:         payment.OrderID,
 				ExternalOrderID: payment.ExternalID,
 			}); uErr != nil {
-				log.Printf("update order status failed for order %d: %v", payment.OrderID, uErr)
+				logger.Logger.Error("update order failed",
+					zap.String("job", jobName),
+					zap.Uint64("payment_id", payment.ID),
+					zap.Error(uErr))
+
 				continue
 			}
 
 			// Push Order ID to Redis queue for OrderFulfillerJob
 			// TODO- we need key insert in config
 			if lErr := j.redis.LPush(ctx, j.config.QueueKey, payment.OrderID); lErr != nil {
-				log.Printf("push to queue:orders:paid failed for order %d: %v", payment.OrderID, lErr)
+				logger.Logger.Error(fmt.Sprintf("push to %s failed for order %d", j.config.QueueKey, payment.OrderID),
+					zap.String("job", jobName),
+					zap.Uint64("payment_id", payment.ID),
+					zap.Error(lErr))
+
 			}
 
 			_ = j.notificationService.Create(ctx, notificationparams.CreateRequest{
@@ -60,7 +95,11 @@ func (j *Job) Run(ctx context.Context) error {
 				Status:  orderentity.OrderStatusCanceled,
 				OrderID: payment.OrderID,
 			}); uErr != nil {
-				log.Printf("cancel order failed for order %d: %v", payment.OrderID, uErr)
+				logger.Logger.Error(fmt.Sprintf("cancel order failed for order %d", payment.OrderID),
+					zap.String("job", jobName),
+					zap.Uint64("payment_id", payment.ID),
+					zap.Error(uErr))
+
 			}
 			_ = j.notificationService.Create(ctx, notificationparams.CreateRequest{
 				UserID: payment.UserID,
@@ -76,5 +115,7 @@ func (j *Job) Run(ctx context.Context) error {
 		}
 	}
 
+	metrics.WorkerRuns.WithLabelValues(jobName, "success").Inc()
+	logger.Logger.Info("worker completed", zap.String("job", jobName), zap.Duration("duration", time.Since(start)))
 	return nil
 }

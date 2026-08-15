@@ -7,7 +7,9 @@ env_file:
 
 httpServer:
   port: 7660
-
+metricsServer:
+  port: 8183
+  enabled: true
 postgres:
   host: "localhost"
   port: 5432

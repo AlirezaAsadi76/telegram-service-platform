@@ -22,12 +22,18 @@ type HttpServer struct {
 	Port int `koanf:"port"`
 }
 
+type MetricsServer struct {
+	Port    int  `koanf:"port"`
+	Enabled bool `koanf:"enabled"`
+}
+
 type Application struct {
 	GracefulShutdownTimeout time.Duration `koanf:"graceful_shutdown_timeout"`
 }
 
 type Config struct {
 	HttpServer      HttpServer                 `koanf:"httpServer"`
+	MetricsServer   MetricsServer              `koanf:"metricsServer"`
 	Application     Application                `koanf:"application"`
 	Postgres        postgres.DBConfig          `koanf:"postgres"`
 	Telegram        telegramserver.Config      `koanf:"telegram"`

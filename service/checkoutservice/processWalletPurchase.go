@@ -4,24 +4,49 @@ import (
 	"context"
 	"fmt"
 	"telegram-service-platform/entity/orderentity"
+	"telegram-service-platform/logger"
 	"telegram-service-platform/params/checkoutparams"
 	"telegram-service-platform/params/orderparams"
 	"telegram-service-platform/params/walletparam"
 	"telegram-service-platform/pkg/hashing"
+	"telegram-service-platform/pkg/metrics"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 	"telegram-service-platform/pkg/ts"
+	"time"
+
+	"go.uber.org/zap"
 )
 
-const Op = "checkoutservice.ProcessWalletPurchase"
-
 func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.WalletPurchaseRequest) error {
+
+	const Op = "checkoutservice.ProcessWalletPurchase"
+
+	start := time.Now()
+	logger.Logger.Info("checkout wallet purchase started",
+		zap.Uint64("user_id", req.UserID),
+		zap.Int64("amount", int64(req.Amount)),
+	)
 	// 1. Check balance
 	balanceResp, err := s.walletSvc.GetBalance(ctx, walletparam.GetBalanceRequest{UserID: req.UserID})
+
 	if err != nil {
+		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
+		logger.Logger.Error("checkout wallet purchase failed", zap.Error(err), zap.Uint64("user_id", req.UserID),
+			zap.Duration("latency", time.Since(start)))
+
 		return richerror.New(Op, err)
+
 	}
 	if balanceResp.Balance < req.Amount {
+		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
+		logger.Logger.Error("checkout wallet purchase failed", zap.Error(fmt.Errorf("insufficient balance")), zap.Uint64("user_id", req.UserID),
+			zap.Int64("balance", int64(balanceResp.Balance)),
+			zap.Int64("request_amount", int64(req.Amount)),
+			zap.Duration("latency", time.Since(start)))
+
 		return richerror.New(Op, fmt.Errorf("insufficient balance")).
 			WithKind(richerror.KindValidation).WithMessage(msgerror.InsufficientBalance)
 	}
@@ -37,7 +62,13 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		Currency:    req.Currency,
 	})
 	if oErr != nil {
+		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
+		logger.Logger.Error("checkout wallet purchase failed", zap.Error(oErr), zap.Uint64("user_id", req.UserID),
+			zap.Duration("latency", time.Since(start)))
+
 		return richerror.New(Op, oErr)
+
 	}
 
 	// 3. Generate idempotency key
@@ -58,6 +89,10 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 			OrderID: orderResp.OrderID,
 			Status:  orderentity.OrderStatusCanceled,
 		})
+		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
+		logger.Logger.Error("checkout wallet purchase failed", zap.Error(err), zap.Uint64("order_id", orderResp.OrderID),
+			zap.Duration("latency", time.Since(start)))
 		return richerror.New(Op, err)
 	}
 
@@ -66,6 +101,10 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		OrderID: orderResp.OrderID,
 		Status:  orderentity.OrderStatusPaid,
 	}); ouErr != nil {
+		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
+		logger.Logger.Error("checkout wallet purchase failed", zap.Error(err), zap.Uint64("order_id", orderResp.OrderID),
+			zap.Duration("latency", time.Since(start)))
 		return richerror.New(Op, ouErr).
 			WithKind(richerror.KindQueryFailure).WithMessage(msgerror.OrderUpdateFailed)
 	}
@@ -73,6 +112,10 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 	// 6. Get order and fulfill
 	order, ogErr := s.orderSvc.GetById(ctx, orderResp.OrderID)
 	if ogErr != nil {
+		metrics.WalletTransactions.WithLabelValues("WalletPurchase", "failed").Inc()
+		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
+		logger.Logger.Error("checkout wallet purchase failed", zap.Error(err), zap.Uint64("order_id", orderResp.OrderID),
+			zap.Duration("latency", time.Since(start)))
 		return richerror.New(Op, ogErr)
 	}
 
@@ -86,6 +129,15 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		s.fulfillOrderAsync(order)
 	}()
 
+	metrics.WalletTransactions.WithLabelValues("WalletPurchase").Inc()
+	metrics.OrdersCreated.WithLabelValues("wallet", "processing").Inc()
+	metrics.ActiveOrders.WithLabelValues("processing").Inc()
+	metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
+
+	logger.Logger.Info("checkout wallet purchase completed",
+		zap.Uint64("order_id", orderResp.OrderID),
+		zap.Duration("latency", time.Since(start)),
+	)
 	// 8. Notify
 	_ = s.messenger.SendToUser(ctx, int64(req.UserID),
 		fmt.Sprintf("Order #%d placed! Processing...", order.ID))

@@ -6,13 +6,26 @@ import (
 	"fmt"
 	"log"
 	"telegram-service-platform/entity/notificationentity"
+	"telegram-service-platform/logger"
 	"telegram-service-platform/params/notificationparams"
+	"telegram-service-platform/pkg/metrics"
 	"telegram-service-platform/pkg/unmarshal"
+	"time"
 
 	"github.com/redis/go-redis/v9"
+	"go.uber.org/zap"
 )
 
 func (j *Job) Run(ctx context.Context) error {
+	start := time.Now()
+	jobName := j.Name()
+
+	defer func() {
+		metrics.WorkerDuration.WithLabelValues(jobName).Observe(time.Since(start).Seconds())
+	}()
+
+	logger.Logger.Info("worker started", zap.String("job", jobName))
+
 	j.mutex.Lock()
 	defer j.mutex.Unlock()
 
@@ -28,6 +41,9 @@ func (j *Job) Run(ctx context.Context) error {
 			notification = notify
 		}
 	} else if brErr != nil && !errors.Is(brErr, redis.Nil) {
+
+		metrics.WorkerRuns.WithLabelValues(jobName, "error").Inc()
+		logger.Logger.Error("worker redis error", zap.String("job", jobName), zap.Error(brErr))
 		return brErr
 	}
 
@@ -37,6 +53,8 @@ func (j *Job) Run(ctx context.Context) error {
 			Limit: j.config.PendingLimit,
 		})
 		if err != nil {
+			metrics.WorkerRuns.WithLabelValues(jobName, "error").Inc()
+			logger.Logger.Error("worker getPending error", zap.String("job", jobName), zap.Error(err))
 			return err
 		}
 		if len(pending.Notifications) == 0 {
@@ -68,6 +86,14 @@ func (j *Job) Run(ctx context.Context) error {
 		Id:     notification.ID,
 		Status: notificationentity.NotificationStatusSent,
 	})
+
+	metrics.NotificationsSent.WithLabelValues("success").Inc()
+	metrics.WorkerRuns.WithLabelValues(jobName, "success").Inc()
+	logger.Logger.Info("notification sent",
+		zap.String("job", jobName),
+		zap.Uint64("notification_id", notification.ID),
+		zap.Duration("duration", time.Since(start)),
+	)
 	return nil
 }
 

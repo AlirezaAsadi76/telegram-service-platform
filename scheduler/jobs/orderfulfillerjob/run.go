@@ -4,8 +4,10 @@ import (
 	"context"
 	"errors"
 	"log"
+	"telegram-service-platform/logger"
 	"telegram-service-platform/params/notificationparams"
 	"telegram-service-platform/params/orderparams"
+	"telegram-service-platform/pkg/metrics"
 	"telegram-service-platform/pkg/unmarshal"
 	"time"
 
@@ -13,17 +15,28 @@ import (
 	"telegram-service-platform/entity/orderentity"
 
 	"github.com/redis/go-redis/v9"
+	"go.uber.org/zap"
 )
 
 func (j *Job) Run(ctx context.Context) error {
+	start := time.Now()
+	jobName := j.Name()
+	defer func() {
+		metrics.WorkerDuration.WithLabelValues(jobName).Observe(time.Since(start).Seconds())
+	}()
+
+	logger.Logger.Info("worker started", zap.String("job", jobName))
 	j.mutex.Lock()
 	result, bErr := j.redis.BRPop(ctx, j.config.Timeout, j.config.QueueKey)
 	j.mutex.Unlock()
 
 	if bErr != nil {
 		if errors.Is(bErr, redis.Nil) {
+			logger.Logger.Debug("worker queue empty", zap.String("job", jobName))
 			return nil
 		}
+		metrics.WorkerRuns.WithLabelValues(jobName, "error").Inc()
+		logger.Logger.Error("worker redis error", zap.String("job", jobName), zap.Error(bErr))
 		return bErr
 	}
 	orderID, uErr := unmarshal.UnmarshalToUint64(result[1])
@@ -41,6 +54,12 @@ func (j *Job) Run(ctx context.Context) error {
 	var lastErr error
 
 	for attempt := 0; attempt <= 3; attempt++ {
+		logger.Logger.Info("fulfill attempt",
+			zap.String("job", jobName),
+			zap.Uint64("order_id", order.ID),
+			zap.Int("attempt", attempt+1),
+		)
+
 		if attempt > 0 {
 			time.Sleep(backoffs[attempt-1])
 		}
@@ -51,8 +70,20 @@ func (j *Job) Run(ctx context.Context) error {
 				OrderID: orderID,
 				Status:  orderentity.OrderStatusProcessing,
 			}); updateErr != nil {
-				log.Printf("update order to processing failed: %v", updateErr)
+				logger.Logger.Error("update order status failed",
+					zap.String("job", jobName),
+					zap.Uint64("order_id", order.ID),
+					zap.Error(updateErr))
+
 			}
+
+			metrics.SMMProviderRequests.WithLabelValues("default", "success").Inc()
+			metrics.WorkerRuns.WithLabelValues(jobName, "success").Inc()
+			logger.Logger.Info("fulfill succeeded",
+				zap.String("job", jobName),
+				zap.Uint64("order_id", order.ID),
+			)
+
 			_ = j.notificationService.Create(ctx, notificationparams.CreateRequest{
 				UserID: order.UserID,
 				Type:   notificationentity.NotificationTypeOrderPaid,
@@ -62,19 +93,27 @@ func (j *Job) Run(ctx context.Context) error {
 				}})
 			return nil
 		}
-
+		metrics.SMMProviderRequests.WithLabelValues("default", "error").Inc()
+		logger.Logger.Warn("fulfill failed",
+			zap.String("job", jobName),
+			zap.Uint64("order_id", order.ID),
+			zap.Int("attempt", attempt+1),
+			zap.Error(fulErr),
+		)
 		lastErr = fulErr
-		log.Printf("fulfill order %d attempt %d failed: %v", order.ID, attempt+1, fulErr)
+
 	}
 
-	log.Printf("fulfill order %d failed after 3 retries: %v", order.ID, lastErr)
-	if uErr := j.orderService.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
+	if upErr := j.orderService.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
 		OrderID:         order.ID,
 		Status:          orderentity.OrderStatusFailed,
 		ExternalOrderID: order.ExternalOrderID,
 		ProviderID:      order.ProviderID,
-	}); uErr != nil {
-		log.Printf("update order to failed failed: %v", uErr)
+	}); upErr != nil {
+		logger.Logger.Error("update order status failed",
+			zap.String("job", jobName),
+			zap.Uint64("order_id", order.ID),
+			zap.Error(upErr))
 	}
 
 	_ = j.notificationService.Create(ctx, notificationparams.CreateRequest{
@@ -84,6 +123,13 @@ func (j *Job) Run(ctx context.Context) error {
 			"order_id": order.ID,
 			"reason":   "provider_fulfill_failed",
 		}})
+
+	metrics.WorkerRuns.WithLabelValues(jobName, "failed_after_retries").Inc()
+	logger.Logger.Error("fulfill failed after retries",
+		zap.String("job", jobName),
+		zap.Uint64("order_id", order.ID),
+		zap.Error(lastErr),
+	)
 
 	return nil
 }

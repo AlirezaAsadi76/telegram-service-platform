@@ -5,20 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/delivery/httpserver/healthhandler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/httpserver/readyhandler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/httpserver/server.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/metrics/metrics.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/metrics/record.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entity/paymententity/paymentstatus.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/paymententity/paymentstatus.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/paymentparams/update_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/paymentparams/update_status.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/redisqueue/brPop.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/redisqueue/brPop.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/config.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/interfaces.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/job.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/job.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/lifecycle.go" beforeDir="false" afterPath="$PROJECT_DIR$/app/lifecycle.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/orderfulfillerjob/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/orderfulfillerjob/interfaces.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/orderfulfillerjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/orderfulfillerjob/run.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/paymentexpiryjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/paymentexpiryjob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/paymentverifyjob/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/paymentverifyjob/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/scheduler/jobs/paymentverifyjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/paymentverifyjob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/paymentservice/updateStatus.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/paymentservice/updateStatus.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/jobs/statussyncJob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/statussyncJob/run.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/scheduler/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/register.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processDirectPaymentPurchase.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processDirectPaymentPurchase.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processManualWalletRecharge.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processManualWalletRecharge.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processPaymentCallback.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processPaymentCallback.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processWalletPurchase.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processWalletPurchase.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

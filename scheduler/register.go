@@ -3,26 +3,36 @@ package scheduler
 
 import (
 	"context"
-	"fmt"
-	"log"
+	"telegram-service-platform/logger"
+	"telegram-service-platform/pkg/metrics"
 	"time"
 
 	"github.com/go-co-op/gocron/v2"
+	"go.uber.org/zap"
 )
 
 func (s *Scheduler) Register() error {
-	fmt.Println("scheduler register start")
+	logger.Logger.Info("scheduler register start")
 
 	for _, job := range s.jobs {
 		interval := s.resolveInterval(job.Name())
+		j := job
 
 		_, err := s.engine.NewJob(
 			gocron.DurationJob(interval),
 			gocron.NewTask(
 				func() {
 					ctx := context.Background()
+					start := time.Now()
+					jobName := j.Name()
+
 					if err := job.Run(ctx); err != nil {
-						log.Printf("job %s failed: %v", job.Name(), err)
+						metrics.WorkerRuns.WithLabelValues(jobName, "error").Inc()
+						logger.Logger.Error("job execution failed",
+							zap.String("job", jobName),
+							zap.Error(err),
+							zap.Duration("duration", time.Since(start)),
+						)
 					}
 				},
 			),
@@ -33,6 +43,10 @@ func (s *Scheduler) Register() error {
 		if err != nil {
 			return err
 		}
+		logger.Logger.Info("job registered",
+			zap.String("job", j.Name()),
+			zap.Duration("interval", interval),
+		)
 	}
 
 	return nil

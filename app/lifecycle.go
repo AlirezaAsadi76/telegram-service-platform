@@ -7,6 +7,12 @@ import (
 
 func (a *App) Start(ctx context.Context) error {
 
+	if a.metricsServer != nil {
+		if err := a.metricsServer.Start(ctx); err != nil {
+			return err
+		}
+	}
+
 	go func() {
 
 		if err := a.telegramBot.Start(ctx); err != nil {
