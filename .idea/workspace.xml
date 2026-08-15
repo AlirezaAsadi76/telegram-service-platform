@@ -5,14 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/actionType.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/adapter.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/allservices.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/config.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/create.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/status.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cmd/example/smm/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/entity/smmentity/smmentity.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/params/smmprams/all_services.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/params/smmprams/status.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/notificationdispatchjob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/orderfulfillerjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/orderfulfillerjob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/paymentexpiryjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/paymentexpiryjob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/paymentverifyjob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/paymentverifyjob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/jobs/statussyncJob/run.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/jobs/statussyncJob/run.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/scheduler/register.go" beforeDir="false" afterPath="$PROJECT_DIR$/scheduler/register.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/checkoutservice/processPaymentCallback.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/checkoutservice/processPaymentCallback.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/config.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/load.go" beforeDir="false" afterPath="$PROJECT_DIR$/config/load.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,11 +82,11 @@
       <recent name="$PROJECT_DIR$/repository/postgreswallet" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/entity/smmentity" />
       <recent name="$PROJECT_DIR$/observability/grafana" />
       <recent name="$PROJECT_DIR$/params/smmprams" />
       <recent name="$PROJECT_DIR$/entity/providerentity" />
       <recent name="$PROJECT_DIR$/entity/orderentity" />
-      <recent name="$PROJECT_DIR$/scheduler/jobs" />
     </key>
   </component>
   <component name="RunManager">

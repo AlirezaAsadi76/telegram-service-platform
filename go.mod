@@ -7,10 +7,11 @@ require (
 	github.com/go-co-op/gocron/v2 v2.22.0
 	github.com/go-telegram/bot v1.23.0
 	github.com/jackc/pgx/v5 v5.10.0
+	github.com/joho/godotenv v1.5.1
 	github.com/knadh/koanf/parsers/yaml v1.1.0
 	github.com/knadh/koanf/providers/confmap v1.0.0
 	github.com/knadh/koanf/providers/env/v2 v2.0.0
-	github.com/knadh/koanf/providers/file v1.2.1
+	github.com/knadh/koanf/providers/rawbytes v1.0.1
 	github.com/knadh/koanf/v2 v2.3.5
 	github.com/prometheus/client_golang v1.20.5
 	github.com/redis/go-redis/v9 v9.22.0
@@ -22,7 +23,6 @@ require (
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
-	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/go-gorp/gorp/v3 v3.1.0 // indirect
 	github.com/go-viper/mapstructure/v2 v2.4.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect

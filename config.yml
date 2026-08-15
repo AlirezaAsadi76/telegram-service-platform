@@ -82,3 +82,8 @@ notificationJob:
   queue_key: "queue:notifications:pending"
   timeout:  "5s"
   PendingLimit: 10
+
+justanotherPanel:
+  base_url: "https://justanotherpanel.com/api/v2"
+  api_key: ${JPANAEL_API_KEY}
+  timeout: "5s"

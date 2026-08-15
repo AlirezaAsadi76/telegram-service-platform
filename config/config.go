@@ -4,6 +4,7 @@ import (
 	"telegram-service-platform/adapter/exchangerate"
 	"telegram-service-platform/adapter/fzrcards"
 	"telegram-service-platform/adapter/redisadapter"
+	"telegram-service-platform/adapter/smm/justanotherpanel"
 	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/scheduler"
@@ -33,22 +34,23 @@ type Application struct {
 }
 
 type Config struct {
-	HttpServer      HttpServer                     `koanf:"httpServer"`
-	MetricsServer   MetricsServer                  `koanf:"metricsServer"`
-	Application     Application                    `koanf:"application"`
-	Postgres        postgres.DBConfig              `koanf:"postgres"`
-	Telegram        telegramserver.Config          `koanf:"telegram"`
-	RedisCli        redisadapter.Config            `koanf:"redis"`
-	ProductService  productservice.Config          `koanf:"productService"`
-	PriceService    priceservice.Config            `koanf:"priceService"`
-	Fzr             fzrcards.Config                `koanf:"fzr"`
-	ExchangeRate    exchangerate.Config            `koanf:"exchangeRate"`
-	Scheduler       scheduler.Config               `koanf:"scheduler"`
-	WalletSvc       walletservice.Config           `koanf:"wallet"`
-	SmmSvc          smmproviderservice.Config      `koanf:"smmProviderSvc"`
-	CheckoutSvc     checkoutservice.Config         `koanf:"checkoutSvc"`
-	NotificationSvc notificationservice.Config     `koanf:"notificationSvc"`
-	PaymentVerify   paymentverifyjob.Config        `koanf:"paymentVerify"`
-	OrderFulFiller  orderfulfillerjob.Config       `koanf:"orderFulFiller"`
-	NotificationJob notificationdispatchjob.Config `koanf:"notificationJob"`
+	HttpServer       HttpServer                     `koanf:"httpServer"`
+	MetricsServer    MetricsServer                  `koanf:"metricsServer"`
+	Application      Application                    `koanf:"application"`
+	Postgres         postgres.DBConfig              `koanf:"postgres"`
+	Telegram         telegramserver.Config          `koanf:"telegram"`
+	RedisCli         redisadapter.Config            `koanf:"redis"`
+	ProductService   productservice.Config          `koanf:"productService"`
+	PriceService     priceservice.Config            `koanf:"priceService"`
+	Fzr              fzrcards.Config                `koanf:"fzr"`
+	ExchangeRate     exchangerate.Config            `koanf:"exchangeRate"`
+	Scheduler        scheduler.Config               `koanf:"scheduler"`
+	WalletSvc        walletservice.Config           `koanf:"wallet"`
+	SmmSvc           smmproviderservice.Config      `koanf:"smmProviderSvc"`
+	CheckoutSvc      checkoutservice.Config         `koanf:"checkoutSvc"`
+	NotificationSvc  notificationservice.Config     `koanf:"notificationSvc"`
+	PaymentVerify    paymentverifyjob.Config        `koanf:"paymentVerify"`
+	OrderFulFiller   orderfulfillerjob.Config       `koanf:"orderFulFiller"`
+	NotificationJob  notificationdispatchjob.Config `koanf:"notificationJob"`
+	Justanotherpanel justanotherpanel.Config        `koanf:"justanotherPanel"`
 }
