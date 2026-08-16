@@ -1,5 +1,7 @@
 package smmprams
 
+import "telegram-service-platform/entity/smmentity"
+
 type CancelResponse struct {
-	Cancels map[string]int64
+	Items []smmentity.CancelItem
 }

@@ -1,17 +1,20 @@
 package smmprams
 
+import "telegram-service-platform/entity/smmentity"
+
 type RefillResponse struct {
 	RefillID int64
 }
 
 type MultiRefillResponse struct {
-	Refills map[string]int64 // order_id -> refill_id
+	Items []smmentity.MultiRefillItem
 }
 
 type RefillStatusResponse struct {
 	Status string
+	Error  string // empty if success
 }
 
 type MultiRefillStatusResponse struct {
-	Statuses map[string]string // refill_id -> status
+	Items []smmentity.RefillStatusItem
 }

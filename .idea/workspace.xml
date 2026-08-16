@@ -5,23 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/balance.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/cancel.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/doRequest.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/multi_refill.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/multi_refill_status.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/multi_status.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/refill.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/refill_status.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entity/smmentity/balance.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/entity/smmentity/refill.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/params/smmprams/balance.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/params/smmprams/cancel.go" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/params/smmprams/refill.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapter/smm/justanotherpanel/actionType.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/actionType.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/adapter/smm/justanotherpanel/status.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/status.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/smmprams/status.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/smmprams/status.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapter/smm/justanotherpanel/cancel.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/cancel.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapter/smm/justanotherpanel/multi_refill.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/multi_refill.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapter/smm/justanotherpanel/multi_refill_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/multi_refill_status.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adapter/smm/justanotherpanel/refill_status.go" beforeDir="false" afterPath="$PROJECT_DIR$/adapter/smm/justanotherpanel/refill_status.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/example/smm/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/example/smm/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/smmentity/refill.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/smmentity/refill.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/smmprams/cancel.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/smmprams/cancel.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/smmprams/refill.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/smmprams/refill.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

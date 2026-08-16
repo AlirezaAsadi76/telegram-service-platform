@@ -9,7 +9,7 @@ import (
 )
 
 // RefillStatus queries the status of a single refill request.
-// JAP returns {"status": "Completed"} or {"status": "Rejected"} etc.
+// JAP returns {"status": "Completed"} or {"error": "Refill not found"}.
 func (a *Adapter) RefillStatus(ctx context.Context, refillID string) (smmprams.RefillStatusResponse, error) {
 	form := url.Values{
 		"key":    {a.config.APIKey},
@@ -26,7 +26,7 @@ func (a *Adapter) RefillStatus(ctx context.Context, refillID string) (smmprams.R
 	}
 
 	if result.Error != "" {
-		return smmprams.RefillStatusResponse{}, fmt.Errorf("jap error: %s", result.Error)
+		return smmprams.RefillStatusResponse{Error: result.Error}, nil
 	}
 
 	return smmprams.RefillStatusResponse{Status: result.Status}, nil
