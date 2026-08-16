@@ -14,9 +14,11 @@ func main() {
 
 	jpanelAdapter := justanotherpanel.New(cfg.Justanotherpanel)
 
-	//if err, _ := jpanelAdapter.AllServices(context.Background()); err != nil {
-	//	panic(err)
-	//}
+	ff, err := jpanelAdapter.AllServices(context.Background())
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(ff.Services)
 	ctx := context.Background()
 	res, _ := jpanelAdapter.MultiStatus(ctx, []string{
 		"1000091579",
@@ -34,7 +36,7 @@ func main() {
 	fmt.Println(gerr)
 	fmt.Println(res1)
 	res2, gerr2 := jpanelAdapter.Create(ctx, smmprams.CreateOrderAdapterRequest{
-		ServiceID: "9079",
+		ServiceID: "34134234324342341",
 		Link:      "https://t.me/TelgramAdsPoplo",
 		Quantity:  5000,
 	})

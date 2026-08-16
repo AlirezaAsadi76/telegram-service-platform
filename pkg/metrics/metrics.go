@@ -85,4 +85,26 @@ var (
 		Name:      "notification_queue_depth",
 		Help:      "Current depth of notification Redis queue",
 	})
+
+	// SMMServiceSyncTotal counts how many services were synced from JAP.
+	SMMServiceSyncTotal = prometheus.NewCounterVec(prometheus.CounterOpts{
+		Namespace: "smm_bot",
+		Name:      "smm_service_sync_total",
+		Help:      "Total number of SMM services synced from provider",
+	}, []string{"status"})
+
+	// SMMServiceSyncDuration tracks the time taken for a full sync.
+	SMMServiceSyncDuration = prometheus.NewHistogram(prometheus.HistogramOpts{
+		Namespace: "smm_bot",
+		Name:      "smm_service_sync_duration_seconds",
+		Help:      "Duration of SMM service sync job in seconds",
+		Buckets:   []float64{1, 2, 5, 10, 30, 60, 120},
+	})
+
+	// SMMCatalogSize is a gauge showing how many active mappings exist.
+	SMMCatalogSize = prometheus.NewGauge(prometheus.GaugeOpts{
+		Namespace: "smm_bot",
+		Name:      "smm_catalog_size",
+		Help:      "Current number of active SMM service mappings",
+	})
 )

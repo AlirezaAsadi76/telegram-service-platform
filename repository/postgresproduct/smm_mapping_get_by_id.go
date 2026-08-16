@@ -1,0 +1,43 @@
+package postgresproduct
+
+import (
+	"context"
+	"telegram-service-platform/entity/smmentity"
+	"telegram-service-platform/logger"
+	"telegram-service-platform/pkg/msgerror"
+	"telegram-service-platform/pkg/richerror"
+	"time"
+
+	"go.uber.org/zap"
+)
+
+// SMMMappingGetByID returns a single mapping by its catalog ID.
+// Use this during order creation to resolve the selected service.
+func (db *DB) SMMMappingGetByID(ctx context.Context, id int64) (*smmentity.SmmMapping, error) {
+	const Op = "postgresproduct.SMMMappingGetByID"
+	start := time.Now()
+
+	query := `SELECT m.id, m.smm_service_id, m.name, m.platform, m.category, m.description, m.is_active, m.created_at, m.updated_at
+	          FROM smm_service_mapping m WHERE m.id = $1`
+	var m smmentity.SmmMapping
+	if err := db.Pool.Connection().QueryRow(ctx, query, id).Scan(
+		&m.Id, &m.SmmServiceId, &m.Name, &m.Platform, &m.Category, &m.Description, &m.IsActive, &m.CreatedAt, &m.UpdatedAt,
+	); err != nil {
+		logger.Logger.Error("smm mapping get by id failed",
+			zap.String("op", Op),
+			zap.Int64("id", id),
+			zap.Error(err),
+			zap.Duration("duration", time.Since(start)),
+		)
+		return nil, richerror.New(Op, err).
+			WithKind(richerror.KindNotFound).
+			WithMessage(msgerror.ProductNotFound)
+	}
+
+	logger.Logger.Debug("smm mapping found by id",
+		zap.Int64("id", id),
+		zap.String("name", m.Name),
+		zap.Duration("duration", time.Since(start)),
+	)
+	return &m, nil
+}
