@@ -26,6 +26,7 @@ type SmmMapping struct {
 	Category     string
 	Description  string
 	IsActive     bool
+	ButtonName   string
 	CreatedAt    string
 	UpdatedAt    string
 }

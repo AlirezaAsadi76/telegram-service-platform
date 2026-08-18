@@ -19,16 +19,16 @@ func (db *DB) SMMMappingGetByPlatformCategory(ctx context.Context, platform, cat
 
 	query := `SELECT m.id, m.smm_service_id, m.name, m.platform, m.category, m.description, m.is_active, m.created_at, m.updated_at
 	          FROM smm_service_mapping m WHERE m.platform = $1 AND m.category = $2 AND m.is_active = true ORDER BY m.name`
-	rows, err := db.Pool.Connection().Query(ctx, query, platform, category)
-	if err != nil {
+	rows, gErr := db.Pool.Connection().Query(ctx, query, platform, category)
+	if gErr != nil {
 		logger.Logger.Error("smm mapping get by platform category failed",
 			zap.String("op", Op),
 			zap.String("platform", platform),
 			zap.String("category", category),
-			zap.Error(err),
+			zap.Error(gErr),
 			zap.Duration("duration", time.Since(start)),
 		)
-		return nil, richerror.New(Op, err).
+		return nil, richerror.New(Op, gErr).
 			WithKind(richerror.KindQueryFailure).
 			WithMessage(msgerror.QueryFailed)
 	}
@@ -36,17 +36,18 @@ func (db *DB) SMMMappingGetByPlatformCategory(ctx context.Context, platform, cat
 
 	var mappings []smmentity.SmmMapping
 	for rows.Next() {
-		var m smmentity.SmmMapping
-		if err := rows.Scan(&m.Id, &m.SmmServiceId, &m.Name, &m.Platform, &m.Category, &m.Description, &m.IsActive, &m.CreatedAt, &m.UpdatedAt); err != nil {
+
+		smm, sErr := scanSMMMapping(rows)
+		if sErr != nil {
 			logger.Logger.Error("smm mapping scan failed",
 				zap.String("op", Op),
-				zap.Error(err),
+				zap.Error(sErr),
 			)
-			return nil, richerror.New(Op, err).
-				WithKind(richerror.KindQueryFailure).
+			return nil, richerror.New(Op, sErr).
+				WithKind(richerror.KindScanFailure).
 				WithMessage(msgerror.QueryScanFailed)
 		}
-		mappings = append(mappings, m)
+		mappings = append(mappings, smm)
 	}
 
 	if err := rows.Err(); err != nil {

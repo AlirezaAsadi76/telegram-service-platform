@@ -19,25 +19,25 @@ func (db *DB) SMMMappingGetByID(ctx context.Context, id int64) (*smmentity.SmmMa
 
 	query := `SELECT m.id, m.smm_service_id, m.name, m.platform, m.category, m.description, m.is_active, m.created_at, m.updated_at
 	          FROM smm_service_mapping m WHERE m.id = $1`
-	var m smmentity.SmmMapping
-	if err := db.Pool.Connection().QueryRow(ctx, query, id).Scan(
-		&m.Id, &m.SmmServiceId, &m.Name, &m.Platform, &m.Category, &m.Description, &m.IsActive, &m.CreatedAt, &m.UpdatedAt,
-	); err != nil {
+
+	row := db.Pool.Connection().QueryRow(ctx, query, id)
+	smm, sErr := scanSMMMapping(row)
+	if sErr != nil {
 		logger.Logger.Error("smm mapping get by id failed",
 			zap.String("op", Op),
 			zap.Int64("id", id),
-			zap.Error(err),
+			zap.Error(sErr),
 			zap.Duration("duration", time.Since(start)),
 		)
-		return nil, richerror.New(Op, err).
+		return nil, richerror.New(Op, sErr).
 			WithKind(richerror.KindNotFound).
 			WithMessage(msgerror.ProductNotFound)
 	}
 
 	logger.Logger.Debug("smm mapping found by id",
 		zap.Int64("id", id),
-		zap.String("name", m.Name),
+		zap.String("name", smm.Name),
 		zap.Duration("duration", time.Since(start)),
 	)
-	return &m, nil
+	return &smm, nil
 }

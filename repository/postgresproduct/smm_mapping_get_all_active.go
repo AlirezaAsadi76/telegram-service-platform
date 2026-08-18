@@ -6,6 +6,7 @@ import (
 	"telegram-service-platform/logger"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
+	"telegram-service-platform/repository/postgres"
 	"time"
 
 	"go.uber.org/zap"
@@ -19,32 +20,33 @@ func (db *DB) SMMMappingGetAllActive(ctx context.Context) ([]smmentity.SmmMappin
 
 	query := `SELECT m.id, m.smm_service_id, m.name, m.platform, m.category, m.description, m.is_active, m.created_at, m.updated_at
 	          FROM smm_service_mapping m WHERE m.is_active = true ORDER BY m.platform, m.category, m.name`
-	rows, err := db.Pool.Connection().Query(ctx, query)
-	if err != nil {
+	rows, gErr := db.Pool.Connection().Query(ctx, query)
+	if gErr != nil {
 		logger.Logger.Error("smm mapping get all active failed",
 			zap.String("op", Op),
-			zap.Error(err),
+			zap.Error(gErr),
 			zap.Duration("duration", time.Since(start)),
 		)
-		return nil, richerror.New(Op, err).
+		return nil, richerror.New(Op, gErr).
 			WithKind(richerror.KindQueryFailure).
 			WithMessage(msgerror.QueryFailed)
 	}
-	defer rows.Close()
 
+	defer rows.Close()
 	var mappings []smmentity.SmmMapping
 	for rows.Next() {
-		var m smmentity.SmmMapping
-		if err := rows.Scan(&m.Id, &m.SmmServiceId, &m.Name, &m.Platform, &m.Category, &m.Description, &m.IsActive, &m.CreatedAt, &m.UpdatedAt); err != nil {
+
+		smm, sErr := scanSMMMapping(rows)
+		if sErr != nil {
 			logger.Logger.Error("smm mapping scan failed",
 				zap.String("op", Op),
-				zap.Error(err),
+				zap.Error(sErr),
 			)
-			return nil, richerror.New(Op, err).
-				WithKind(richerror.KindQueryFailure).
+			return nil, richerror.New(Op, sErr).
+				WithKind(richerror.KindScanFailure).
 				WithMessage(msgerror.QueryScanFailed)
 		}
-		mappings = append(mappings, m)
+		mappings = append(mappings, smm)
 	}
 
 	if err := rows.Err(); err != nil {
@@ -62,4 +64,21 @@ func (db *DB) SMMMappingGetAllActive(ctx context.Context) ([]smmentity.SmmMappin
 		zap.Duration("duration", time.Since(start)),
 	)
 	return mappings, nil
+}
+
+func scanSMMMapping(row postgres.Scanner) (smmentity.SmmMapping, error) {
+	var m smmentity.SmmMapping
+	err := row.Scan(
+		&m.Id,
+		&m.SmmServiceId,
+		&m.Name,
+		&m.Platform,
+		&m.Category,
+		&m.Description,
+		&m.IsActive,
+		&m.ButtonName,
+		&m.CreatedAt,
+		&m.UpdatedAt,
+	)
+	return m, err
 }

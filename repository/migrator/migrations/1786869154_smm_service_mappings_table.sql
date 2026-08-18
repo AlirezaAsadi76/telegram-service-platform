@@ -7,6 +7,7 @@ CREATE TABLE smm_service_mapping (
                                      category VARCHAR(100) NOT NULL,
                                      description TEXT,
                                      is_active BOOLEAN NOT NULL DEFAULT true,
+                                     button_name TEXT,
                                      created_at TIMESTAMP NOT NULL DEFAULT NOW(),
                                      updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
