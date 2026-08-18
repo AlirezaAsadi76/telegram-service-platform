@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"telegram-service-platform/delivery/telegramserver/callback"
 	"telegram-service-platform/delivery/telegramserver/keyboard"
-
-	"telegram-service-platform/params"
+	"telegram-service-platform/params/productparams"
 
 	"github.com/go-telegram/bot/models"
 )
 
-func PremiumPlans(response params.GetPremiumPlansResponse) *models.InlineKeyboardMarkup {
+func PremiumPlans(response productparams.GetPremiumPlansResponse) *models.InlineKeyboardMarkup {
 
 	buttons := make([]keyboard.Button, 0)
 	for _, plan := range response.Plans {

@@ -1,4 +1,4 @@
-package params
+package productparams
 
 type AdsPlanInfo struct {
 	ID             uint64

@@ -2,25 +2,25 @@ package mapper
 
 import (
 	"telegram-service-platform/entity"
-	"telegram-service-platform/params"
+	"telegram-service-platform/params/productparams"
 )
 
-func MapPremiumPlansResponse(plans []entity.PremiumPlan) params.GetPremiumPlansResponse {
+func MapPremiumPlansResponse(plans []entity.PremiumPlan) productparams.GetPremiumPlansResponse {
 
-	result := make([]params.PremiumPlanInfo, 0, len(plans))
+	result := make([]productparams.PremiumPlanInfo, 0, len(plans))
 
 	for _, plan := range plans {
 
 		result = append(
 			result,
-			params.PremiumPlanInfo{
+			productparams.PremiumPlanInfo{
 				ID:     plan.ID,
 				Months: plan.Duration.Months(),
 			},
 		)
 	}
 
-	return params.GetPremiumPlansResponse{
+	return productparams.GetPremiumPlansResponse{
 		Plans: result,
 	}
 }

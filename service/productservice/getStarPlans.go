@@ -2,24 +2,24 @@ package productservice
 
 import (
 	"context"
-	"telegram-service-platform/params"
+	"telegram-service-platform/params/productparams"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (s Service) GetStarPlans(ctx context.Context) (params.GetStarPlansResponse, error) {
+func (s Service) GetStarPlans(ctx context.Context) (productparams.GetStarPlansResponse, error) {
 
 	const Op = "productservice.GetStarPlans"
 
 	plans, err := s.repository.GetStarPlans(ctx)
 	if err != nil {
 
-		return params.GetStarPlansResponse{},
+		return productparams.GetStarPlansResponse{},
 			richerror.New(Op, err)
 	}
 
-	response := params.GetStarPlansResponse{
-		Plans: make([]params.StarPlanInfo, 0, len(plans)),
+	response := productparams.GetStarPlansResponse{
+		Plans: make([]productparams.StarPlanInfo, 0, len(plans)),
 	}
 
 	for _, plan := range plans {
@@ -31,7 +31,7 @@ func (s Service) GetStarPlans(ctx context.Context) (params.GetStarPlansResponse,
 					WithMessage(msgerror.Unexpected)
 		}
 
-		response.Plans = append(response.Plans, params.StarPlanInfo{
+		response.Plans = append(response.Plans, productparams.StarPlanInfo{
 			Price:  price,
 			ID:     plan.ID,
 			Amount: plan.Amount,

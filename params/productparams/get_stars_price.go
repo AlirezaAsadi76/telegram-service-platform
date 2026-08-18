@@ -1,4 +1,4 @@
-package params
+package productparams
 
 type GetStarsPriceResponse struct {
 	OK           bool   `json:"ok"`

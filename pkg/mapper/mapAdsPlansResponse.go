@@ -2,15 +2,15 @@ package mapper
 
 import (
 	"telegram-service-platform/entity"
-	"telegram-service-platform/params"
+	"telegram-service-platform/params/productparams"
 )
 
 func MapAdsPlansResponse(
 	plans []entity.AdsPlan,
-) params.GetAdsPlansResponse {
+) productparams.GetAdsPlansResponse {
 
 	result := make(
-		[]params.AdsPlanInfo,
+		[]productparams.AdsPlanInfo,
 		0,
 		len(plans),
 	)
@@ -19,7 +19,7 @@ func MapAdsPlansResponse(
 
 		result = append(
 			result,
-			params.AdsPlanInfo{
+			productparams.AdsPlanInfo{
 				ID:             plan.ID,
 				Views:          plan.Views,
 				CPM:            plan.CPM,
@@ -28,7 +28,7 @@ func MapAdsPlansResponse(
 		)
 	}
 
-	return params.GetAdsPlansResponse{
+	return productparams.GetAdsPlansResponse{
 		Plans: result,
 	}
 }

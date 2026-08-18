@@ -2,16 +2,16 @@ package productkeyboard
 
 import (
 	"fmt"
+	"telegram-service-platform/params/productparams"
 
 	"telegram-service-platform/delivery/telegramserver/callback"
 	"telegram-service-platform/delivery/telegramserver/keyboard"
-	"telegram-service-platform/params"
 
 	"github.com/go-telegram/bot/models"
 )
 
 func StarsPlans(
-	response params.GetStarPlansResponse,
+	response productparams.GetStarPlansResponse,
 ) *models.InlineKeyboardMarkup {
 
 	buttons := make([]keyboard.Button, 0)

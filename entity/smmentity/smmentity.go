@@ -22,8 +22,8 @@ type SmmMapping struct {
 	Id           int64
 	SmmServiceId int64
 	Name         string
-	Platform     string
-	Category     string
+	Platform     PlatformType
+	Category     Category
 	Description  string
 	IsActive     bool
 	ButtonName   string

@@ -2,10 +2,10 @@ package producthandler
 
 import (
 	"context"
-	"telegram-service-platform/params"
+	"telegram-service-platform/params/productparams"
 )
 
 type ProductService interface {
-	GetStarPlans(ctx context.Context) (params.GetStarPlansResponse, error)
-	GetPremiumPlans(ctx context.Context) (params.GetPremiumPlansResponse, error)
+	GetStarPlans(ctx context.Context) (productparams.GetStarPlansResponse, error)
+	GetPremiumPlans(ctx context.Context) (productparams.GetPremiumPlansResponse, error)
 }

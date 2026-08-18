@@ -4,6 +4,7 @@ import (
 	"context"
 	"telegram-service-platform/entity/smmentity"
 	"telegram-service-platform/logger"
+	"telegram-service-platform/params/productparams"
 	"telegram-service-platform/pkg/metrics"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
@@ -13,7 +14,7 @@ import (
 )
 
 // Use this to build Telegram bot inline keyboards (first level: platforms, then categories, then services).
-func (s Service) GetSMMCatalog(ctx context.Context) (map[string]map[string][]smmentity.SmmMapping, error) {
+func (s Service) GetSMMCatalog(ctx context.Context) (productparams.GetCatalogResponse, error) {
 	const Op = "productservice.GetSMMCatalog"
 	start := time.Now()
 
@@ -24,15 +25,15 @@ func (s Service) GetSMMCatalog(ctx context.Context) (map[string]map[string][]smm
 			zap.Error(rErr),
 			zap.Duration("duration", time.Since(start)),
 		)
-		return nil, richerror.New(Op, rErr).
+		return productparams.GetCatalogResponse{}, richerror.New(Op, rErr).
 			WithKind(richerror.KindInternal).
 			WithMessage(msgerror.InternalServerError)
 	}
 
-	catalog := make(map[string]map[string][]smmentity.SmmMapping)
+	catalog := make(smmentity.Catalog)
 	for _, m := range mappings {
 		if catalog[m.Platform] == nil {
-			catalog[m.Platform] = make(map[string][]smmentity.SmmMapping)
+			catalog[m.Platform] = make(map[smmentity.Category][]smmentity.SmmMapping)
 		}
 		catalog[m.Platform][m.Category] = append(catalog[m.Platform][m.Category], m)
 	}
@@ -43,5 +44,7 @@ func (s Service) GetSMMCatalog(ctx context.Context) (map[string]map[string][]smm
 		zap.Int("mappings", len(mappings)),
 		zap.Duration("duration", time.Since(start)),
 	)
-	return catalog, nil
+	return productparams.GetCatalogResponse{
+		SmmMappingCatalog: catalog,
+	}, nil
 }

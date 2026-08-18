@@ -4,6 +4,7 @@ import (
 	"context"
 	"telegram-service-platform/entity/smmentity"
 	"telegram-service-platform/logger"
+	"telegram-service-platform/params/productparams"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 	"time"
@@ -13,28 +14,44 @@ import (
 
 //TODO - Later transferred to backoff service
 
-func (s Service) CreateSMMMapping(ctx context.Context, m *smmentity.SmmMapping) error {
+func (s Service) CreateSMMMapping(ctx context.Context, req productparams.CreateSMMMappingRequest) (productparams.CreateSMMMappingResponse, error) {
 	const Op = "productservice.AdminCreateSMMMapping"
 	start := time.Now()
 
-	if err := s.repository.SMMMappingCreate(ctx, m); err != nil {
+	smm := smmentity.SmmMapping{
+		SmmServiceId: req.SmmServiceId,
+		Name:         req.Name,
+		Description:  req.Description,
+		Category:     req.Category,
+		Platform:     req.Platform,
+		IsActive:     req.IsActive,
+		ButtonName:   req.ButtonName,
+	}
+
+	if err := s.repository.SMMMappingCreate(ctx, &smm); err != nil {
 		logger.Logger.Error("admin create smm mapping failed",
 			zap.String("op", Op),
-			zap.String("name", m.Name),
+			zap.String("name", smm.Name),
 			zap.Error(err),
 			zap.Duration("duration", time.Since(start)),
 		)
-		return richerror.New(Op, err).
+		return productparams.CreateSMMMappingResponse{}, richerror.New(Op, err).
 			WithKind(richerror.KindInternal).
 			WithMessage(msgerror.InternalServerError)
 	}
 
 	logger.Logger.Info("admin created smm mapping",
-		zap.Int64("id", m.Id),
-		zap.String("name", m.Name),
-		zap.String("platform", m.Platform),
-		zap.String("category", m.Category),
+		zap.Int64("id", smm.Id),
+		zap.String("name", smm.Name),
+		zap.String("platform", string(req.Platform)),
+		zap.String("category", string(req.Category)),
 		zap.Duration("duration", time.Since(start)),
 	)
-	return nil
+	return productparams.CreateSMMMappingResponse{
+		ID:           smm.Id,
+		SmmServiceId: smm.SmmServiceId,
+		Platform:     smm.Platform,
+		Category:     smm.Category,
+		ButtonName:   smm.ButtonName,
+	}, nil
 }

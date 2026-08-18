@@ -13,7 +13,7 @@ import (
 
 // SMMMappingGetByPlatformCategory returns active mappings for a specific platform and category.
 // Use this when user has already selected a platform and category in the bot.
-func (db *DB) SMMMappingGetByPlatformCategory(ctx context.Context, platform, category string) ([]smmentity.SmmMapping, error) {
+func (db *DB) SMMMappingGetByPlatformCategory(ctx context.Context, platform smmentity.PlatformType, category smmentity.Category) ([]smmentity.SmmMapping, error) {
 	const Op = "postgresproduct.SMMMappingGetByPlatformCategory"
 	start := time.Now()
 
@@ -23,8 +23,8 @@ func (db *DB) SMMMappingGetByPlatformCategory(ctx context.Context, platform, cat
 	if gErr != nil {
 		logger.Logger.Error("smm mapping get by platform category failed",
 			zap.String("op", Op),
-			zap.String("platform", platform),
-			zap.String("category", category),
+			zap.String("platform", string(platform)),
+			zap.String("category", string(category)),
 			zap.Error(gErr),
 			zap.Duration("duration", time.Since(start)),
 		)
@@ -61,8 +61,8 @@ func (db *DB) SMMMappingGetByPlatformCategory(ctx context.Context, platform, cat
 	}
 
 	logger.Logger.Debug("smm mapping get by platform category completed",
-		zap.String("platform", platform),
-		zap.String("category", category),
+		zap.String("platform", string(platform)),
+		zap.String("category", string(category)),
 		zap.Int("count", len(mappings)),
 		zap.Duration("duration", time.Since(start)),
 	)
