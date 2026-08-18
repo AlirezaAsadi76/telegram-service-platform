@@ -37,6 +37,7 @@ func (db *DB) SMMServiceCreateOrUpdate(ctx context.Context, s smmentity.SMM) err
 		s.Service, s.Name, s.Type, s.Rate, s.Min, s.Max,
 		s.DripFeed, s.Refill, s.Cancel, s.IsActive, s.Category, s.ProviderName,
 	)
+
 	if err != nil {
 		metrics.SMMProviderRequests.WithLabelValues("db_upsert", "error").Inc()
 		logger.Logger.Error("smm service upsert failed",

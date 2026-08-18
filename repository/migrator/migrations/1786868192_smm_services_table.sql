@@ -1,10 +1,10 @@
 -- +migrate Up
 CREATE TABLE smm_services (
                               id BIGSERIAL PRIMARY KEY,
-                              service_id BIGINT NOT NULL,
+                              service_id BIGINT NOT NULL UNIQUE ,
                               name TEXT NOT NULL,
                               type VARCHAR(255),
-                              rate BIGINT NOT NULL DEFAULT 0,
+                              rate VARCHAR(255) NOT NULL DEFAULT '0',
                               min_quantity BIGINT NOT NULL DEFAULT 100,
                               max_quantity BIGINT NOT NULL DEFAULT 100000,
                               drip_feed BOOLEAN NOT NULL DEFAULT false,

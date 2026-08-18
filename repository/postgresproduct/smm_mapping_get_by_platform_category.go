@@ -17,7 +17,7 @@ func (db *DB) SMMMappingGetByPlatformCategory(ctx context.Context, platform smme
 	const Op = "postgresproduct.SMMMappingGetByPlatformCategory"
 	start := time.Now()
 
-	query := `SELECT id, smm_service_id, name, platform, category, description, is_active, created_at, updated_at
+	query := `SELECT id, smm_service_id, name, platform, category, description, is_active, button_name, created_at, updated_at
 	          FROM smm_service_mappings m WHERE platform = $1 AND category = $2 AND is_active = true ORDER BY name`
 	rows, gErr := db.Pool.Connection().Query(ctx, query, platform, category)
 	if gErr != nil {

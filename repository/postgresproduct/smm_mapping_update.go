@@ -17,7 +17,7 @@ func (db *DB) SMMMappingUpdate(ctx context.Context, m *smmentity.SmmMapping) err
 	start := time.Now()
 
 	query := `
-				UPDATE smm_service_mapping SET smm_service_id = $1, name = $2,
+				UPDATE smm_service_mappings SET smm_service_id = $1, name = $2,
 				                               platform = $3, category = $4,
 				                               description = $5, is_active = $6,
 				                               button_name = $7,

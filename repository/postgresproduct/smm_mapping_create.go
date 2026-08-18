@@ -16,7 +16,7 @@ func (db *DB) SMMMappingCreate(ctx context.Context, m *smmentity.SmmMapping) err
 	const Op = "postgresproduct.SMMMappingCreate"
 	start := time.Now()
 
-	query := `INSERT INTO smm_service_mapping (smm_service_id, name, platform, category, description, is_active, button_name)
+	query := `INSERT INTO smm_service_mappings (smm_service_id, name, platform, category, description, is_active, button_name)
 	          VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, created_at, updated_at`
 	if err := db.Pool.Connection().QueryRow(ctx, query,
 		m.SmmServiceId, m.Name, m.Platform, m.Category, m.Description, m.IsActive, m.ButtonName,
@@ -35,8 +35,8 @@ func (db *DB) SMMMappingCreate(ctx context.Context, m *smmentity.SmmMapping) err
 	logger.Logger.Info("smm mapping created",
 		zap.Int64("id", m.Id),
 		zap.String("name", m.Name),
-		zap.String("platform", m.Platform),
-		zap.String("category", m.Category),
+		zap.String("platform", string(m.Platform)),
+		zap.String("category", string(m.Category)),
 		zap.Duration("duration", time.Since(start)),
 	)
 	return nil

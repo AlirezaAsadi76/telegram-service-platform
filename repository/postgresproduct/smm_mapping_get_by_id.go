@@ -2,6 +2,7 @@ package postgresproduct
 
 import (
 	"context"
+	"fmt"
 	"telegram-service-platform/entity/smmentity"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/pkg/msgerror"
@@ -16,8 +17,8 @@ import (
 func (db *DB) SMMMappingGetByID(ctx context.Context, id int64) (*smmentity.SmmMapping, error) {
 	const Op = "postgresproduct.SMMMappingGetByID"
 	start := time.Now()
-
-	query := `SELECT id, smm_service_id, name, platform, category, description, is_active, created_at, updated_at
+	fmt.Println(id)
+	query := `SELECT id, smm_service_id, name, platform, category, description, is_active, button_name, created_at, updated_at
 	          FROM smm_service_mappings WHERE id = $1`
 
 	row := db.Pool.Connection().QueryRow(ctx, query, id)

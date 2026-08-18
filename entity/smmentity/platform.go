@@ -3,9 +3,9 @@ package smmentity
 type PlatformType string
 
 const (
-	Telegram  PlatformType = "Telegram"
-	Whatsapp  PlatformType = "Whatsapp"
-	Instagram PlatformType = "Instagram"
-	TickTock  PlatformType = "TickTock"
-	Xx        PlatformType = "twitter(X)"
+	TelegramPlatform  PlatformType = "Telegram"
+	WhatsappPlatform  PlatformType = "Whatsapp"
+	InstagramPlatform PlatformType = "Instagram"
+	TickTockPlatform  PlatformType = "TickTock"
+	XxPlatform        PlatformType = "twitter(X)"
 )

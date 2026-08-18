@@ -2,11 +2,12 @@ package smmentity
 
 type Category string
 
-var (
-	Reaction Category = "reaction"
-	Member   Category = "member"
-	View     Category = "view"
-	Comment  Category = "comment"
-	Follower Category = "follower"
-	Share    Category = "share"
+const (
+	ReactionCategory Category = "reaction"
+	MemberCategory   Category = "member"
+	ViewCategory     Category = "view"
+	CommentCategory  Category = "comment"
+	FollowerCategory Category = "follower"
+	ShareCategory    Category = "share"
+	SaveCategory     Category = "save"
 )
