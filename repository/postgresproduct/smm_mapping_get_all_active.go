@@ -18,8 +18,8 @@ func (db *DB) SMMMappingGetAllActive(ctx context.Context) ([]smmentity.SmmMappin
 	const Op = "postgresproduct.SMMMappingGetAllActive"
 	start := time.Now()
 
-	query := `SELECT m.id, m.smm_service_id, m.name, m.platform, m.category, m.description, m.is_active, m.created_at, m.updated_at
-	          FROM smm_service_mapping m WHERE m.is_active = true ORDER BY m.platform, m.category, m.name`
+	query := `SELECT id, smm_service_id, name, platform, category, description, is_active, button_name, created_at, updated_at
+	          FROM smm_service_mappings WHERE is_active = true ORDER BY platform, category, name`
 	rows, gErr := db.Pool.Connection().Query(ctx, query)
 	if gErr != nil {
 		logger.Logger.Error("smm mapping get all active failed",

@@ -1,5 +1,5 @@
 -- +migrate Up
-CREATE TABLE smm_service_mapping (
+CREATE TABLE smm_service_mappings (
                                      id BIGSERIAL PRIMARY KEY,
                                      smm_service_id BIGINT NOT NULL REFERENCES smm_services(id),
                                      name TEXT NOT NULL,
@@ -18,4 +18,4 @@ CREATE INDEX idx_smm_mapping_active ON smm_service_mapping(is_active);
 CREATE INDEX idx_smm_mapping_service ON smm_service_mapping(smm_service_id);
 
 -- +migrate Down
-DROP TABLE IF EXISTS smm_service_mapping;
+DROP TABLE IF EXISTS smm_service_mappings;

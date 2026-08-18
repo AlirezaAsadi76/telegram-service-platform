@@ -17,8 +17,8 @@ func (db *DB) SMMMappingGetByID(ctx context.Context, id int64) (*smmentity.SmmMa
 	const Op = "postgresproduct.SMMMappingGetByID"
 	start := time.Now()
 
-	query := `SELECT m.id, m.smm_service_id, m.name, m.platform, m.category, m.description, m.is_active, m.created_at, m.updated_at
-	          FROM smm_service_mapping m WHERE m.id = $1`
+	query := `SELECT id, smm_service_id, name, platform, category, description, is_active, created_at, updated_at
+	          FROM smm_service_mappings WHERE id = $1`
 
 	row := db.Pool.Connection().QueryRow(ctx, query, id)
 	smm, sErr := scanSMMMapping(row)

@@ -16,9 +16,14 @@ func (db *DB) SMMMappingUpdate(ctx context.Context, m *smmentity.SmmMapping) err
 	const Op = "postgresproduct.SMMMappingUpdate"
 	start := time.Now()
 
-	query := `UPDATE smm_service_mapping SET smm_service_id = $1, name = $2, platform = $3, category = $4, description = $5, is_active = $6, updated_at = NOW() WHERE id = $7`
+	query := `
+				UPDATE smm_service_mapping SET smm_service_id = $1, name = $2,
+				                               platform = $3, category = $4,
+				                               description = $5, is_active = $6,
+				                               button_name = $7,
+				                               updated_at = NOW() WHERE id = $8`
 	if _, err := db.Pool.Connection().Exec(ctx, query,
-		m.SmmServiceId, m.Name, m.Platform, m.Category, m.Description, m.IsActive, m.Id,
+		m.SmmServiceId, m.Name, m.Platform, m.Category, m.Description, m.IsActive, m.ButtonName, m.Id,
 	); err != nil {
 		logger.Logger.Error("smm mapping update failed",
 			zap.String("op", Op),
