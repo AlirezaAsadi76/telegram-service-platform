@@ -12,10 +12,10 @@ CREATE TABLE smm_service_mappings (
                                      updated_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX idx_smm_mapping_platform ON smm_service_mappings(platform);
-CREATE INDEX idx_smm_mapping_category ON smm_service_mappings(category);
-CREATE INDEX idx_smm_mapping_active ON smm_service_mappings(is_active);
-CREATE INDEX idx_smm_mapping_service ON smm_service_mappings(smm_service_id);
+CREATE INDEX idx_smm_mappings_platform ON smm_service_mappings(platform);
+CREATE INDEX idx_smm_mappings_category ON smm_service_mappings(category);
+CREATE INDEX idx_smm_mappings_active ON smm_service_mappings(is_active);
+CREATE INDEX idx_smm_mappings_service ON smm_service_mappings(smm_service_id);
 
 -- +migrate Down
 DROP TABLE IF EXISTS smm_service_mappings;
