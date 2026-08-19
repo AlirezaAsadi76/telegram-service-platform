@@ -11,6 +11,7 @@ type UpdateSMMMappingRequest struct {
 	Description  string
 	IsActive     bool
 	ButtonName   string
+	SortOrder    int64
 }
 
 type UpdateSMMMappingResponse struct {
@@ -19,4 +20,5 @@ type UpdateSMMMappingResponse struct {
 	Platform     smmentity.PlatformType
 	Category     smmentity.Category
 	ButtonName   string
+	SortOrder    int64
 }

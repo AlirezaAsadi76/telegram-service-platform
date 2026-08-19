@@ -31,6 +31,7 @@ type SmmMapping struct {
 	Description  string
 	IsActive     bool
 	ButtonName   string
+	SortOrder    int64
 	CreatedAt    time.Time
 	UpdatedAt    time.Time
 }

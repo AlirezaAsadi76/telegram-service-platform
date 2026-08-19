@@ -10,6 +10,7 @@ type CreateSMMMappingRequest struct {
 	Description  string
 	IsActive     bool
 	ButtonName   string
+	SortOrder    int64
 }
 
 type CreateSMMMappingResponse struct {
@@ -18,4 +19,5 @@ type CreateSMMMappingResponse struct {
 	Platform     smmentity.PlatformType
 	Category     smmentity.Category
 	ButtonName   string
+	SortOrder    int64
 }

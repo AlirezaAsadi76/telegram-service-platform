@@ -16,10 +16,10 @@ func (db *DB) SMMMappingCreate(ctx context.Context, m *smmentity.SmmMapping) err
 	const Op = "postgresproduct.SMMMappingCreate"
 	start := time.Now()
 
-	query := `INSERT INTO smm_service_mappings (smm_service_id, name, platform, category, description, is_active, button_name)
-	          VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id, created_at, updated_at`
+	query := `INSERT INTO smm_service_mappings (smm_service_id, name, platform, category, description, is_active, button_name, sort_order)
+	          VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id, created_at, updated_at`
 	if err := db.Pool.Connection().QueryRow(ctx, query,
-		m.SmmServiceId, m.Name, m.Platform, m.Category, m.Description, m.IsActive, m.ButtonName,
+		m.SmmServiceId, m.Name, m.Platform, m.Category, m.Description, m.IsActive, m.ButtonName, m.SortOrder,
 	).Scan(&m.Id, &m.CreatedAt, &m.UpdatedAt); err != nil {
 		logger.Logger.Error("smm mapping create failed",
 			zap.String("op", Op),

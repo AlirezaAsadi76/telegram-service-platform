@@ -27,6 +27,7 @@ func (s Service) UpdateSMMMapping(ctx context.Context, req productparams.UpdateS
 		Platform:     req.Platform,
 		IsActive:     req.IsActive,
 		ButtonName:   req.ButtonName,
+		SortOrder:    req.SortOrder,
 	}
 	if err := s.repository.SMMMappingUpdate(ctx, &smm); err != nil {
 		logger.Logger.Error("admin update smm mapping failed",
@@ -51,5 +52,6 @@ func (s Service) UpdateSMMMapping(ctx context.Context, req productparams.UpdateS
 		Platform:     smm.Platform,
 		Category:     smm.Category,
 		ButtonName:   smm.ButtonName,
+		SortOrder:    smm.SortOrder,
 	}, nil
 }

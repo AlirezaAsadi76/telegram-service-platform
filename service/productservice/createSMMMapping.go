@@ -26,6 +26,7 @@ func (s Service) CreateSMMMapping(ctx context.Context, req productparams.CreateS
 		Platform:     req.Platform,
 		IsActive:     req.IsActive,
 		ButtonName:   req.ButtonName,
+		SortOrder:    req.SortOrder,
 	}
 
 	if err := s.repository.SMMMappingCreate(ctx, &smm); err != nil {
@@ -53,5 +54,6 @@ func (s Service) CreateSMMMapping(ctx context.Context, req productparams.CreateS
 		Platform:     smm.Platform,
 		Category:     smm.Category,
 		ButtonName:   smm.ButtonName,
+		SortOrder:    smm.SortOrder,
 	}, nil
 }
