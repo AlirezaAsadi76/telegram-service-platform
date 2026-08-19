@@ -14,4 +14,6 @@ type Config struct {
 
 	// Phase 2 — Queue Consumers (short interval for continuous polling)
 	QueueConsumerInterval time.Duration `koanf:"queue_consumer_interval"`
+	// validation services
+	SmmValidationInterval time.Duration `koanf:"smm_validation_interval"`
 }

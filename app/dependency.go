@@ -5,6 +5,7 @@ import (
 	"telegram-service-platform/adapter/fzrcards"
 	"telegram-service-platform/adapter/fzrcards/telegramproduct"
 	"telegram-service-platform/adapter/redisadapter"
+	"telegram-service-platform/adapter/smm/justanotherpanel"
 	"telegram-service-platform/config"
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/repository/postgresnotification"
@@ -47,6 +48,10 @@ type Repositories struct {
 }
 
 func SetupDependencies(cfg config.Config, pg *postgres.DB, redis *redisadapter.Adapter) (*Dependencies, *Repositories) {
+
+	// adapters
+	justPanelAdapter := justanotherpanel.New(cfg.Justanotherpanel)
+
 	// Repositories
 	walletRepo := postgreswallet.New(pg)
 	paymentRepo := postgrespayment.New(pg)
@@ -72,7 +77,8 @@ func SetupDependencies(cfg config.Config, pg *postgres.DB, redis *redisadapter.A
 	priceService := priceservice.New(cfg.PriceService, priceRepo, telegramProvider, exchangeRateProvider)
 	pricingSvc := pricingservice.New(priceRepo)
 	userSvc := userservice.New(userRepo)
-	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo)
+
+	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, justPanelAdapter)
 	// smmSvc.RegisterProvider("justanotherpanel", justanotherpanel.New(...))
 
 	// Orchestrator

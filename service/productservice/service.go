@@ -11,14 +11,16 @@ type Config struct {
 type Service struct {
 	repository Repository
 	pricingSVc *pricingservice.Service
+	adapter    SMMAdapterInterface
 	config     Config
 }
 
-func New(config Config, pricingSVc *pricingservice.Service, repository Repository) *Service {
+func New(config Config, pricingSVc *pricingservice.Service, repository Repository, adapter SMMAdapterInterface) *Service {
 	return &Service{
 
 		repository: repository,
 		config:     config,
 		pricingSVc: pricingSVc,
+		adapter:    adapter,
 	}
 }

@@ -54,6 +54,7 @@ scheduler:
   status_sync_interval: "5m"
   payment_expiry_interval: "2m"
   queue_consumer_interval: "1s"
+  smm_validation_interval: "12h"
 
 wallet:
   idempotency_processing_ttl: "5m"
