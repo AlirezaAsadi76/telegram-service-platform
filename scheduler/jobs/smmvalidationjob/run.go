@@ -23,7 +23,7 @@ func (j *Job) Run(ctx context.Context) error {
 
 	logger.Logger.Info("SMM validation job started", zap.String("job", jobName))
 
-	missingServices, err := j.productService.GetMissingSMMServices(ctx, j.adapter)
+	missingServices, err := j.productService.GetMissingSMMServices(ctx)
 	if err != nil {
 		metrics.WorkerRuns.WithLabelValues(jobName, "error").Inc()
 		logger.Logger.Error("SMM validation failed", zap.String("job", jobName), zap.Error(err))
