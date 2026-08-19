@@ -5,17 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/entity/smmentity/smmentity.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/smmentity/smmentity.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/productparams/create_smm_mapping.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/productparams/create_smm_mapping.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/params/productparams/update_smm_mapping.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/productparams/update_smm_mapping.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/migrator/migrations/1786869154_smm_service_mappings_table.sql" beforeDir="false" afterPath="$PROJECT_DIR$/repository/migrator/migrations/1786869154_smm_service_mappings_table.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_create.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_create.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_get_all_active.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_get_all_active.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_get_by_id.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_get_by_id.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_get_by_platform_category.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_get_by_platform_category.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_update.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_update.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/productservice/createSMMMapping.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/createSMMMapping.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/productservice/updateSMMMapping.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/updateSMMMapping.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pkg/helper/translate_to_farsi.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
