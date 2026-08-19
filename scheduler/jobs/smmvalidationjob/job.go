@@ -26,7 +26,6 @@ type Config struct {
 type Job struct {
 	productService  ProductService
 	notificationSvc NotificationService
-	adapter         SMMAdapterInterface
 	config          Config
 }
 
