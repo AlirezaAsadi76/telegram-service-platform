@@ -107,4 +107,10 @@ var (
 		Name:      "smm_catalog_size",
 		Help:      "Current number of active SMM service mappings",
 	})
+
+	// بر اساس هندآف: smm_bot_orders_total (Counter, labels: flow_type, status)
+	OrdersTotal = promauto.NewCounterVec(prometheus.CounterOpts{
+		Name: "smm_bot_orders_total",
+		Help: "Total number of orders",
+	}, []string{"flow_type", "status"})
 )

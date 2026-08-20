@@ -1,159 +1,107 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="ALL" />
-  </component>
-  <component name="ChangeListManager">
-    <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" afterDir="false" />
-    </list>
-    <option name="SHOW_DIALOG" value="false" />
-    <option name="HIGHLIGHT_CONFLICTS" value="true" />
-    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
-    <option name="LAST_RESOLUTION" value="IGNORE" />
-  </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Go File" />
-      </list>
-    </option>
-  </component>
-  <component name="GOROOT" url="file:///snap/go/11227" />
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 7
-}</component>
-  <component name="ProjectId" id="3HMGCgNfwrEghqIlWm3Hrpei6Fw" />
-  <component name="ProjectViewState">
-    <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showLibraryContents" value="true" />
-  </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;DefaultGoTemplateProperty&quot;: &quot;Go File&quot;,
-    &quot;Go Build.go build telegram-service-platform/cmd/fragmentclient.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.GoLinterPluginOnboardingV2&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.GoLinterPluginStorageMigration&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.analysis.ui.options.defaults&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/prince&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;go.vgo&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
-  }
-}</component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/repository/redis/redisnotification" />
-      <recent name="$PROJECT_DIR$/repository/postgresnotification" />
-      <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/repository/redis/redisidenporency" />
-      <recent name="$PROJECT_DIR$/repository/postgreswallet" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/entity/smmentity" />
-      <recent name="$PROJECT_DIR$/entity" />
-      <recent name="$PROJECT_DIR$/params/productparams" />
-      <recent name="$PROJECT_DIR$/observability/grafana" />
-      <recent name="$PROJECT_DIR$/params/smmprams" />
-    </key>
-  </component>
-  <component name="RunManager">
-    <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
-      <module name="telegram-service-platform" />
-      <working_directory value="$PROJECT_DIR$" />
-      <go_parameters value="-i" />
-      <kind value="FILE" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <method v="2" />
-    </configuration>
-    <configuration name="go build telegram-service-platform/cmd/fragmentclient" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
-      <module name="telegram-service-platform" />
-      <working_directory value="$PROJECT_DIR$" />
-      <kind value="PACKAGE" />
-      <package value="telegram-service-platform/cmd/fragmentclient" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$/cmd/fragmentclient/main.go" />
-      <method v="2" />
-    </configuration>
-    <configuration default="true" type="GoTestRunConfiguration" factoryName="Go Test">
-      <module name="telegram-service-platform" />
-      <working_directory value="$PROJECT_DIR$" />
-      <go_parameters value="-i" />
-      <kind value="DIRECTORY" />
-      <directory value="$PROJECT_DIR$" />
-      <filePath value="$PROJECT_DIR$" />
-      <framework value="gotest" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Go Build.go build telegram-service-platform/cmd/fragmentclient" />
-      </list>
-    </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-gosdk-72a9cf600ed8-dfa3e7267ae0-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-253.31033.129" />
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-GO-253.31033.129" />
-      </set>
-    </attachedChunks>
-  </component>
-  <component name="TaskManager">
-    <task active="true" id="Default" summary="Default task">
-      <changelist id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="" />
-      <created>1785670398216</created>
-      <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
-      <updated>1785670398216</updated>
-    </task>
-    <servers />
-  </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="3" />
-  </component>
-  <component name="VgoModernizerVersionTracker">
-    <upgrades>
-      <map>
-        <entry key="$PROJECT_DIR$/go.mod">
-          <value>
-            <VersionUpgradeInfo>
-              <version>1.26.5</version>
-              <timestamp>1785671867425</timestamp>
-            </VersionUpgradeInfo>
-          </value>
-        </entry>
-      </map>
-    </upgrades>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/repository/postgrespayment/get_by_Id.go</url>
-          <line>13</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
-  </component>
-</project>
+mote-settings-update", 0);
+user_pref("nimbus.migrations.after-store-initialized", 4);
+user_pref("nimbus.migrations.init-started", 1);
+user_pref("nimbus.profileId", "761ee75c-46f3-4f58-9f20-a501795ffcc7");
+user_pref("pdfjs.enabledCache.state", true);
+user_pref("pdfjs.migrationVersion", 2);
+user_pref("places.database.lastMaintenance", 1787127412);
+user_pref("privacy.bounceTrackingProtection.hasMigratedUserActivationData", true);
+user_pref("privacy.clearOnShutdown_v2.formdata", true);
+user_pref("privacy.purge_trackers.date_in_cookie_database", "0");
+user_pref("privacy.purge_trackers.last_purge", "1787127412745");
+user_pref("privacy.sanitize.clearOnShutdown.hasMigratedToNewPrefs3", true);
+user_pref("privacy.sanitize.pending", "[{\"id\":\"newtab-container\",\"itemsToClear\":[],\"options\":{}}]");
+user_pref("privacy.trackingprotection.allow_list.hasMigratedCategoryPrefs", true);
+user_pref("security.remote_settings.crlite_filters.checked", 1655969547);
+user_pref("security.remote_settings.intermediates.checked", 1655969547);
+user_pref("security.sandbox.content.tempDirSuffix", "5453df20-8adb-451a-a7d6-b82c6f500585");
+user_pref("services.blocklist.addons-mlbf.checked", 1655969547);
+user_pref("services.blocklist.gfx.checked", 1655969547);
+user_pref("services.settings.blocklists.addons-bloomfilters.last_check", 1787159963);
+user_pref("services.settings.blocklists.gfx.last_check", 1787159963);
+user_pref("services.settings.clock_skew_seconds", -1429);
+user_pref("services.settings.last_etag", "1787162538085");
+user_pref("services.settings.last_update_seconds", 1787165923);
+user_pref("services.settings.main.addons-data-leak-blocker-domains.last_check", 1787159963);
+user_pref("services.settings.main.addons-manager-settings.last_check", 1787159963);
+user_pref("services.settings.main.ai-window-prompts.last_check", 1787159963);
+user_pref("services.settings.main.anti-tracking-url-decoration.last_check", 1787159963);
+user_pref("services.settings.main.bounce-tracking-protection-exceptions.last_check", 1787159963);
+user_pref("services.settings.main.cfr.last_check", 1787159963);
+user_pref("services.settings.main.change-password-urls.last_check", 1787159963);
+user_pref("services.settings.main.cookie-banner-rules-list.last_check", 1787159963);
+user_pref("services.settings.main.crash-reports-ondemand.last_check", 1787159963);
+user_pref("services.settings.main.devtools-compatibility-browsers.last_check", 1787159963);
+user_pref("services.settings.main.devtools-devices.last_check", 1787159963);
+user_pref("services.settings.main.doh-config.last_check", 1787159963);
+user_pref("services.settings.main.doh-providers.last_check", 1787159963);
+user_pref("services.settings.main.fingerprinting-protection-overrides.last_check", 1787159963);
+user_pref("services.settings.main.fxmonitor-breaches.last_check", 1787159963);
+user_pref("services.settings.main.fxrelay-allowlist.last_check", 1787159963);
+user_pref("services.settings.main.fxrelay-denylist.last_check", 1787159963);
+user_pref("services.settings.main.hijack-blocklists.last_check", 1787159963);
+user_pref("services.settings.main.language-dictionaries.last_check", 1787159963);
+user_pref("services.settings.main.message-groups.last_check", 1787159963);
+user_pref("services.settings.main.moz-essential-domain-fallbacks.last_check", 1787159963);
+user_pref("services.settings.main.ms-language-packs.last_check", 1787159963);
+user_pref("services.settings.main.newtab-frecency-boosted-sponsors.last_check", 1787159963);
+user_pref("services.settings.main.newtab-wallpapers-v2.last_check", 1787159963);
+user_pref("services.settings.main.nimbus-desktop-defaults.last_check", 1655969547);
+user_pref("services.settings.main.nimbus-desktop-experiments.last_check", 1787159963);
+user_pref("services.settings.main.nimbus-secure-experiments.last_check", 1787165923);
+user_pref("services.settings.main.normandy-recipes-capabilities.last_check", 1787159963);
+user_pref("services.settings.main.partitioning-exempt-urls.last_check", 1787159963);
+user_pref("services.settings.main.password-recipes.last_check", 1787159963);
+user_pref("services.settings.main.password-rules.last_check", 1787159963);
+user_pref("services.settings.main.personality-provider-models.last_check", 1787159963);
+user_pref("services.settings.main.personality-provider-recipe.last_check", 1787159963);
+user_pref("services.settings.main.pioneer-study-addons-v1.last_check", 1787159963);
+user_pref("services.settings.main.public-suffix-list.last_check", 1787159963);
+user_pref("services.settings.main.query-stripping.last_check", 1787159963);
+user_pref("services.settings.main.remote-permissions.last_check", 1787159963);
+user_pref("services.settings.main.search-categorization.last_check", 1787159963);
+user_pref("services.settings.main.search-config-icons.last_check", 1787159963);
+user_pref("services.settings.main.search-config-overrides-v2.last_check", 1787159963);
+user_pref("services.settings.main.search-config-v2.last_check", 1787159963);
+user_pref("services.settings.main.search-config.last_check", 1787159963);
+user_pref("services.settings.main.search-default-override-allowlist.last_check", 1787159963);
+user_pref("services.settings.main.search-telemetry-v2.last_check", 1787159963);
+user_pref("services.settings.main.search-telemetry.last_check", 1787159963);
+user_pref("services.settings.main.sites-classification.last_check", 1787159963);
+user_pref("services.settings.main.third-party-cookie-blocking-exempt-urls.last_check", 1787159963);
+user_pref("services.settings.main.tippytop.last_check", 1787159963);
+user_pref("services.settings.main.top-sites.last_check", 1787159963);
+user_pref("services.settings.main.tracking-protection-lists.last_check", 1787159963);
+user_pref("services.settings.main.translations-models-v2.last_check", 1787159963);
+user_pref("services.settings.main.translations-models.last_check", 1787159963);
+user_pref("services.settings.main.translations-wasm.last_check", 1787159963);
+user_pref("services.settings.main.url-classifier-exceptions.last_check", 1787159963);
+user_pref("services.settings.main.url-classifier-skip-urls.last_check", 1787159963);
+user_pref("services.settings.main.url-parser-default-unknown-schemes-interventions.last_check", 1787159963);
+user_pref("services.settings.main.urlbar-persisted-search-terms.last_check", 1787159963);
+user_pref("services.settings.main.webcompat-interventions.last_check", 1787159963);
+user_pref("services.settings.main.websites-with-shared-credential-backends.last_check", 1787159963);
+user_pref("services.settings.main.whats-new-panel.last_check", 1787159963);
+user_pref("services.settings.security-state.cert-revocations.last_check", 1787159963);
+user_pref("services.settings.security-state.intermediates.last_check", 1787159963);
+user_pref("services.settings.security-state.onecrl.last_check", 1787159963);
+user_pref("services.settings.security.onecrl.checked", 1655969547);
+user_pref("services.sync.clients.lastSync", "0");
+user_pref("services.sync.declinedEngines", "");
+user_pref("services.sync.globalScore", 0);
+user_pref("services.sync.nextSync", 0);
+user_pref("sidebar.backupState", "{\"command\":\"\",\"panelOpen\":false,\"bookmarksExpandedFolders\":[],\"launcherWidth\":0,\"launcherExpanded\":false,\"launcherVisible\":false}");
+user_pref("sidebar.main.tools", "aichat,syncedtabs,history,bookmarks,opentabs");
+user_pref("sidebar.nimbus", "upgraded-sidebar-rollout-without-messaging:rollout-treatment");
+user_pref("sidebar.notification.badge.aichat", true);
+user_pref("sidebar.revamp", true);
+user_pref("sidebar.visibility", "hide-sidebar");
+user_pref("signon.management.page.os-auth.locked.enabled", true);
+user_pref("signon.rustMirror.migrationNeeded", true);
+user_pref("storage.vacuum.last.content-prefs.sqlite", 1786389258);
+user_pref("storage.vacuum.last.index", 2);
+user_pref("storage.vacuum.last.places.sqlite", 1784727373);
+user_pref("toolkit.profiles.newProfileSubmitted", true);
+user_pref("toolkit.profiles.storeID", "04e04a37");
+user_pref("toolkit.startup.last_success", 1787153413);
+user_pref("toolkit.telemetry.cachedClientID", "6257c99e-71de-49f0-9

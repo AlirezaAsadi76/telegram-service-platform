@@ -18,7 +18,7 @@ func (h *Handler) RegisterRoutes(b *bot.Bot) {
 
 	b.RegisterHandler(
 		bot.HandlerTypeMessageText,
-		" منوی اصلی",
+		callback.ReplyMainMenuText,
 		bot.MatchTypeExact,
 		h.showMainMenu,
 		middleware.Public()...,
