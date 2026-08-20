@@ -5,9 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/params/productparams/smm_catalog.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/rediscatalog/getCategories.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/rediscatalog/getCategories.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/redis/rediscatalog/getPlatforms.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/redis/rediscatalog/getPlatforms.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
