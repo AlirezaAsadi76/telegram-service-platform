@@ -7,7 +7,7 @@ type UpdateSMMMappingRequest struct {
 	SmmServiceId int64
 	Name         string
 	Platform     smmentity.PlatformType
-	Category     smmentity.Category
+	Category     smmentity.CategoryType
 	Description  string
 	IsActive     bool
 	ButtonName   string
@@ -18,7 +18,7 @@ type UpdateSMMMappingResponse struct {
 	ID           int64
 	SmmServiceId int64
 	Platform     smmentity.PlatformType
-	Category     smmentity.Category
+	Category     smmentity.CategoryType
 	ButtonName   string
 	SortOrder    int64
 }

@@ -1,3 +1,3 @@
 package smmentity
 
-type Catalog map[PlatformType]map[Category][]SmmMapping
+type Catalog map[PlatformType]map[CategoryType][]SmmMapping

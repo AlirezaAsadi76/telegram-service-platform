@@ -1,13 +1,21 @@
 package smmentity
 
-type Category string
+type Category struct {
+	Name CategoryType
+}
+
+type CategoryType string
 
 const (
-	ReactionCategory Category = "reaction"
-	MemberCategory   Category = "member"
-	ViewCategory     Category = "view"
-	CommentCategory  Category = "comment"
-	FollowerCategory Category = "follower"
-	ShareCategory    Category = "share"
-	SaveCategory     Category = "save"
+	ReactionCategory CategoryType = "reaction"
+	MemberCategory   CategoryType = "member"
+	ViewCategory     CategoryType = "view"
+	CommentCategory  CategoryType = "comment"
+	FollowerCategory CategoryType = "follower"
+	ShareCategory    CategoryType = "share"
+	SaveCategory     CategoryType = "save"
 )
+
+func (c CategoryType) String() string {
+	return string(c)
+}

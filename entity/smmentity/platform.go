@@ -1,5 +1,9 @@
 package smmentity
 
+type Platform struct {
+	Name PlatformType
+}
+
 type PlatformType string
 
 const (
@@ -9,3 +13,7 @@ const (
 	TickTockPlatform  PlatformType = "TickTock"
 	XxPlatform        PlatformType = "twitter(X)"
 )
+
+func (p PlatformType) String() string {
+	return string(p)
+}

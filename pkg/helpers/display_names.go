@@ -55,3 +55,20 @@ func GetCategoryIcon(category string) string {
 	}
 	return "📦"
 }
+
+// GetPlatformIcon returns emoji for platform
+func GetPlatformIcon(platform string) string {
+	platformLoverCase := strings.ToLower(platform)
+	icons := map[string]string{
+		"telegram":  "✈️",
+		"instagram": "📷",
+		"tiktok":    "🎵",
+		"whatsapp":  "💬",
+		"twitter":   "𝕏",
+	}
+
+	if icon, ok := icons[platformLoverCase]; ok {
+		return icon
+	}
+	return "🌐"
+}

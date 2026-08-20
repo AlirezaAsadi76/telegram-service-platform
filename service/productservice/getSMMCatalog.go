@@ -33,7 +33,7 @@ func (s Service) GetSMMCatalog(ctx context.Context) (productparams.GetCatalogRes
 	catalog := make(smmentity.Catalog)
 	for _, m := range mappings {
 		if catalog[m.Platform] == nil {
-			catalog[m.Platform] = make(map[smmentity.Category][]smmentity.SmmMapping)
+			catalog[m.Platform] = make(map[smmentity.CategoryType][]smmentity.SmmMapping)
 		}
 		catalog[m.Platform][m.Category] = append(catalog[m.Platform][m.Category], m)
 	}

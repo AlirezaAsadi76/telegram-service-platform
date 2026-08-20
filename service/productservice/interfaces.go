@@ -15,7 +15,7 @@ type Repository interface {
 	SMMMappingCreate(ctx context.Context, m *smmentity.SmmMapping) error
 	SMMMappingGetAllActive(ctx context.Context) ([]smmentity.SmmMapping, error)
 	SMMMappingGetByID(ctx context.Context, id int64) (*smmentity.SmmMapping, error)
-	SMMMappingGetByPlatformCategory(ctx context.Context, platform smmentity.PlatformType, category smmentity.Category) ([]smmentity.SmmMapping, error)
+	SMMMappingGetByPlatformCategory(ctx context.Context, platform smmentity.PlatformType, category smmentity.CategoryType) ([]smmentity.SmmMapping, error)
 	SMMMappingUpdate(ctx context.Context, m *smmentity.SmmMapping) error
 
 	SMMServiceCreateOrUpdate(ctx context.Context, s smmentity.SMM) error

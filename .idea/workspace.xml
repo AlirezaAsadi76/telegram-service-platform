@@ -5,7 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e8222f9a-cd82-454c-babb-a4b741568c52" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pkg/helper/translate_to_farsi.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/callback/main.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/mainhandler/handler.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/mainhandler/router.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/handler/mainhandler/start.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/delivery/telegramserver/keyboard/reply.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/postgresproduct/smm_mappings_categories_by_platform.go" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/repository/postgresproduct/smm_mappings_get_platforms.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmd/example/smm/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/cmd/example/smm/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" beforeDir="false" afterPath="$PROJECT_DIR$/delivery/telegramserver/keyboard/mainmenu.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/smmentity/Category.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/smmentity/Category.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/smmentity/catalog.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/smmentity/catalog.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/smmentity/platform.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/smmentity/platform.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entity/smmentity/smmentity.go" beforeDir="false" afterPath="$PROJECT_DIR$/entity/smmentity/smmentity.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/productparams/create_smm_mapping.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/productparams/create_smm_mapping.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/productparams/get_smm_mapping_by_platform_category.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/productparams/get_smm_mapping_by_platform_category.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/params/productparams/update_smm_mapping.go" beforeDir="false" afterPath="$PROJECT_DIR$/params/productparams/update_smm_mapping.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pkg/helpers/display_names.go" beforeDir="false" afterPath="$PROJECT_DIR$/pkg/helpers/display_names.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_get_by_platform_category.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/postgresproduct/smm_mapping_get_by_platform_category.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/productservice/getSMMCatalog.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/getSMMCatalog.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/productservice/interfaces.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/productservice/interfaces.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

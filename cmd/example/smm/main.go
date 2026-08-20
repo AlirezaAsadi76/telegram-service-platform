@@ -101,7 +101,7 @@ func main() {
 	//	Refill:       false,
 	//	Cancel:       false,
 	//	IsActive:     true,
-	//	Category:     "Instagram Views",
+	//	CategoryType:     "Instagram Views",
 	//	ProviderName: "justanotherpanel",
 	//})
 	//cErr := repoProduct.SMMServiceCreateOrUpdate(ctx, smmentity.SMM{
@@ -115,7 +115,7 @@ func main() {
 	//	Refill:       false,
 	//	Cancel:       true,
 	//	IsActive:     true,
-	//	Category:     "Telegram Members",
+	//	CategoryType:     "Telegram Members",
 	//	ProviderName: "justanotherpanel",
 	//})
 	//tErr := repoProduct.SMMServiceCreateOrUpdate(ctx, smmentity.SMM{
@@ -129,7 +129,7 @@ func main() {
 	//	Refill:       false,
 	//	Cancel:       false,
 	//	IsActive:     true,
-	//	Category:     "Tiktok Followers",
+	//	CategoryType:     "Tiktok Followers",
 	//	ProviderName: "justanotherpanel",
 	//})
 	//fmt.Println(tErr, iErr, cErr)
@@ -156,7 +156,7 @@ func main() {
 	//	SmmServiceId: 1,
 	//	Name:         "Instagram Views",
 	//	Platform:     smmentity.InstagramPlatform,
-	//	Category:     smmentity.ViewCategory,
+	//	CategoryType:     smmentity.ViewCategory,
 	//	Description:  "همینطوری",
 	//	IsActive:     true,
 	//	ButtonName:   "عادی",
@@ -165,7 +165,7 @@ func main() {
 	//	SmmServiceId: 2,
 	//	Name:         "Telegram Members",
 	//	Platform:     smmentity.TelegramPlatform,
-	//	Category:     smmentity.MemberCategory,
+	//	CategoryType:     smmentity.MemberCategory,
 	//	Description:  "همینطوری",
 	//	IsActive:     true,
 	//	ButtonName:   "عادی",
@@ -174,7 +174,7 @@ func main() {
 	//	SmmServiceId: 3,
 	//	Name:         "TikTok Followers",
 	//	Platform:     smmentity.TickTockPlatform,
-	//	Category:     smmentity.FollowerCategory,
+	//	CategoryType:     smmentity.FollowerCategory,
 	//	Description:  "همینطوری",
 	//	IsActive:     true,
 	//	ButtonName:   "عادی",

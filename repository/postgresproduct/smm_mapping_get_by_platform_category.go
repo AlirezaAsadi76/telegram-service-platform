@@ -13,7 +13,7 @@ import (
 
 // SMMMappingGetByPlatformCategory returns active mappings for a specific platform and category.
 // Use this when user has already selected a platform and category in the bot.
-func (db *DB) SMMMappingGetByPlatformCategory(ctx context.Context, platform smmentity.PlatformType, category smmentity.Category) ([]smmentity.SmmMapping, error) {
+func (db *DB) SMMMappingGetByPlatformCategory(ctx context.Context, platform smmentity.PlatformType, category smmentity.CategoryType) ([]smmentity.SmmMapping, error) {
 	const Op = "postgresproduct.SMMMappingGetByPlatformCategory"
 	start := time.Now()
 
