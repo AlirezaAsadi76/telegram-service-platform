@@ -7,6 +7,7 @@ import (
 	"telegram-service-platform/adapter/smm/justanotherpanel"
 	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/repository/postgres"
+	"telegram-service-platform/repository/redis/rediscatalog"
 	"telegram-service-platform/scheduler"
 	"telegram-service-platform/scheduler/jobs/notificationdispatchjob"
 	"telegram-service-platform/scheduler/jobs/orderfulfillerjob"
@@ -53,4 +54,5 @@ type Config struct {
 	OrderFulFiller   orderfulfillerjob.Config       `koanf:"orderFulFiller"`
 	NotificationJob  notificationdispatchjob.Config `koanf:"notificationJob"`
 	Justanotherpanel justanotherpanel.Config        `koanf:"justanotherPanel"`
+	CatalogCatch     rediscatalog.Config            `koanf:"catalogCache"`
 }

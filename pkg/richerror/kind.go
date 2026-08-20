@@ -35,6 +35,7 @@ const (
 	KindCreateFailed
 	KindExternalAPI
 	KindRedisNil
+	KindMissCatch
 )
 
 func IsKind(

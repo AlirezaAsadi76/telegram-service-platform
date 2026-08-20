@@ -88,3 +88,8 @@ justanotherPanel:
   base_url: "https://justanotherpanel.com/api/v2"
   api_key: ${JPANAEL_API_KEY}
   timeout: "5s"
+
+catalogCache:
+  platformsCacheKey: "smm:catalog:platforms"
+  categoriesCacheKey: "smm:catalog:categories:%s"
+  cacheTTL: "24h"
