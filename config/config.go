@@ -1,11 +1,11 @@
 package config
 
 import (
+	"telegram-service-platform/adapter/botadapter"
 	"telegram-service-platform/adapter/exchangerate"
 	"telegram-service-platform/adapter/fzrcards"
 	"telegram-service-platform/adapter/redisadapter"
 	"telegram-service-platform/adapter/smm/justanotherpanel"
-	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/repository/redis/rediscatalog"
 	"telegram-service-platform/scheduler"
@@ -39,7 +39,7 @@ type Config struct {
 	MetricsServer    MetricsServer                  `koanf:"metricsServer"`
 	Application      Application                    `koanf:"application"`
 	Postgres         postgres.DBConfig              `koanf:"postgres"`
-	Telegram         telegramserver.Config          `koanf:"telegram"`
+	Telegram         botadapter.Config              `koanf:"telegram"`
 	RedisCli         redisadapter.Config            `koanf:"redis"`
 	ProductService   productservice.Config          `koanf:"productService"`
 	PriceService     priceservice.Config            `koanf:"priceService"`

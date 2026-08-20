@@ -28,7 +28,7 @@ func (h *Handler) selectCategory(ctx context.Context, b *bot.Bot, update *models
 	platformName := data[platformSplitMode]
 	categoryName := data[CategorySplitMode]
 	if ccErr != nil {
-		h.handleError(ctx, b, chatID, op, fmt.Errorf("داده نامعتبر"))
+		h.handleError(ctx, chatID, op, fmt.Errorf("داده نامعتبر"))
 		return
 	}
 
@@ -44,12 +44,12 @@ func (h *Handler) selectCategory(ctx context.Context, b *bot.Bot, update *models
 			zap.String("category", categoryName),
 			zap.Error(err),
 		)
-		h.handleError(ctx, b, chatID, op, err)
+		h.handleError(ctx, chatID, op, err)
 		return
 	}
 
 	if len(servicesResp.SmmMapping) == 0 {
-		h.handleError(ctx, b, chatID, op, fmt.Errorf("هیچ سرویسی برای این دسته‌بندی یافت نشد"))
+		h.handleError(ctx, chatID, op, fmt.Errorf("هیچ سرویسی برای این دسته‌بندی یافت نشد"))
 		return
 	}
 
@@ -61,7 +61,7 @@ func (h *Handler) selectCategory(ctx context.Context, b *bot.Bot, update *models
 
 	keyboardMarkup := keyboard.ServiceMenu(platformName, categoryName, servicesResp.SmmMapping)
 
-	if editErr := h.messenger.Edit(ctx, b, &bot.EditMessageTextParams{
+	if editErr := h.messenger.Edit(ctx, &bot.EditMessageTextParams{
 		ChatID:      chatID,
 		MessageID:   update.CallbackQuery.Message.Message.ID,
 		Text:        message,

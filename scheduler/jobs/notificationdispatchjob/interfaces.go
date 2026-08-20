@@ -3,11 +3,13 @@ package notificationdispatchjob
 import (
 	"context"
 	"time"
+
+	"github.com/go-telegram/bot"
 )
 
 // TelegramSender interface minimal برای جلوگیری از وابستگی سخت به bot
 type TelegramSender interface {
-	SendText(ctx context.Context, chatID int64, text string) error
+	Send(ctx context.Context, params *bot.SendMessageParams) error
 }
 
 type RedisRepository interface {

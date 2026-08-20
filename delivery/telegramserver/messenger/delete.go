@@ -6,9 +6,9 @@ import (
 	"github.com/go-telegram/bot"
 )
 
-func (s *Service) Delete(ctx context.Context, b *bot.Bot, params *bot.DeleteMessageParams) error {
+func (s *Service) Delete(ctx context.Context, params *bot.DeleteMessageParams) error {
 
-	_, err := b.DeleteMessage(ctx, params)
+	_, err := s.telegramBot.DeleteMessage(ctx, params)
 
 	return err
 }

@@ -26,7 +26,7 @@ func (h *Handler) selectPlatform(ctx context.Context, b *bot.Bot, update *models
 	data, cErr := h.callbackQueryData(update.CallbackQuery.Data, platformSplitMode)
 	platformName := data[platformSplitMode]
 	if cErr != nil {
-		h.handleError(ctx, b, chatID, op, fmt.Errorf("داده نامعتبر"))
+		h.handleError(ctx, chatID, op, fmt.Errorf("داده نامعتبر"))
 		return
 	}
 
@@ -34,13 +34,13 @@ func (h *Handler) selectPlatform(ctx context.Context, b *bot.Bot, update *models
 		Platform: smmentity.PlatformType(platformName),
 	})
 	if err != nil {
-		h.handleError(ctx, b, chatID, op, err)
+		h.handleError(ctx, chatID, op, err)
 		return
 	}
 
 	if len(categoriesResp.Categories) == 0 {
 
-		_ = h.messenger.Send(ctx, b, &bot.SendMessageParams{
+		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
 			ChatID: chatID,
 			Text:   "⚠️ هیچ دسته‌بندی فعالی برای این پلتفرم یافت نشد.",
 		})
@@ -50,7 +50,7 @@ func (h *Handler) selectPlatform(ctx context.Context, b *bot.Bot, update *models
 	message := fmt.Sprintf("📱 %s\nلطفاً دسته‌بندی مورد نظر خود را انتخاب کنید:", helpers.GetPlatformDisplayName(platformName))
 	keyboardMarkup := keyboard.CategoryMenu(platformName, categoriesResp.Categories)
 
-	if editErr := h.messenger.Edit(ctx, b, &bot.EditMessageTextParams{
+	if editErr := h.messenger.Edit(ctx, &bot.EditMessageTextParams{
 		ChatID:      chatID,
 		MessageID:   update.CallbackQuery.Message.Message.ID,
 		Text:        message,

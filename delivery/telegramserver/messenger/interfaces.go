@@ -7,7 +7,7 @@ import (
 )
 
 type Messenger interface {
-	Send(ctx context.Context, b *bot.Bot, params *bot.SendMessageParams) error
-	Edit(ctx context.Context, b *bot.Bot, params *bot.EditMessageTextParams) error
-	Delete(ctx context.Context, b *bot.Bot, params *bot.DeleteMessageParams) error
+	Send(ctx context.Context, params *bot.SendMessageParams) error
+	Edit(ctx context.Context, params *bot.EditMessageTextParams) error
+	Delete(ctx context.Context, params *bot.DeleteMessageParams) error
 }

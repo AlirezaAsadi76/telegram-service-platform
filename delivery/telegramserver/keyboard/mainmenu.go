@@ -11,7 +11,8 @@ import (
 
 func MainMenu(platforms []smmentity.Platform, categories []smmentity.Category) *models.InlineKeyboardMarkup {
 	builder := NewBuilder()
-
+	fmt.Println(platforms)
+	fmt.Println(categories)
 	builder.AddRow(Button{
 		Text:  "📢 تبلیغات هوشمند تلگرام",
 		Data:  callback.MainMenuTelegramAds,
@@ -48,7 +49,7 @@ func MainMenu(platforms []smmentity.Platform, categories []smmentity.Category) *
 		})
 	}
 	if len(platformButtons) > 0 {
-		builder.AddButtonsPerRow(platformButtons, 2)
+		builder.AddButtonsPerRow(platformButtons, 4)
 	}
 
 	// ردیف ۶: کیف پول و قوانین

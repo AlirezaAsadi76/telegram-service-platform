@@ -6,8 +6,8 @@ import (
 	"github.com/go-telegram/bot"
 )
 
-func (s *Service) Edit(ctx context.Context, b *bot.Bot, params *bot.EditMessageTextParams) error {
+func (s *Service) Edit(ctx context.Context, params *bot.EditMessageTextParams) error {
 
-	_, err := b.EditMessageText(ctx, params)
+	_, err := s.telegramBot.EditMessageText(ctx, params)
 	return err
 }

@@ -1,6 +1,7 @@
 package app
 
 import (
+	"telegram-service-platform/adapter/botadapter"
 	"telegram-service-platform/adapter/redisadapter"
 	"telegram-service-platform/config"
 	"telegram-service-platform/delivery/httpserver"
@@ -15,7 +16,6 @@ import (
 	"telegram-service-platform/scheduler/jobs/orderfulfillerjob"
 	"telegram-service-platform/scheduler/jobs/paymentexpiryjob"
 	"telegram-service-platform/scheduler/jobs/paymentverifyjob"
-	"telegram-service-platform/scheduler/jobs/pricerefreshjob"
 	"telegram-service-platform/scheduler/jobs/smmvalidationjob"
 	statussyncjob "telegram-service-platform/scheduler/jobs/statussyncJob"
 	"telegram-service-platform/validator/uservalidator"
@@ -37,32 +37,32 @@ func New(cfg config.Config) (*App, error) {
 	}
 
 	redisAdapter := redisadapter.New(cfg.RedisCli)
-
+	botAdapter := botadapter.New(cfg.Telegram)
 	dependencies, repositories := SetupDependencies(cfg, postgresClient, &redisAdapter)
 
 	userValidator := uservalidator.New()
 
-	messengerService := messenger.New()
+	messengerService := messenger.New(botAdapter)
 
 	productHandler := producthandler.New(dependencies.ProductService, messengerService)
 	userHandler := userhandler.New(dependencies.UserService, userValidator, messengerService)
 	mainHandler := mainhandler.New(dependencies.ProductService, dependencies.UserService, messengerService)
 
-	priceRefreshJob := pricerefreshjob.New(dependencies.PriceService)
+	//priceRefreshJob := pricerefreshjob.New(dependencies.PriceService)
 	pvj := paymentverifyjob.New(dependencies.PaymentService, dependencies.OrderService, dependencies.NotificationService, repositories.queueRepo, cfg.PaymentVerify)
 	ofj := orderfulfillerjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService, repositories.queueRepo, cfg.OrderFulFiller)
 	ssj := statussyncjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService)
 	pej := paymentexpiryjob.New(dependencies.PaymentService, dependencies.OrderService, dependencies.NotificationService)
-	ndj := notificationdispatchjob.New(dependencies.NotificationService, repositories.queueRepo, nil, cfg.NotificationJob)
+	ndj := notificationdispatchjob.New(dependencies.NotificationService, repositories.queueRepo, messengerService, cfg.NotificationJob)
 	smj := smmvalidationjob.New(dependencies.ProductService, dependencies.NotificationService)
 	schedulerObj, sErr := scheduler.New(cfg.Scheduler,
-		priceRefreshJob, pvj, ofj, ssj, pej, ndj, smj)
+		pvj, ofj, ssj, pej, ndj, smj)
 	if err := schedulerObj.Register(); err != nil {
 		return nil, err
 	}
 
 	telegramBot, tErr := telegramserver.New(
-		cfg.Telegram,
+		botAdapter,
 		userHandler,
 		productHandler,
 		mainHandler,

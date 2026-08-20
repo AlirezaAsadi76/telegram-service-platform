@@ -7,10 +7,10 @@ type Platform struct {
 type PlatformType string
 
 const (
-	TelegramPlatform  PlatformType = "Telegram"
-	WhatsappPlatform  PlatformType = "Whatsapp"
-	InstagramPlatform PlatformType = "Instagram"
-	TickTockPlatform  PlatformType = "TickTock"
+	TelegramPlatform  PlatformType = "telegram"
+	WhatsappPlatform  PlatformType = "whatsapp"
+	InstagramPlatform PlatformType = "instagram"
+	TickTockPlatform  PlatformType = "tickTock"
 	XxPlatform        PlatformType = "twitter(X)"
 )
 

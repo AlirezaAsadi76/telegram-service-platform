@@ -28,7 +28,7 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 	categoryName := data[CategorySplitMode]
 	serviceIDStr := data[ServiceSplitMode]
 	if ccErr != nil {
-		h.handleError(ctx, b, chatID, op, fmt.Errorf("داده نامعتبر"))
+		h.handleError(ctx, chatID, op, fmt.Errorf("داده نامعتبر"))
 		return
 	}
 
@@ -38,7 +38,7 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 			zap.String("op", op),
 			zap.String("serviceID", serviceIDStr),
 		)
-		h.handleError(ctx, b, chatID, op, err)
+		h.handleError(ctx, chatID, op, err)
 		return
 	}
 
@@ -51,7 +51,7 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 			zap.Int64("serviceID", serviceID),
 			zap.Error(gErr),
 		)
-		h.handleError(ctx, b, chatID, op, err)
+		h.handleError(ctx, chatID, op, err)
 		return
 	}
 
@@ -67,7 +67,7 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 		mappingResp.SmmMapping.ButtonName,
 	)
 
-	if sendErr := h.messenger.Send(ctx, b, &bot.SendMessageParams{
+	if sendErr := h.messenger.Send(ctx, &bot.SendMessageParams{
 		ChatID: chatID,
 		Text:   message,
 	}); sendErr != nil {

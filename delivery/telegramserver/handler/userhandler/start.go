@@ -30,7 +30,6 @@ func (h Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) {
 
 	merr := h.messenger.Send(
 		ctx,
-		b,
 		&bot.SendMessageParams{
 			ChatID: update.Message.Chat.ID,
 			Text:   "به پنل خدمات تلگرام خوش آمدید 👋",

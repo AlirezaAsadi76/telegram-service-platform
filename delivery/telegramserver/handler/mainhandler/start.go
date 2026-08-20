@@ -29,7 +29,7 @@ func (h *Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) 
 
 	platformsResp, err := h.productService.GetDistinctPlatforms(ctx)
 	if err != nil {
-		h.handleError(ctx, b, chatID, op, err)
+		h.handleError(ctx, chatID, op, err)
 		return
 	}
 
@@ -37,7 +37,7 @@ func (h *Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) 
 		Platform: smmentity.TelegramPlatform,
 	})
 	if gErr != nil {
-		h.handleError(ctx, b, chatID, op, gErr)
+		h.handleError(ctx, chatID, op, gErr)
 		return
 	}
 
@@ -47,7 +47,7 @@ func (h *Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) 
 	)
 
 	inlineKeyboard := keyboard.MainMenu(platformsResp.Platforms, categoriesResp.Categories)
-	if sendErr := h.messenger.Send(ctx, b, &bot.SendMessageParams{
+	if sendErr := h.messenger.Send(ctx, &bot.SendMessageParams{
 		ChatID:      chatID,
 		Text:        welcomeMsg,
 		ReplyMarkup: inlineKeyboard,
@@ -56,7 +56,7 @@ func (h *Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) 
 	}
 
 	replyKeyboard := keyboard.ReplyMainMenu()
-	if sendErr := h.messenger.Send(ctx, b, &bot.SendMessageParams{
+	if sendErr := h.messenger.Send(ctx, &bot.SendMessageParams{
 		ChatID:      chatID,
 		Text:        "📌 دکمه‌های دسترسی سریع پایین صفحه همیشه در دسترس شما هستند:",
 		ReplyMarkup: replyKeyboard,
@@ -69,7 +69,7 @@ func (h *Handler) showMainMenu(ctx context.Context, b *bot.Bot, update *models.U
 	h.start(ctx, b, update)
 }
 
-func (h *Handler) handleError(ctx context.Context, b *bot.Bot, chatID any, op string, err error) {
+func (h *Handler) handleError(ctx context.Context, chatID any, op string, err error) {
 
 	if richErr, ok := errors.AsType[*richerror.RichError](err); ok {
 		logger.Logger.Error("business logic error in handler",
@@ -85,7 +85,7 @@ func (h *Handler) handleError(ctx context.Context, b *bot.Bot, chatID any, op st
 		)
 	}
 
-	_ = h.messenger.Send(ctx, b, &bot.SendMessageParams{
+	_ = h.messenger.Send(ctx, &bot.SendMessageParams{
 		ChatID: chatID,
 		Text:   "⚠️ خطایی در پردازش درخواست شما رخ داده است. لطفاً چند لحظه بعد دوباره تلاش کنید.",
 	})

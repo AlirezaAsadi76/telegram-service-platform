@@ -1,9 +1,19 @@
 package messenger
 
-type Service struct{}
+import (
+	"telegram-service-platform/adapter/botadapter"
 
-func New() *Service {
+	"github.com/go-telegram/bot"
+)
 
-	return &Service{}
+type Service struct {
+	telegramBot *bot.Bot
+}
+
+func New(telegramBot *botadapter.Adapter) *Service {
+
+	return &Service{
+		telegramBot: telegramBot.Client(),
+	}
 
 }
