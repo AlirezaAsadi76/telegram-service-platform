@@ -131,7 +131,7 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 	}()
 
 	metrics.WalletTransactions.WithLabelValues("WalletPurchase").Inc()
-	metrics.OrdersCreated.WithLabelValues("wallet", "processing").Inc()
+	metrics.OrdersTotal.WithLabelValues("wallet", "processing").Inc()
 	metrics.ActiveOrders.WithLabelValues("processing").Inc()
 	metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
 

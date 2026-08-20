@@ -6,13 +6,6 @@ import (
 )
 
 var (
-	// OrdersCreated — تعداد سفارش‌های ایجاد شده (label: flow_type, status)
-	OrdersCreated = promauto.NewCounterVec(prometheus.CounterOpts{
-		Namespace: "smm_bot",
-		Name:      "orders_total",
-		Help:      "Total number of orders created by flow type and status",
-	}, []string{"flow_type", "status"})
-
 	// PaymentsProcessed — تعداد پرداخت‌ها (label: method, status)
 	PaymentsProcessed = promauto.NewCounterVec(prometheus.CounterOpts{
 		Namespace: "smm_bot",
@@ -86,15 +79,22 @@ var (
 		Help:      "Current depth of notification Redis queue",
 	})
 
+	// ✅ تعریف واحد و نهایی برای OrdersTotal (حذف OrdersCreated تکراری)
+	OrdersTotal = promauto.NewCounterVec(prometheus.CounterOpts{
+		Namespace: "smm_bot",
+		Name:      "orders_total",
+		Help:      "Total number of orders by flow type and status",
+	}, []string{"flow_type", "status"})
+
 	// SMMServiceSyncTotal counts how many services were synced from JAP.
-	SMMServiceSyncTotal = prometheus.NewCounterVec(prometheus.CounterOpts{
+	SMMServiceSyncTotal = promauto.NewCounterVec(prometheus.CounterOpts{
 		Namespace: "smm_bot",
 		Name:      "smm_service_sync_total",
 		Help:      "Total number of SMM services synced from provider",
 	}, []string{"status"})
 
 	// SMMServiceSyncDuration tracks the time taken for a full sync.
-	SMMServiceSyncDuration = prometheus.NewHistogram(prometheus.HistogramOpts{
+	SMMServiceSyncDuration = promauto.NewHistogram(prometheus.HistogramOpts{
 		Namespace: "smm_bot",
 		Name:      "smm_service_sync_duration_seconds",
 		Help:      "Duration of SMM service sync job in seconds",
@@ -102,15 +102,9 @@ var (
 	})
 
 	// SMMCatalogSize is a gauge showing how many active mappings exist.
-	SMMCatalogSize = prometheus.NewGauge(prometheus.GaugeOpts{
+	SMMCatalogSize = promauto.NewGauge(prometheus.GaugeOpts{
 		Namespace: "smm_bot",
 		Name:      "smm_catalog_size",
 		Help:      "Current number of active SMM service mappings",
 	})
-
-	// بر اساس هندآف: smm_bot_orders_total (Counter, labels: flow_type, status)
-	OrdersTotal = promauto.NewCounterVec(prometheus.CounterOpts{
-		Name: "smm_bot_orders_total",
-		Help: "Total number of orders",
-	}, []string{"flow_type", "status"})
 )

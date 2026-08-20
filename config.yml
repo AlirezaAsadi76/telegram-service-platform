@@ -52,8 +52,8 @@ scheduler:
   premium_refresh_interval: "1h"
   payment_verify_interval: "1m"
   status_sync_interval: "5m"
-  payment_expiry_interval: "2m"
-  queue_consumer_interval: "1s"
+  payment_expiry_interval: "5m"
+  queue_consumer_interval: "5m"
   smm_validation_interval: "12h"
 
 wallet:
@@ -77,11 +77,11 @@ paymentVerify:
 
 orderFulFiller:
   queue_key: "queue:orders:paid"
-  timeout:  "5s"
+  timeout:  "5m"
 
 notificationJob:
   queue_key: "queue:notifications:pending"
-  timeout:  "5s"
+  timeout:  "5m"
   PendingLimit: 10
 
 justanotherPanel:

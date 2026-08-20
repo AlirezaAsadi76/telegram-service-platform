@@ -31,7 +31,7 @@ type Job struct {
 
 func New(productSvc ProductService, notificationSvc NotificationService) *Job {
 	cfg := Config{
-		AdminUserID: 0,
+		AdminUserID: 962404032,
 	}
 	return &Job{
 		productService:  productSvc,

@@ -36,7 +36,7 @@ func (s *Service) ProcessDirectPaymentPurchase(ctx context.Context, req checkout
 		Currency:    req.Currency,
 	})
 	if err != nil {
-		metrics.OrdersCreated.WithLabelValues("direct_payment", "failed").Inc()
+		metrics.OrdersTotal.WithLabelValues("direct_payment", "failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("direct_payment").Observe(time.Since(start).Seconds())
 		logger.Logger.Error("checkout direct payment failed", zap.Error(err), zap.Uint64("user_id", req.UserID))
 		return nil, richerror.New(Op, err)
@@ -57,13 +57,13 @@ func (s *Service) ProcessDirectPaymentPurchase(ctx context.Context, req checkout
 		IdempotencyKey: idempotencyKey,
 	})
 	if cpErr != nil {
-		metrics.OrdersCreated.WithLabelValues("direct_payment", "failed").Inc()
+		metrics.OrdersTotal.WithLabelValues("direct_payment", "failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("direct_payment").Observe(time.Since(start).Seconds())
 		logger.Logger.Error("checkout direct payment failed", zap.Error(cpErr), zap.Uint64("order_id", orderResp.OrderID))
 		return nil, richerror.New(Op, cpErr)
 	}
 
-	metrics.OrdersCreated.WithLabelValues("direct_payment", "pending").Inc()
+	metrics.OrdersTotal.WithLabelValues("direct_payment", "pending").Inc()
 	metrics.PaymentsProcessed.WithLabelValues(string(req.Method), "pending").Inc()
 	metrics.ActiveOrders.WithLabelValues("pending").Inc()
 	metrics.CheckoutLatency.WithLabelValues("direct_payment").Observe(time.Since(start).Seconds())

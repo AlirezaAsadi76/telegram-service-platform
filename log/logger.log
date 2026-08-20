@@ -29,3 +29,571 @@
 {"level":"error","ts":"2026-08-18T15:50:54.633+0430","caller":"productservice/getSMMMappingByID.go:20","msg":"get smm mapping by id failed","op":"productservice.GetSMMMappingByID","id":1,"error":"productkeyboard not found","duration":0.001551942,"stacktrace":"telegram-service-platform/service/productservice.Service.GetSMMMappingByID\n\t/home/prince/bots/telegram-service-platform/service/productservice/getSMMMappingByID.go:20\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/example/smm/main.go:185\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
 {"level":"error","ts":"2026-08-18T15:50:54.635+0430","caller":"postgresproduct/smm_mapping_get_by_platform_category.go:42","msg":"smm mapping scan failed","op":"postgresproduct.SMMMappingGetByPlatformCategory","error":"number of field descriptions must equal number of destinations, got 9 and 10","stacktrace":"telegram-service-platform/repository/postgresproduct.(*DB).SMMMappingGetByPlatformCategory\n\t/home/prince/bots/telegram-service-platform/repository/postgresproduct/smm_mapping_get_by_platform_category.go:42\ntelegram-service-platform/service/productservice.Service.GetSMMMappingsByPlatformCategory\n\t/home/prince/bots/telegram-service-platform/service/productservice/getSMMMappingByPlatformCategory.go:19\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/example/smm/main.go:189\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
 {"level":"error","ts":"2026-08-18T15:50:54.635+0430","caller":"productservice/getSMMMappingByPlatformCategory.go:21","msg":"get smm mappings by platform category failed","op":"productservice.GetSMMMappingsByPlatformCategory","platform":"TickTock","category":"follower","error":"failed to query scan","duration":0.001805596,"stacktrace":"telegram-service-platform/service/productservice.Service.GetSMMMappingsByPlatformCategory\n\t/home/prince/bots/telegram-service-platform/service/productservice/getSMMMappingByPlatformCategory.go:21\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/example/smm/main.go:189\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
+{"level":"info","ts":"2026-08-20T20:34:34.561+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-20T20:34:34.561+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"price-refresh","interval":3600}
+{"level":"info","ts":"2026-08-20T20:34:34.561+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-20T20:34:34.561+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":1}
+{"level":"info","ts":"2026-08-20T20:34:34.561+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-20T20:34:34.561+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":120}
+{"level":"info","ts":"2026-08-20T20:34:34.561+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":1}
+{"level":"info","ts":"2026-08-20T20:34:34.561+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":60}
+{"level":"info","ts":"2026-08-20T20:34:35.702+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-20T20:34:35.704+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-20T20:34:35.704+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-20T20:34:35.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:35.704+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-20T20:34:35.706+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:35.735+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-20T20:34:35.736+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-20T20:34:35.736+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.031851763}
+{"level":"info","ts":"2026-08-20T20:34:35.736+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.030297614}
+{"level":"info","ts":"2026-08-20T20:34:35.736+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-20T20:34:35.737+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.033043253}
+{"level":"info","ts":"2026-08-20T20:34:36.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:36.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:37.540+0430","caller":"smmvalidationjob/run.go:65","msg":"SMM validation completed successfully, all services are valid","job":"smm-validation"}
+{"level":"info","ts":"2026-08-20T20:34:37.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:37.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:38.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:38.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:39.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:39.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:40.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:40.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:41.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:41.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:42.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:42.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"error","ts":"2026-08-20T20:34:43.202+0430","caller":"scheduler/register.go:31","msg":"job execution failed","job":"price-refresh","error":"external service failed","duration":7.497692878,"stacktrace":"telegram-service-platform/scheduler.(*Scheduler).Register.func1\n\t/home/prince/bots/telegram-service-platform/scheduler/register.go:31\nreflect.Value.call\n\t/snap/go/11227/src/reflect/value.go:586\nreflect.Value.Call\n\t/snap/go/11227/src/reflect/value.go:369\ngithub.com/go-co-op/gocron/v2.callJobFuncWithParams\n\t/home/prince/go/pkg/mod/github.com/go-co-op/gocron/v2@v2.22.0/util.go:28\ngithub.com/go-co-op/gocron/v2.(*executor).runJob\n\t/home/prince/go/pkg/mod/github.com/go-co-op/gocron/v2@v2.22.0/executor.go:526\ngithub.com/go-co-op/gocron/v2.(*executor).start.func1.1\n\t/home/prince/go/pkg/mod/github.com/go-co-op/gocron/v2@v2.22.0/executor.go:268"}
+{"level":"info","ts":"2026-08-20T20:34:43.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:43.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:44.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:44.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:45.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:45.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:46.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:46.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:47.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:47.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:48.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:48.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:49.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:49.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:50.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:50.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:51.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:51.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:52.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:52.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:53.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:53.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:54.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:54.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:55.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:55.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:56.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:56.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:57.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:57.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:58.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:58.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:34:59.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:34:59.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:00.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:00.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:01.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:01.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:02.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:02.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:03.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:03.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:04.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:04.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:05.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:05.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:06.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:06.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:07.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:07.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:08.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:08.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:09.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:09.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:10.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:10.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:11.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:11.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:12.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:12.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:13.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:13.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:14.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:14.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:15.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:15.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:16.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:16.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:17.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:17.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:18.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:18.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:19.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:19.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:20.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:20.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:21.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:21.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:22.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:22.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:23.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:23.706+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:24.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:24.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:25.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:25.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:26.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:26.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:27.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:27.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:28.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:28.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:29.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:29.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:30.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:30.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:31.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:31.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:32.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:32.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:33.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:33.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:34.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:34.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:35.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:35.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:35.705+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-20T20:35:35.709+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-20T20:35:35.709+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.004347762}
+{"level":"info","ts":"2026-08-20T20:35:36.205+0430","caller":"smmvalidationjob/run.go:65","msg":"SMM validation completed successfully, all services are valid","job":"smm-validation"}
+{"level":"info","ts":"2026-08-20T20:35:36.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:36.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:37.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:37.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:38.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:38.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:39.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:39.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:40.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:40.706+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:41.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:41.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:42.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:42.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:43.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:43.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:44.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:44.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:45.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:45.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:46.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:46.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:47.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:47.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:48.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:48.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:49.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:49.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:50.705+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:50.705+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:51.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:51.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:52.703+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:52.703+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:35:53.586+0430","caller":"httpserver/server.go:56","msg":"http server shutting down"}
+{"level":"info","ts":"2026-08-20T20:35:53.704+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:35:53.704+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"error","ts":"2026-08-20T20:35:53.970+0430","caller":"app/lifecycle.go:42","msg":"telegram server shutdown error","error":"too many requests, Too Many Requests: retry after 521: retry_after 521","stacktrace":"telegram-service-platform/app.(*App).Shutdown\n\t/home/prince/bots/telegram-service-platform/app/lifecycle.go:42\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/bot/main.go:51\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
+{"level":"info","ts":"2026-08-20T20:37:16.452+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-20T20:37:16.452+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"price-refresh","interval":3600}
+{"level":"info","ts":"2026-08-20T20:37:16.452+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-20T20:37:16.452+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":1}
+{"level":"info","ts":"2026-08-20T20:37:16.453+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-20T20:37:16.453+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":120}
+{"level":"info","ts":"2026-08-20T20:37:16.453+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":1}
+{"level":"info","ts":"2026-08-20T20:37:16.453+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":60}
+{"level":"info","ts":"2026-08-20T20:37:17.450+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-20T20:37:17.451+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-20T20:37:17.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:17.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:17.453+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-20T20:37:17.452+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-20T20:37:17.454+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-20T20:37:17.455+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.002957841}
+{"level":"info","ts":"2026-08-20T20:37:17.460+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-20T20:37:17.460+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.006966164}
+{"level":"info","ts":"2026-08-20T20:37:17.461+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-20T20:37:17.461+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.008840867}
+{"level":"info","ts":"2026-08-20T20:37:18.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:18.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:19.012+0430","caller":"smmvalidationjob/run.go:65","msg":"SMM validation completed successfully, all services are valid","job":"smm-validation"}
+{"level":"info","ts":"2026-08-20T20:37:19.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:19.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:20.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:20.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"error","ts":"2026-08-20T20:37:21.237+0430","caller":"scheduler/register.go:31","msg":"job execution failed","job":"price-refresh","error":"external service failed","duration":3.785391263,"stacktrace":"telegram-service-platform/scheduler.(*Scheduler).Register.func1\n\t/home/prince/bots/telegram-service-platform/scheduler/register.go:31\nreflect.Value.call\n\t/snap/go/11227/src/reflect/value.go:586\nreflect.Value.Call\n\t/snap/go/11227/src/reflect/value.go:369\ngithub.com/go-co-op/gocron/v2.callJobFuncWithParams\n\t/home/prince/go/pkg/mod/github.com/go-co-op/gocron/v2@v2.22.0/util.go:28\ngithub.com/go-co-op/gocron/v2.(*executor).runJob\n\t/home/prince/go/pkg/mod/github.com/go-co-op/gocron/v2@v2.22.0/executor.go:526\ngithub.com/go-co-op/gocron/v2.(*executor).start.func1.1\n\t/home/prince/go/pkg/mod/github.com/go-co-op/gocron/v2@v2.22.0/executor.go:268"}
+{"level":"info","ts":"2026-08-20T20:37:21.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:21.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:22.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:22.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:23.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:23.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:24.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:24.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:25.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:25.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:26.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:26.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:27.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:27.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:28.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:28.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:29.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:29.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:30.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:30.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:31.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:31.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:32.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:32.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:33.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:33.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:34.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:34.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:35.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:35.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:36.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:36.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:37.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:37.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:38.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:38.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:39.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:39.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:40.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:40.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:41.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:41.454+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:42.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:42.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:43.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:43.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:44.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:44.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:45.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:45.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:46.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:46.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:47.452+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:47.452+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:37:48.302+0430","caller":"httpserver/server.go:56","msg":"http server shutting down"}
+{"level":"info","ts":"2026-08-20T20:37:48.453+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:37:48.453+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"error","ts":"2026-08-20T20:37:48.649+0430","caller":"app/lifecycle.go:42","msg":"telegram server shutdown error","error":"too many requests, Too Many Requests: retry after 407: retry_after 407","stacktrace":"telegram-service-platform/app.(*App).Shutdown\n\t/home/prince/bots/telegram-service-platform/app/lifecycle.go:42\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/bot/main.go:51\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
+{"level":"info","ts":"2026-08-20T20:39:10.538+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-20T20:39:10.538+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"price-refresh","interval":3600}
+{"level":"info","ts":"2026-08-20T20:39:10.538+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-20T20:39:10.538+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":1}
+{"level":"info","ts":"2026-08-20T20:39:10.538+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-20T20:39:10.538+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":120}
+{"level":"info","ts":"2026-08-20T20:39:10.538+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":1}
+{"level":"info","ts":"2026-08-20T20:39:10.538+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":60}
+{"level":"info","ts":"2026-08-20T20:39:33.197+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-20T20:39:33.197+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"price-refresh","interval":3600}
+{"level":"info","ts":"2026-08-20T20:39:33.197+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-20T20:39:33.197+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":1}
+{"level":"info","ts":"2026-08-20T20:39:33.197+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-20T20:39:33.197+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":120}
+{"level":"info","ts":"2026-08-20T20:39:33.197+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":1}
+{"level":"info","ts":"2026-08-20T20:39:33.197+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":60}
+{"level":"info","ts":"2026-08-20T20:40:27.031+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-20T20:40:27.031+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"price-refresh","interval":3600}
+{"level":"info","ts":"2026-08-20T20:40:27.031+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-20T20:40:27.031+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":1}
+{"level":"info","ts":"2026-08-20T20:40:27.031+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-20T20:40:27.031+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":120}
+{"level":"info","ts":"2026-08-20T20:40:27.031+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":1}
+{"level":"info","ts":"2026-08-20T20:40:27.031+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":60}
+{"level":"info","ts":"2026-08-20T20:40:28.193+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-20T20:40:28.195+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-20T20:40:28.195+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-20T20:40:28.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:28.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:28.196+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-20T20:40:28.200+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-20T20:40:28.201+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.006246536}
+{"level":"info","ts":"2026-08-20T20:40:28.205+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-20T20:40:28.205+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.009701703}
+{"level":"info","ts":"2026-08-20T20:40:28.205+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-20T20:40:28.205+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.008691495}
+{"level":"info","ts":"2026-08-20T20:40:29.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:29.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:29.771+0430","caller":"smmvalidationjob/run.go:65","msg":"SMM validation completed successfully, all services are valid","job":"smm-validation"}
+{"level":"info","ts":"2026-08-20T20:40:30.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:30.197+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:31.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:31.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"error","ts":"2026-08-20T20:40:32.006+0430","caller":"scheduler/register.go:31","msg":"job execution failed","job":"price-refresh","error":"external service failed","duration":3.810007469,"stacktrace":"telegram-service-platform/scheduler.(*Scheduler).Register.func1\n\t/home/prince/bots/telegram-service-platform/scheduler/register.go:31\nreflect.Value.call\n\t/snap/go/11227/src/reflect/value.go:586\nreflect.Value.Call\n\t/snap/go/11227/src/reflect/value.go:369\ngithub.com/go-co-op/gocron/v2.callJobFuncWithParams\n\t/home/prince/go/pkg/mod/github.com/go-co-op/gocron/v2@v2.22.0/util.go:28\ngithub.com/go-co-op/gocron/v2.(*executor).runJob\n\t/home/prince/go/pkg/mod/github.com/go-co-op/gocron/v2@v2.22.0/executor.go:526\ngithub.com/go-co-op/gocron/v2.(*executor).start.func1.1\n\t/home/prince/go/pkg/mod/github.com/go-co-op/gocron/v2@v2.22.0/executor.go:268"}
+{"level":"info","ts":"2026-08-20T20:40:32.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:32.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:33.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:33.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:34.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:34.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:35.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:35.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:36.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:36.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:37.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:37.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:38.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:38.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:39.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:39.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:40.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:40.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:41.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:41.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:42.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:42.197+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:43.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:43.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:44.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:44.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:45.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:45.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:46.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:46.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:47.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:47.197+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:48.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:48.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:49.197+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:49.197+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:50.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:50.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:51.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:51.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:52.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:52.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:53.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:53.197+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:54.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:54.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:55.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:55.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:56.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:56.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:57.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:57.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:58.197+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:40:58.197+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:59.197+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:40:59.197+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:00.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:00.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:01.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:01.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:02.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:02.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:03.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:03.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:04.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:04.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:05.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:05.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:06.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:06.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:07.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:07.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:08.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:08.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:09.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:09.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:10.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:10.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:11.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:11.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:12.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:12.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:13.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:13.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:14.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:14.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:15.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:15.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:16.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:16.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:17.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:17.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:18.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:18.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:19.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:19.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:20.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:20.197+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:21.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:21.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:22.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:22.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:23.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:23.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:24.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:24.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:25.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:25.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:26.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:26.197+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:27.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:27.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:28.195+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-20T20:41:28.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:28.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:28.197+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-20T20:41:28.197+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.002423338}
+{"level":"info","ts":"2026-08-20T20:41:28.721+0430","caller":"smmvalidationjob/run.go:65","msg":"SMM validation completed successfully, all services are valid","job":"smm-validation"}
+{"level":"info","ts":"2026-08-20T20:41:29.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:29.197+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:30.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:30.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:31.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:31.197+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:32.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:32.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:33.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:33.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:34.197+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:34.198+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:35.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:35.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:36.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:36.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:37.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:37.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:38.196+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:38.196+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:39.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:39.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:40.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:40.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:41.195+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-20T20:41:41.195+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-20T20:41:41.423+0430","caller":"httpserver/server.go:56","msg":"http server shutting down"}
+{"level":"error","ts":"2026-08-20T20:41:41.748+0430","caller":"app/lifecycle.go:42","msg":"telegram server shutdown error","error":"too many requests, Too Many Requests: retry after 173: retry_after 173","stacktrace":"telegram-service-platform/app.(*App).Shutdown\n\t/home/prince/bots/telegram-service-platform/app/lifecycle.go:42\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/bot/main.go:51\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
+{"level":"info","ts":"2026-08-21T00:10:00.544+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-21T00:10:00.546+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"price-refresh","interval":3600}
+{"level":"info","ts":"2026-08-21T00:10:00.546+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-21T00:10:00.546+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":1}
+{"level":"info","ts":"2026-08-21T00:10:00.546+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-21T00:10:00.546+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":120}
+{"level":"info","ts":"2026-08-21T00:10:00.546+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":1}
+{"level":"info","ts":"2026-08-21T00:10:00.546+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":60}
+{"level":"info","ts":"2026-08-21T00:10:01.591+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-21T00:10:01.593+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T00:10:01.593+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T00:10:01.594+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T00:10:01.594+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-21T00:10:01.594+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T00:10:01.598+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T00:10:01.598+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.004644508}
+{"level":"info","ts":"2026-08-21T00:10:01.605+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T00:10:01.605+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.010972936}
+{"level":"info","ts":"2026-08-21T00:10:01.606+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T00:10:01.607+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.012127235}
+{"level":"info","ts":"2026-08-21T00:10:02.593+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T00:10:02.593+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T00:10:31.754+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-21T00:10:31.755+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"price-refresh","interval":3600}
+{"level":"info","ts":"2026-08-21T00:10:31.755+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-21T00:10:31.755+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":1}
+{"level":"info","ts":"2026-08-21T00:10:31.755+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-21T00:10:31.755+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":120}
+{"level":"info","ts":"2026-08-21T00:10:31.755+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":1}
+{"level":"info","ts":"2026-08-21T00:10:31.755+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":60}
+{"level":"info","ts":"2026-08-21T00:10:32.667+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-21T00:10:32.668+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-21T00:10:32.668+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T00:10:32.668+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T00:10:32.668+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T00:10:32.668+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T00:10:32.670+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T00:10:32.670+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.002967086}
+{"level":"info","ts":"2026-08-21T00:10:32.676+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T00:10:32.676+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.008257719}
+{"level":"info","ts":"2026-08-21T00:10:32.677+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T00:10:32.677+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.009424627}
+{"level":"info","ts":"2026-08-21T00:10:33.668+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T00:10:33.668+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"warn","ts":"2026-08-21T00:10:34.416+0430","caller":"smmvalidationjob/run.go:58","msg":"SMM validation found missing services, admin notified","missing_count":8,"job":"smm-validation"}
+{"level":"info","ts":"2026-08-21T00:13:00.385+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-21T00:13:00.385+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"price-refresh","interval":3600}
+{"level":"info","ts":"2026-08-21T00:13:00.385+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-21T00:13:00.385+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":300}
+{"level":"info","ts":"2026-08-21T00:13:00.385+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-21T00:13:00.385+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":300}
+{"level":"info","ts":"2026-08-21T00:13:00.385+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":300}
+{"level":"info","ts":"2026-08-21T00:13:00.385+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":60}
+{"level":"info","ts":"2026-08-21T00:13:01.390+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-21T00:13:01.390+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T00:13:01.391+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T00:13:01.391+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T00:13:01.391+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-21T00:13:01.391+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T00:13:01.395+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T00:13:01.395+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.004038935}
+{"level":"info","ts":"2026-08-21T00:13:01.399+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T00:13:01.399+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.008379457}
+{"level":"info","ts":"2026-08-21T00:13:01.400+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T00:13:01.401+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.009515}
+{"level":"warn","ts":"2026-08-21T00:13:02.953+0430","caller":"smmvalidationjob/run.go:58","msg":"SMM validation found missing services, admin notified","missing_count":8,"job":"smm-validation"}
+{"level":"info","ts":"2026-08-21T00:15:35.311+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-21T00:15:35.311+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"price-refresh","interval":3600}
+{"level":"info","ts":"2026-08-21T00:15:35.312+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-21T00:15:35.312+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":300}
+{"level":"info","ts":"2026-08-21T00:15:35.312+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-21T00:15:35.312+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":300}
+{"level":"info","ts":"2026-08-21T00:15:35.312+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":300}
+{"level":"info","ts":"2026-08-21T00:15:35.312+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":60}
+{"level":"info","ts":"2026-08-21T00:15:36.214+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-21T00:15:36.215+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T00:15:36.216+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T00:15:36.216+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T00:15:36.216+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-21T00:15:36.217+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T00:15:36.219+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T00:15:36.219+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.003186425}
+{"level":"info","ts":"2026-08-21T00:15:36.225+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T00:15:36.225+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T00:15:36.225+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.008772449}
+{"level":"info","ts":"2026-08-21T00:15:36.225+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.008305907}
+{"level":"warn","ts":"2026-08-21T00:15:37.782+0430","caller":"smmvalidationjob/run.go:58","msg":"SMM validation found missing services, admin notified","missing_count":8,"job":"smm-validation"}
+{"level":"info","ts":"2026-08-21T00:19:13.332+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-21T00:19:13.333+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"price-refresh","interval":3600}
+{"level":"info","ts":"2026-08-21T00:19:13.333+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-21T00:19:13.333+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":300}
+{"level":"info","ts":"2026-08-21T00:19:13.333+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-21T00:19:13.333+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":300}
+{"level":"info","ts":"2026-08-21T00:19:13.333+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":300}
+{"level":"info","ts":"2026-08-21T00:19:13.333+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":60}
+{"level":"info","ts":"2026-08-21T00:19:14.437+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-21T00:19:14.437+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-21T00:19:14.437+0430","caller":"notificationdispatchjob/run.go:26","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T00:19:14.437+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T00:19:14.437+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T00:19:14.438+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T00:19:14.441+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T00:19:14.441+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.003697174}
+{"level":"info","ts":"2026-08-21T00:19:14.445+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T00:19:14.445+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.007006186}
+{"level":"info","ts":"2026-08-21T00:19:14.445+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T00:19:14.445+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.007472119}
+{"level":"warn","ts":"2026-08-21T00:19:16.043+0430","caller":"smmvalidationjob/run.go:58","msg":"SMM validation found missing services, admin notified","missing_count":8,"job":"smm-validation"}

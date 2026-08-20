@@ -23,7 +23,7 @@ type Repository interface {
 	SMMServiceGetByD(ctx context.Context, Id int64) (*smmentity.SMM, error)
 
 	SMMMappingGetDistinctPlatforms(ctx context.Context) ([]smmentity.Platform, error)
-	SMMMappingGetDistinctCategoriesByPlatform(ctx context.Context, platform string) ([]smmentity.Category, error)
+	SMMMappingGetDistinctCategoriesByPlatform(ctx context.Context, platform smmentity.PlatformType) ([]smmentity.Category, error)
 }
 
 type SMMAdapterInterface interface {

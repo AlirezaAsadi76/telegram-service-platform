@@ -16,7 +16,7 @@ func (s Service) GetDistinctCategoriesByPlatform(ctx context.Context, req produc
 		}, nil
 	}
 
-	categories, err := s.repository.SMMMappingGetDistinctCategoriesByPlatform(ctx, req.Platform.String())
+	categories, err := s.repository.SMMMappingGetDistinctCategoriesByPlatform(ctx, req.Platform)
 	if err != nil {
 		return productparams.GetDistinctCategoriesByPlatformResponse{}, richerror.New(op, err).WithKind(richerror.KindQueryFailure)
 	}

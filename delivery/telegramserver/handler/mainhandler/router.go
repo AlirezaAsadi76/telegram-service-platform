@@ -1,9 +1,10 @@
 package mainhandler
 
 import (
-	"github.com/go-telegram/bot"
 	"telegram-service-platform/delivery/telegramserver/callback"
 	"telegram-service-platform/delivery/telegramserver/middleware"
+
+	"github.com/go-telegram/bot"
 )
 
 func (h *Handler) RegisterRoutes(b *bot.Bot) {
