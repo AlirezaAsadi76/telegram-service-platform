@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"context"
+	"telegram-service-platform/config"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -10,11 +11,7 @@ import (
 	"telegram-service-platform/logger"
 )
 
-type AdminAuthConfig struct {
-	TelegramIDs []int64
-}
-
-func AdminAuth(cfg AdminAuthConfig) Middleware {
+func AdminAuth(cfg config.AdminConfig) Middleware {
 	adminMap := make(map[int64]bool)
 	for _, id := range cfg.TelegramIDs {
 		adminMap[id] = true
@@ -26,7 +23,7 @@ func AdminAuth(cfg AdminAuthConfig) Middleware {
 
 			if update.Message != nil && update.Message.From != nil {
 				telegramID = update.Message.From.ID
-			} else if update.CallbackQuery != nil && update.CallbackQuery.From != nil {
+			} else if update.CallbackQuery != nil && update.CallbackQuery.Message.Message != nil {
 				telegramID = update.CallbackQuery.From.ID
 			}
 
