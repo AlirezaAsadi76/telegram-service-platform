@@ -50,7 +50,13 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 
 	wallet, gfErr := s.repo.GetForUpdate(ctx, req.UserID)
 	if gfErr != nil {
-		_ = s.idempotencyRepo.Delete(ctx, req.IdempotencyKey)
+		if delErr := s.idempotencyRepo.Delete(ctx, req.IdempotencyKey); delErr != nil {
+			logger.Logger.Warn("failed to cleanup idempotency key after GetForUpdate failure",
+				zap.String("op", Op),
+				zap.String("idempotency_key", req.IdempotencyKey),
+				zap.Error(delErr),
+			)
+		}
 		return nil, richerror.New(Op, gfErr).WithKind(richerror.KindNotFound).WithMessage(msgerror.WalletNotFound)
 	}
 
@@ -64,21 +70,39 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 		IdempotencyKey: req.IdempotencyKey,
 	}
 	if err := s.txRepo.CreateTransaction(ctx, tx); err != nil {
-		_ = s.idempotencyRepo.Delete(ctx, req.IdempotencyKey)
+		if delErr := s.idempotencyRepo.Delete(ctx, req.IdempotencyKey); delErr != nil {
+			logger.Logger.Warn("failed to cleanup idempotency key after CreateTransaction failure",
+				zap.String("op", Op),
+				zap.String("idempotency_key", req.IdempotencyKey),
+				zap.Error(delErr),
+			)
+		}
 		return nil, richerror.New(Op, err).WithKind(richerror.KindInfrastructure)
 	}
 
 	newBalance := wallet.Balance + req.Amount
 	newVersion := wallet.Version + 1
 	if err := s.repo.UpdateBalanceAtomic(ctx, wallet.ID, newBalance, newVersion); err != nil {
-		_ = s.idempotencyRepo.Delete(ctx, req.IdempotencyKey)
+		if delErr := s.idempotencyRepo.Delete(ctx, req.IdempotencyKey); delErr != nil {
+			logger.Logger.Warn("failed to cleanup idempotency key after UpdateBalanceAtomic failure",
+				zap.String("op", Op),
+				zap.String("idempotency_key", req.IdempotencyKey),
+				zap.Error(delErr),
+			)
+		}
 		return nil, richerror.New(Op, err).WithKind(richerror.KindInfrastructure)
 	}
 
 	// 6. Mark transaction as completed
 	if err := s.txRepo.UpdateTransactionStatus(ctx, tx.ID, walletentity.WalletTransactionStatusComplete); err != nil {
-		// Log error but don't fail - balance is already updated
-		// This is a rare case that needs manual reconciliation
+		logger.Logger.Error("failed to update transaction status to COMPLETE",
+			zap.String("op", Op),
+			zap.Uint64("transaction_id", tx.ID),
+			zap.Uint64("user_id", req.UserID),
+			zap.Uint64("wallet_id", wallet.ID),
+			zap.Any("amount", req.Amount),
+			zap.Error(err),
+		)
 	}
 
 	// 7. Mark idempotency as completed

@@ -4,7 +4,7 @@ type WalletTransactionStatus string
 
 const (
 	WalletTransactionStatusPending  WalletTransactionStatus = "PENDING"
-	WalletTransactionStatusComplete WalletTransactionStatus = "COMPLETE"
+	WalletTransactionStatusComplete WalletTransactionStatus = "COMPLETED"
 	WalletTransactionStatusReversed WalletTransactionStatus = "REVERSED"
 	WalletTransactionStatusFailed   WalletTransactionStatus = "FAILED"
 )
