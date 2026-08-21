@@ -15,8 +15,8 @@ type ActivityTracker interface {
 	TrackActivity(ctx context.Context, req params.TrackUserActivityRequest) (params.TrackUserActivityResponse, error)
 }
 
-func ActivityTracking(tracker ActivityTracker) bot.Middleware {
-	return func(next bot.HandlerFunc) bot.HandlerFunc {
+func ActivityTracking(tracker ActivityTracker) Middleware {
+	return func(next HandlerFunc) HandlerFunc {
 		return func(ctx context.Context, b *bot.Bot, update *models.Update) {
 			var telegramID entity.TelegramId
 

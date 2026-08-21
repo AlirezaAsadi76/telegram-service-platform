@@ -97,3 +97,7 @@ catalogCache:
 
 activity:
   activity_ttl: "5m"
+
+admins:
+  telegram_ids:
+    - 775589639

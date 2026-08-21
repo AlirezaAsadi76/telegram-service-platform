@@ -35,6 +35,10 @@ type Application struct {
 	GracefulShutdownTimeout time.Duration `koanf:"graceful_shutdown_timeout"`
 }
 
+type AdminConfig struct {
+	TelegramIDs []int64 `koanf:"telegram_ids"`
+}
+
 type Config struct {
 	HttpServer       HttpServer                     `koanf:"httpServer"`
 	MetricsServer    MetricsServer                  `koanf:"metricsServer"`
@@ -57,4 +61,5 @@ type Config struct {
 	Justanotherpanel justanotherpanel.Config        `koanf:"justanotherPanel"`
 	CatalogCatch     rediscatalog.Config            `koanf:"catalogCache"`
 	Activity         redisactivity.Config           `koanf:"activity"`
+	Admins           AdminConfig                    `koanf:"admins"`
 }
