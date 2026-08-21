@@ -81,7 +81,7 @@ func SetupDependencies(cfg config.Config, pg *postgres.DB, redis *redisadapter.A
 	notificationSVC := notificationservice.New(notificationRepo, queueRepo, cfg.NotificationSvc)
 	priceService := priceservice.New(cfg.PriceService, priceRepo, telegramProvider, exchangeRateProvider)
 	pricingSvc := pricingservice.New(priceRepo)
-	userSvc := userservice.New(userRepo, activityTracker)
+	userSvc := userservice.New(walletSvc, userRepo, activityTracker)
 
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, catalogCache, justPanelAdapter)
 	// smmSvc.RegisterProvider("justanotherpanel", justanotherpanel.New(...))

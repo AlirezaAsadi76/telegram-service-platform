@@ -21,19 +21,22 @@ func Logger() Middleware {
 		) {
 
 			start := time.Now()
-
+			var telegramId int64
 			var data string
 			if update.CallbackQuery != nil {
 
 				data = fmt.Sprintf("callback query: %s", update.CallbackQuery.Data)
+				telegramId = update.CallbackQuery.From.ID
 			}
 			if update.Message != nil {
 				data = fmt.Sprintf("message: %s", update.Message.Text)
+				telegramId = update.Message.Chat.ID
 			}
 			log.Printf(
-				"telegram update received: %d - %s",
+				"telegram update received: %d - %s\n telegram id %d",
 				update.ID,
 				data,
+				telegramId,
 			)
 
 			log.Printf(

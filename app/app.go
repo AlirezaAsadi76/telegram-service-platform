@@ -6,6 +6,7 @@ import (
 	"telegram-service-platform/config"
 	"telegram-service-platform/delivery/httpserver"
 	"telegram-service-platform/delivery/telegramserver"
+	"telegram-service-platform/delivery/telegramserver/handler/adminhandler"
 	"telegram-service-platform/delivery/telegramserver/handler/mainhandler"
 	"telegram-service-platform/delivery/telegramserver/handler/producthandler"
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
@@ -43,10 +44,11 @@ func New(cfg config.Config) (*App, error) {
 	userValidator := uservalidator.New()
 
 	messengerService := messenger.New(botAdapter)
-
+	// handler
 	productHandler := producthandler.New(dependencies.ProductService, messengerService)
 	userHandler := userhandler.New(dependencies.UserService, userValidator, messengerService)
 	mainHandler := mainhandler.New(dependencies.ProductService, dependencies.UserService, messengerService)
+	adminHandler := adminhandler.New(dependencies.CheckoutService, dependencies.UserService, messengerService, cfg.Admins)
 
 	//priceRefreshJob := pricerefreshjob.New(dependencies.PriceService)
 	pvj := paymentverifyjob.New(dependencies.PaymentService, dependencies.OrderService, dependencies.NotificationService, repositories.queueRepo, cfg.PaymentVerify)
@@ -66,6 +68,7 @@ func New(cfg config.Config) (*App, error) {
 		userHandler,
 		productHandler,
 		mainHandler,
+		adminHandler,
 	)
 
 	if tErr != nil {

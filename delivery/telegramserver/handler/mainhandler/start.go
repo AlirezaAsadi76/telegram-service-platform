@@ -63,6 +63,7 @@ func (h *Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) 
 	}
 
 	if userResp.IsNew {
+
 		replyKeyboard := keyboard.ReplyMainMenu()
 		if sendErr := h.messenger.Send(ctx, &bot.SendMessageParams{
 			ChatID:      chatID,

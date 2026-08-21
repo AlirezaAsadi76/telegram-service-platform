@@ -34,13 +34,11 @@ func (s *Service) ProcessManualWalletRecharge(ctx context.Context, req checkoutp
 		IdempotencyKey: idempotencyKey,
 	})
 	if err != nil {
-		metrics.WalletTransactions.WithLabelValues("credit", "failed").Inc()
+		metrics.WalletTransactions.WithLabelValues("credit_failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("manual_recharge").Observe(time.Since(start).Seconds())
 		logger.Logger.Error("checkout manual recharge failed", zap.Error(err), zap.Uint64("user_id", req.UserID),
 			zap.Duration("latency", time.Since(start)))
-
 		return richerror.New(Op, err)
-
 	}
 
 	metrics.WalletTransactions.WithLabelValues("credit").Inc()
