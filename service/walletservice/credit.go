@@ -15,7 +15,6 @@ import (
 func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*walletparam.CreditResponse, error) {
 	const Op = "walletservice.Credit"
 
-	// 1. Check idempotency - have we already processed this?
 	existingTx, gtErr := s.txRepo.GetTransactionByIdempotencyKey(ctx, req.IdempotencyKey)
 	if gtErr == nil && existingTx != nil {
 		// Already processed - return existing result
@@ -26,24 +25,27 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 		}, nil
 	}
 
-	// 2. Set idempotency key in Redis (prevents concurrent processing)
 	ok, ifErr := s.idempotencyRepo.SetIfNotExists(ctx, req.IdempotencyKey, entity.IdempotencyStatusProcessing, s.config.IdempotencyProcessingTTL)
 	if ifErr != nil {
 		return nil, richerror.New(Op, ifErr).WithKind(richerror.KindIdempotencyFailure).WithMessage(msgerror.IdempotencyAlreadyProcessing)
 	}
 	if !ok {
-		// Another process is handling this
 		return nil, richerror.New(Op, ifErr).WithKind(richerror.KindIdempotencyFailure).WithMessage(msgerror.IdempotencyAlreadyProcessing)
 	}
 
-	// 3. Start DB transaction and lock wallet
+	success := false
+	defer func() {
+		if !success {
+			_ = s.idempotencyRepo.Delete(ctx, req.IdempotencyKey)
+		}
+	}()
+
 	wallet, gfErr := s.repo.GetForUpdate(ctx, req.UserID)
 	if gfErr != nil {
 		_ = s.idempotencyRepo.Delete(ctx, req.IdempotencyKey)
 		return nil, richerror.New(Op, gfErr).WithKind(richerror.KindNotFound).WithMessage(msgerror.WalletNotFound)
 	}
 
-	// 4. Create pending transaction
 	tx := &walletentity.WalletTransaction{
 		WalletID:       wallet.ID,
 		UserID:         req.UserID,
@@ -58,7 +60,6 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 		return nil, richerror.New(Op, err).WithKind(richerror.KindInfrastructure)
 	}
 
-	// 5. Update wallet balance (optimistic locking)
 	newBalance := wallet.Balance + req.Amount
 	newVersion := wallet.Version + 1
 	if err := s.repo.UpdateBalanceAtomic(ctx, wallet.ID, newBalance, newVersion); err != nil {
@@ -75,6 +76,7 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 	// 7. Mark idempotency as completed
 	_ = s.idempotencyRepo.Set(ctx, req.IdempotencyKey, entity.IdempotencyStatusComplete, s.config.IdempotencyCompletedTTL) // 24h retention
 
+	success = true
 	return &walletparam.CreditResponse{
 		TransactionID: tx.ID,
 		NewBalance:    newBalance,

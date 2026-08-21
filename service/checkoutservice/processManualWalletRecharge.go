@@ -9,9 +9,9 @@ import (
 	"telegram-service-platform/pkg/hashing"
 	"telegram-service-platform/pkg/metrics"
 	"telegram-service-platform/pkg/richerror"
-	"telegram-service-platform/pkg/ts"
 	"time"
 
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
@@ -24,8 +24,10 @@ func (s *Service) ProcessManualWalletRecharge(ctx context.Context, req checkoutp
 		zap.Int64("amount", int64(req.Amount)),
 	)
 
+	nonce := uuid.New().String()
 	idempotencyKey := hashing.EncodeStringToSHA256(
-		fmt.Sprintf("%s:%d:%d:%d:%d", s.config.PrefixManualIdempotencyKey, req.AdminID, req.UserID, req.Amount, ts.Now()))
+		fmt.Sprintf("%s:%d:%d:%d:%s", s.config.PrefixManualIdempotencyKey,
+			req.AdminID, req.UserID, req.Amount, nonce))
 
 	tx, err := s.walletSvc.Credit(ctx, walletparam.CreditRequest{
 		UserID:         req.UserID,
@@ -33,6 +35,7 @@ func (s *Service) ProcessManualWalletRecharge(ctx context.Context, req checkoutp
 		ReferenceID:    fmt.Sprintf("manual_admin:%d", req.AdminID),
 		IdempotencyKey: idempotencyKey,
 	})
+
 	if err != nil {
 		metrics.WalletTransactions.WithLabelValues("credit_failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("manual_recharge").Observe(time.Since(start).Seconds())
