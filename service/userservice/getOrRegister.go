@@ -19,7 +19,7 @@ func (s Service) GetOrRegister(ctx context.Context, request params.GetOrRegister
 		return params.GetOrRegisterResponse{}, richerror.New(Op, fErr)
 	}
 	if existingUser != nil {
-		return mapper.MapUserResponse(existingUser), nil
+		return mapper.MapUserResponse(existingUser, false), nil
 	}
 	fmt.Println("user : ", request.TelegramID)
 	user := entity.User{
@@ -38,5 +38,5 @@ func (s Service) GetOrRegister(ctx context.Context, request params.GetOrRegister
 				WithMessage(msgerror.InternalServerError)
 	}
 
-	return mapper.MapUserResponse(&user), nil
+	return mapper.MapUserResponse(&user, true), nil
 }

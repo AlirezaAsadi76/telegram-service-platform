@@ -5,7 +5,7 @@ import (
 	"telegram-service-platform/params"
 )
 
-func MapUserResponse(user *entity.User) params.GetOrRegisterResponse {
+func MapUserResponse(user *entity.User, isNewUser bool) params.GetOrRegisterResponse {
 	return params.GetOrRegisterResponse{
 		UserInfo: params.UserInfo{
 			Id:         user.ID,
@@ -13,6 +13,7 @@ func MapUserResponse(user *entity.User) params.GetOrRegisterResponse {
 			Username:   user.Username,
 			Role:       user.Role,
 		},
+		IsNew: isNewUser,
 	}
 
 }

@@ -13,4 +13,5 @@ type GetOrRegisterRequest struct {
 }
 type GetOrRegisterResponse struct {
 	UserInfo UserInfo `json:"user_info"`
+	IsNew    bool     `json:"is_new"`
 }

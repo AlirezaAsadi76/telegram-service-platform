@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"telegram-service-platform/pkg/mapper"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -24,8 +25,14 @@ func (h *Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) 
 		return
 	}
 	chatID := update.Message.Chat.ID
-
+	tgUser := update.Message.From
 	metrics.OrdersTotal.WithLabelValues("start_command", "triggered").Inc()
+
+	userResp, goErr := h.userService.GetOrRegister(ctx, mapper.MapTelegramUserToRegisterRequest(tgUser))
+	if goErr != nil {
+		h.handleError(ctx, chatID, op, goErr)
+		return
+	}
 
 	platformsResp, err := h.productService.GetDistinctPlatforms(ctx)
 	if err != nil {
@@ -55,13 +62,15 @@ func (h *Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) 
 		logger.Logger.Error("failed to send welcome message", zap.String("op", op), zap.Error(sendErr))
 	}
 
-	replyKeyboard := keyboard.ReplyMainMenu()
-	if sendErr := h.messenger.Send(ctx, &bot.SendMessageParams{
-		ChatID:      chatID,
-		Text:        "📌 دکمه‌های دسترسی سریع پایین صفحه همیشه در دسترس شما هستند:",
-		ReplyMarkup: replyKeyboard,
-	}); sendErr != nil {
-		logger.Logger.Error("failed to send reply keyboard", zap.String("op", op), zap.Error(sendErr))
+	if userResp.IsNew {
+		replyKeyboard := keyboard.ReplyMainMenu()
+		if sendErr := h.messenger.Send(ctx, &bot.SendMessageParams{
+			ChatID:      chatID,
+			Text:        "📌 دکمه‌های دسترسی سریع پایین صفحه همیشه در دسترس شما هستند:",
+			ReplyMarkup: replyKeyboard,
+		}); sendErr != nil {
+			logger.Logger.Error("failed to send reply keyboard", zap.String("op", op), zap.Error(sendErr))
+		}
 	}
 }
 
