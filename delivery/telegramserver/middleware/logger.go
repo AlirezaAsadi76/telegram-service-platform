@@ -54,8 +54,8 @@ func extractUpdateInfo(update *models.Update) (updateType, handlerHint string, t
 	// Callback Query (دکمه‌های Inline)
 	if update.CallbackQuery != nil {
 		telegramID = update.CallbackQuery.From.ID
-		if update.CallbackQuery.Message != nil {
-			chatID = update.CallbackQuery.Message.GetChat().ID
+		if update.CallbackQuery.Message.Message != nil {
+			chatID = update.CallbackQuery.Message.Message.Chat.ID
 		}
 		data := update.CallbackQuery.Data
 		handlerHint = extractHandlerHintFromCallback(data)

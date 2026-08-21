@@ -1557,3 +1557,7 @@
 {"level":"info","ts":"2026-08-21T16:11:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001120468}
 {"level":"info","ts":"2026-08-21T16:12:32.781+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
 {"level":"info","ts":"2026-08-21T16:12:32.781+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001147931}
+{"level":"info","ts":"2026-08-21T16:13:32.783+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:13:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001270684}
+{"level":"info","ts":"2026-08-21T16:14:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:14:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001027248}
