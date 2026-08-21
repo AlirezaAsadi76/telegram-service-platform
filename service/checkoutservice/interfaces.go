@@ -4,11 +4,12 @@ import (
 	"context"
 	"telegram-service-platform/entity"
 	"time"
+
+	"github.com/go-telegram/bot"
 )
 
 type Messenger interface {
-	SendToUser(ctx context.Context, userID int64, message string) error
-	SendToAdminChannel(ctx context.Context, message string) error
+	Send(ctx context.Context, params *bot.SendMessageParams) error
 }
 
 type IdempotencyChecker interface {

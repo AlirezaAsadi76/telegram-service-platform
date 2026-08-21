@@ -13,6 +13,7 @@ import (
 	"telegram-service-platform/pkg/richerror"
 	"time"
 
+	"github.com/go-telegram/bot"
 	"go.uber.org/zap"
 )
 
@@ -53,7 +54,12 @@ func (s *Service) ProcessPaymentCallback(ctx context.Context, paymentID uint64, 
 			zap.String("status", string(verifyResp.Status)),
 			zap.Duration("latency", time.Since(start)),
 		)
-		_ = s.messenger.SendToUser(ctx, int64(payment.UserID), msgerror.PaymentFailed) // ✅ FIX: payment.UserID
+
+		_ = s.messenger.Send(ctx, &bot.SendMessageParams{
+			ChatID: payment.UserID,
+			Text:   msgerror.PaymentFailed,
+		})
+
 		return nil
 	}
 
@@ -97,11 +103,17 @@ func (s *Service) ProcessPaymentCallback(ctx context.Context, paymentID uint64, 
 		zap.Duration("latency", time.Since(start)),
 	)
 	// 5. Notify
-	_ = s.messenger.SendToUser(ctx, int64(payment.UserID),
-		fmt.Sprintf("Payment successful! Order #%d is being processed.", order.ID))
-	_ = s.messenger.SendToAdminChannel(ctx,
-		fmt.Sprintf("New order #%d paid via %s", order.ID, payment.Method))
-	
+
+	_ = s.messenger.Send(ctx, &bot.SendMessageParams{
+		ChatID: payment.UserID,
+		Text:   fmt.Sprintf("Payment successful! Order #%d is being processed.", order.ID),
+	})
+	//TODO - send to admin
+	//_ = s.messenger.Send(ctx, &bot.SendMessageParams{
+	//	ChatID: payment.,
+	//	Text:  fmt.Sprintf("New order #%d paid via %s", order.ID, payment.Method),
+	//})
+
 	metrics.CheckoutLatency.WithLabelValues("payment_callback").Observe(time.Since(start).Seconds())
 	return nil
 }

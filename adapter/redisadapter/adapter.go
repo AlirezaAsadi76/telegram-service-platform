@@ -17,13 +17,13 @@ type Adapter struct {
 	client *redis.Client
 }
 
-func New(config Config) Adapter {
+func New(config Config) *Adapter {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     fmt.Sprintf("%s:%s", config.Host, config.Port),
 		Password: config.Password,
 		DB:       config.DB,
 	})
-	return Adapter{
+	return &Adapter{
 		client: rdb,
 	}
 }

@@ -3,17 +3,21 @@ package walletservice
 import (
 	"context"
 	"telegram-service-platform/entity"
+	"telegram-service-platform/logger"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 
 	"telegram-service-platform/entity/walletentity"
 	"telegram-service-platform/params/walletparam"
+
+	"go.uber.org/zap"
 )
 
 // Credit performs an atomic credit operation with idempotency guarantee
 func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*walletparam.CreditResponse, error) {
 	const Op = "walletservice.Credit"
-
+	logger.Logger.Debug("check error manual wallet ",
+		zap.Any("req", req))
 	existingTx, gtErr := s.txRepo.GetTransactionByIdempotencyKey(ctx, req.IdempotencyKey)
 	if gtErr == nil && existingTx != nil {
 		wallet, _ := s.repo.GetByUserID(ctx, req.UserID)
@@ -22,6 +26,9 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 			NewBalance:    wallet.Balance,
 		}, nil
 	}
+	logger.Logger.Debug("check error manual wallet ",
+		zap.Bool("existingTx", existingTx != nil),
+		zap.Error(gtErr))
 
 	ok, ifErr := s.idempotencyRepo.SetIfNotExists(ctx, req.IdempotencyKey, entity.IdempotencyStatusProcessing, s.config.IdempotencyProcessingTTL)
 	if ifErr != nil {
@@ -30,6 +37,9 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 	if !ok {
 		return nil, richerror.New(Op, ifErr).WithKind(richerror.KindIdempotencyFailure).WithMessage(msgerror.IdempotencyAlreadyProcessing)
 	}
+	logger.Logger.Debug("check error manual wallet ",
+		zap.Bool("idempotency", ok),
+		zap.Error(ifErr))
 
 	success := false
 	defer func() {

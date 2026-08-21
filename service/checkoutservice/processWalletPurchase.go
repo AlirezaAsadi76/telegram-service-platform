@@ -15,6 +15,7 @@ import (
 	"telegram-service-platform/pkg/ts"
 	"time"
 
+	"github.com/go-telegram/bot"
 	"go.uber.org/zap"
 )
 
@@ -140,10 +141,16 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		zap.Duration("latency", time.Since(start)),
 	)
 	// 8. Notify
-	_ = s.messenger.SendToUser(ctx, int64(req.UserID),
-		fmt.Sprintf("Order #%d placed! Processing...", order.ID))
-	_ = s.messenger.SendToAdminChannel(ctx,
-		fmt.Sprintf("New wallet order #%d from user %d", order.ID, req.UserID))
+
+	_ = s.messenger.Send(ctx, &bot.SendMessageParams{
+		ChatID: req.UserID,
+		Text:   fmt.Sprintf("Order #%d placed! Processing...", order.ID),
+	})
+	//TODO - send to admin
+	//_ = s.messenger.Send(ctx, &bot.SendMessageParams{
+	//	ChatID: payment.,
+	//	Text:  fmt.Sprintf("New order #%d paid via %s", order.ID, payment.Method),
+	//})
 
 	return nil
 }

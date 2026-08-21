@@ -79,10 +79,11 @@ func (h *Handler) Recharge(ctx context.Context, b *bot.Bot, update *models.Updat
 
 	amount := entity.Amount(amountValue)
 	rechargeErr := h.checkoutService.ProcessManualWalletRecharge(ctx, checkoutparams.ManualRechargeRequest{
-		AdminID:  uint64(adminTelegramID),
-		UserID:   userResp.UserInfo.Id,
-		Amount:   amount,
-		Currency: entity.CurrencyTOMAN,
+		AdminID:        entity.TelegramId(adminTelegramID),
+		UserTelegramID: entity.TelegramId(userResp.UserInfo.TelegramID),
+		UserID:         userResp.UserInfo.Id,
+		Amount:         amount,
+		Currency:       entity.CurrencyTOMAN,
 	})
 
 	if rechargeErr != nil {

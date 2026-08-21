@@ -1,12 +1,14 @@
 package app
 
 import (
+	"telegram-service-platform/adapter/botadapter"
 	"telegram-service-platform/adapter/exchangerate"
 	"telegram-service-platform/adapter/fzrcards"
 	"telegram-service-platform/adapter/fzrcards/telegramproduct"
 	"telegram-service-platform/adapter/redisadapter"
 	"telegram-service-platform/adapter/smm/justanotherpanel"
 	"telegram-service-platform/config"
+	"telegram-service-platform/delivery/telegramserver/messenger"
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/repository/postgresnotification"
 	"telegram-service-platform/repository/postgresorder"
@@ -43,30 +45,45 @@ type Dependencies struct {
 	PricingService      *pricingservice.Service
 	PriceService        *priceservice.Service
 	ProductService      *productservice.Service
+	MessengerService    *messenger.Service
 }
 
 type Repositories struct {
 	queueRepo redisqueue.DB
 }
 
-func SetupDependencies(cfg config.Config, pg *postgres.DB, redis *redisadapter.Adapter) (*Dependencies, *Repositories) {
+type Adapters struct {
+	justPanelAdapter *justanotherpanel.Adapter
+	botAdapter       *botadapter.Adapter
+	postgresClient   *postgres.DB
+	redisAdapter     *redisadapter.Adapter
+}
+
+func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapters) {
 
 	// adapters
 	justPanelAdapter := justanotherpanel.New(cfg.Justanotherpanel)
+	botAdapter := botadapter.New(cfg.Telegram)
+	postgresClient, nErr := postgres.New(cfg.Postgres)
+	if nErr != nil {
+		panic(nErr)
+	}
+
+	redisAdapter := redisadapter.New(cfg.RedisCli)
 
 	// Repositories
-	walletRepo := postgreswallet.New(pg)
-	paymentRepo := postgrespayment.New(pg)
-	orderRepo := postgresorder.New(pg)
-	providerRepo := postgresprovider.New(pg)
-	idempotencyRepo := redisidempotency.New(redis)
-	queueRepo := redisqueue.New(redis)
-	notificationRepo := postgresnotification.New(pg)
-	userRepo := postgresuser.New(pg)
-	priceRepo := redisprice.New(redis)
-	productRepo := postgresproduct.New(pg)
-	catalogCache := rediscatalog.New(redis, cfg.CatalogCatch)
-	activityTracker := redisactivity.New(redis, cfg.Activity)
+	walletRepo := postgreswallet.New(postgresClient)
+	paymentRepo := postgrespayment.New(postgresClient)
+	orderRepo := postgresorder.New(postgresClient)
+	providerRepo := postgresprovider.New(postgresClient)
+	idempotencyRepo := redisidempotency.New(redisAdapter)
+	queueRepo := redisqueue.New(redisAdapter)
+	notificationRepo := postgresnotification.New(postgresClient)
+	userRepo := postgresuser.New(postgresClient)
+	priceRepo := redisprice.New(redisAdapter)
+	productRepo := postgresproduct.New(postgresClient)
+	catalogCache := rediscatalog.New(redisAdapter, cfg.CatalogCatch)
+	activityTracker := redisactivity.New(redisAdapter, cfg.Activity)
 
 	// Providers
 	fzrClient := fzrcards.New(cfg.Fzr)
@@ -82,13 +99,14 @@ func SetupDependencies(cfg config.Config, pg *postgres.DB, redis *redisadapter.A
 	priceService := priceservice.New(cfg.PriceService, priceRepo, telegramProvider, exchangeRateProvider)
 	pricingSvc := pricingservice.New(priceRepo)
 	userSvc := userservice.New(walletSvc, userRepo, activityTracker)
+	messengerService := messenger.New(botAdapter)
 
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, catalogCache, justPanelAdapter)
 	// smmSvc.RegisterProvider("justanotherpanel", justanotherpanel.New(...))
 
 	// Orchestrator
 	// TODO: Replace nil messenger with actual implementation
-	checkoutSvc := checkoutservice.New(walletSvc, paymentSvc, orderSvc, smmSvc, nil, idempotencyRepo, cfg.CheckoutSvc)
+	checkoutSvc := checkoutservice.New(walletSvc, paymentSvc, orderSvc, smmSvc, messengerService, idempotencyRepo, cfg.CheckoutSvc)
 
 	return &Dependencies{
 			CheckoutService:     checkoutSvc,
@@ -101,8 +119,15 @@ func SetupDependencies(cfg config.Config, pg *postgres.DB, redis *redisadapter.A
 			PricingService:      pricingSvc,
 			PriceService:        priceService,
 			ProductService:      productSvc,
+			MessengerService:    messengerService,
 		},
 		&Repositories{
 			queueRepo: queueRepo,
+		},
+		&Adapters{
+			botAdapter:       botAdapter,
+			postgresClient:   postgresClient,
+			redisAdapter:     redisAdapter,
+			justPanelAdapter: justPanelAdapter,
 		}
 }
