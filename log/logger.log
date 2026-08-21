@@ -1399,3 +1399,145 @@
 {"level":"info","ts":"2026-08-21T15:26:21.918+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001306178}
 {"level":"info","ts":"2026-08-21T15:26:53.342+0430","caller":"httpserver/server.go:56","msg":"http server shutting down"}
 {"level":"error","ts":"2026-08-21T15:26:53.628+0430","caller":"app/lifecycle.go:42","msg":"telegram server shutdown error","error":"too many requests, Too Many Requests: retry after 208: retry_after 208","stacktrace":"telegram-service-platform/app.(*App).Shutdown\n\t/home/prince/bots/telegram-service-platform/app/lifecycle.go:42\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/bot/main.go:51\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
+{"level":"info","ts":"2026-08-21T15:35:32.779+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-21T15:35:32.779+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-21T15:35:32.780+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":300}
+{"level":"info","ts":"2026-08-21T15:35:32.780+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-21T15:35:32.780+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":300}
+{"level":"info","ts":"2026-08-21T15:35:32.780+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":300}
+{"level":"info","ts":"2026-08-21T15:35:32.780+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":43200}
+{"level":"info","ts":"2026-08-21T15:35:32.780+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-21T15:35:32.780+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T15:35:32.780+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T15:35:32.781+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T15:35:32.781+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T15:35:32.781+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-21T15:35:32.786+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T15:35:32.786+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.005415462}
+{"level":"info","ts":"2026-08-21T15:35:32.788+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T15:35:32.789+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.008117509}
+{"level":"info","ts":"2026-08-21T15:35:32.789+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:35:32.789+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.008836969}
+{"level":"warn","ts":"2026-08-21T15:35:34.360+0430","caller":"smmvalidationjob/run.go:58","msg":"SMM validation found missing services, admin notified","missing_count":8,"job":"smm-validation"}
+{"level":"warn","ts":"2026-08-21T15:35:34.682+0430","caller":"notificationdispatchjob/run.go:73","msg":"send notification failed","notification_id":2,"error":"bad request, Bad Request: chat not found"}
+{"level":"info","ts":"2026-08-21T15:35:52.070+0430","caller":"checkoutservice/processManualWalletRecharge.go:22","msg":"checkout manual recharge started","user_id":1,"amount":10000}
+{"level":"error","ts":"2026-08-21T15:35:52.072+0430","caller":"checkoutservice/processManualWalletRecharge.go:42","msg":"checkout manual recharge failed","error":"idempotency already processing","user_id":1,"latency":0.001512361,"stacktrace":"telegram-service-platform/service/checkoutservice.(*Service).ProcessManualWalletRecharge\n\t/home/prince/bots/telegram-service-platform/service/checkoutservice/processManualWalletRecharge.go:42\ntelegram-service-platform/delivery/telegramserver/handler/adminhandler.(*Handler).Recharge\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/handler/adminhandler/recharge.go:81\ntelegram-service-platform/delivery/telegramserver/handler/adminhandler.(*Handler).middlewares.AdminAuth.func1.1\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/middleware/admin_auth.go:44\ntelegram-service-platform/delivery/telegramserver/handler/adminhandler.(*Handler).middlewares.Public.Recover.func3.1\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/middleware/recover.go:36\ntelegram-service-platform/delivery/telegramserver/handler/adminhandler.(*Handler).middlewares.Public.Logger.func2.1\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/middleware/logger.go:46"}
+{"level":"error","ts":"2026-08-21T15:35:52.072+0430","caller":"adminhandler/recharge.go:89","msg":"recharge failed","op":"adminhandler.Recharge","user_id":1,"amount":10000,"error":"idempotency already processing","stacktrace":"telegram-service-platform/delivery/telegramserver/handler/adminhandler.(*Handler).Recharge\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/handler/adminhandler/recharge.go:89\ntelegram-service-platform/delivery/telegramserver/handler/adminhandler.(*Handler).middlewares.AdminAuth.func1.1\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/middleware/admin_auth.go:44\ntelegram-service-platform/delivery/telegramserver/handler/adminhandler.(*Handler).middlewares.Public.Recover.func3.1\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/middleware/recover.go:36\ntelegram-service-platform/delivery/telegramserver/handler/adminhandler.(*Handler).middlewares.Public.Logger.func2.1\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/middleware/logger.go:46"}
+{"level":"info","ts":"2026-08-21T15:36:32.784+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:36:32.784+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.002597444}
+{"level":"info","ts":"2026-08-21T15:37:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:37:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001054796}
+{"level":"info","ts":"2026-08-21T15:38:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:38:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001270124}
+{"level":"info","ts":"2026-08-21T15:39:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:39:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001603461}
+{"level":"info","ts":"2026-08-21T15:40:32.781+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T15:40:32.781+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T15:40:32.781+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T15:40:32.782+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T15:40:32.783+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:40:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001250174}
+{"level":"info","ts":"2026-08-21T15:40:32.783+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T15:40:32.783+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.001660404}
+{"level":"info","ts":"2026-08-21T15:40:32.783+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T15:40:32.783+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.001960435}
+{"level":"info","ts":"2026-08-21T15:41:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:41:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001407851}
+{"level":"info","ts":"2026-08-21T15:42:32.783+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:42:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.002611954}
+{"level":"info","ts":"2026-08-21T15:43:32.781+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:43:32.781+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001259012}
+{"level":"info","ts":"2026-08-21T15:44:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:44:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001480669}
+{"level":"info","ts":"2026-08-21T15:45:32.781+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T15:45:32.781+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T15:45:32.781+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T15:45:32.781+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T15:45:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:45:32.782+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T15:45:32.783+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T15:45:32.783+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.001406418}
+{"level":"info","ts":"2026-08-21T15:45:32.783+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.0013722}
+{"level":"info","ts":"2026-08-21T15:45:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001589095}
+{"level":"warn","ts":"2026-08-21T15:45:33.022+0430","caller":"notificationdispatchjob/run.go:73","msg":"send notification failed","notification_id":1,"error":"bad request, Bad Request: chat not found"}
+{"level":"info","ts":"2026-08-21T15:46:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:46:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001382364}
+{"level":"info","ts":"2026-08-21T15:47:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:47:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001179065}
+{"level":"info","ts":"2026-08-21T15:48:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:48:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.00154112}
+{"level":"info","ts":"2026-08-21T15:49:32.783+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:49:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001378041}
+{"level":"info","ts":"2026-08-21T15:50:32.781+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T15:50:32.781+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T15:50:32.782+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T15:50:32.782+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T15:50:32.783+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T15:50:32.783+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.001805517}
+{"level":"info","ts":"2026-08-21T15:50:32.783+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:50:32.784+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.002018413}
+{"level":"info","ts":"2026-08-21T15:50:32.784+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T15:50:32.784+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.002722934}
+{"level":"warn","ts":"2026-08-21T15:50:33.255+0430","caller":"notificationdispatchjob/run.go:73","msg":"send notification failed","notification_id":1,"error":"bad request, Bad Request: chat not found"}
+{"level":"info","ts":"2026-08-21T15:51:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:51:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001568115}
+{"level":"info","ts":"2026-08-21T15:52:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:52:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001428406}
+{"level":"info","ts":"2026-08-21T15:53:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:53:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001449435}
+{"level":"info","ts":"2026-08-21T15:54:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:54:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001134403}
+{"level":"info","ts":"2026-08-21T15:55:32.781+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T15:55:32.781+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T15:55:32.782+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T15:55:32.782+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T15:55:32.783+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T15:55:32.783+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:55:32.783+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T15:55:32.783+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.00149874}
+{"level":"info","ts":"2026-08-21T15:55:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001265248}
+{"level":"info","ts":"2026-08-21T15:55:32.783+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.001300914}
+{"level":"warn","ts":"2026-08-21T15:55:33.564+0430","caller":"notificationdispatchjob/run.go:73","msg":"send notification failed","notification_id":2,"error":"bad request, Bad Request: chat not found"}
+{"level":"info","ts":"2026-08-21T15:56:32.783+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:56:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001468171}
+{"level":"info","ts":"2026-08-21T15:57:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:57:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001237545}
+{"level":"info","ts":"2026-08-21T15:58:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:58:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.00114211}
+{"level":"info","ts":"2026-08-21T15:59:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T15:59:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001198107}
+{"level":"info","ts":"2026-08-21T16:00:32.781+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T16:00:32.781+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T16:00:32.781+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T16:00:32.781+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T16:00:32.782+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T16:00:32.782+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.001164138}
+{"level":"info","ts":"2026-08-21T16:00:32.782+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T16:00:32.782+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.000985891}
+{"level":"info","ts":"2026-08-21T16:00:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:00:32.783+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001022101}
+{"level":"warn","ts":"2026-08-21T16:00:33.916+0430","caller":"notificationdispatchjob/run.go:73","msg":"send notification failed","notification_id":2,"error":"bad request, Bad Request: chat not found"}
+{"level":"info","ts":"2026-08-21T16:01:32.781+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:01:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001294016}
+{"level":"info","ts":"2026-08-21T16:02:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:02:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.002199991}
+{"level":"info","ts":"2026-08-21T16:03:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:03:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001095178}
+{"level":"info","ts":"2026-08-21T16:04:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:04:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001003746}
+{"level":"info","ts":"2026-08-21T16:05:32.781+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-21T16:05:32.781+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-21T16:05:32.781+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-21T16:05:32.781+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-21T16:05:32.782+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-21T16:05:32.782+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.000710449}
+{"level":"info","ts":"2026-08-21T16:05:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:05:32.782+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-21T16:05:32.782+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.001118798}
+{"level":"info","ts":"2026-08-21T16:05:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.000762151}
+{"level":"info","ts":"2026-08-21T16:06:32.781+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:06:32.781+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.000920664}
+{"level":"info","ts":"2026-08-21T16:07:32.781+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:07:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001089528}
+{"level":"info","ts":"2026-08-21T16:08:32.782+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-21T16:08:32.782+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.00114867}

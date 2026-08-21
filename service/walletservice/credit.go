@@ -1,4 +1,3 @@
-// service/walletservice/credit.go
 package walletservice
 
 import (
@@ -17,7 +16,6 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 
 	existingTx, gtErr := s.txRepo.GetTransactionByIdempotencyKey(ctx, req.IdempotencyKey)
 	if gtErr == nil && existingTx != nil {
-		// Already processed - return existing result
 		wallet, _ := s.repo.GetByUserID(ctx, req.UserID)
 		return &walletparam.CreditResponse{
 			TransactionID: existingTx.ID,
