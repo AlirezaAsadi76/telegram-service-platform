@@ -20,5 +20,5 @@ type GetActiveUsersResponse struct {
 type SyncLastSeenRequest struct{}
 
 type SyncLastSeenResponse struct {
-	Synced entity.TelegramId
+	Synced int64
 }

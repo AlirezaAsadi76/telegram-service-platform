@@ -1,21 +1,13 @@
 package userservice
 
-import (
-	"context"
-	"telegram-service-platform/entity"
-)
-
-type UserRepository interface {
-	FindUserByTelegramID(ctx context.Context, telegramID int64) (*entity.User, error)
-	Create(ctx context.Context, user *entity.User) error
-}
-
 type Service struct {
-	repository UserRepository
+	repository      UserRepository
+	activityTracker ActivityTrackerRepository
 }
 
-func New(repository UserRepository) *Service {
+func New(repository UserRepository, activityTracker ActivityTrackerRepository) *Service {
 	return &Service{
-		repository: repository,
+		repository:      repository,
+		activityTracker: activityTracker,
 	}
 }
