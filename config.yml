@@ -55,6 +55,7 @@ scheduler:
   payment_expiry_interval: "5m"
   queue_consumer_interval: "5m"
   smm_validation_interval: "12h"
+  user_activity_sync_interval: "10m"
 
 wallet:
   idempotency_processing_ttl: "5m"
@@ -93,3 +94,6 @@ catalogCache:
   platformsCacheKey: "smm:catalog:platforms"
   categoriesCacheKey: "smm:catalog:categories:%s"
   cacheTTL: "24h"
+
+activity:
+  activity_ttl: "5m"

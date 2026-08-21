@@ -56,8 +56,10 @@ func (s *Scheduler) Register() error {
 
 func (s *Scheduler) resolveInterval(name string) time.Duration {
 	switch name {
+	case "user-activity-sync":
+		return s.config.userActivitysyncInterval
 	case "smm-validation":
-		return time.Minute
+		return s.config.SmmValidationInterval
 	case "price-refresh":
 		return s.config.CurrencyRefreshInterval
 	case "payment-verify":

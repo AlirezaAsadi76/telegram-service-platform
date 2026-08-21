@@ -16,4 +16,6 @@ type Config struct {
 	QueueConsumerInterval time.Duration `koanf:"queue_consumer_interval"`
 	// validation services
 	SmmValidationInterval time.Duration `koanf:"smm_validation_interval"`
+	// userActivity
+	userActivitysyncInterval time.Duration `koanf:"user_activity_sync_interval"`
 }

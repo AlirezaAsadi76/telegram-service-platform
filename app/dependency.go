@@ -15,6 +15,7 @@ import (
 	"telegram-service-platform/repository/postgresprovider"
 	"telegram-service-platform/repository/postgresuser"
 	"telegram-service-platform/repository/postgreswallet"
+	"telegram-service-platform/repository/redis/redisactivity"
 	"telegram-service-platform/repository/redis/rediscatalog"
 	"telegram-service-platform/repository/redis/redisidempotency"
 	"telegram-service-platform/repository/redis/redisprice"
@@ -65,6 +66,7 @@ func SetupDependencies(cfg config.Config, pg *postgres.DB, redis *redisadapter.A
 	priceRepo := redisprice.New(redis)
 	productRepo := postgresproduct.New(pg)
 	catalogCache := rediscatalog.New(redis, cfg.CatalogCatch)
+	activityTracker := redisactivity.New(redis, cfg.Activity)
 
 	// Providers
 	fzrClient := fzrcards.New(cfg.Fzr)
@@ -79,7 +81,7 @@ func SetupDependencies(cfg config.Config, pg *postgres.DB, redis *redisadapter.A
 	notificationSVC := notificationservice.New(notificationRepo, queueRepo, cfg.NotificationSvc)
 	priceService := priceservice.New(cfg.PriceService, priceRepo, telegramProvider, exchangeRateProvider)
 	pricingSvc := pricingservice.New(priceRepo)
-	userSvc := userservice.New(userRepo)
+	userSvc := userservice.New(userRepo, activityTracker)
 
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, catalogCache, justPanelAdapter)
 	// smmSvc.RegisterProvider("justanotherpanel", justanotherpanel.New(...))

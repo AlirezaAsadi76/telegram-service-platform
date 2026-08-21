@@ -3,7 +3,7 @@ package redisactivity
 import "time"
 
 type Config struct {
-	TTL time.Duration `koanf:"ttl"`
+	ActivityTTL time.Duration `koanf:"activity_ttl"`
 }
 
 const (

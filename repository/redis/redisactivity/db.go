@@ -13,6 +13,6 @@ type ActivityTracker struct {
 func New(redis *redisadapter.Adapter, cfg Config) *ActivityTracker {
 	return &ActivityTracker{
 		redis: redis,
-		ttl:   cfg.TTL,
+		ttl:   cfg.ActivityTTL,
 	}
 }

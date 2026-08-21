@@ -7,6 +7,7 @@ import (
 	"telegram-service-platform/adapter/redisadapter"
 	"telegram-service-platform/adapter/smm/justanotherpanel"
 	"telegram-service-platform/repository/postgres"
+	"telegram-service-platform/repository/redis/redisactivity"
 	"telegram-service-platform/repository/redis/rediscatalog"
 	"telegram-service-platform/scheduler"
 	"telegram-service-platform/scheduler/jobs/notificationdispatchjob"
@@ -55,4 +56,5 @@ type Config struct {
 	NotificationJob  notificationdispatchjob.Config `koanf:"notificationJob"`
 	Justanotherpanel justanotherpanel.Config        `koanf:"justanotherPanel"`
 	CatalogCatch     rediscatalog.Config            `koanf:"catalogCache"`
+	Activity         redisactivity.Config           `koanf:"activity"`
 }
