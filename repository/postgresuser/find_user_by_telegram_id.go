@@ -20,6 +20,7 @@ func (db *DB) FindUserByTelegramID(ctx context.Context, telegramID int64) (*enti
 			first_name,
 			last_name,
 			role,
+			last_seen_at,
 			created_at,
 			updated_at
 		FROM users
@@ -41,7 +42,7 @@ func (db *DB) FindUserByTelegramID(ctx context.Context, telegramID int64) (*enti
 func scanUser(row postgres.Scanner) (entity.User, error) {
 	user := entity.User{}
 	err := row.Scan(&user.ID, &user.TelegramID, &user.Username, &user.FirstName,
-		&user.LastName, &user.Role, &user.CreatedAt, &user.UpdatedAt)
+		&user.LastName, &user.Role, &user.LastSeenAt, &user.CreatedAt, &user.UpdatedAt)
 
 	return user, err
 

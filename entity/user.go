@@ -10,6 +10,7 @@ type User struct {
 	LastName    string
 	PhoneNumber string
 	Role        Role
+	LastSeenAt  time.Time
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
