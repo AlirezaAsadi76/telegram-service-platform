@@ -135,4 +135,42 @@ var (
 			Help:      "Total number of panics recovered in Telegram handlers",
 		},
 	)
+
+	// Order Flow Observability
+	OrderFlowStateSaved = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: "smm_bot",
+			Name:      "order_flow_state_saved_total",
+			Help:      "Total number of order flow states saved",
+		},
+		[]string{"stage"},
+	)
+
+	OrderFlowStateRetrieved = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: "smm_bot",
+			Name:      "order_flow_state_retrieved_total",
+			Help:      "Total number of order flow states retrieved",
+		},
+		[]string{"found"},
+	)
+
+	OrderFlowStateDeleted = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: "smm_bot",
+			Name:      "order_flow_state_deleted_total",
+			Help:      "Total number of order flow states deleted",
+		},
+		[]string{"reason"}, // "completed", "abandoned", "expired"
+	)
+
+	OrderFlowDuration = promauto.NewHistogramVec(
+		prometheus.HistogramOpts{
+			Namespace: "smm_bot",
+			Name:      "order_flow_duration_seconds",
+			Help:      "Duration of order flow from start to completion",
+			Buckets:   []float64{10, 30, 60, 120, 300, 600}, // 10s, 30s, 1m, 2m, 5m, 10m
+		},
+		[]string{"status"}, // "completed", "abandoned"
+	)
 )
