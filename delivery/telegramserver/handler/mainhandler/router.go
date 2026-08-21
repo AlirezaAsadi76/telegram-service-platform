@@ -2,7 +2,6 @@ package mainhandler
 
 import (
 	"telegram-service-platform/delivery/telegramserver/callback"
-	"telegram-service-platform/delivery/telegramserver/middleware"
 
 	"github.com/go-telegram/bot"
 )
@@ -14,7 +13,7 @@ func (h *Handler) RegisterRoutes(b *bot.Bot) {
 		"/start",
 		bot.MatchTypePrefix,
 		h.start,
-		middleware.Public()...,
+		h.middlewares()...,
 	)
 
 	b.RegisterHandler(
@@ -22,7 +21,7 @@ func (h *Handler) RegisterRoutes(b *bot.Bot) {
 		callback.ReplyMainMenuText,
 		bot.MatchTypeExact,
 		h.showMainMenu,
-		middleware.Public()...,
+		h.middlewares()...,
 	)
 
 	b.RegisterHandler(
@@ -30,7 +29,7 @@ func (h *Handler) RegisterRoutes(b *bot.Bot) {
 		callback.SMMPlatformPrefix,
 		bot.MatchTypePrefix,
 		h.selectPlatform,
-		middleware.Public()...,
+		h.middlewares()...,
 	)
 
 	b.RegisterHandler(
@@ -38,7 +37,7 @@ func (h *Handler) RegisterRoutes(b *bot.Bot) {
 		callback.SMMCategoryPrefix,
 		bot.MatchTypePrefix,
 		h.selectCategory,
-		middleware.Public()...,
+		h.middlewares()...,
 	)
 
 	b.RegisterHandler(
@@ -46,6 +45,6 @@ func (h *Handler) RegisterRoutes(b *bot.Bot) {
 		callback.SMMServicePrefix,
 		bot.MatchTypePrefix,
 		h.selectService,
-		middleware.Public()...,
+		h.middlewares()...,
 	)
 }
