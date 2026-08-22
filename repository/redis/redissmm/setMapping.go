@@ -1,4 +1,4 @@
-package smmredis
+package redissmm
 
 import (
 	"context"
@@ -9,11 +9,11 @@ import (
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (c *SMMCache) SetService(ctx context.Context, service *smmentity.SMM) error {
-	const op = "redissmm.SetService"
-	key := fmt.Sprintf(serviceKeyPattern, service.Service)
+func (c *SMMCache) SetMapping(ctx context.Context, mapping *smmentity.SmmMapping) error {
+	const op = "redissmm.SetMapping"
+	key := fmt.Sprintf(mappingKeyPattern, mapping.Id)
 
-	data, err := json.Marshal(service)
+	data, err := json.Marshal(mapping)
 	if err != nil {
 		return richerror.New(op, err).
 			WithKind(richerror.KindSerializationFailure).WithMessage(msgerror.MarshalFailed)

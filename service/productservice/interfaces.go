@@ -32,7 +32,7 @@ type SMMAdapterInterface interface {
 
 type SmmCache interface {
 	SetService(ctx context.Context, service *smmentity.SMM) error
-	GetService(ctx context.Context, id uint64) (*smmentity.SMM, bool, error)
+	GetService(ctx context.Context, id int64) (*smmentity.SMM, bool, error)
 	SetMapping(ctx context.Context, mapping *smmentity.SmmMapping) error
-	GetMapping(ctx context.Context, id uint64) (*smmentity.SmmMapping, bool, error)
+	GetMapping(ctx context.Context, id int64) (*smmentity.SmmMapping, bool, error)
 }

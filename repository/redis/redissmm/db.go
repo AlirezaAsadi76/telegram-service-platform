@@ -1,4 +1,4 @@
-package smmredis
+package redissmm
 
 import "telegram-service-platform/adapter/redisadapter"
 

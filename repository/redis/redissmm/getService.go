@@ -1,4 +1,4 @@
-package smmredis
+package redissmm
 
 import (
 	"context"
@@ -12,9 +12,9 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-func (c *SMMCache) GetMapping(ctx context.Context, id uint64) (*smmentity.SmmMapping, bool, error) {
-	const op = "redissmm.GetMapping"
-	key := fmt.Sprintf(mappingKeyPattern, id)
+func (c *SMMCache) GetService(ctx context.Context, id int64) (*smmentity.SMM, bool, error) {
+	const op = "redissmm.GetService"
+	key := fmt.Sprintf(serviceKeyPattern, id)
 
 	data, err := c.redis.Client().Get(ctx, key).Bytes()
 	if err != nil {
@@ -25,11 +25,11 @@ func (c *SMMCache) GetMapping(ctx context.Context, id uint64) (*smmentity.SmmMap
 			WithKind(richerror.KindUnexpected).WithMessage(msgerror.CacheReadFailed)
 	}
 
-	var mapping smmentity.SmmMapping
-	if err := json.Unmarshal(data, &mapping); err != nil {
+	var service smmentity.SMM
+	if err := json.Unmarshal(data, &service); err != nil {
 		return nil, false, richerror.New(op, err).
 			WithKind(richerror.KindSerializationFailure).WithMessage(msgerror.CacheParseFailed)
 	}
 
-	return &mapping, true, nil
+	return &service, true, nil
 }

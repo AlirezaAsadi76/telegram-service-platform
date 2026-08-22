@@ -1,4 +1,4 @@
-package smmredis
+package redissmm
 
 const (
 	mappingKeyPattern = "smm:mapping:%d"
