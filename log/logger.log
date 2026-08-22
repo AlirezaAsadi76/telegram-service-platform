@@ -2030,3 +2030,117 @@
 {"level":"info","ts":"2026-08-21T18:16:42.106+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"command","handler":"/recharge","telegram_id":775589639,"chat_id":775589639,"duration":1.044825116}
 {"level":"info","ts":"2026-08-21T18:17:22.034+0430","caller":"httpserver/server.go:56","msg":"http server shutting down"}
 {"level":"error","ts":"2026-08-21T18:17:32.392+0430","caller":"app/lifecycle.go:48","msg":"scheduler server shutdown error","error":"gocron: timed out waiting for jobs to finish","stacktrace":"telegram-service-platform/app.(*App).Shutdown\n\t/home/prince/bots/telegram-service-platform/app/lifecycle.go:48\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/bot/main.go:51\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
+{"level":"info","ts":"2026-08-22T14:07:08.234+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-22T14:07:08.235+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-22T14:07:08.235+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":300}
+{"level":"info","ts":"2026-08-22T14:07:08.235+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-22T14:07:08.235+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":300}
+{"level":"info","ts":"2026-08-22T14:07:08.235+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":300}
+{"level":"info","ts":"2026-08-22T14:07:08.235+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":43200}
+{"level":"info","ts":"2026-08-22T14:07:08.235+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-22T14:07:08.236+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-22T14:07:08.237+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-22T14:07:08.237+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-22T14:07:08.237+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-22T14:07:08.237+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-22T14:07:08.272+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-22T14:07:08.273+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.035893109}
+{"level":"info","ts":"2026-08-22T14:07:08.272+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-22T14:07:08.273+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.03571313}
+{"level":"info","ts":"2026-08-22T14:07:08.272+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-22T14:07:08.273+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.035870934}
+{"level":"warn","ts":"2026-08-22T14:07:10.211+0430","caller":"smmvalidationjob/run.go:58","msg":"SMM validation found missing services, admin notified","missing_count":16,"job":"smm-validation"}
+{"level":"warn","ts":"2026-08-22T14:07:10.624+0430","caller":"notificationdispatchjob/run.go:73","msg":"send notification failed","notification_id":1,"error":"bad request, Bad Request: chat not found"}
+{"level":"info","ts":"2026-08-22T14:07:23.819+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"command","handler":"/start","telegram_id":2053084840,"chat_id":2053084840,"duration":0.002229517}
+{"level":"info","ts":"2026-08-22T14:07:39.149+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"command","handler":"/start","telegram_id":2053084840,"chat_id":2053084840,"duration":0.003348647}
+{"level":"info","ts":"2026-08-22T14:08:08.242+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-22T14:08:08.242+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.004685436}
+{"level":"info","ts":"2026-08-22T14:08:21.534+0430","caller":"httpserver/server.go:56","msg":"http server shutting down"}
+{"level":"error","ts":"2026-08-22T14:08:21.851+0430","caller":"app/lifecycle.go:42","msg":"telegram server shutdown error","error":"too many requests, Too Many Requests: retry after 526: retry_after 526","stacktrace":"telegram-service-platform/app.(*App).Shutdown\n\t/home/prince/bots/telegram-service-platform/app/lifecycle.go:42\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/bot/main.go:51\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
+{"level":"info","ts":"2026-08-22T14:52:22.807+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-22T14:52:22.808+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-22T14:52:22.808+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":300}
+{"level":"info","ts":"2026-08-22T14:52:22.808+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-22T14:52:22.808+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":300}
+{"level":"info","ts":"2026-08-22T14:52:22.808+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":300}
+{"level":"info","ts":"2026-08-22T14:52:22.808+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":43200}
+{"level":"info","ts":"2026-08-22T14:52:22.808+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-22T14:52:22.809+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-22T14:52:22.809+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-22T14:52:22.809+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-22T14:52:22.809+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-22T14:52:22.811+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-22T14:52:22.841+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-22T14:52:22.841+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.031831864}
+{"level":"info","ts":"2026-08-22T14:52:22.841+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-22T14:52:22.841+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-22T14:52:22.841+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.031759141}
+{"level":"info","ts":"2026-08-22T14:52:22.841+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.030220715}
+{"level":"warn","ts":"2026-08-22T14:52:24.729+0430","caller":"smmvalidationjob/run.go:58","msg":"SMM validation found missing services, admin notified","missing_count":16,"job":"smm-validation"}
+{"level":"warn","ts":"2026-08-22T14:52:25.098+0430","caller":"notificationdispatchjob/run.go:73","msg":"send notification failed","notification_id":2,"error":"bad request, Bad Request: chat not found"}
+{"level":"info","ts":"2026-08-22T14:52:31.027+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"command","handler":"/start","telegram_id":2053084840,"chat_id":2053084840,"duration":0.002114529}
+{"level":"info","ts":"2026-08-22T14:52:41.352+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"command","handler":"/start","telegram_id":2053084840,"chat_id":2053084840,"duration":0.001800307}
+{"level":"info","ts":"2026-08-22T14:52:43.726+0430","caller":"httpserver/server.go:56","msg":"http server shutting down"}
+{"level":"error","ts":"2026-08-22T14:52:54.044+0430","caller":"app/lifecycle.go:48","msg":"scheduler server shutdown error","error":"gocron: timed out waiting for jobs to finish","stacktrace":"telegram-service-platform/app.(*App).Shutdown\n\t/home/prince/bots/telegram-service-platform/app/lifecycle.go:48\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/bot/main.go:51\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
+{"level":"info","ts":"2026-08-22T14:54:30.463+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-22T14:54:30.463+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-22T14:54:30.463+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":300}
+{"level":"info","ts":"2026-08-22T14:54:30.463+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-22T14:54:30.463+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":300}
+{"level":"info","ts":"2026-08-22T14:54:30.463+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":300}
+{"level":"info","ts":"2026-08-22T14:54:30.463+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":43200}
+{"level":"info","ts":"2026-08-22T14:54:30.463+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-22T14:54:30.464+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-22T14:54:30.464+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-22T14:54:30.464+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-22T14:54:30.465+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-22T14:54:30.465+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-22T14:54:30.467+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-22T14:54:30.468+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.004181073}
+{"level":"info","ts":"2026-08-22T14:54:30.474+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-22T14:54:30.474+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-22T14:54:30.474+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.009667438}
+{"level":"info","ts":"2026-08-22T14:54:30.474+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.009956344}
+{"level":"warn","ts":"2026-08-22T14:54:32.130+0430","caller":"smmvalidationjob/run.go:58","msg":"SMM validation found missing services, admin notified","missing_count":16,"job":"smm-validation"}
+{"level":"warn","ts":"2026-08-22T14:54:32.998+0430","caller":"notificationdispatchjob/run.go:73","msg":"send notification failed","notification_id":3,"error":"bad request, Bad Request: chat not found"}
+{"level":"info","ts":"2026-08-22T14:54:36.080+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"command","handler":"/start","telegram_id":2053084840,"chat_id":2053084840,"duration":0.766722674}
+{"level":"info","ts":"2026-08-22T14:54:40.696+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"command","handler":"/start","telegram_id":2053084840,"chat_id":2053084840,"duration":0.342939409}
+{"level":"info","ts":"2026-08-22T14:54:48.662+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"callback","handler":"smm:category","telegram_id":2053084840,"chat_id":2053084840,"duration":0.219048645}
+{"level":"error","ts":"2026-08-22T14:54:52.356+0430","caller":"mainhandler/selectService.go:75","msg":"failed to send service details","error":"bad request, Bad Request: chat not found","op":"mainhandler.selectService","stacktrace":"telegram-service-platform/delivery/telegramserver/handler/mainhandler.(*Handler).selectService\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/handler/mainhandler/selectService.go:75\ntelegram-service-platform/delivery/telegramserver/handler/mainhandler.(*Handler).RegisterRoutes.(*Handler).middlewares.ActivityTracking.func5.1\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/middleware/activity_tracking.go:39\ntelegram-service-platform/delivery/telegramserver/handler/mainhandler.(*Handler).RegisterRoutes.(*Handler).middlewares.Public.Recover.func15.1\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/middleware/recover.go:49\ntelegram-service-platform/delivery/telegramserver/handler/mainhandler.(*Handler).RegisterRoutes.(*Handler).middlewares.Public.Logger.func14.1\n\t/home/prince/bots/telegram-service-platform/delivery/telegramserver/middleware/logger.go:28"}
+{"level":"info","ts":"2026-08-22T14:54:52.357+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"callback","handler":"smm:service","telegram_id":2053084840,"chat_id":2053084840,"duration":0.358997239}
+{"level":"info","ts":"2026-08-22T14:55:30.490+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-22T14:55:30.490+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001430305}
+{"level":"info","ts":"2026-08-22T14:56:30.485+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-22T14:56:30.485+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.001693875}
+{"level":"info","ts":"2026-08-22T14:56:47.289+0430","caller":"httpserver/server.go:56","msg":"http server shutting down"}
+{"level":"error","ts":"2026-08-22T14:56:47.620+0430","caller":"app/lifecycle.go:42","msg":"telegram server shutdown error","error":"too many requests, Too Many Requests: retry after 462: retry_after 462","stacktrace":"telegram-service-platform/app.(*App).Shutdown\n\t/home/prince/bots/telegram-service-platform/app/lifecycle.go:42\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/bot/main.go:51\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}
+{"level":"info","ts":"2026-08-22T15:03:30.033+0430","caller":"scheduler/register.go:15","msg":"scheduler register start"}
+{"level":"info","ts":"2026-08-22T15:03:30.033+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-verify","interval":60}
+{"level":"info","ts":"2026-08-22T15:03:30.033+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"order-fulfiller","interval":300}
+{"level":"info","ts":"2026-08-22T15:03:30.033+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"status-sync","interval":300}
+{"level":"info","ts":"2026-08-22T15:03:30.033+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"payment-expiry","interval":300}
+{"level":"info","ts":"2026-08-22T15:03:30.033+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"notification-dispatch","interval":300}
+{"level":"info","ts":"2026-08-22T15:03:30.033+0430","caller":"scheduler/register.go:48","msg":"job registered","job":"smm-validation","interval":43200}
+{"level":"info","ts":"2026-08-22T15:03:30.033+0430","caller":"httpserver/server.go:44","msg":"http server starting","port":8183}
+{"level":"info","ts":"2026-08-22T15:03:30.034+0430","caller":"orderfulfillerjob/run.go:27","msg":"worker started","job":"order-fulfiller"}
+{"level":"info","ts":"2026-08-22T15:03:30.034+0430","caller":"paymentexpiryjob/run.go:27","msg":"worker started","job":"payment-expiry"}
+{"level":"info","ts":"2026-08-22T15:03:30.034+0430","caller":"notificationdispatchjob/run.go:27","msg":"worker started","job":"notification-dispatch"}
+{"level":"info","ts":"2026-08-22T15:03:30.035+0430","caller":"statussyncJob/run.go:25","msg":"worker started","job":"status-sync"}
+{"level":"info","ts":"2026-08-22T15:03:30.035+0430","caller":"smmvalidationjob/run.go:24","msg":"SMM validation job started","job":"smm-validation"}
+{"level":"info","ts":"2026-08-22T15:03:30.039+0430","caller":"statussyncJob/run.go:39","msg":"processing orders fetched","job":"status-sync","count":0}
+{"level":"info","ts":"2026-08-22T15:03:30.039+0430","caller":"statussyncJob/run.go:101","msg":"worker completed","job":"status-sync","duration":0.004083441}
+{"level":"info","ts":"2026-08-22T15:03:30.043+0430","caller":"paymentexpiryjob/run.go:39","msg":"expired payments fetched","job":"payment-expiry","count":0}
+{"level":"info","ts":"2026-08-22T15:03:30.043+0430","caller":"paymentexpiryjob/run.go:76","msg":"worker completed","job":"payment-expiry","duration":0.008611001}
+{"level":"info","ts":"2026-08-22T15:03:30.044+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-22T15:03:30.044+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.00839944}
+{"level":"warn","ts":"2026-08-22T15:03:31.959+0430","caller":"smmvalidationjob/run.go:58","msg":"SMM validation found missing services, admin notified","missing_count":16,"job":"smm-validation"}
+{"level":"warn","ts":"2026-08-22T15:03:32.352+0430","caller":"notificationdispatchjob/run.go:73","msg":"send notification failed","notification_id":4,"error":"bad request, Bad Request: chat not found"}
+{"level":"info","ts":"2026-08-22T15:03:51.974+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"command","handler":"/start","telegram_id":2053084840,"chat_id":2053084840,"duration":0.368499152}
+{"level":"info","ts":"2026-08-22T15:03:54.697+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"callback","handler":"smm:category","telegram_id":2053084840,"chat_id":2053084840,"duration":0.24413114}
+{"level":"info","ts":"2026-08-22T15:03:56.567+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"callback","handler":"smm:service","telegram_id":2053084840,"chat_id":2053084840,"duration":0.227822127}
+{"level":"info","ts":"2026-08-22T15:04:03.215+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"message","handler":"text","telegram_id":2053084840,"chat_id":2053084840,"duration":0.000866451}
+{"level":"info","ts":"2026-08-22T15:04:09.075+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"message","handler":"text","telegram_id":2053084840,"chat_id":2053084840,"duration":0.0011309}
+{"level":"info","ts":"2026-08-22T15:04:30.049+0430","caller":"paymentverifyjob/run.go:37","msg":"worker pending payments fetched","job":"payment-verify","count":0}
+{"level":"info","ts":"2026-08-22T15:04:30.049+0430","caller":"paymentverifyjob/run.go:119","msg":"worker completed","job":"payment-verify","duration":0.00205709}
+{"level":"info","ts":"2026-08-22T15:04:36.226+0430","caller":"httpserver/server.go:56","msg":"http server shutting down"}
+{"level":"error","ts":"2026-08-22T15:04:46.556+0430","caller":"app/lifecycle.go:48","msg":"scheduler server shutdown error","error":"gocron: timed out waiting for jobs to finish","stacktrace":"telegram-service-platform/app.(*App).Shutdown\n\t/home/prince/bots/telegram-service-platform/app/lifecycle.go:48\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/bot/main.go:51\nruntime.main\n\t/snap/go/11227/src/runtime/proc.go:290"}

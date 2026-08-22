@@ -21,7 +21,8 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 		return
 	}
 
-	chatID := update.CallbackQuery.Message.Message.ID
+	chatID := update.CallbackQuery.Message.Message.Chat.ID
+	messageID := update.CallbackQuery.Message.Message.ID
 	h.clearActiveOrderFlowIfAny(ctx, update.CallbackQuery.From.ID, op)
 
 	data, ccErr := h.callbackQueryData(update.CallbackQuery.Data, CategorySplitMode)
@@ -68,9 +69,10 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 		mappingResp.SmmMapping.ButtonName,
 	)
 
-	if sendErr := h.messenger.Send(ctx, &bot.SendMessageParams{
-		ChatID: chatID,
-		Text:   message,
+	if sendErr := h.messenger.Edit(ctx, &bot.EditMessageTextParams{
+		ChatID:    chatID,
+		Text:      message,
+		MessageID: messageID,
 	}); sendErr != nil {
 		logger.Logger.Error("failed to send service details", zap.Error(sendErr), zap.String("op", op))
 	}

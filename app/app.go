@@ -5,6 +5,7 @@ import (
 	"telegram-service-platform/config"
 	"telegram-service-platform/delivery/httpserver"
 	"telegram-service-platform/delivery/telegramserver"
+	"telegram-service-platform/delivery/telegramserver/dispatcher"
 	"telegram-service-platform/delivery/telegramserver/handler/adminhandler"
 	"telegram-service-platform/delivery/telegramserver/handler/mainhandler"
 	"telegram-service-platform/delivery/telegramserver/handler/orderhandler"
@@ -45,6 +46,11 @@ func New(cfg config.Config) (*App, error) {
 		dependencies.OrderFlowService, dependencies.PricingService,
 		dependencies.UserService, dependencies.MessengerService)
 
+	//conversations
+	conversationDispatcher := dispatcher.New(
+		orderHandler,
+	)
+
 	//priceRefreshJob := pricerefreshjob.New(dependencies.PriceService)
 	pvj := paymentverifyjob.New(dependencies.PaymentService, dependencies.OrderService, dependencies.NotificationService, repositories.queueRepo, cfg.PaymentVerify)
 	ofj := orderfulfillerjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService, repositories.queueRepo, cfg.OrderFulFiller)
@@ -60,6 +66,7 @@ func New(cfg config.Config) (*App, error) {
 
 	telegramBot, tErr := telegramserver.New(
 		adapters.botAdapter,
+		conversationDispatcher,
 		orderHandler,
 		mainHandler,
 		userHandler,
