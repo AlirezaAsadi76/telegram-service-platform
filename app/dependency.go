@@ -22,6 +22,7 @@ import (
 	"telegram-service-platform/repository/redis/redisidempotency"
 	"telegram-service-platform/repository/redis/redisprice"
 	"telegram-service-platform/repository/redis/redisqueue"
+	"telegram-service-platform/repository/redis/redissmm"
 	"telegram-service-platform/service/checkoutservice"
 	"telegram-service-platform/service/notificationservice"
 	"telegram-service-platform/service/orderservice"
@@ -83,6 +84,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	priceRepo := redisprice.New(redisAdapter)
 	productRepo := postgresproduct.New(postgresClient)
 	catalogCache := rediscatalog.New(redisAdapter, cfg.CatalogCatch)
+	smmCache := redissmm.New(redisAdapter, cfg.SmmRedis)
 	activityTracker := redisactivity.New(redisAdapter, cfg.Activity)
 
 	// Providers
@@ -101,7 +103,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	userSvc := userservice.New(walletSvc, userRepo, activityTracker)
 	messengerService := messenger.New(botAdapter)
 
-	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, catalogCache, justPanelAdapter)
+	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, catalogCache, smmCache, justPanelAdapter)
 	// smmSvc.RegisterProvider("justanotherpanel", justanotherpanel.New(...))
 
 	// Orchestrator
