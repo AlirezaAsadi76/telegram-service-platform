@@ -26,6 +26,8 @@ func (h *Handler) start(ctx context.Context, b *bot.Bot, update *models.Update) 
 	}
 	chatID := update.Message.Chat.ID
 	tgUser := update.Message.From
+	h.clearActiveOrderFlowIfAny(ctx, tgUser.ID, op)
+
 	metrics.OrdersTotal.WithLabelValues("start_command", "triggered").Inc()
 
 	userResp, goErr := h.userService.GetOrRegister(ctx, mapper.MapTelegramUserToRegisterRequest(tgUser))

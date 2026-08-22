@@ -22,6 +22,7 @@ func (h *Handler) selectPlatform(ctx context.Context, b *bot.Bot, update *models
 		return
 	}
 	chatID := update.CallbackQuery.Message.Message.Chat.ID
+	h.clearActiveOrderFlowIfAny(ctx, update.CallbackQuery.From.ID, op)
 
 	data, cErr := h.callbackQueryData(update.CallbackQuery.Data, platformSplitMode)
 	platformName := data[platformSplitMode]

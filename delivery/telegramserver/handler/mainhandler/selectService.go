@@ -22,6 +22,7 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 	}
 
 	chatID := update.CallbackQuery.Message.Message.ID
+	h.clearActiveOrderFlowIfAny(ctx, update.CallbackQuery.From.ID, op)
 
 	data, ccErr := h.callbackQueryData(update.CallbackQuery.Data, CategorySplitMode)
 	platformName := data[platformSplitMode]

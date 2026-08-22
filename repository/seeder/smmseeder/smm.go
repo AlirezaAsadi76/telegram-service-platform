@@ -27,14 +27,14 @@ func SeedSMMData(ctx context.Context, db *postgres.DB) error {
 		ProviderName string
 	}{
 		// Telegram Services
-		{1001, "Telegram Post Views 1K", "Default", "0.50", 100, 100000, false, true, true, "telegram_views", "justanotherpanel"},
-		{1002, "Telegram Post Views 5K", "Default", "2.20", 500, 500000, false, true, true, "telegram_views", "justanotherpanel"},
-		{1003, "Telegram Story Views", "Default", "0.30", 50, 50000, false, false, true, "telegram_views", "justanotherpanel"},
-		{1004, "Telegram Positive Reaction 👍", "Default", "1.50", 10, 10000, false, false, false, "telegram_reactions", "justanotherpanel"},
-		{1005, "Telegram Real Members", "Default", "15.00", 100, 50000, false, true, true, "telegram_members", "justanotherpanel"},
-		{1006, "Telegram Premium Members", "Default", "45.00", 50, 10000, false, true, true, "telegram_members", "justanotherpanel"},
-		{1007, "Telegram Fake Members (Cheap)", "Default", "3.50", 100, 100000, false, false, false, "telegram_members", "justanotherpanel"},
-		{1008, "Telegram Post Shares/Forwards", "Default", "2.00", 50, 20000, false, false, true, "telegram_shares", "justanotherpanel"},
+		{10010000890098, "Telegram Post Views 1K", "Default", "0.50", 100, 100000, false, true, true, "telegram_views", "justanotherpanel"},
+		{10020000890098, "Telegram Post Views 5K", "Default", "2.20", 500, 500000, false, true, true, "telegram_views", "justanotherpanel"},
+		{10030000890098, "Telegram Story Views", "Default", "0.30", 50, 50000, false, false, true, "telegram_views", "justanotherpanel"},
+		{10040000890098, "Telegram Positive Reaction 👍", "Default", "1.50", 10, 10000, false, false, false, "telegram_reactions", "justanotherpanel"},
+		{10050000890098, "Telegram Real Members", "Default", "15.00", 100, 50000, false, true, true, "telegram_members", "justanotherpanel"},
+		{10060000890098, "Telegram Premium Members", "Default", "45.00", 50, 10000, false, true, true, "telegram_members", "justanotherpanel"},
+		{10070000890098, "Telegram Fake Members (Cheap)", "Default", "3.50", 100, 100000, false, false, false, "telegram_members", "justanotherpanel"},
+		{10080000890098, "Telegram Post Shares/Forwards", "Default", "2.00", 50, 20000, false, false, true, "telegram_shares", "justanotherpanel"},
 
 		// Instagram Services
 		{2001, "Instagram Likes - Real", "Default", "0.80", 50, 100000, false, true, true, "instagram_likes", "justanotherpanel"},
@@ -43,16 +43,16 @@ func SeedSMMData(ctx context.Context, db *postgres.DB) error {
 		{2004, "Instagram Post Views", "Default", "0.10", 100, 1000000, false, false, true, "instagram_views", "justanotherpanel"},
 
 		// TikTok Services
-		{3001, "TikTok Views", "Default", "0.05", 100, 5000000, false, false, true, "tiktok_views", "justanotherpanel"},
-		{3002, "TikTok Likes", "Default", "1.00", 50, 100000, false, true, true, "tiktok_likes", "justanotherpanel"},
-		{3003, "TikTok Followers", "Default", "6.00", 100, 50000, false, true, true, "tiktok_followers", "justanotherpanel"},
+		{30010000890098, "TikTok Views", "Default", "0.05", 100, 5000000, false, false, true, "tiktok_views", "justanotherpanel"},
+		{30020000890098, "TikTok Likes", "Default", "1.00", 50, 100000, false, true, true, "tiktok_likes", "justanotherpanel"},
+		{30030000890098, "TikTok Followers", "Default", "6.00", 100, 50000, false, true, true, "tiktok_followers", "justanotherpanel"},
 
 		// WhatsApp Services
-		{4001, "WhatsApp Group Members", "Default", "25.00", 50, 5000, false, true, true, "whatsapp_members", "justanotherpanel"},
+		{40010000890098, "WhatsApp Group Members", "Default", "25.00", 50, 5000, false, true, true, "whatsapp_members", "justanotherpanel"},
 
 		// Twitter/X Services
-		{5001, "Twitter Followers", "Default", "5.50", 100, 50000, false, true, true, "twitter_followers", "justanotherpanel"},
-		{5002, "Twitter Likes", "Default", "0.90", 50, 100000, false, true, true, "twitter_likes", "justanotherpanel"},
+		{50010000890098, "Twitter Followers", "Default", "5.50", 100, 50000, false, true, true, "twitter_followers", "justanotherpanel"},
+		{50020000890098, "Twitter Likes", "Default", "0.90", 50, 100000, false, true, true, "twitter_likes", "justanotherpanel"},
 	}
 
 	insertServiceQuery := `
