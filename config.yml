@@ -101,3 +101,5 @@ activity:
 admins:
   telegram_ids:
     - 775589639
+smmRedis:
+  smm_ttl: "12h"

@@ -13,7 +13,6 @@ import (
 	"go.uber.org/zap"
 )
 
-// Use this to build Telegram bot inline keyboards (first level: platforms, then categories, then services).
 func (s Service) GetSMMCatalog(ctx context.Context) (productparams.GetCatalogResponse, error) {
 	const Op = "productservice.GetSMMCatalog"
 	start := time.Now()

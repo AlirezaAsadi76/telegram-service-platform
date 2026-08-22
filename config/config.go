@@ -9,6 +9,7 @@ import (
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/repository/redis/redisactivity"
 	"telegram-service-platform/repository/redis/rediscatalog"
+	"telegram-service-platform/repository/redis/smmredis"
 	"telegram-service-platform/scheduler"
 	"telegram-service-platform/scheduler/jobs/notificationdispatchjob"
 	"telegram-service-platform/scheduler/jobs/orderfulfillerjob"
@@ -62,4 +63,5 @@ type Config struct {
 	CatalogCatch     rediscatalog.Config            `koanf:"catalogCache"`
 	Activity         redisactivity.Config           `koanf:"activity"`
 	Admins           AdminConfig                    `koanf:"admins"`
+	SmmRedis         smmredis.Config                `koanf:"smmRedis"`
 }

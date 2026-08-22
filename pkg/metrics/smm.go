@@ -32,4 +32,22 @@ var (
 		Namespace: "smm_bot", Name: "smm_catalog_size",
 		Help: "Current number of active SMM service mappings",
 	})
+
+	SMMCacheHits = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: "smm_bot",
+			Name:      "smm_cache_hits_total",
+			Help:      "Total number of cache hits for SMM data",
+		},
+		[]string{"type"}, // "mapping", "service"
+	)
+
+	SMMCacheMisses = promauto.NewCounterVec(
+		prometheus.CounterOpts{
+			Namespace: "smm_bot",
+			Name:      "smm_cache_misses_total",
+			Help:      "Total number of cache misses for SMM data",
+		},
+		[]string{"type"}, // "mapping", "service"
+	)
 )

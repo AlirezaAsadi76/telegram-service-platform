@@ -2,7 +2,6 @@ package orderentity
 
 import (
 	"telegram-service-platform/entity"
-	"time"
 )
 
 type OrderFlowStage string
@@ -16,13 +15,17 @@ const (
 
 // OrderFlowState وضعیت موقت سفارش کاربر در Redis
 type OrderFlowState struct {
-	Stage     OrderFlowStage  `json:"stage"`
-	Platform  string          `json:"platform"`
-	Category  string          `json:"category"`
-	ServiceID uint64          `json:"service_id"`
-	Link      string          `json:"link"`
-	Quantity  int64           `json:"quantity"`
-	Price     entity.Amount   `json:"price"`
-	Currency  entity.Currency `json:"currency"`
-	ExpiresAt time.Duration   `json:"expires_at"`
+	Stage       OrderFlowStage  `json:"stage"`
+	Platform    string          `json:"platform"`
+	Category    string          `json:"category"`
+	ServiceID   uint64          `json:"service_id"`
+	ServiceName string          `json:"service_name"`
+	Rate        entity.Amount   `json:"rate"`
+	MinQuantity int64           `json:"min_quantity"`
+	MaxQuantity int64           `json:"max_quantity"`
+	Link        string          `json:"link"`
+	Quantity    int64           `json:"quantity"`
+	Price       entity.Amount   `json:"price"`
+	Currency    entity.Currency `json:"currency"`
+	ExpiresAt   int64           `json:"expires_at"`
 }
