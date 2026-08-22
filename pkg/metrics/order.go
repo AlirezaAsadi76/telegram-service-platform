@@ -20,7 +20,7 @@ var (
 	OrderFlowStateSaved = promauto.NewCounterVec(prometheus.CounterOpts{
 		Namespace: "smm_bot", Name: "order_flow_state_saved_total",
 		Help: "Total number of order flow states saved",
-	}, []string{"stage"})
+	}, []string{"stage", "status"})
 
 	OrderFlowStateRetrieved = promauto.NewCounterVec(prometheus.CounterOpts{
 		Namespace: "smm_bot", Name: "order_flow_state_retrieved_total",

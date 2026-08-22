@@ -2,6 +2,7 @@ package orderhandler
 
 import (
 	"context"
+	"fmt"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/params/orderparams"
@@ -14,6 +15,9 @@ func (h *Handler) CanHandle(ctx context.Context, telegramID entity.TelegramId) b
 	stateResp, err := h.orderFlowService.GetOrderFlow(ctx, orderparams.GetOrderFlowRequest{
 		TelegramID: telegramID,
 	})
+
+	fmt.Println(err == nil, stateResp != nil)
+	fmt.Println(stateResp)
 	return err == nil && stateResp != nil && stateResp.Stage != orderentity.OrderFlowStageCompleted
 }
 

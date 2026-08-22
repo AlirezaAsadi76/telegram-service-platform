@@ -103,3 +103,6 @@ admins:
     - 775589639
 smmRedis:
   smm_ttl: "12h"
+
+orderFlowSvc:
+  order_ttl: "10m"

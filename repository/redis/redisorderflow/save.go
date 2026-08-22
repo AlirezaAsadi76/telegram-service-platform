@@ -13,7 +13,7 @@ func (db *DB) Save(ctx context.Context, req orderparams.SaveOrderFlowRequest) er
 	const op = "redisorderflow.Save"
 
 	key := fmt.Sprintf(orderFlowKeyPattern, req.TelegramID)
-
+	fmt.Println("order save pattern", key)
 	data, err := json.Marshal(req.State)
 	if err != nil {
 		return richerror.New(op, err).

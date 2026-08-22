@@ -16,6 +16,7 @@ import (
 	"telegram-service-platform/scheduler/jobs/paymentverifyjob"
 	"telegram-service-platform/service/checkoutservice"
 	"telegram-service-platform/service/notificationservice"
+	"telegram-service-platform/service/orderflowservice"
 	"telegram-service-platform/service/priceservice"
 	"telegram-service-platform/service/productservice"
 	"telegram-service-platform/service/smmproviderservice"
@@ -64,4 +65,5 @@ type Config struct {
 	Activity         redisactivity.Config           `koanf:"activity"`
 	Admins           AdminConfig                    `koanf:"admins"`
 	SmmRedis         redissmm.Config                `koanf:"smmRedis"`
+	OrderFlowSvc     orderflowservice.Config        `koanf:"orderFlowSvc"`
 }

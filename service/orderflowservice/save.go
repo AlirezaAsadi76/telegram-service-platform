@@ -19,6 +19,7 @@ func (s *Service) SaveOrderFlow(ctx context.Context, req orderparams.SaveOrderFl
 		return richerror.New(op, nil).
 			WithKind(richerror.KindValidation)
 	}
+	req.TTLMins = s.config.OrderTTL
 
 	if err := s.repo.Save(ctx, req); err != nil {
 		metrics.OrderFlowStateSaved.WithLabelValues(string(req.State.Stage), "error").Inc()

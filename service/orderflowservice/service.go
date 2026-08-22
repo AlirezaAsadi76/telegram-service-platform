@@ -1,11 +1,13 @@
 package orderflowservice
 
 type Service struct {
-	repo Repository
+	repo   Repository
+	config Config
 }
 
-func New(repo Repository) *Service {
+func New(repo Repository, config Config) *Service {
 	return &Service{
-		repo: repo,
+		repo:   repo,
+		config: config,
 	}
 }
