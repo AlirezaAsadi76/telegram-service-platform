@@ -7,6 +7,7 @@ import (
 	"telegram-service-platform/delivery/telegramserver"
 	"telegram-service-platform/delivery/telegramserver/handler/adminhandler"
 	"telegram-service-platform/delivery/telegramserver/handler/mainhandler"
+	"telegram-service-platform/delivery/telegramserver/handler/orderhandler"
 	"telegram-service-platform/delivery/telegramserver/handler/producthandler"
 	"telegram-service-platform/delivery/telegramserver/handler/userhandler"
 	"telegram-service-platform/repository/postgres"
@@ -37,8 +38,12 @@ func New(cfg config.Config) (*App, error) {
 	// handler
 	productHandler := producthandler.New(dependencies.ProductService, dependencies.MessengerService)
 	userHandler := userhandler.New(dependencies.UserService, userValidator, dependencies.MessengerService)
-	mainHandler := mainhandler.New(dependencies.ProductService, dependencies.UserService, dependencies.MessengerService)
+	mainHandler := mainhandler.New(dependencies.ProductService, dependencies.UserService, dependencies.OrderFlowService, dependencies.MessengerService)
 	adminHandler := adminhandler.New(dependencies.CheckoutService, dependencies.UserService, dependencies.MessengerService, cfg.Admins)
+	orderHandler := orderhandler.New(
+		dependencies.ProductService, dependencies.CheckoutService,
+		dependencies.OrderFlowService, dependencies.PricingService,
+		dependencies.UserService, dependencies.MessengerService)
 
 	//priceRefreshJob := pricerefreshjob.New(dependencies.PriceService)
 	pvj := paymentverifyjob.New(dependencies.PaymentService, dependencies.OrderService, dependencies.NotificationService, repositories.queueRepo, cfg.PaymentVerify)
@@ -55,9 +60,10 @@ func New(cfg config.Config) (*App, error) {
 
 	telegramBot, tErr := telegramserver.New(
 		adapters.botAdapter,
+		orderHandler,
+		mainHandler,
 		userHandler,
 		productHandler,
-		mainHandler,
 		adminHandler,
 	)
 

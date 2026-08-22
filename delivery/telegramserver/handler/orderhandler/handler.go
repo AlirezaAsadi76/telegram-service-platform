@@ -6,12 +6,14 @@ import (
 	"telegram-service-platform/service/orderflowservice"
 	"telegram-service-platform/service/pricingservice"
 	"telegram-service-platform/service/productservice"
+	"telegram-service-platform/service/userservice"
 )
 
 type Handler struct {
 	productService   *productservice.Service
 	checkoutService  *checkoutservice.Service
 	orderFlowService *orderflowservice.Service
+	userService      *userservice.Service
 	pricingSvc       *pricingservice.Service
 	messenger        messenger.Messenger
 }
@@ -21,6 +23,7 @@ func New(
 	checkoutService *checkoutservice.Service,
 	orderFlowService *orderflowservice.Service,
 	pricingSvc *pricingservice.Service,
+	userService *userservice.Service,
 	messenger messenger.Messenger,
 ) *Handler {
 	return &Handler{
@@ -29,5 +32,6 @@ func New(
 		orderFlowService: orderFlowService,
 		messenger:        messenger,
 		pricingSvc:       pricingSvc,
+		userService:      userService,
 	}
 }

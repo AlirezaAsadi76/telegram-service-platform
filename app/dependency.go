@@ -20,11 +20,13 @@ import (
 	"telegram-service-platform/repository/redis/redisactivity"
 	"telegram-service-platform/repository/redis/rediscatalog"
 	"telegram-service-platform/repository/redis/redisidempotency"
+	"telegram-service-platform/repository/redis/redisorderflow"
 	"telegram-service-platform/repository/redis/redisprice"
 	"telegram-service-platform/repository/redis/redisqueue"
 	"telegram-service-platform/repository/redis/redissmm"
 	"telegram-service-platform/service/checkoutservice"
 	"telegram-service-platform/service/notificationservice"
+	"telegram-service-platform/service/orderflowservice"
 	"telegram-service-platform/service/orderservice"
 	"telegram-service-platform/service/paymentservice"
 	"telegram-service-platform/service/priceservice"
@@ -47,6 +49,7 @@ type Dependencies struct {
 	PriceService        *priceservice.Service
 	ProductService      *productservice.Service
 	MessengerService    *messenger.Service
+	OrderFlowService    *orderflowservice.Service
 }
 
 type Repositories struct {
@@ -86,6 +89,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	catalogCache := rediscatalog.New(redisAdapter, cfg.CatalogCatch)
 	smmCache := redissmm.New(redisAdapter, cfg.SmmRedis)
 	activityTracker := redisactivity.New(redisAdapter, cfg.Activity)
+	orderFlowCache := redisorderflow.New(redisAdapter)
 
 	// Providers
 	fzrClient := fzrcards.New(cfg.Fzr)
@@ -102,7 +106,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	pricingSvc := pricingservice.New(priceRepo)
 	userSvc := userservice.New(walletSvc, userRepo, activityTracker)
 	messengerService := messenger.New(botAdapter)
-
+	orderflowService := orderflowservice.New(orderFlowCache)
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, catalogCache, smmCache, justPanelAdapter)
 	// smmSvc.RegisterProvider("justanotherpanel", justanotherpanel.New(...))
 
@@ -122,6 +126,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 			PriceService:        priceService,
 			ProductService:      productSvc,
 			MessengerService:    messengerService,
+			OrderFlowService:    orderflowService,
 		},
 		&Repositories{
 			queueRepo: queueRepo,
