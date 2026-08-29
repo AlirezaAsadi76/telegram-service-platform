@@ -26,7 +26,7 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 	start := time.Now()
 	logger.Logger.Info("checkout wallet purchase started",
 		zap.Uint64("user_id", req.UserID),
-		zap.Int64("amount", int64(req.Amount)),
+		zap.String("amount", req.Amount.String()),
 	)
 	// 1. Check balance
 	balanceResp, err := s.walletSvc.GetBalance(ctx, walletparam.GetBalanceRequest{UserID: req.UserID})
@@ -40,12 +40,12 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		return richerror.New(Op, err)
 
 	}
-	if balanceResp.Balance < req.Amount {
+	if !balanceResp.Balance.GreaterThan(req.Amount) {
 		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
 		logger.Logger.Error("checkout wallet purchase failed", zap.Error(fmt.Errorf("insufficient balance")), zap.Uint64("user_id", req.UserID),
-			zap.Int64("balance", int64(balanceResp.Balance)),
-			zap.Int64("request_amount", int64(req.Amount)),
+			zap.String("balance", balanceResp.Balance.String()),
+			zap.String("request_amount", req.Amount.String()),
 			zap.Duration("latency", time.Since(start)))
 
 		return richerror.New(Op, fmt.Errorf("insufficient balance")).

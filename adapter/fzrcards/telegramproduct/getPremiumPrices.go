@@ -4,8 +4,10 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"strconv"
+	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/productentity"
+
+	"github.com/shopspring/decimal"
 )
 
 func (a *Adapter) GetPremiumPlans(
@@ -42,10 +44,7 @@ func (a *Adapter) GetPremiumPlans(
 
 	for _, plan := range result.Plans {
 
-		price, pErr := strconv.ParseFloat(
-			plan.PriceUSD,
-			64,
-		)
+		price, pErr := decimal.NewFromString(plan.PriceUSD)
 
 		if pErr != nil {
 			return nil, pErr
@@ -55,7 +54,7 @@ func (a *Adapter) GetPremiumPlans(
 			prices,
 			productentity.PremiumPrice{
 				Months:   uint8(plan.Months),
-				PriceUSD: price,
+				PriceUSD: entity.Amount(price),
 			},
 		)
 	}

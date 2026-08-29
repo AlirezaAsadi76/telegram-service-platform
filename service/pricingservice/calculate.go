@@ -3,14 +3,17 @@ package pricingservice
 import (
 	"context"
 	"errors"
+	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/productentity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
+
+	"github.com/shopspring/decimal"
 )
 
 func (s Service) CalculatePrice(
 	ctx context.Context,
-	usd float64,
+	usd entity.Amount,
 ) (productentity.Price, error) {
 
 	const Op = "pricingservice.CalculatePrice"
@@ -41,10 +44,13 @@ func (s Service) CalculatePrice(
 				WithMessage(msgerror.InvalidPrice)
 	}
 
+	tonPriceDecimal := decimal.NewFromFloat(tomanPrice)
+	tomanPriceDecimal := decimal.NewFromFloat(tomanPrice)
+
 	return productentity.Price{
 		USD:   usd,
 		USDT:  usd,
-		TON:   usd / tonPrice,
-		Toman: usd * tomanPrice,
+		TON:   usd.Div(entity.Amount(tonPriceDecimal)),
+		Toman: usd.Mul(entity.Amount(tomanPriceDecimal)),
 	}, nil
 }

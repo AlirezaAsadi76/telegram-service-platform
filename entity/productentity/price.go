@@ -1,8 +1,12 @@
 package productentity
 
+import (
+	"telegram-service-platform/entity"
+)
+
 type Price struct {
-	USD   float64
-	USDT  float64
-	TON   float64
-	Toman float64
+	USD   entity.Amount
+	USDT  entity.Amount
+	TON   entity.Amount
+	Toman entity.Amount
 }

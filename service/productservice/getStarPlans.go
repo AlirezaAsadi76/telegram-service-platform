@@ -23,7 +23,7 @@ func (s Service) GetStarPlans(ctx context.Context) (productparams.GetStarPlansRe
 	}
 
 	for _, plan := range plans {
-		price, cErr := s.pricingSVc.CalculateStarsPrice(ctx, float64(plan.Amount))
+		price, cErr := s.pricingSVc.CalculateStarsPrice(ctx, plan.Amount)
 		if cErr != nil {
 			return response,
 				richerror.New(Op, cErr).

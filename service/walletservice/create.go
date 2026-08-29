@@ -18,7 +18,7 @@ func (s *Service) GetOrCreate(ctx context.Context, userID uint64, currency entit
 	}
 	wallet = &walletentity.Wallet{
 		UserID:   userID,
-		Balance:  0,
+		Balance:  entity.Amount{},
 		Currency: currency,
 		Version:  1,
 	}

@@ -8,7 +8,7 @@ import (
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (s Service) CalculateStarsPrice(ctx context.Context, amount float64) (productentity.Price, error) {
+func (s Service) CalculateStarsPrice(ctx context.Context, amount int64) (productentity.Price, error) {
 	const Op = "pricingservice.CalculateStarsPrice"
 
 	priceStars, psErr := s.priceRepository.GetStarPrice(ctx)
@@ -16,7 +16,7 @@ func (s Service) CalculateStarsPrice(ctx context.Context, amount float64) (produ
 		return productentity.Price{}, richerror.New(Op, psErr).WithKind(richerror.KindInfrastructure).WithMessage(msgerror.CacheReadFailed)
 	}
 
-	price, cErr := s.CalculatePrice(ctx, amount*priceStars.PricePerStar)
+	price, cErr := s.CalculatePrice(ctx, priceStars.PricePerStar.AddInInt(amount))
 	if cErr != nil {
 		return productentity.Price{},
 			richerror.New(Op, cErr).

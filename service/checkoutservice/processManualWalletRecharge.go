@@ -29,7 +29,7 @@ func (s *Service) ProcessManualWalletRecharge(ctx context.Context, req checkoutp
 	// ✅ اضافه کردن لاگ برای debug
 	logger.Logger.Info("checkout manual recharge started",
 		zap.Uint64("user_id", req.UserID),
-		zap.Int64("amount", int64(req.Amount)),
+		zap.String("amount", req.Amount.String()),
 		zap.String("nonce", nonce),
 		zap.String("idempotency_key", idempotencyKey[:16]+"..."),
 	)

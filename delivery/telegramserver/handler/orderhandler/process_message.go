@@ -12,6 +12,7 @@ import (
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
+	"github.com/shopspring/decimal"
 )
 
 // handleMessage پیام‌های متنی کاربر را در حین فرآیند سفارش پردازش می‌کند
@@ -94,7 +95,7 @@ func (h *Handler) handleQuantityInput(ctx context.Context, chatID, telegramID in
 	}
 
 	// محاسبه قیمت (همه داده‌ها از Redis خوانده شده و نیازی به DB نیست!)
-	price := (state.Rate * entity.Amount(quantity)) / 1000
+	price := state.Rate.AddInInt(quantity).Div(entity.Amount(decimal.NewFromInt(1000)))
 	state.Quantity = quantity
 	state.Price = price
 	state.Stage = orderentity.OrderFlowStageConfirming

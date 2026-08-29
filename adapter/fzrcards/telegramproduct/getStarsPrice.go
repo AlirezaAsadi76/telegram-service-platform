@@ -5,8 +5,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
+	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/productentity"
+
+	"github.com/shopspring/decimal"
 )
 
 func (a *Adapter) GetStarPrice(ctx context.Context) (productentity.StarPrice, error) {
@@ -35,16 +37,13 @@ func (a *Adapter) GetStarPrice(ctx context.Context) (productentity.StarPrice, er
 		return productentity.StarPrice{}, err
 	}
 
-	price, err := strconv.ParseFloat(
-		result.PricePerStar,
-		64,
-	)
+	price, err := decimal.NewFromString(result.PricePerStar)
 
 	if err != nil {
 		return productentity.StarPrice{}, err
 	}
 
 	return productentity.StarPrice{
-		PricePerStar: price,
+		PricePerStar: entity.Amount(price),
 	}, nil
 }

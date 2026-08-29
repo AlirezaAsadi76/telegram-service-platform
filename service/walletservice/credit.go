@@ -80,7 +80,7 @@ func (s *Service) Credit(ctx context.Context, req walletparam.CreditRequest) (*w
 		return nil, richerror.New(Op, err).WithKind(richerror.KindInfrastructure)
 	}
 
-	newBalance := wallet.Balance + req.Amount
+	newBalance := wallet.Balance.Add(req.Amount)
 	newVersion := wallet.Version + 1
 	if err := s.repo.UpdateBalanceAtomic(ctx, wallet.ID, newBalance, newVersion); err != nil {
 		if delErr := s.idempotencyRepo.Delete(ctx, req.IdempotencyKey); delErr != nil {

@@ -60,7 +60,7 @@ func (s *Service) Debit(ctx context.Context, req walletparam.DebitRequest) (*wal
 	}
 
 	// 5. Debit balance
-	newBalance := wallet.Balance - req.Amount
+	newBalance := wallet.Balance.Sub(req.Amount)
 	newVersion := wallet.Version + 1
 	if err := s.repo.UpdateBalanceAtomic(ctx, wallet.ID, newBalance, newVersion); err != nil {
 		_ = s.idempotencyRepo.Delete(ctx, req.IdempotencyKey)

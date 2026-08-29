@@ -22,7 +22,7 @@ func (s *Service) ProcessDirectPaymentPurchase(ctx context.Context, req checkout
 	start := time.Now()
 	logger.Logger.Info("checkout direct payment started",
 		zap.Uint64("user_id", req.UserID),
-		zap.Int64("amount", int64(req.Amount)),
+		zap.String("amount", req.Amount.String()),
 	)
 
 	// 1. Create Order (PENDING)

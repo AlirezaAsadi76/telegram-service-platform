@@ -1,6 +1,8 @@
 package productentity
 
+import "telegram-service-platform/entity"
+
 type PremiumPrice struct {
 	Months   uint8
-	PriceUSD float64
+	PriceUSD entity.Amount
 }

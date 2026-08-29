@@ -74,7 +74,7 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 		h.handleError(ctx, chatID, op, err)
 		return
 	}
-	rate, _ := strconv.ParseInt(serviceResp.Smm.Rate, 10, 64)
+
 	state := orderentity.OrderFlowState{
 		Stage:       orderentity.OrderFlowStageWaitingForLink,
 		Platform:    platformName,
@@ -83,10 +83,10 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 		ServiceName: mappingResp.SmmMapping.ButtonName,
 		MinQuantity: serviceResp.Smm.Min,
 		MaxQuantity: serviceResp.Smm.Max,
-		Rate:        entity.Amount(rate),
+		Rate:        serviceResp.Smm.Rate,
 		Link:        "",
 		Quantity:    0,
-		Price:       0,
+		Price:       entity.Amount{},
 		Currency:    entity.CurrencyTOMAN,
 		ExpiresAt:   time.Now().Add(10 * time.Minute).Unix(),
 	}

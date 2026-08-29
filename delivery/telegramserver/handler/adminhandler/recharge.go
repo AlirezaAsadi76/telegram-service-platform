@@ -8,6 +8,7 @@ import (
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
+	"github.com/shopspring/decimal"
 	"go.uber.org/zap"
 
 	"telegram-service-platform/entity"
@@ -77,7 +78,7 @@ func (h *Handler) Recharge(ctx context.Context, b *bot.Bot, update *models.Updat
 		return
 	}
 
-	amount := entity.Amount(amountValue)
+	amount := entity.Amount(decimal.NewFromInt(amountValue))
 	rechargeErr := h.checkoutService.ProcessManualWalletRecharge(ctx, checkoutparams.ManualRechargeRequest{
 		AdminID:        entity.TelegramId(adminTelegramID),
 		UserTelegramID: entity.TelegramId(userResp.UserInfo.TelegramID),

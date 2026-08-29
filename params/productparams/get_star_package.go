@@ -1,10 +1,12 @@
 package productparams
 
-import "telegram-service-platform/entity/productentity"
+import (
+	"telegram-service-platform/entity/productentity"
+)
 
 type StarPlanInfo struct {
 	ID     uint64
-	Amount uint64
+	Amount int64
 	Price  productentity.Price
 }
 
