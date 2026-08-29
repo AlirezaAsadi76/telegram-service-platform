@@ -2,6 +2,8 @@ package postgresproduct
 
 import (
 	"context"
+	"fmt"
+	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/smmentity"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/pkg/msgerror"
@@ -9,6 +11,7 @@ import (
 	"telegram-service-platform/repository/postgres"
 	"time"
 
+	"github.com/shopspring/decimal"
 	"go.uber.org/zap"
 )
 
@@ -68,12 +71,13 @@ func (db *DB) SMMServiceGetAll(ctx context.Context) ([]smmentity.SMM, error) {
 
 func scanSMM(row postgres.Scanner) (smmentity.SMM, error) {
 	var s smmentity.SMM
+	var rateStr string
 	err := row.Scan(
 		&s.Id,
 		&s.Service,
 		&s.Name,
 		&s.Type,
-		&s.Rate,
+		&rateStr,
 		&s.Min,
 		&s.Max,
 		&s.DripFeed,
@@ -85,5 +89,14 @@ func scanSMM(row postgres.Scanner) (smmentity.SMM, error) {
 		&s.CreatedAt,
 		&s.UpdatedAt,
 	)
+	if err != nil {
+		logger.Logger.Error("smm service scan failed")
+		return s, err
+	}
+	rate, sErr := decimal.NewFromString(rateStr)
+	s.Rate = entity.Amount(rate)
+	if sErr != nil {
+		return s, fmt.Errorf("failed to parse rate to decimal: %w", sErr)
+	}
 	return s, err
 }

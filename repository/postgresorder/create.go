@@ -42,9 +42,12 @@ func (d *DB) Create(ctx context.Context, order *orderentity.Order) error {
 		order.ProductType,
 		order.ProductID,
 		order.Quantity,
+		order.TargetLink,
 		order.Amount,
 		order.Currency,
 		order.Status,
+		order.ExternalOrderID,
+		order.ProviderID,
 		metadata,
 	).Scan(
 		&order.ID,

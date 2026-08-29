@@ -13,7 +13,6 @@ func (h *Handler) middlewares() []bot.Middleware {
 
 func (h *Handler) RegisterRoutes(b *bot.Bot) {
 
-	// ۲. کالبک پرداخت با کیف پول
 	b.RegisterHandler(
 		bot.HandlerTypeCallbackQueryData,
 		callback.OrderPayWallet,
@@ -22,7 +21,6 @@ func (h *Handler) RegisterRoutes(b *bot.Bot) {
 		h.middlewares()...,
 	)
 
-	// ۳. کالبک انصراف از سفارش
 	b.RegisterHandler(
 		bot.HandlerTypeCallbackQueryData,
 		callback.OrderCancel,

@@ -2,9 +2,13 @@ package postgresproduct
 
 import (
 	"context"
+	"fmt"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
+	"telegram-service-platform/repository/postgres"
+
+	"github.com/shopspring/decimal"
 )
 
 func (db *DB) GetStarPlans(ctx context.Context) ([]entity.StarPackage, error) {
@@ -38,15 +42,7 @@ func (db *DB) GetStarPlans(ctx context.Context) ([]entity.StarPackage, error) {
 
 	for rows.Next() {
 
-		var plan entity.StarPackage
-
-		sErr := rows.Scan(
-			&plan.ID,
-			&plan.Amount,
-			&plan.Active,
-			&plan.CreatedAt,
-			&plan.UpdatedAt,
-		)
+		plan, sErr := scanStars(rows)
 
 		if sErr != nil {
 
@@ -64,4 +60,25 @@ func (db *DB) GetStarPlans(ctx context.Context) ([]entity.StarPackage, error) {
 	}
 
 	return plans, nil
+}
+
+func scanStars(rows postgres.Scanner) (entity.StarPackage, error) {
+	var plan entity.StarPackage
+	var amountStr string
+	sErr := rows.Scan(
+		&plan.ID,
+		&amountStr,
+		&plan.Active,
+		&plan.CreatedAt,
+		&plan.UpdatedAt,
+	)
+	if sErr != nil {
+		return entity.StarPackage{}, sErr
+	}
+	amount, err := decimal.NewFromString(amountStr)
+	plan.Amount = entity.Amount(amount)
+	if err != nil {
+		return plan, fmt.Errorf("failed to parse amount to decimal: %w", err)
+	}
+	return plan, sErr
 }

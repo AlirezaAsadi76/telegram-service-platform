@@ -1,5 +1,7 @@
 package productentity
 
+import "telegram-service-platform/entity"
+
 type StarPrice struct {
-	PricePerStar float64
+	PricePerStar entity.Amount
 }

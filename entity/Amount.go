@@ -1,10 +1,13 @@
 package entity
 
-type Amount int64
+import (
+	"database/sql/driver"
 
-func (a Amount) HasSufficient(amount Amount) bool {
-	if a < amount {
-		return false
-	}
-	return true
+	"github.com/shopspring/decimal"
+)
+
+type Amount decimal.Decimal
+
+func (a Amount) Value() (driver.Value, error) {
+	return decimal.Decimal(a), nil
 }
