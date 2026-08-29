@@ -14,6 +14,11 @@ func (a Amount) Mul(b Amount) Amount {
 
 	return Amount(decimal.Decimal(a).Mul(decimal.Decimal(b)))
 }
+
+func (a Amount) Round(b int32) Amount {
+	return Amount(decimal.Decimal(a).Round(b))
+}
+
 func (a Amount) Div(b Amount) Amount {
 	return Amount(decimal.Decimal(a).Div(decimal.Decimal(b)))
 }
@@ -24,9 +29,9 @@ func (a Amount) Add(b Amount) Amount {
 	return Amount(decimal.Decimal(a).Add(decimal.Decimal(b)))
 }
 
-func (a Amount) AddInInt(b int64) Amount {
+func (a Amount) MulInt(b int64) Amount {
 	qty := decimal.NewFromInt(b)
-	return Amount(decimal.Decimal(a).Add(qty))
+	return Amount(decimal.Decimal(a).Mul(qty))
 }
 func (a Amount) LessThan(b Amount) bool {
 	return decimal.Decimal(a).LessThan(decimal.Decimal(b))

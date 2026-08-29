@@ -16,7 +16,7 @@ func (s Service) CalculateStarsPrice(ctx context.Context, amount int64) (product
 		return productentity.Price{}, richerror.New(Op, psErr).WithKind(richerror.KindInfrastructure).WithMessage(msgerror.CacheReadFailed)
 	}
 
-	price, cErr := s.CalculatePrice(ctx, priceStars.PricePerStar.AddInInt(amount))
+	price, cErr := s.CalculatePrice(ctx, priceStars.PricePerStar.MulInt(amount))
 	if cErr != nil {
 		return productentity.Price{},
 			richerror.New(Op, cErr).
