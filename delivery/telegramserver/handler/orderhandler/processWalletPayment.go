@@ -26,7 +26,7 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 		return
 	}
 
-	chatID := update.CallbackQuery.Message.Message.ID
+	chatID := update.CallbackQuery.Message.Message.Chat.ID
 	telegramID := update.CallbackQuery.From.ID
 
 	// ۱. دریافت State نهایی
@@ -45,7 +45,7 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 		_ = h.messenger.Send(ctx, &bot.SendMessageParams{})
 	}
 	// ۲. فراخوانی CheckoutService
-	err = h.checkoutService.ProcessWalletPurchase(ctx, checkoutparams.WalletPurchaseRequest{
+	chErr := h.checkoutService.ProcessWalletPurchase(ctx, checkoutparams.WalletPurchaseRequest{
 		UserID:      user.UserInfo.Id,
 		ProductType: productentity.SMM,
 		ProductID:   state.ServiceID,
@@ -55,9 +55,12 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 		Currency:    state.Currency,
 	})
 
-	if err != nil {
-		// بررسی خطای کمبود موجودی برای پیام کاربرپسندتر
-		if richErr, ok := errors.AsType[*richerror.RichError](err); ok && richErr.Kind() == richerror.KindValidation {
+	if chErr != nil {
+
+		var rErr *richerror.RichError
+		isRichError := errors.As(chErr, &rErr)
+
+		if isRichError && rErr.Kind() == richerror.KindValidation {
 			_ = h.messenger.Send(ctx, &bot.SendMessageParams{
 				ChatID: chatID,
 				Text:   "❌ موجودی کیف پول شما کافی نیست.\nلطفاً ابتدا کیف پول خود را شارژ کنید.\n\n(سفارش شما تا ۱۰ دقیقه دیگر در سیستم باقی می‌ماند تا پس از شارژ، پرداخت را انجام دهید.)",
@@ -67,7 +70,7 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 			logger.Logger.Error("wallet purchase failed",
 				zap.String("op", op),
 				zap.Int64("telegram_id", telegramID),
-				zap.Error(err),
+				zap.Error(chErr),
 			)
 			_ = h.messenger.Send(ctx, &bot.SendMessageParams{
 				ChatID: chatID,
@@ -83,6 +86,19 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 
 	_ = h.messenger.Send(ctx, &bot.SendMessageParams{
 		ChatID: chatID,
-		Text:   fmt.Sprintf("✅ پرداخت با موفقیت انجام شد!\n\nسفارش شما ثبت گردید و در حال پردازش است.\n💰 مبلغ کسر شده: %d تومان", state.Price),
+		Text: fmt.Sprintf(
+			"✅ <b>پرداخت با موفقیت انجام شد!</b>\n\n"+
+				"🎉 سفارش شما ثبت گردید و در حال پردازش است.\n\n"+
+				"💰 مبلغ کسر شده: <code>%s</code> تومان\n\n"+
+				"📌 می‌توانید وضعیت سفارش خود را از بخش «💳 تراکنش‌ها» پیگیری کنید.",
+			state.Price.String(),
+		),
+		ParseMode: models.ParseModeHTML,
 	})
+
+	logger.Logger.Info("wallet purchase completed successfully",
+		zap.String("op", op),
+		zap.Int64("telegram_id", telegramID),
+		zap.String("price", state.Price.String()),
+	)
 }

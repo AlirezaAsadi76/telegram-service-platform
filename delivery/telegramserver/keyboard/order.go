@@ -6,18 +6,39 @@ import (
 	"github.com/go-telegram/bot/models"
 )
 
-// OrderConfirmMenu کیبورد تأیید نهایی سفارش را با استفاده از Builder می‌سازد
 func OrderConfirmMenu() *models.InlineKeyboardMarkup {
 	builder := NewBuilder()
 
-	// دکمه پرداخت
 	builder.AddRow(
-		Button{Text: "💰 پرداخت با کیف پول", Data: callback.OrderPayWallet, Style: Success},
+		Button{
+			Text:  "💰 پرداخت با کیف پول",
+			Data:  callback.OrderPayWallet,
+			Style: Success,
+		},
 	)
 
-	// دکمه انصراف
 	builder.AddRow(
-		Back(callback.OrderCancel),
+		Button{
+			Text:  "💳 پرداخت با درگاه",
+			Data:  callback.OrderPayGateway,
+			Style: Success,
+		},
+	)
+
+	builder.AddRow(
+		Button{
+			Text:  "🪙 پرداخت با رمز ارز",
+			Data:  callback.OrderPayCrypto,
+			Style: Success,
+		},
+	)
+
+	builder.AddRow(
+		Button{
+			Text:  "❌ انصراف از سفارش",
+			Data:  callback.OrderCancel,
+			Style: Danger,
+		},
 	)
 
 	return builder.Build()

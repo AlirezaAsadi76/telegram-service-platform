@@ -1,7 +1,9 @@
 package callback
 
 const (
-	// Order Flow Callbacks
-	OrderPayWallet = "order:pay:wallet"
-	OrderCancel    = "order:cancel"
+	OrderPayWallet  = "order:pay:wallet"
+	OrderPayGateway = "order:pay:gateway"
+	OrderPayCrypto  = "order:pay:crypto"
+	OrderCancel     = "order:cancel"
+	OrderCheckPay   = "order:check:payment"
 )
