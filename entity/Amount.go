@@ -6,6 +6,16 @@ import (
 
 type Amount decimal.Decimal
 
+func (a *Amount) UnmarshalJSON(data []byte) error {
+
+	return (*decimal.Decimal)(a).UnmarshalJSON(data)
+}
+
+func (a Amount) MarshalJSON() ([]byte, error) {
+
+	return (decimal.Decimal)(a).MarshalJSON()
+}
+
 func (a Amount) GreaterThan(b Amount) bool {
 	return decimal.Decimal(a).GreaterThan(decimal.Decimal(b))
 }

@@ -30,7 +30,7 @@ var (
 	OrderFlowStateDeleted = promauto.NewCounterVec(prometheus.CounterOpts{
 		Namespace: "smm_bot", Name: "order_flow_state_deleted_total",
 		Help: "Total number of order flow states deleted",
-	}, []string{"reason"})
+	}, []string{"reason", "status"})
 
 	OrderFlowDuration = promauto.NewHistogramVec(prometheus.HistogramOpts{
 		Namespace: "smm_bot", Name: "order_flow_duration_seconds",
