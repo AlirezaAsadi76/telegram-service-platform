@@ -49,3 +49,6 @@ func (a Amount) LessThan(b Amount) bool {
 func (a Amount) String() string {
 	return decimal.Decimal(a).String()
 }
+func (a Amount) Decimal() decimal.Decimal {
+	return decimal.Decimal(a)
+}

@@ -76,7 +76,7 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 	}
 
 	state := orderentity.OrderFlowState{
-		Stage:       orderentity.OrderFlowStageWaitingForLink,
+		Stage:       orderentity.OrderFlowStageWaitingForQuantity,
 		Platform:    platformName,
 		Category:    categoryName,
 		ServiceID:   uint64(serviceID),
@@ -107,15 +107,18 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 	}
 
 	message := fmt.Sprintf(
-		"✅ سرویس انتخاب شد:\n\n"+
+		"✅ سرویس «%s» با موفقیت انتخاب شد.\n\n"+
 			"📱 پلتفرم: %s\n"+
-			"%s دسته‌بندی: %s\n"+
-			"📦 سرویس: %s\n\n"+
-			"لطفاً لینک مورد نظر خود را ارسال کنید:",
+			"%s دسته‌بندی: %s\n\n"+
+			"• حداقل تعداد سفارش: %d\n"+
+			"• حداکثر تعداد سفارش: %d\n\n"+
+			"🔢 لطفاً تعداد مورد نظر خود را فقط به صورت عدد ارسال کنید:",
+		mappingResp.SmmMapping.ButtonName, // یا serviceResp.Service.Name
 		helpers.GetPlatformDisplayName(platformName),
 		helpers.GetCategoryIcon(categoryName),
 		helpers.GetCategoryDisplayName(categoryName),
-		mappingResp.SmmMapping.ButtonName,
+		serviceResp.Smm.Min,
+		serviceResp.Smm.Max,
 	)
 
 	if sendErr := h.messenger.Edit(ctx, &bot.EditMessageTextParams{

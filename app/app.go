@@ -17,8 +17,10 @@ import (
 	"telegram-service-platform/scheduler/jobs/orderfulfillerjob"
 	"telegram-service-platform/scheduler/jobs/paymentexpiryjob"
 	"telegram-service-platform/scheduler/jobs/paymentverifyjob"
+	"telegram-service-platform/scheduler/jobs/pricerefreshjob"
 	"telegram-service-platform/scheduler/jobs/smmvalidationjob"
 	statussyncjob "telegram-service-platform/scheduler/jobs/statussyncJob"
+	"telegram-service-platform/validator/ordervalidator"
 	"telegram-service-platform/validator/uservalidator"
 )
 
@@ -35,6 +37,7 @@ func New(cfg config.Config) (*App, error) {
 	dependencies, repositories, adapters := SetupDependencies(cfg)
 
 	userValidator := uservalidator.New()
+	orderValidator := ordervalidator.New()
 
 	// handler
 	productHandler := producthandler.New(dependencies.ProductService, dependencies.MessengerService)
@@ -44,14 +47,14 @@ func New(cfg config.Config) (*App, error) {
 	orderHandler := orderhandler.New(
 		dependencies.ProductService, dependencies.CheckoutService,
 		dependencies.OrderFlowService, dependencies.PricingService,
-		dependencies.UserService, dependencies.MessengerService)
+		dependencies.UserService, dependencies.MessengerService, orderValidator)
 
 	//conversations
 	conversationDispatcher := dispatcher.New(
 		orderHandler,
 	)
 
-	//priceRefreshJob := pricerefreshjob.New(dependencies.PriceService)
+	prj := pricerefreshjob.New(dependencies.PriceService)
 	pvj := paymentverifyjob.New(dependencies.PaymentService, dependencies.OrderService, dependencies.NotificationService, repositories.queueRepo, cfg.PaymentVerify)
 	ofj := orderfulfillerjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService, repositories.queueRepo, cfg.OrderFulFiller)
 	ssj := statussyncjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService)
@@ -59,7 +62,7 @@ func New(cfg config.Config) (*App, error) {
 	ndj := notificationdispatchjob.New(dependencies.NotificationService, repositories.queueRepo, dependencies.MessengerService, cfg.NotificationJob)
 	smj := smmvalidationjob.New(dependencies.ProductService, dependencies.NotificationService)
 	schedulerObj, sErr := scheduler.New(cfg.Scheduler,
-		pvj, ofj, ssj, pej, ndj, smj)
+		prj, pvj, ofj, ssj, pej, ndj, smj)
 	if err := schedulerObj.Register(); err != nil {
 		return nil, err
 	}

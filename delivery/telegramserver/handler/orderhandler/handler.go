@@ -7,6 +7,7 @@ import (
 	"telegram-service-platform/service/pricingservice"
 	"telegram-service-platform/service/productservice"
 	"telegram-service-platform/service/userservice"
+	"telegram-service-platform/validator/ordervalidator"
 )
 
 type Handler struct {
@@ -16,6 +17,7 @@ type Handler struct {
 	userService      *userservice.Service
 	pricingSvc       *pricingservice.Service
 	messenger        messenger.Messenger
+	validator        ordervalidator.Validator
 }
 
 func New(
@@ -25,6 +27,8 @@ func New(
 	pricingSvc *pricingservice.Service,
 	userService *userservice.Service,
 	messenger messenger.Messenger,
+	validator ordervalidator.Validator,
+
 ) *Handler {
 	return &Handler{
 		productService:   productService,
@@ -33,5 +37,6 @@ func New(
 		messenger:        messenger,
 		pricingSvc:       pricingSvc,
 		userService:      userService,
+		validator:        validator,
 	}
 }

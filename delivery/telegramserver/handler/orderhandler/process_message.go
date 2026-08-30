@@ -2,6 +2,7 @@ package orderhandler
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -10,6 +11,7 @@ import (
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/params/orderparams"
+	"telegram-service-platform/pkg/richerror"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -55,11 +57,22 @@ func (h *Handler) handleMessage(ctx context.Context, b *bot.Bot, update *models.
 }
 
 func (h *Handler) handleLinkInput(ctx context.Context, chatID, telegramID int64, text string, state *orderentity.OrderFlowState, op string) {
-	if !strings.HasPrefix(text, "http://") && !strings.HasPrefix(text, "https://") {
-		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
-			ChatID: chatID,
-			Text:   "❌ لینک نامعتبر است.\nلطفاً لینک را با http:// یا https:// شروع کنید.",
-		})
+
+	req := orderparams.SubmitLinkRequest{
+		Link: text,
+	}
+
+	if err := h.validator.ValidateLink(req); err != nil {
+		if richErr, ok := errors.AsType[*richerror.RichError](err); ok {
+			_ = h.messenger.Send(ctx, &bot.SendMessageParams{
+				ChatID: chatID,
+				Text:   "❌ " + richErr.Message(),
+			})
+			logger.Logger.Warn("link validation failed",
+				zap.String("op", op),
+				zap.Any("meta", richErr.Meta()),
+			)
+		}
 		return
 	}
 
@@ -81,19 +94,33 @@ func (h *Handler) handleLinkInput(ctx context.Context, chatID, telegramID int64,
 
 func (h *Handler) handleQuantityInput(ctx context.Context, chatID, telegramID int64, text string, state *orderentity.OrderFlowState, op string) {
 	quantity, err := strconv.ParseInt(text, 10, 64)
-	if err != nil || quantity <= 0 {
+	if err != nil {
 		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
 			ChatID: chatID,
-			Text:   "❌ تعداد نامعتبر است.\nلطفاً فقط یک عدد مثبت وارد کنید.",
+			Text:   "❌ تعداد نامعتبر است. لطفاً فقط عدد وارد کنید.",
 		})
 		return
 	}
 
-	if quantity < state.MinQuantity || quantity > state.MaxQuantity {
-		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
-			ChatID: chatID,
-			Text:   fmt.Sprintf("❌ تعداد خارج از محدوده مجاز است.\n📊 حداقل: %d\n📊 حداکثر: %d", state.MinQuantity, state.MaxQuantity),
-		})
+	req := orderparams.SubmitQuantityRequest{
+		Quantity: quantity,
+		Min:      state.MinQuantity,
+		Max:      state.MaxQuantity,
+	}
+
+	if err := h.validator.ValidateQuantity(req); err != nil {
+		if richErr, ok := errors.AsType[*richerror.RichError](err); ok {
+
+			_ = h.messenger.Send(ctx, &bot.SendMessageParams{
+				ChatID: chatID,
+				Text:   "❌ " + richErr.Message(),
+			})
+
+			logger.Logger.Warn("quantity validation failed",
+				zap.String("op", op),
+				zap.Any("meta", richErr.Meta()),
+			)
+		}
 		return
 	}
 
@@ -102,6 +129,7 @@ func (h *Handler) handleQuantityInput(ctx context.Context, chatID, telegramID in
 
 	// ۲. دریافت نرخ دلار به تومان از PriceService
 	tomanRate, gErr := h.pricingSvc.GetUsdTomanPrice(ctx)
+
 	if gErr != nil {
 		logger.Logger.Error("failed to get usd to toman price", zap.String("op", op), zap.Error(gErr))
 		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
@@ -112,7 +140,7 @@ func (h *Handler) handleQuantityInput(ctx context.Context, chatID, telegramID in
 	}
 
 	// ۳. محاسبه قیمت نهایی تومانی و گرد کردن به ۲ رقم اعشار (یا رند کردن به عدد صحیح)
-	tomanPrice := usdPrice.Mul(tomanRate).Round(2)
+	tomanPrice := usdPrice.Mul(tomanRate).Round(3)
 
 	// ۴. به‌روزرسانی State
 	state.Quantity = quantity
@@ -129,17 +157,29 @@ func (h *Handler) handleQuantityInput(ctx context.Context, chatID, telegramID in
 		return
 	}
 
-	// ۵. پیام درخواست لینک (UX بهبود یافته)
-	_ = h.messenger.Send(ctx, &bot.SendMessageParams{
-		ChatID: chatID,
-		Text: fmt.Sprintf(
-			"✅ تعداد «%d» ثبت شد.\n\n"+
-				"🔗 حالا لطفاً لینک کانال یا گروه خود را ارسال کنید.\n"+
-				"(مثال: https://t.me/YourChannel)\n\n"+
-				"⚠️ توجه: لینک باید عمومی (Public) باشد تا سرویس قابل انجام باشد.",
-			quantity,
-		),
+	tomanPriceStr := tomanPrice.String()
+	usdPriceStr := usdPrice.String()
+
+	message := fmt.Sprintf(
+		"✅ تعداد <b>%d</b> با موفقیت ثبت شد.\n\n"+
+			"💰 <b>قیمت برآورد شده برای این سفارش:</b>\n"+
+			"• به دلار: <code>%s $</code>\n"+
+			"• به تومان: <code>%s تومان</code>\n\n"+
+			"🔗 حالا لطفاً لینک کانال یا گروه خود را ارسال کنید.\n"+
+			"(مثال: <code>https://t.me/YourChannel</code>)\n\n"+
+			"⚠️ <b>توجه:</b> لینک باید عمومی (Public) باشد تا سرویس قابل انجام باشد.",
+		quantity,
+		usdPriceStr,
+		tomanPriceStr,
+	)
+
+	sErr := h.messenger.Send(ctx, &bot.SendMessageParams{
+		ChatID:    chatID,
+		Text:      message,
+		ParseMode: models.ParseModeHTML,
 	})
+
+	fmt.Println("ERRORS : ", sErr.Error())
 }
 
 func (h *Handler) showConfirmOrder(ctx context.Context, chatID int64, state *orderentity.OrderFlowState) {
