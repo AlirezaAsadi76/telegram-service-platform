@@ -184,24 +184,25 @@ func (h *Handler) handleQuantityInput(ctx context.Context, chatID, telegramID in
 
 func (h *Handler) showConfirmOrder(ctx context.Context, chatID int64, state *orderentity.OrderFlowState) {
 	message := fmt.Sprintf(
-		"📋 خلاصه سفارش شما:\n\n"+
+		"📋 <b>خلاصه سفارش شما:</b>\n\n"+
 			"📱 پلتفرم: %s\n"+
 			"📦 سرویس: %s\n"+
-			"🔢 تعداد: %d عدد\n"+
+			"🔢 تعداد: <code>%d</code> عدد\n"+
 			"🔗 لینک: %s\n\n"+
-			"💰 مبلغ قابل پرداخت: %s تومان\n\n"+
+			"💰 <b>مبلغ قابل پرداخت:</b> <code>%s تومان</code>\n\n"+
 			"آیا اطلاعات فوق صحیح است؟",
 		state.Platform,
 		state.ServiceName,
 		state.Quantity,
 		state.Link,
-		state.Price.String(), // نمایش قیمت با فرمت decimal
+		state.Price.String(),
 	)
 
 	_ = h.messenger.Send(ctx, &bot.SendMessageParams{
 		ChatID:      chatID,
 		Text:        message,
 		ReplyMarkup: keyboard.OrderConfirmMenu(),
+		ParseMode:   models.ParseModeHTML,
 	})
 }
 
