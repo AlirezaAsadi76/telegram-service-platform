@@ -28,4 +28,29 @@ func (h *Handler) RegisterRoutes(b *bot.Bot) {
 		h.cancelOrder,
 		h.middlewares()...,
 	)
+
+	b.RegisterHandler(
+		bot.HandlerTypeCallbackQueryData,
+		callback.OrderCheckPay,
+		bot.MatchTypeExact,
+		h.checkPaymentStatus,
+		middleware.Public()...,
+	)
+
+	b.RegisterHandler(
+		bot.HandlerTypeCallbackQueryData,
+		callback.OrderPayCrypto,
+		bot.MatchTypeExact,
+		h.processCryptoPayment,
+		middleware.Public()...,
+	)
+
+	b.RegisterHandler(
+		bot.HandlerTypeCallbackQueryData,
+		callback.OrderPayGateway,
+		bot.MatchTypeExact,
+		h.processGatewayPayment,
+		middleware.Public()...,
+	)
+
 }
