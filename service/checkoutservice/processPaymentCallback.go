@@ -38,28 +38,17 @@ func (s *Service) ProcessPaymentCallback(ctx context.Context, paymentID uint64, 
 		return richerror.New(Op, vErr)
 	}
 
-	// Get payment details
-	payment, err := s.paymentSvc.GetById(ctx, paymentID)
-	if err != nil {
+	// ۲. اگر پرداخت ناموفق بود، اطلاع‌رسانی و خروج
+	if verifyResp.Status == paymententity.PaymentStatusFailed || verifyResp.Status == paymententity.PaymentStatusCanceled {
 		metrics.PaymentsProcessed.WithLabelValues("gateway", "failed").Inc()
-		metrics.CheckoutLatency.WithLabelValues("payment_callback").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("payment callback failed", zap.Error(err), zap.Uint64("payment_id", paymentID))
-		return richerror.New(Op, err)
-	}
 
-	if verifyResp.Status == paymententity.PaymentStatusFailed {
-		metrics.PaymentsProcessed.WithLabelValues("gateway", "failed").Inc()
-		metrics.ActiveOrders.WithLabelValues("pending").Dec()
-		logger.Logger.Info("payment callback completed",
-			zap.String("status", string(verifyResp.Status)),
-			zap.Duration("latency", time.Since(start)),
-		)
-
-		_ = s.messenger.Send(ctx, &bot.SendMessageParams{
-			ChatID: payment.UserID,
-			Text:   msgerror.PaymentFailed,
-		})
-
+		payment, _ := s.paymentSvc.GetById(ctx, paymentID)
+		if payment != nil {
+			_ = s.messenger.Send(ctx, &bot.SendMessageParams{
+				ChatID: payment.UserID,
+				Text:   "❌ پرداخت ناموفق بود. لطفاً دوباره تلاش کنید یا از روش دیگری استفاده کنید.",
+			})
+		}
 		return nil
 	}
 
@@ -67,7 +56,12 @@ func (s *Service) ProcessPaymentCallback(ctx context.Context, paymentID uint64, 
 		return nil
 	}
 
-	// 2. Update Order to PAID
+	payment, err := s.paymentSvc.GetById(ctx, paymentID)
+	if err != nil {
+		logger.Logger.Error("payment callback: failed to get payment details", zap.Error(err), zap.Uint64("payment_id", paymentID))
+		return richerror.New(Op, err)
+	}
+
 	if ouErr := s.orderSvc.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
 		OrderID: payment.OrderID,
 		Status:  orderentity.OrderStatusPaid,
@@ -89,7 +83,9 @@ func (s *Service) ProcessPaymentCallback(ctx context.Context, paymentID uint64, 
 	go func() {
 		defer func() {
 			if r := recover(); r != nil {
-				// Log panic with Zap
+				logger.Logger.Error("panic in fulfillOrderAsync",
+					zap.Uint64("order_id", order.ID),
+					zap.Any("panic", r))
 			}
 		}()
 		s.fulfillOrderAsync(order)

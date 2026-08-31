@@ -45,7 +45,16 @@ func (h *Handler) processDirectPayment(ctx context.Context, b *bot.Bot, update *
 	state := stateResp
 	user, uErr := h.userService.FindUserByTelegramID(ctx, params.FindUserByTelegramIDRequest{TelegramID: entity.TelegramId(telegramID)})
 	if uErr != nil || !user.Found {
-		_ = h.messenger.Send(ctx, &bot.SendMessageParams{})
+		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
+			ChatID: chatID,
+			Text:   "❌ خطا در شناسایی کاربر. لطفاً دوباره تلاش کنید یا با پشتیبانی تماس بگیرید.",
+		})
+		logger.Logger.Error("user not found for payment",
+			zap.String("op", op),
+			zap.Int64("telegram_id", telegramID),
+			zap.Error(uErr),
+		)
+		return
 	}
 
 	resp, pErr := h.checkoutService.ProcessDirectPaymentPurchase(ctx, checkoutparams.DirectPaymentPurchase{

@@ -91,7 +91,7 @@ func (j *Job) Run(ctx context.Context) error {
 				},
 			})
 
-		case paymententity.PaymentStatusFailed, paymententity.PaymentStatusCanceled:
+		case paymententity.PaymentStatusFailed, paymententity.PaymentStatusCanceled, paymententity.PaymentStatusExpired:
 			if uErr := j.orderService.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
 				Status:  orderentity.OrderStatusCanceled,
 				OrderID: payment.OrderID,

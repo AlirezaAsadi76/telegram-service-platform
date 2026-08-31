@@ -2,6 +2,7 @@ package paymentservice
 
 import (
 	"context"
+	"fmt"
 	"telegram-service-platform/entity/paymententity"
 	"telegram-service-platform/params/paymentparams"
 	"telegram-service-platform/params/paymentproviderparams"
@@ -17,13 +18,26 @@ func (s *Service) Verify(ctx context.Context, req paymentparams.VerifyRequest) (
 	}
 
 	// Idempotency: don't verify already processed payments
-	if payment.Status == paymententity.PaymentStatusSuccess || payment.Status == paymententity.PaymentStatusFailed {
+	if payment.Status == paymententity.PaymentStatusSuccess ||
+		payment.Status == paymententity.PaymentStatusFailed ||
+		payment.Status == paymententity.PaymentStatusCanceled ||
+		payment.Status == paymententity.PaymentStatusExpired {
+
 		return &paymentparams.VerifyResponse{Status: payment.Status}, nil
 	}
 
 	provider := s.getProvider(payment.Method)
+	if provider == nil {
+		return nil, richerror.New(Op, fmt.Errorf("unknown payment method: %s", payment.Method)).
+			WithKind(richerror.KindInternal).
+			WithMessage(msgerror.InternalServerError)
+	}
+	externalID := req.ExternalID
+	if externalID == "" {
+		externalID = payment.ExternalID
+	}
 	providerReq := paymentproviderparams.VerifyRequest{
-		ExternalID:   req.ExternalID,
+		ExternalID:   externalID,
 		CallbackData: req.CallbackData,
 	}
 	providerResp, pvErr := provider.Verify(ctx, providerReq)
