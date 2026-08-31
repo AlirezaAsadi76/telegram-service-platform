@@ -56,8 +56,8 @@ func New(cfg config.Config) (*App, error) {
 
 	prj := pricerefreshjob.New(dependencies.PriceService)
 	pvj := paymentverifyjob.New(dependencies.PaymentService, dependencies.OrderService, dependencies.NotificationService, repositories.queueRepo, cfg.PaymentVerify)
-	ofj := orderfulfillerjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService, repositories.queueRepo, cfg.OrderFulFiller)
-	ssj := statussyncjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService)
+	ofj := orderfulfillerjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService, dependencies.WalletService, repositories.queueRepo, cfg.OrderFulFiller)
+	ssj := statussyncjob.New(dependencies.OrderService, dependencies.SMMService, dependencies.NotificationService, dependencies.WalletService)
 	pej := paymentexpiryjob.New(dependencies.PaymentService, dependencies.OrderService, dependencies.NotificationService)
 	ndj := notificationdispatchjob.New(dependencies.NotificationService, repositories.queueRepo, dependencies.MessengerService, cfg.NotificationJob)
 	smj := smmvalidationjob.New(dependencies.ProductService, dependencies.NotificationService)

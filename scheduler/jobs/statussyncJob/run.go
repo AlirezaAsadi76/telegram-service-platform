@@ -2,9 +2,11 @@ package statussyncjob
 
 import (
 	"context"
+	"fmt"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/params/notificationparams"
 	"telegram-service-platform/params/orderparams"
+	"telegram-service-platform/params/walletparam"
 	"telegram-service-platform/pkg/metrics"
 	"time"
 
@@ -75,11 +77,28 @@ func (j *Job) Run(ctx context.Context) error {
 			})
 
 		case "FAILED", "CANCELLED":
+			// ❌ اصلاح حیاتی: بازپرداخت خودکار وقتی ارائه‌دهنده سفارش را لغو یا رد می‌کند
+			refundID := fmt.Sprintf("refund:status_cancelled:order:%d", order.ID)
+			_, refErr := j.walletService.Credit(ctx, walletparam.CreditRequest{
+				UserID:         order.UserID,
+				Amount:         order.Amount,
+				ReferenceID:    fmt.Sprintf("order:%d", order.ID),
+				IdempotencyKey: refundID,
+			})
+
+			if refErr != nil {
+				logger.Logger.Error("CRITICAL: AUTO-REFUND FAILED ON PROVIDER CANCELLATION",
+					zap.Uint64("order_id", order.ID),
+					zap.Error(refErr),
+				)
+				continue // وضعیت را تغییر نمی‌دهیم تا ادمین دستی بررسی کند
+			}
+
 			if err := j.orderService.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
 				OrderID: order.ID,
-				Status:  orderentity.OrderStatusFailed,
+				Status:  orderentity.OrderStatusFailed, // یا OrderStatusCanceled اگر دارید
 			}); err != nil {
-				logger.Logger.Error("update order to failed ", zap.String("job", jobName), zap.Error(err))
+				logger.Logger.Error("update order to failed/canceled failed", zap.String("job", jobName), zap.Error(err))
 				continue
 			}
 
@@ -88,10 +107,10 @@ func (j *Job) Run(ctx context.Context) error {
 				Type:   notificationentity.NotificationTypeOrderFailed,
 				Payload: map[string]any{
 					"order_id": order.ID,
-					"reason":   "provider_status_failed",
+					"reason":   "provider_cancelled_and_refunded",
 				},
 			})
-
+			logger.Logger.Info("order cancelled by provider and user refunded", zap.Uint64("order_id", order.ID))
 		case "PROCESSING", "PENDING", "IN_PROGRESS":
 			// No change
 			logger.Logger.Info("No change - processing order status", zap.String("job", jobName))

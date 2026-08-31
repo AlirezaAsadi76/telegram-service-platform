@@ -3,9 +3,11 @@ package orderfulfillerjob
 import (
 	"context"
 	"errors"
+	"fmt"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/params/notificationparams"
 	"telegram-service-platform/params/orderparams"
+	"telegram-service-platform/params/walletparam"
 	"telegram-service-platform/pkg/metrics"
 	"telegram-service-platform/pkg/unmarshal"
 	"time"
@@ -49,6 +51,13 @@ func (j *Job) Run(ctx context.Context) error {
 		return nil
 	}
 
+	if order.Status == orderentity.OrderStatusProcessing ||
+		order.Status == orderentity.OrderStatusSuccess ||
+		order.Status == orderentity.OrderStatusFailed {
+		logger.Logger.Info("order already processed, skipping", zap.Uint64("order_id", order.ID), zap.String("status", string(order.Status)))
+		return nil
+	}
+
 	backoffs := []time.Duration{10 * time.Second, 30 * time.Second, 60 * time.Second}
 	var lastErr error
 
@@ -73,7 +82,7 @@ func (j *Job) Run(ctx context.Context) error {
 					zap.String("job", jobName),
 					zap.Uint64("order_id", order.ID),
 					zap.Error(updateErr))
-
+				return updateErr
 			}
 
 			metrics.SMMProviderRequests.WithLabelValues("default", "success").Inc()
@@ -101,6 +110,24 @@ func (j *Job) Run(ctx context.Context) error {
 		)
 		lastErr = fulErr
 
+	}
+
+	// ❌ اصلاح حیاتی: بازپرداخت خودکار در صورت شکست قطعی
+	refundID := fmt.Sprintf("refund:fulfill_fail:order:%d", order.ID)
+	_, refErr := j.walletService.Credit(ctx, walletparam.CreditRequest{
+		UserID:         order.UserID,
+		Amount:         order.Amount, // بازپرداخت کامل مبلغ سفارش
+		ReferenceID:    fmt.Sprintf("order:%d", order.ID),
+		IdempotencyKey: refundID, // کلید یکتا برای جلوگیری از بازپرداخت تکراری
+	})
+
+	if refErr != nil {
+		logger.Logger.Error("CRITICAL: AUTO-REFUND FAILED AFTER FULFILL FAILURE",
+			zap.Uint64("order_id", order.ID),
+			zap.Error(refErr),
+		)
+		// اگر بازپرداخت شکست بخورد، وضعیت را تغییر نمی‌دهیم تا ادمین دستی بررسی کند (یا می‌توان به وضعیت Refund_Failed تغییر داد)
+		return refErr
 	}
 
 	if upErr := j.orderService.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
