@@ -39,3 +39,10 @@ const (
 	InsufficientBalance     = "insufficient balance"
 	CacheEmpty              = "cache empty"
 )
+
+const (
+	ErrInvalidToken     = "invalid or malformed token"
+	ErrTokenExpired     = "token has expired"
+	ErrInvalidAlgorithm = "invalid signing algorithm"
+	ErrMissingBearer    = "missing Bearer prefix"
+)

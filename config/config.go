@@ -14,6 +14,7 @@ import (
 	"telegram-service-platform/scheduler/jobs/notificationdispatchjob"
 	"telegram-service-platform/scheduler/jobs/orderfulfillerjob"
 	"telegram-service-platform/scheduler/jobs/paymentverifyjob"
+	"telegram-service-platform/service/authservice"
 	"telegram-service-platform/service/checkoutservice"
 	"telegram-service-platform/service/notificationservice"
 	"telegram-service-platform/service/orderflowservice"
@@ -66,4 +67,5 @@ type Config struct {
 	Admins           AdminConfig                    `koanf:"admins"`
 	SmmRedis         redissmm.Config                `koanf:"smmRedis"`
 	OrderFlowSvc     orderflowservice.Config        `koanf:"orderFlowSvc"`
+	Auth             authservice.Config             `koanf:"auth"`
 }

@@ -7,5 +7,6 @@ var defaultValue = map[string]any{
 	"auth.refresh_subject":                  RefreshTokenSubject,
 	"auth.access_token_duration":            AccessTokenDuration,
 	"auth.refresh_token_duration":           RefreshTokenDuration,
+	"auth.auth_middleware_context_key":      AuthMiddlewareContextKey,
 	"application.graceful_shutdown_timeout": 5 * time.Second,
 }
