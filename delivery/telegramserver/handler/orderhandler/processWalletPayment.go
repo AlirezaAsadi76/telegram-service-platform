@@ -47,7 +47,7 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 	// ۲. فراخوانی CheckoutService
 	chErr := h.checkoutService.ProcessWalletPurchase(ctx, checkoutparams.WalletPurchaseRequest{
 		UserID:      user.UserInfo.Id,
-		ProductType: productentity.SMM,
+		ProductType: productentity.ProductTypeSMM,
 		ProductID:   state.ServiceID,
 		Quantity:    state.Quantity,
 		TargetLink:  state.Link,

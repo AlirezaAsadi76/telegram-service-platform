@@ -36,12 +36,12 @@ func New(cfg config.Config) (*App, error) {
 
 	dependencies, repositories, adapters := SetupDependencies(cfg)
 
-	userValidator := uservalidator.New()
+	userValidator := uservalidator.New(dependencies.UserService)
 	orderValidator := ordervalidator.New()
 
 	// handler
 	productHandler := producthandler.New(dependencies.ProductService, dependencies.MessengerService)
-	userHandler := userhandler.New(dependencies.UserService, userValidator, dependencies.MessengerService)
+	userHandler := userhandler.New(dependencies.UserService, dependencies.WalletService, dependencies.OrderService, userValidator, dependencies.MessengerService)
 	mainHandler := mainhandler.New(dependencies.ProductService, dependencies.UserService, dependencies.OrderFlowService, dependencies.MessengerService)
 	adminHandler := adminhandler.New(dependencies.CheckoutService, dependencies.UserService, dependencies.MessengerService, cfg.Admins)
 	orderHandler := orderhandler.New(

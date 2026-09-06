@@ -18,8 +18,11 @@ import (
 func (h Handler) WalletBalance(ctx context.Context, b *bot.Bot, update *models.Update) {
 	const op = "userhandler.handleWalletBalance"
 
-	telegramID := update.Message.From.ID
-	chatID := update.Message.Chat.ID
+	if update.CallbackQuery == nil || update.CallbackQuery.Message.Message == nil {
+		return
+	}
+	telegramID := update.CallbackQuery.From.ID
+	chatID := update.CallbackQuery.Message.Message.Chat.ID
 
 	userID, err := h.userValidator.ValidationUserExistence(ctx, entity.TelegramId(telegramID))
 	if err != nil {

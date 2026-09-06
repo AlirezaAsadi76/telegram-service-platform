@@ -3,8 +3,11 @@ package postgreswallet
 import (
 	"context"
 	"telegram-service-platform/entity/walletentity"
+	"telegram-service-platform/logger"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
+
+	"go.uber.org/zap"
 )
 
 func (d *DB) CreateTransaction(ctx context.Context, tx *walletentity.WalletTransaction) error {
@@ -23,6 +26,7 @@ func (d *DB) CreateTransaction(ctx context.Context, tx *walletentity.WalletTrans
 	).Scan(&tx.ID, &tx.CreatedAt, &tx.UpdatedAt)
 
 	if sErr != nil {
+		logger.Logger.Debug("Debug CreateTransaction", zap.String("err", sErr.Error()))
 		return richerror.New(Op, sErr).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryScanFailed)
 	}
 

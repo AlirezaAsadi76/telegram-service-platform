@@ -3,8 +3,11 @@ package postgresorder
 import (
 	"context"
 	"telegram-service-platform/entity/orderentity"
+	"telegram-service-platform/logger"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
+
+	"go.uber.org/zap"
 )
 
 func (d *DB) GetByUserID(ctx context.Context, userID uint64) ([]*orderentity.Order, error) {
@@ -17,9 +20,12 @@ func (d *DB) GetByUserID(ctx context.Context, userID uint64) ([]*orderentity.Ord
 		product_type,
 		product_id,
 		quantity,
+		target_link,
 		amount,
 		currency,
 		status,
+		external_order_id,
+		provider_id,
 		metadata,
 		created_at,
 		updated_at
@@ -31,6 +37,7 @@ func (d *DB) GetByUserID(ctx context.Context, userID uint64) ([]*orderentity.Ord
 	rows, qErr := d.Pool.Connection().Query(ctx, query, userID)
 
 	if qErr != nil {
+		logger.Logger.Debug("GetByUserID", zap.Error(qErr))
 		return nil, richerror.New(Op, qErr).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
 	}
 
@@ -42,6 +49,7 @@ func (d *DB) GetByUserID(ctx context.Context, userID uint64) ([]*orderentity.Ord
 
 		order, sErr := scanOrder(rows)
 		if sErr != nil {
+			logger.Logger.Error("GetByUserID-scan", zap.Error(sErr))
 			return nil, richerror.New(Op, sErr).WithKind(richerror.KindScanFailure).WithMessage(msgerror.QueryScanFailed)
 		}
 

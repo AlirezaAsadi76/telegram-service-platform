@@ -12,6 +12,7 @@ func (s *Service) GetByUserID(ctx context.Context, req orderparams.GetByUserIdRe
 
 	orders, err := s.repo.GetByUserID(ctx, req.UserID)
 	if err != nil {
+
 		return orderparams.GetByUserIdResponse{}, richerror.New(op, err).
 			WithKind(richerror.KindQueryFailure).
 			WithMessage(msgerror.QueryFailed)

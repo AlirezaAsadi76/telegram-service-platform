@@ -7,6 +7,7 @@ import (
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/repository/postgres"
 
+	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/shopspring/decimal"
 )
 
@@ -24,7 +25,7 @@ func scanOrder(row postgres.Scanner) (orderentity.Order, error) {
 	var providerID *uint64
 
 	var metadata []byte
-	var amountStr string
+	var amountNumeric pgtype.Numeric
 	err := row.Scan(
 		&order.ID,
 		&order.UserID,
@@ -32,7 +33,7 @@ func scanOrder(row postgres.Scanner) (orderentity.Order, error) {
 		&order.ProductID,
 		&order.Quantity,
 		&order.TargetLink,
-		&amountStr,
+		&amountNumeric,
 		&order.Currency,
 		&order.Status,
 		&order.ExternalOrderID,
@@ -52,12 +53,37 @@ func scanOrder(row postgres.Scanner) (orderentity.Order, error) {
 
 	}
 
-	amount, sErr := decimal.NewFromString(amountStr)
-	if sErr != nil {
-		return order, fmt.Errorf("failed to parse amount to decimal: %w", sErr)
+	if amountNumeric.Valid {
+		amountDecimal, err := numericToDecimal(amountNumeric)
+		if err != nil {
+			return order, fmt.Errorf("failed to convert numeric to decimal: %w", err)
+		}
+		order.Amount = entity.Amount(amountDecimal)
+	} else {
+		order.Amount = entity.Amount(decimal.Zero)
 	}
-	order.Amount = entity.Amount(amount)
 
 	return order, err
 
+}
+
+func numericToDecimal(n pgtype.Numeric) (decimal.Decimal, error) {
+	if !n.Valid {
+		return decimal.Zero, nil
+	}
+
+	if n.Int != nil {
+
+		intStr := n.Int.String()
+		d, err := decimal.NewFromString(intStr)
+		if err != nil {
+			return decimal.Zero, err
+		}
+		if n.Exp != 0 {
+			d = d.Shift(n.Exp)
+		}
+		return d, nil
+	}
+
+	return decimal.Zero, nil
 }

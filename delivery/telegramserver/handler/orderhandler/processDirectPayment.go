@@ -59,7 +59,7 @@ func (h *Handler) processDirectPayment(ctx context.Context, b *bot.Bot, update *
 
 	resp, pErr := h.checkoutService.ProcessDirectPaymentPurchase(ctx, checkoutparams.DirectPaymentPurchase{
 		UserID:      user.UserInfo.Id,
-		ProductType: productentity.SMM,
+		ProductType: productentity.ProductTypeSMM,
 		ProductID:   state.ServiceID,
 		Quantity:    state.Quantity,
 		TargetLink:  state.Link,

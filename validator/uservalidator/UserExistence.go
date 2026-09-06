@@ -15,7 +15,7 @@ import (
 func (v Validator) ValidationUserExistence(ctx context.Context, telegramID entity.TelegramId) (uint64, error) {
 	const op richerror.Op = "uservalidator.ValidationUserExistence"
 
-	vErr := validation.Validate(telegramID,
+	vErr := validation.Validate(telegramID.Int64(),
 		validation.Required,
 		validation.Min(int64(1)),
 		validation.By(v.ensureUserExists(ctx)),
