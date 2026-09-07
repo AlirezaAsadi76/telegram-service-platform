@@ -28,13 +28,6 @@ func (h *Handler) profileHandler(c *echo.Context) error {
 		)
 		return c.JSON(http.StatusInternalServerError, map[string]string{"error": "failed to fetch user profile"})
 	}
-	return c.JSON(http.StatusOK, map[string]interface{}{
-		"user_id":     user.UserInfo.Id,
-		"telegram_id": user.UserInfo.TelegramID,
-		"username":    user.UserInfo.Username,
-		"first_name":  user.UserInfo.FirstName,
-		"role":        user.UserInfo.Role,
-		"created_at":  user.UserInfo.CreatedAt,
-	})
+	return c.JSON(http.StatusOK, user)
 
 }
