@@ -6,7 +6,7 @@ env_file:
 
 
 httpServer:
-  port: 7660
+  port: 7667
 metricsServer:
   port: 8183
   enabled: true

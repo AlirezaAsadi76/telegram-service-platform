@@ -84,22 +84,22 @@ func New(cfg config.Config) (*App, error) {
 		panic(sErr)
 	}
 
-	var metricsServer *httpserver.Server
-	if cfg.MetricsServer.Enabled {
-		metricsServer = httpserver.New(
-			cfg.MetricsServer.Port,
-			adapters.postgresClient.Connection().Ping, // یا متد ping مناسب روی postgres.DB
-			adapters.redisAdapter.Ping,                // یا متد ping مناسب روی redis adapter
-		)
-	}
+	//var metricsServer *httpserver.Server
+	//if cfg.MetricsServer.Enabled {
+	//	metricsServer = httpserver.New(
+	//		cfg.MetricsServer.Port,
+	//		adapters.postgresClient.Connection().Ping, // یا متد ping مناسب روی postgres.DB
+	//		adapters.redisAdapter.Ping,                // یا متد ping مناسب روی redis adapter
+	//	)
+	//}
 
 	return &App{
 
-		telegramBot:   telegramBot,
-		postgres:      adapters.postgresClient,
-		redis:         adapters.redisAdapter,
-		scheduler:     schedulerObj,
-		metricsServer: metricsServer,
+		telegramBot: telegramBot,
+		postgres:    adapters.postgresClient,
+		redis:       adapters.redisAdapter,
+		scheduler:   schedulerObj,
+		//metricsServer: metricsServer,
 	}, nil
 
 }

@@ -24,6 +24,7 @@ import (
 	"telegram-service-platform/repository/redis/redisprice"
 	"telegram-service-platform/repository/redis/redisqueue"
 	"telegram-service-platform/repository/redis/redissmm"
+	"telegram-service-platform/service/authservice"
 	"telegram-service-platform/service/checkoutservice"
 	"telegram-service-platform/service/notificationservice"
 	"telegram-service-platform/service/orderflowservice"
@@ -50,6 +51,7 @@ type Dependencies struct {
 	ProductService      *productservice.Service
 	MessengerService    *messenger.Service
 	OrderFlowService    *orderflowservice.Service
+	AuthService         *authservice.Service
 }
 
 type Repositories struct {
@@ -107,6 +109,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	userSvc := userservice.New(walletSvc, userRepo, activityTracker)
 	messengerService := messenger.New(botAdapter)
 	orderflowService := orderflowservice.New(orderFlowCache, cfg.OrderFlowSvc)
+	authSvc := authservice.New(cfg.Auth)
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, catalogCache, smmCache, justPanelAdapter)
 	// smmSvc.RegisterProvider("justanotherpanel", justanotherpanel.New(...))
 
@@ -127,6 +130,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 			ProductService:      productSvc,
 			MessengerService:    messengerService,
 			OrderFlowService:    orderflowService,
+			AuthService:         authSvc,
 		},
 		&Repositories{
 			queueRepo: queueRepo,

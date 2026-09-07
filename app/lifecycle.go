@@ -31,11 +31,11 @@ func (a *App) Start(ctx context.Context) error {
 
 func (a *App) Shutdown(ctx context.Context) error {
 
-	if a.metricsServer != nil {
-		if err := a.metricsServer.Shutdown(ctx); err != nil {
-			logger.Logger.Error("metrics server shutdown error", zap.Error(err))
-		}
-	}
+	//if a.metricsServer != nil {
+	//	if err := a.metricsServer.Shutdown(ctx); err != nil {
+	//		logger.Logger.Error("metrics server shutdown error", zap.Error(err))
+	//	}
+	//}
 
 	if err := a.telegramBot.Shutdown(ctx); err != nil {
 

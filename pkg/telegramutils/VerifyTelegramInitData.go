@@ -18,6 +18,7 @@ func VerifyTelegramInitData(initData, botToken string) (url.Values, error) {
 	}
 
 	clientHash := parsedData.Get("hash")
+
 	parsedData.Del("hash")
 
 	var keys []string

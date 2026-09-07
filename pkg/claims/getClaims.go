@@ -7,6 +7,7 @@ import (
 	"github.com/labstack/echo/v5"
 )
 
-func GetClaimsFromEchoContext(c *echo.Context) authservice.Claims {
-	return c.Get(config.AuthMiddlewareContextKey).(authservice.Claims)
+func GetClaimsFromEchoContext(c *echo.Context) *authservice.Claims {
+	rawClaims := c.Get(config.AuthMiddlewareContextKey).(*authservice.Claims)
+	return rawClaims
 }

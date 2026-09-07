@@ -13,6 +13,7 @@ import (
 func (h *Handler) balanceHandler(c *echo.Context) error {
 	const op = "userhandler.balanceHandler"
 	claims := claimspkg.GetClaimsFromEchoContext(c)
+
 	balanceRes, bErr := h.walletSvc.GetBalance(c.Request().Context(), walletparam.GetBalanceRequest{
 		UserID: uint64(claims.UserId),
 	})

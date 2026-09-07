@@ -1,6 +1,7 @@
 package userhandler
 
 import (
+	"fmt"
 	"net/http"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/logger"
@@ -13,8 +14,9 @@ import (
 
 func (h *Handler) profileHandler(c *echo.Context) error {
 	const op = "userhandler.profileHandler"
+	fmt.Println(op)
 	claims := claimspkg.GetClaimsFromEchoContext(c)
-
+	fmt.Println("claims: ", claims)
 	user, fErr := h.userSvc.FindUserByTelegramID(c.Request().Context(), userparams.FindUserByTelegramIDRequest{
 		TelegramID: entity.TelegramId(claims.TelegramId),
 	})
