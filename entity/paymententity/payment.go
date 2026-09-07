@@ -9,14 +9,14 @@ type Payment struct {
 	ID             uint64
 	OrderID        uint64
 	UserID         uint64
-	Method         PaymentMethod // GATEWAY / CRYPTO
+	Method         PaymentMethod
 	Amount         entity.Amount
 	Currency       entity.Currency
-	Status         PaymentStatus // PENDING → PROCESSING → SUCCESS / FAILED / EXPIRED
-	ExternalID     string        // شناسه درگاه پرداخت
+	Status         PaymentStatus
+	ExternalID     string
 	IdempotencyKey string
-	CallbackData   map[string]any // داده‌های کال‌بک
-	ExpiredAt      time.Time      // برای crypto
+	CallbackData   map[string]any
+	ExpiredAt      time.Time
 	CreatedAt      time.Time
 	UpdatedAt      time.Time
 }

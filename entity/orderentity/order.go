@@ -12,12 +12,12 @@ type Order struct {
 	ProductType     productentity.ProductType
 	ProductID       uint64
 	Quantity        int64
-	TargetLink      string // لینک کانال/پست برای ProductTypeSMM
+	TargetLink      string
 	Amount          entity.Amount
 	Currency        entity.Currency
-	Status          OrderStatus // PENDING → PAID → PROCESSING → COMPLETED/FAILED/CANCELLED
-	ExternalOrderID string      // شناسه سفارش در ProductTypeSMM Provider
-	ProviderID      *uint64     // کدام پروایدر سفارش را گرفت
+	Status          OrderStatus
+	ExternalOrderID string
+	ProviderID      *uint64
 	Metadata        map[string]any
 	CreatedAt       time.Time
 	UpdatedAt       time.Time
