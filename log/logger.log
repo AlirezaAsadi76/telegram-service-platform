@@ -6606,3 +6606,9 @@
 {"level":"info","ts":"2026-09-07T21:16:16.329+0430","caller":"httpserver/start.go:24","msg":"HTTP request","method":"GET","uri":"/users/balance","status":200}
 {"level":"info","ts":"2026-09-07T21:16:22.570+0430","caller":"httpserver/start.go:24","msg":"HTTP request","method":"GET","uri":"/users/profile","status":200}
 {"level":"info","ts":"2026-09-07T21:16:35.419+0430","caller":"server/main.go:53","msg":"server stopped gracefully"}
+{"level":"info","ts":"2026-09-07T21:27:00.038+0430","caller":"server/main.go:46","msg":"starting application..."}
+{"level":"info","ts":"2026-09-07T21:27:00.038+0430","caller":"httpserver/start.go:17","msg":"starting HTTP server","address":":7667"}
+{"level":"info","ts":"2026-09-07T21:27:03.981+0430","caller":"httpserver/start.go:24","msg":"HTTP request","method":"GET","uri":"/users/transactions","status":401}
+{"level":"info","ts":"2026-09-07T21:27:08.744+0430","caller":"httpserver/start.go:24","msg":"HTTP request","method":"POST","uri":"/users/login","status":200}
+{"level":"info","ts":"2026-09-07T21:27:18.448+0430","caller":"httpserver/start.go:24","msg":"HTTP request","method":"GET","uri":"/users/transactions","status":200}
+{"level":"info","ts":"2026-09-07T21:27:29.102+0430","caller":"server/main.go:54","msg":"server stopped gracefully"}

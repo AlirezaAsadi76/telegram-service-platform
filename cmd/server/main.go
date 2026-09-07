@@ -35,6 +35,7 @@ func main() {
 		dependencies.UserService,
 		dependencies.AuthService,
 		dependencies.WalletService,
+		dependencies.OrderService,
 		userVal,
 		cfg.Auth,
 		cfg.Telegram.Token,

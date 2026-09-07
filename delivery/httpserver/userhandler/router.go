@@ -14,5 +14,6 @@ func (h *Handler) SetRoutes(e *echo.Echo) {
 	userGroup.POST("/login", h.loginHandler)
 	userGroup.GET("/balance", h.balanceHandler, middleware.Auth(h.authConfig, h.authSvc))
 	userGroup.GET("/profile", h.profileHandler, middleware.Auth(h.authConfig, h.authSvc))
+	userGroup.GET("/transactions", h.transactionHandler, middleware.Auth(h.authConfig, h.authSvc))
 
 }
