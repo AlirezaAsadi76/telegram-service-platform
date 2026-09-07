@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+	"telegram-service-platform/params/userparams"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -13,7 +14,6 @@ import (
 
 	"telegram-service-platform/entity"
 	"telegram-service-platform/logger"
-	"telegram-service-platform/params"
 	"telegram-service-platform/params/checkoutparams"
 )
 
@@ -54,7 +54,7 @@ func (h *Handler) Recharge(ctx context.Context, b *bot.Bot, update *models.Updat
 		return
 	}
 
-	userResp, userErr := h.userService.FindUserByTelegramID(ctx, params.FindUserByTelegramIDRequest{
+	userResp, userErr := h.userService.FindUserByTelegramID(ctx, userparams.FindUserByTelegramIDRequest{
 		TelegramID: entity.TelegramId(telegramID),
 	})
 	if userErr != nil {

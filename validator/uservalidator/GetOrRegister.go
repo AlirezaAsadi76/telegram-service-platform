@@ -1,22 +1,40 @@
 package uservalidator
 
 import (
-	"telegram-service-platform/params"
-	"telegram-service-platform/pkg/msgerror"
+	"errors"
+	"telegram-service-platform/params/userparams"
 	"telegram-service-platform/pkg/richerror"
+
+	validation "github.com/go-ozzo/ozzo-validation"
 )
 
 func (v Validator) GetOrRegister(
-	req params.GetOrRegisterRequest,
+	req userparams.GetOrRegisterRequest,
 ) error {
 
 	const op richerror.Op = "uservalidator.GetOrRegister"
 
-	if req.TelegramID <= 0 {
+	vErr := validation.ValidateStruct(&req,
+		validation.Field(&req.TelegramID, validation.Required, validation.NilOrNotEmpty, validation.Min(0)),
+		validation.Field(&req.Role, validation.Required),
+	)
 
-		return richerror.New(op, nil).
-			WithKind(richerror.KindInvalid).
-			WithMessage(msgerror.TelegramIdInvalid)
+	if vErr != nil {
+		var errV validation.Errors
+		if ok := errors.As(vErr, &errV); ok {
+			var firstErrorMsg string
+			for _, err := range errV {
+				if err != nil {
+					firstErrorMsg = err.Error()
+					break
+				}
+			}
+			return richerror.New(op, vErr).
+				WithKind(richerror.KindValidation).
+				WithMessage(firstErrorMsg).
+				WithMeta(map[string]interface{}{"telegram_id": req.TelegramID})
+		}
 	}
+
 	return nil
 }

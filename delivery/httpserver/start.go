@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"net/http"
 
+	"telegram-service-platform/logger"
+
 	"github.com/labstack/echo/v5"
 	"github.com/labstack/echo/v5/middleware"
 	"go.uber.org/zap"
-	"telegram-service-platform/logger"
 )
 
 func (s *Server) Start(ctx context.Context) error {
@@ -31,7 +32,11 @@ func (s *Server) Start(ctx context.Context) error {
 	s.Router.Use(middleware.Recover())
 
 	s.Router.Use(middleware.CORSWithConfig(middleware.CORSConfig{
-		AllowOrigins:     []string{"*"},
+		AllowOrigins: []string{
+			"https://web.telegram.org",
+			"http://localhost:5173",
+			"http://localhost:3000",
+		},
 		AllowMethods:     []string{http.MethodGet, http.MethodPost, http.MethodPut, http.MethodDelete, http.MethodOptions},
 		AllowHeaders:     []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept, echo.HeaderAuthorization, "X-Telegram-Init-Data"},
 		ExposeHeaders:    []string{echo.HeaderAuthorization},

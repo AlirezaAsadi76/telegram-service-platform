@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/logger"
-	"telegram-service-platform/params"
+	"telegram-service-platform/params/userparams"
 	"telegram-service-platform/pkg/mapper"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
@@ -13,13 +13,13 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s Service) GetOrRegister(ctx context.Context, request params.GetOrRegisterRequest) (params.GetOrRegisterResponse, error) {
+func (s Service) GetOrRegister(ctx context.Context, request userparams.GetOrRegisterRequest) (userparams.GetOrRegisterResponse, error) {
 	const Op = "userservice.GetOrRegister"
 
 	existingUser, fErr := s.repository.FindUserByTelegramID(ctx, request.TelegramID)
 
 	if fErr != nil && !richerror.IsKind(fErr, richerror.KindNotFound) {
-		return params.GetOrRegisterResponse{}, richerror.New(Op, fErr)
+		return userparams.GetOrRegisterResponse{}, richerror.New(Op, fErr)
 	}
 	if existingUser != nil {
 		return mapper.MapUserResponse(existingUser, false), nil
@@ -35,7 +35,7 @@ func (s Service) GetOrRegister(ctx context.Context, request params.GetOrRegister
 
 	rErr := s.repository.Create(ctx, &user)
 	if rErr != nil {
-		return params.GetOrRegisterResponse{},
+		return userparams.GetOrRegisterResponse{},
 			richerror.New(Op, rErr).
 				WithKind(richerror.KindUnexpected).
 				WithMessage(msgerror.InternalServerError)
@@ -48,7 +48,7 @@ func (s Service) GetOrRegister(ctx context.Context, request params.GetOrRegister
 			zap.Uint64("user_id", user.ID),
 			zap.Error(gcErr),
 		)
-		return params.GetOrRegisterResponse{},
+		return userparams.GetOrRegisterResponse{},
 			richerror.New(Op, rErr).
 				WithKind(richerror.KindUnexpected).
 				WithMessage(msgerror.InternalServerError)

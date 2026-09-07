@@ -2,14 +2,14 @@ package mapper
 
 import (
 	"telegram-service-platform/entity"
-	"telegram-service-platform/params"
+	"telegram-service-platform/params/userparams"
 
 	"github.com/go-telegram/bot/models"
 )
 
-func MapTelegramUserToRegisterRequest(tgUser *models.User) params.GetOrRegisterRequest {
+func MapTelegramUserToRegisterRequest(tgUser *models.User) userparams.GetOrRegisterRequest {
 
-	return params.GetOrRegisterRequest{
+	return userparams.GetOrRegisterRequest{
 
 		TelegramID: tgUser.ID,
 		Username:   tgUser.Username,

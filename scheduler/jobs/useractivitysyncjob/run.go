@@ -2,12 +2,12 @@ package useractivitysyncjob
 
 import (
 	"context"
+	"telegram-service-platform/params/userparams"
 	"time"
 
 	"go.uber.org/zap"
 
 	"telegram-service-platform/logger"
-	"telegram-service-platform/params"
 	"telegram-service-platform/pkg/metrics"
 )
 
@@ -21,7 +21,7 @@ func (j *Job) Run(ctx context.Context) error {
 
 	logger.Logger.Info("user activity sync job started", zap.String("job", jobName))
 
-	resp, err := j.userService.SyncActiveUsersLastSeen(ctx, params.SyncLastSeenRequest{})
+	resp, err := j.userService.SyncActiveUsersLastSeen(ctx, userparams.SyncLastSeenRequest{})
 	if err != nil {
 		metrics.WorkerRuns.WithLabelValues(jobName, "error").Inc()
 		logger.Logger.Error("user activity sync failed", zap.String("job", jobName), zap.Error(err))

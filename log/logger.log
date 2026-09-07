@@ -6490,3 +6490,5 @@
 {"level":"info","ts":"2026-09-06T09:02:37.955+0430","caller":"middleware/logger.go:37","msg":"telegram update processed","update_type":"message","handler":"text","telegram_id":2053084840,"chat_id":2053084840,"duration":0.222908263}
 {"level":"info","ts":"2026-09-06T09:03:18.014+0430","caller":"httpserver/server.go:56","msg":"http server shutting down"}
 {"level":"error","ts":"2026-09-06T09:03:18.373+0430","caller":"app/lifecycle.go:42","msg":"telegram server shutdown error","error":"too many requests, Too Many Requests: retry after 351: retry_after 351","stacktrace":"telegram-service-platform/app.(*App).Shutdown\n\t/home/prince/bots/telegram-service-platform/app/lifecycle.go:42\nmain.main\n\t/home/prince/bots/telegram-service-platform/cmd/bot/main.go:51\nruntime.main\n\t/snap/go/current/src/runtime/proc.go:290"}
+{"level":"info","ts":"2026-09-07T18:22:39.892+0430","caller":"httpserver/start.go:16","msg":"starting HTTP server","address":":7660"}
+{"level":"info","ts":"2026-09-07T18:26:44.444+0430","caller":"httpserver/start.go:17","msg":"starting HTTP server","address":":7660"}

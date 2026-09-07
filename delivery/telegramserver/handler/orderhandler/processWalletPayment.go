@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/params/orderparams"
+	"telegram-service-platform/params/userparams"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -14,7 +15,6 @@ import (
 	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/productentity"
 	"telegram-service-platform/logger"
-	"telegram-service-platform/params"
 	"telegram-service-platform/params/checkoutparams"
 	"telegram-service-platform/pkg/richerror"
 )
@@ -40,7 +40,7 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 	}
 
 	state := stateResp
-	user, uErr := h.userService.FindUserByTelegramID(ctx, params.FindUserByTelegramIDRequest{TelegramID: entity.TelegramId(telegramID)})
+	user, uErr := h.userService.FindUserByTelegramID(ctx, userparams.FindUserByTelegramIDRequest{TelegramID: entity.TelegramId(telegramID)})
 	if uErr != nil || !user.Found {
 		_ = h.messenger.Send(ctx, &bot.SendMessageParams{})
 	}

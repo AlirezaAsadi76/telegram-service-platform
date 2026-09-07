@@ -4,7 +4,7 @@ import (
 	"context"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/logger"
-	"telegram-service-platform/params"
+	"telegram-service-platform/params/userparams"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -12,7 +12,7 @@ import (
 )
 
 type ActivityTracker interface {
-	TrackActivity(ctx context.Context, req params.TrackUserActivityRequest) (params.TrackUserActivityResponse, error)
+	TrackActivity(ctx context.Context, req userparams.TrackUserActivityRequest) (userparams.TrackUserActivityResponse, error)
 }
 
 func ActivityTracking(tracker ActivityTracker) Middleware {
@@ -27,7 +27,7 @@ func ActivityTracking(tracker ActivityTracker) Middleware {
 			}
 
 			if telegramID > 0 {
-				if _, err := tracker.TrackActivity(ctx, params.TrackUserActivityRequest{TelegramID: telegramID}); err != nil {
+				if _, err := tracker.TrackActivity(ctx, userparams.TrackUserActivityRequest{TelegramID: telegramID}); err != nil {
 
 					logger.Logger.Warn("failed to track user activity",
 						zap.Int64("telegram_id", telegramID.Int64()),

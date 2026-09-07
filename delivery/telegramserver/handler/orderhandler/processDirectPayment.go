@@ -4,13 +4,13 @@ import (
 	"context"
 	"fmt"
 	"telegram-service-platform/delivery/telegramserver/keyboard"
+	"telegram-service-platform/params/userparams"
 
 	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/entity/paymententity"
 	"telegram-service-platform/entity/productentity"
 	"telegram-service-platform/logger"
-	"telegram-service-platform/params"
 	"telegram-service-platform/params/checkoutparams"
 	"telegram-service-platform/params/orderparams"
 
@@ -43,7 +43,7 @@ func (h *Handler) processDirectPayment(ctx context.Context, b *bot.Bot, update *
 	}
 
 	state := stateResp
-	user, uErr := h.userService.FindUserByTelegramID(ctx, params.FindUserByTelegramIDRequest{TelegramID: entity.TelegramId(telegramID)})
+	user, uErr := h.userService.FindUserByTelegramID(ctx, userparams.FindUserByTelegramIDRequest{TelegramID: entity.TelegramId(telegramID)})
 	if uErr != nil || !user.Found {
 		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
 			ChatID: chatID,

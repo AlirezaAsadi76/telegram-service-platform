@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"telegram-service-platform/entity"
-	"telegram-service-platform/params"
+	"telegram-service-platform/params/userparams"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 
@@ -38,7 +38,7 @@ func (v Validator) ValidationUserExistence(ctx context.Context, telegramID entit
 		}
 	}
 
-	user, _ := v.userService.FindUserByTelegramID(ctx, params.FindUserByTelegramIDRequest{
+	user, _ := v.userService.FindUserByTelegramID(ctx, userparams.FindUserByTelegramIDRequest{
 		TelegramID: telegramID,
 	})
 
@@ -49,7 +49,7 @@ func (v Validator) ensureUserExists(ctx context.Context) validation.RuleFunc {
 	return func(value interface{}) error {
 		telegramID := value.(int64)
 
-		user, err := v.userService.FindUserByTelegramID(ctx, params.FindUserByTelegramIDRequest{
+		user, err := v.userService.FindUserByTelegramID(ctx, userparams.FindUserByTelegramIDRequest{
 			TelegramID: entity.TelegramId(telegramID),
 		})
 

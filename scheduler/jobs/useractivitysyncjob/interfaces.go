@@ -2,9 +2,9 @@ package useractivitysyncjob
 
 import (
 	"context"
-	"telegram-service-platform/params"
+	"telegram-service-platform/params/userparams"
 )
 
 type UserService interface {
-	SyncActiveUsersLastSeen(ctx context.Context, req params.SyncLastSeenRequest) (params.SyncLastSeenResponse, error)
+	SyncActiveUsersLastSeen(ctx context.Context, req userparams.SyncLastSeenRequest) (userparams.SyncLastSeenResponse, error)
 }

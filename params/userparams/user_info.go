@@ -1,4 +1,4 @@
-package params
+package userparams
 
 import (
 	"telegram-service-platform/entity"
