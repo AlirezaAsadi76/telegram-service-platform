@@ -7,6 +7,6 @@ type GetBalanceRequest struct {
 }
 
 type GetBalanceResponse struct {
-	Balance  entity.Amount
-	Currency entity.Currency
+	Balance  entity.Amount   `json:"balance"`
+	Currency entity.Currency `json:"currency"`
 }

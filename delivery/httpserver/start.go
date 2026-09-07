@@ -43,6 +43,10 @@ func (s *Server) Start(ctx context.Context) error {
 		AllowCredentials: true,
 	}))
 
+	for _, handler := range s.handlers {
+		handler.SetRoutes(s.Router)
+	}
+
 	startConfig := echo.StartConfig{
 		Address:         fmt.Sprintf(":%d", s.config.HttpServer.Port),
 		GracefulTimeout: s.config.Application.GracefulShutdownTimeout,

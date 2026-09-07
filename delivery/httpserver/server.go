@@ -7,16 +7,18 @@ import (
 )
 
 type Server struct {
-	Router *echo.Echo
-	config config.Config
+	Router   *echo.Echo
+	handlers []Handlers
+	config   config.Config
 }
 
-func New(cfg config.Config) *Server {
+func New(cfg config.Config, handlers ...Handlers) *Server {
 	e := echo.New()
 
 	server := &Server{
-		Router: e,
-		config: cfg,
+		Router:   e,
+		handlers: handlers,
+		config:   cfg,
 	}
 
 	return server
