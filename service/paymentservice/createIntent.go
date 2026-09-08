@@ -56,28 +56,50 @@ func (s *Service) CreateIntent(ctx context.Context, req paymentparams.CreateInte
 	}
 
 	if err := s.repo.Create(ctx, payment); err != nil {
-		
+
 		if richerror.IsKind(err, richerror.KindConflict) {
 
-			existing, getErr := s.repo.GetByIdempotencyKey(
-				ctx,
-				req.IdempotencyKey,
-			)
+			if richerror.IsCode(
+				err,
+				richerror.CodePaymentIdempotencyKeyReused,
+			) {
+				existing, getErr := s.repo.GetByIdempotencyKey(
+					ctx,
+					req.IdempotencyKey,
+				)
 
-			if getErr != nil {
-				return nil, richerror.New(op, getErr).
-					WithKind(richerror.KindQueryFailure).
-					WithCode(richerror.CodePaymentLoadFailed)
+				if getErr != nil {
+					return nil, richerror.New(op, getErr).
+						WithKind(richerror.KindQueryFailure).
+						WithCode(richerror.CodePaymentLoadFailed)
+				}
+
+				metrics.PaymentIntentResult.
+					WithLabelValues(
+						string(existing.Method),
+						"conflict_recovered",
+					).
+					Inc()
+
+				return &paymentparams.CreateIntentResponse{
+					PaymentID: existing.ID,
+					Status:    existing.Status,
+				}, nil
 			}
 
-			metrics.PaymentIntentResult.
-				WithLabelValues(string(existing.Method), "conflict_recovered").
-				Inc()
+			if richerror.IsCode(
+				err,
+				richerror.CodePaymentIntentAlreadyExists,
+			) {
+				metrics.PaymentIntentResult.
+					WithLabelValues(
+						string(req.Method),
+						"active_payment_exists",
+					).
+					Inc()
 
-			return &paymentparams.CreateIntentResponse{
-				PaymentID: existing.ID,
-				Status:    existing.Status,
-			}, nil
+				return nil, err
+			}
 		}
 
 		metrics.PaymentIntentResult.
