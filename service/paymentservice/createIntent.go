@@ -56,10 +56,33 @@ func (s *Service) CreateIntent(ctx context.Context, req paymentparams.CreateInte
 	}
 
 	if err := s.repo.Create(ctx, payment); err != nil {
-		metrics.PaymentIntentResult.WithLabelValues(
-			string(req.Method),
-			"failed",
-		).Inc()
+		
+		if richerror.IsKind(err, richerror.KindConflict) {
+
+			existing, getErr := s.repo.GetByIdempotencyKey(
+				ctx,
+				req.IdempotencyKey,
+			)
+
+			if getErr != nil {
+				return nil, richerror.New(op, getErr).
+					WithKind(richerror.KindQueryFailure).
+					WithCode(richerror.CodePaymentLoadFailed)
+			}
+
+			metrics.PaymentIntentResult.
+				WithLabelValues(string(existing.Method), "conflict_recovered").
+				Inc()
+
+			return &paymentparams.CreateIntentResponse{
+				PaymentID: existing.ID,
+				Status:    existing.Status,
+			}, nil
+		}
+
+		metrics.PaymentIntentResult.
+			WithLabelValues(string(req.Method), "failed").
+			Inc()
 
 		return nil, richerror.New(op, err).
 			WithKind(richerror.KindCreateFailed).
