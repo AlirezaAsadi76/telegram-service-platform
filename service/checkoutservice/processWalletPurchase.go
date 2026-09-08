@@ -40,7 +40,7 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		return richerror.New(Op, err)
 
 	}
-	if !balanceResp.Balance.GreaterThan(req.Amount) {
+	if !balanceResp.Balance.GreaterThanOrEqual(req.Amount) {
 		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
 		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
 		logger.Logger.Error("checkout wallet purchase failed", zap.Error(fmt.Errorf("insufficient balance")), zap.Uint64("user_id", req.UserID),

@@ -29,7 +29,7 @@ func (d *DB) Create(ctx context.Context, payment *paymententity.Payment) error {
 	).Scan(&payment.ID, &payment.CreatedAt, &payment.UpdatedAt)
 
 	if qErr != nil {
-		return richerror.New(Op, err).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
+		return richerror.New(Op, qErr).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
 	}
 
 	return nil
