@@ -6,14 +6,23 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-const pgUniqueViolationCode = "23505"
+const (
+	pgUniqueViolationCode = "23505"
 
-func isUniqueViolation(err error) bool {
+	paymentIdempotencyConstraint = "ux_payments_idempotency_key"
+	paymentActiveOrderConstraint = "ux_payments_active_order"
+)
+
+func getUniqueViolationConstraint(err error) (string, bool) {
 	var pgErr *pgconn.PgError
 
 	if !errors.As(err, &pgErr) {
-		return false
+		return "", false
 	}
 
-	return pgErr.Code == pgUniqueViolationCode
+	if pgErr.Code != pgUniqueViolationCode {
+		return "", false
+	}
+
+	return pgErr.ConstraintName, true
 }

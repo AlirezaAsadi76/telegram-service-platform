@@ -32,10 +32,18 @@ func (d *DB) Create(ctx context.Context, payment *paymententity.Payment) error {
 	).Scan(&payment.ID, &payment.CreatedAt, &payment.UpdatedAt)
 
 	if qErr != nil {
-		if isUniqueViolation(qErr) {
-			return richerror.New(Op, qErr).
-				WithKind(richerror.KindConflict).
-				WithCode(richerror.CodePaymentIntentAlreadyExists)
+		if constraint, ok := getUniqueViolationConstraint(qErr); ok {
+			switch constraint {
+			case paymentIdempotencyConstraint:
+				return richerror.New(Op, qErr).
+					WithKind(richerror.KindConflict).
+					WithCode(richerror.CodePaymentIdempotencyKeyReused)
+
+			case paymentActiveOrderConstraint:
+				return richerror.New(Op, qErr).
+					WithKind(richerror.KindConflict).
+					WithCode(richerror.CodePaymentIntentAlreadyExists)
+			}
 		}
 
 		return richerror.New(Op, qErr).

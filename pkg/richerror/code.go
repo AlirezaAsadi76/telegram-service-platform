@@ -27,6 +27,7 @@ const (
 
 	CodePaymentInvalidAmount         Code = "PAYMENT_INVALID_AMOUNT"
 	CodePaymentInvalidIdempotencyKey Code = "PAYMENT_INVALID_IDEMPOTENCY_KEY"
+	CodePaymentIdempotencyKeyReused  Code = "PAYMENT_IDEMPOTENCY_KEY_REUSED"
 	CodePaymentIntentAlreadyExists   Code = "PAYMENT_INTENT_ALREADY_EXISTS"
 	CodePaymentIntentCreationFailed  Code = "PAYMENT_INTENT_CREATION_FAILED"
 	CodePaymentLoadFailed            Code = "PAYMENT_LOAD_FAILED"
