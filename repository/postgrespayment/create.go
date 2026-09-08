@@ -14,7 +14,10 @@ func (d *DB) Create(ctx context.Context, payment *paymententity.Payment) error {
 
 	metadata, err := json.Marshal(payment.CallbackData)
 	if err != nil {
-		return richerror.New(Op, err).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
+		return richerror.New(Op, err).
+			WithKind(richerror.KindSerializationFailure).
+			WithCode(richerror.CodePaymentIntentCreationFailed).
+			WithMessage(msgerror.QueryFailed)
 	}
 
 	query := `
@@ -29,7 +32,16 @@ func (d *DB) Create(ctx context.Context, payment *paymententity.Payment) error {
 	).Scan(&payment.ID, &payment.CreatedAt, &payment.UpdatedAt)
 
 	if qErr != nil {
-		return richerror.New(Op, qErr).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
+		if isUniqueViolation(qErr) {
+			return richerror.New(Op, qErr).
+				WithKind(richerror.KindConflict).
+				WithCode(richerror.CodePaymentIntentAlreadyExists)
+		}
+
+		return richerror.New(Op, qErr).
+			WithKind(richerror.KindQueryFailure).
+			WithCode(richerror.CodePaymentIntentCreationFailed).
+			WithMessage(msgerror.QueryFailed)
 	}
 
 	return nil
