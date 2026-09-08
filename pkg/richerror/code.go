@@ -5,21 +5,38 @@ type Code string
 const (
 	CodeUnknown Code = "UNKNOWN"
 
-	CodeUserNotFound Code = "USER_NOT_FOUND"
-
+	CodeUserNotFound      Code = "USER_NOT_FOUND"
 	CodeUserAlreadyExists Code = "USER_ALREADY_EXISTS"
+	CodeProductNotFound   Code = "PRODUCT_NOT_FOUND"
 
-	CodeProductNotFound Code = "PRODUCT_NOT_FOUND"
+	CodeOrderNotFound          Code = "ORDER_NOT_FOUND"
+	CodeOrderAlreadyPaid       Code = "ORDER_ALREADY_PAID"
+	CodeOrderInvalidState      Code = "ORDER_INVALID_STATE"
+	CodeOrderInvalidTransition Code = "ORDER_INVALID_TRANSITION"
 
-	CodeOrderNotFound Code = "ORDER_NOT_FOUND"
+	CodePaymentNotFound            Code = "PAYMENT_NOT_FOUND"
+	CodePaymentFailed              Code = "PAYMENT_FAILED"
+	CodePaymentAlreadyProcessed    Code = "PAYMENT_ALREADY_PROCESSED"
+	CodePaymentInvalidState        Code = "PAYMENT_INVALID_STATE"
+	CodePaymentAlreadyConfirmed    Code = "PAYMENT_ALREADY_CONFIRMED"
+	CodePaymentProviderRejected    Code = "PAYMENT_PROVIDER_REJECTED"
+	CodePaymentProviderTimeout     Code = "PAYMENT_PROVIDER_TIMEOUT"
+	CodePaymentProviderUnavailable Code = "PAYMENT_PROVIDER_UNAVAILABLE"
+	CodePaymentVerificationFailed  Code = "PAYMENT_VERIFICATION_FAILED"
+	CodePaymentCreationFailed      Code = "PAYMENT_CREATION_FAILED"
 
-	CodeOrderAlreadyPaid Code = "ORDER_ALREADY_PAID"
+	CodePaymentInvalidAmount         Code = "PAYMENT_INVALID_AMOUNT"
+	CodePaymentInvalidIdempotencyKey Code = "PAYMENT_INVALID_IDEMPOTENCY_KEY"
+	CodePaymentIntentAlreadyExists   Code = "PAYMENT_INTENT_ALREADY_EXISTS"
+	CodePaymentIntentCreationFailed  Code = "PAYMENT_INTENT_CREATION_FAILED"
+	CodePaymentLoadFailed            Code = "PAYMENT_LOAD_FAILED"
 
-	CodePaymentFailed Code = "PAYMENT_FAILED"
-
-	CodePaymentAlreadyProcessed Code = "PAYMENT_ALREADY_PROCESSED"
-
-	CodeTelegramOperationFailed Code = "TELEGRAM_OPERATION_FAILED"
+	CodeWalletNotFound            Code = "WALLET_NOT_FOUND"
+	CodeWalletInsufficientBalance Code = "WALLET_INSUFFICIENT_BALANCE"
+	CodeWalletInvalidAmount       Code = "WALLET_INVALID_AMOUNT"
+	CodeWalletConcurrentUpdate    Code = "WALLET_CONCURRENT_UPDATE"
 
 	CodeInvalidInput Code = "INVALID_INPUT"
+
+	CodeTelegramOperationFailed Code = "TELEGRAM_OPERATION_FAILED"
 )
