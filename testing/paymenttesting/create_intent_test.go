@@ -134,3 +134,63 @@ func TestService_CreateIntent(t *testing.T) {
 		t.Fatalf("unexpected idempotency key")
 	}
 }
+
+func TestService_CreateIntent_RecoverExistingPaymentAfterConflict(
+	t *testing.T,
+) {
+	repo := newFakePaymentRepository()
+
+	existing := &paymententity.Payment{
+		ID:             100,
+		OrderID:        10,
+		UserID:         20,
+		Method:         paymententity.PaymentMethodZarinpal,
+		Amount:         entity.Amount(decimal.NewFromInt(50000)),
+		Currency:       entity.CurrencyTOMAN,
+		Status:         paymententity.PaymentStatusCreating,
+		IdempotencyKey: "checkout:order:10:attempt:abc",
+	}
+
+	repo.paymentByIdempotency[existing.IdempotencyKey] = existing
+
+	repo.createErr = richerror.New(
+		"fake.create",
+		nil,
+	).WithKind(richerror.KindConflict)
+
+	service := paymentservice.New(repo, nil, nil)
+
+	req := paymentparams.CreateIntentRequest{
+		OrderID:        10,
+		UserID:         20,
+		Method:         paymententity.PaymentMethodZarinpal,
+		Amount:         entity.Amount(decimal.NewFromInt(50000)),
+		Currency:       entity.CurrencyTOMAN,
+		IdempotencyKey: existing.IdempotencyKey,
+	}
+
+	resp, err := service.CreateIntent(
+		context.Background(),
+		req,
+	)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if resp.PaymentID != existing.ID {
+		t.Fatalf(
+			"expected payment ID %d, got %d",
+			existing.ID,
+			resp.PaymentID,
+		)
+	}
+
+	if resp.Status != existing.Status {
+		t.Fatalf(
+			"expected status %s, got %s",
+			existing.Status,
+			resp.Status,
+		)
+	}
+}
