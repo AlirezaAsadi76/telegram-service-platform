@@ -32,6 +32,7 @@ func scanPayment(row postgres.Scanner) (paymententity.Payment, error) {
 		&payment.Currency,
 		&payment.Status,
 		&payment.ExternalID,
+		&payment.PaymentURL,
 		&payment.IdempotencyKey,
 		&metadata,
 		&payment.ExpiredAt,

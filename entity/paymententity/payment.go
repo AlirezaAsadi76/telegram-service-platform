@@ -14,6 +14,7 @@ type Payment struct {
 	Currency       entity.Currency
 	Status         PaymentStatus
 	ExternalID     string
+	PaymentURL     string
 	IdempotencyKey string
 	CallbackData   map[string]any
 	ExpiredAt      time.Time

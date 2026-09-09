@@ -10,7 +10,7 @@ import (
 func (d *DB) GetByOrderID(ctx context.Context, orderID uint64) (*paymententity.Payment, error) {
 	const Op = "postgrespay.getbyorderid"
 	query := `
-		SELECT id, order_id, user_id, method, amount, currency, status, external_id, idempotency_key,CallbackData , ExpiredAt, created_at, updated_at
+		SELECT id, order_id, user_id, method, amount, currency, status, external_id, payment_url, idempotency_key,CallbackData , ExpiredAt, created_at, updated_at
 		FROM payments WHERE order_id = $1 ORDER BY created_at DESC LIMIT 1
 	`
 
