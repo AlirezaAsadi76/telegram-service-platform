@@ -40,10 +40,6 @@ func (f *fakePaymentRepository) Create(_ context.Context, payment *paymententity
 }
 
 func (f *fakePaymentRepository) GetByID(_ context.Context, _ uint64) (*paymententity.Payment, error) {
-	return nil, nil
-}
-
-func (f *fakePaymentRepository) GetByOrderID(_ context.Context, id uint64) (*paymententity.Payment, error) {
 	payment, ok := f.payments[id]
 	if !ok {
 		return nil, richerror.New(
@@ -55,6 +51,10 @@ func (f *fakePaymentRepository) GetByOrderID(_ context.Context, id uint64) (*pay
 	}
 
 	return payment, nil
+}
+
+func (f *fakePaymentRepository) GetByOrderID(_ context.Context, id uint64) (*paymententity.Payment, error) {
+	return f.createdPayment, nil
 }
 
 func (f *fakePaymentRepository) GetByIdempotencyKey(_ context.Context, key string) (*paymententity.Payment, error) {
