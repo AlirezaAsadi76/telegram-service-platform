@@ -12,6 +12,7 @@ type Repository interface {
 	GetByOrderID(ctx context.Context, orderID uint64) (*paymententity.Payment, error)
 	UpdateStatus(ctx context.Context, id uint64, status paymententity.PaymentStatus) error
 	GetByIdempotencyKey(ctx context.Context, key string) (*paymententity.Payment, error)
+	MarkInitiated(ctx context.Context, paymentID uint64, status paymententity.PaymentStatus, externalID string, paymentURL string) error
 	GetPending(ctx context.Context) ([]paymententity.Payment, error)
 	GetExpired(ctx context.Context) ([]paymententity.Payment, error)
 }
