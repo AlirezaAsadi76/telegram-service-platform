@@ -39,7 +39,7 @@ func (f *fakePaymentRepository) Create(_ context.Context, payment *paymententity
 	return nil
 }
 
-func (f *fakePaymentRepository) GetByID(_ context.Context, _ uint64) (*paymententity.Payment, error) {
+func (f *fakePaymentRepository) GetByID(_ context.Context, id uint64) (*paymententity.Payment, error) {
 	payment, ok := f.payments[id]
 	if !ok {
 		return nil, richerror.New(

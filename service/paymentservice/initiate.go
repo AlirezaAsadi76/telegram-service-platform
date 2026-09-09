@@ -24,7 +24,7 @@ func (s *Service) Initiate(ctx context.Context, req paymentparams.InitiateReques
 	payment, err := s.repo.GetByID(ctx, req.PaymentID)
 	if err != nil {
 		metrics.PaymentInitiationResult.
-			WithLabelValues("unknow", "load_failed").
+			WithLabelValues("unknown", "load_failed").
 			Inc()
 
 		return nil, richerror.New(op, err).
