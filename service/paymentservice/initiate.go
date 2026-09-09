@@ -24,7 +24,7 @@ func (s *Service) Initiate(ctx context.Context, req paymentparams.InitiateReques
 	payment, err := s.repo.GetByID(ctx, req.PaymentID)
 	if err != nil {
 		metrics.PaymentInitiationResult.
-			WithLabelValues(string(rune(int(req.PaymentID))), "load_failed").
+			WithLabelValues(payment.Method.String(), "load_failed").
 			Inc()
 
 		return nil, richerror.New(op, err).
@@ -65,62 +65,100 @@ func (s *Service) Initiate(ctx context.Context, req paymentparams.InitiateReques
 
 	providerResp, cErr := provider.Create(ctx, providerReq)
 	if cErr != nil {
-		status := paymententity.PaymentStatusUnknown
-		code := richerror.CodePaymentProviderTimeout
-
 		if richerror.IsCode(
 			cErr,
 			richerror.CodePaymentProviderRejected,
 		) {
-			status = paymententity.PaymentStatusFailed
-			code = richerror.CodePaymentProviderRejected
-		}
-
-		if status == paymententity.PaymentStatusFailed {
-			_ = s.repo.UpdateStatus(
+			if err := s.repo.UpdateStatus(
 				ctx,
 				payment.ID,
-				status,
-			)
+				paymententity.PaymentStatusFailed,
+			); err != nil {
+				metrics.PaymentInitiationResult.
+					WithLabelValues(
+						string(payment.Method),
+						"persist_failed",
+					).
+					Inc()
+
+				return nil, richerror.New(op, err).
+					WithKind(richerror.KindQueryFailure).
+					WithCode(
+						richerror.CodePaymentInitiationUpdateFailed,
+					)
+			}
 
 			metrics.PaymentInitiationResult.
-				WithLabelValues(string(payment.Method), "rejected").
+				WithLabelValues(
+					string(payment.Method),
+					"rejected",
+				).
 				Inc()
 
-			return nil, err
+			return nil, cErr
 		}
 
-		// We do not know whether provider created the
-		// payment successfully. Keep it recoverable.
-		_ = s.repo.UpdateStatus(
+		if err := s.repo.UpdateStatus(
 			ctx,
 			payment.ID,
 			paymententity.PaymentStatusUnknown,
-		)
+		); err != nil {
+			metrics.PaymentInitiationResult.
+				WithLabelValues(
+					string(payment.Method),
+					"persist_failed",
+				).
+				Inc()
+
+			return nil, richerror.New(op, err).
+				WithKind(richerror.KindQueryFailure).
+				WithCode(
+					richerror.CodePaymentInitiationUpdateFailed,
+				)
+		}
 
 		metrics.PaymentInitiationResult.
-			WithLabelValues(string(payment.Method), "unknown").
+			WithLabelValues(
+				string(payment.Method),
+				"unknown",
+			).
 			Inc()
 
-		return nil, richerror.New(op, err).
-			WithKind(richerror.KindExternalAPI).
-			WithCode(code)
+		return nil, cErr
 	}
 
 	if providerResp.ExternalID == "" {
-		_ = s.repo.UpdateStatus(
+		if err := s.repo.UpdateStatus(
 			ctx,
 			payment.ID,
 			paymententity.PaymentStatusUnknown,
-		)
+		); err != nil {
+			metrics.PaymentInitiationResult.
+				WithLabelValues(
+					string(payment.Method),
+					"persist_failed",
+				).
+				Inc()
+
+			return nil, richerror.New(op, err).
+				WithKind(richerror.KindQueryFailure).
+				WithCode(
+					richerror.CodePaymentInitiationUpdateFailed,
+				)
+		}
 
 		metrics.PaymentInitiationResult.
-			WithLabelValues(string(payment.Method), "invalid_response").
+			WithLabelValues(
+				string(payment.Method),
+				"invalid_response",
+			).
 			Inc()
 
 		return nil, richerror.New(op, nil).
 			WithKind(richerror.KindExternalAPI).
-			WithCode(richerror.CodePaymentProviderUnavailable)
+			WithCode(
+				richerror.CodePaymentProviderInvalidResponse,
+			)
 	}
 
 	if err := s.repo.MarkInitiated(

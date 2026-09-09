@@ -6,3 +6,7 @@ const (
 	PaymentMethodZarinpal PaymentMethod = "ZARINPAL"
 	PaymentMethodCrypto   PaymentMethod = "CRYPTO"
 )
+
+func (p PaymentMethod) String() string {
+	return string(p)
+}
