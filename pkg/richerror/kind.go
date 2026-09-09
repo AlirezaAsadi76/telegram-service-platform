@@ -36,6 +36,7 @@ const (
 	KindExternalAPI
 	KindRedisNil
 	KindMissCatch
+	KindDependencyFailure
 )
 
 func IsKind(
