@@ -28,4 +28,5 @@ type IdempotencyChecker interface {
 
 type PaymentConfirmationRepository interface {
 	Confirm(ctx context.Context, paymentID uint64) error
+	Fail(ctx context.Context, paymentID uint64) error
 }

@@ -19,7 +19,7 @@ func (s *Service) ConfirmPayment(ctx context.Context, req paymentparams.ConfirmP
 		return nil, richerror.New(Op, err).
 			WithKind(richerror.KindNotFound).
 			WithCode(richerror.CodePaymentNotFound).
-			WithMessage(msgerror.ProductNotFound)
+			WithMessage(msgerror.PaymentNotFound)
 	}
 
 	if payment.Status == paymententity.PaymentStatusSuccess {
@@ -72,6 +72,15 @@ func (s *Service) ConfirmPayment(ctx context.Context, req paymentparams.ConfirmP
 			ctx,
 			payment.ID,
 		); err != nil {
+			if richerror.IsKind(err, richerror.KindConflict) {
+				if richerror.IsCode(err, richerror.CodePaymentAlreadyConfirmed) {
+					return &paymentparams.ConfirmPaymentResponse{
+						PaymentID: payment.ID,
+						OrderID:   payment.OrderID,
+						Status:    payment.Status,
+					}, nil
+				}
+			}
 			return nil, richerror.New(Op, err).
 				WithKind(richerror.KindInternal).
 				WithMessage(msgerror.InternalServerError)
@@ -84,10 +93,9 @@ func (s *Service) ConfirmPayment(ctx context.Context, req paymentparams.ConfirmP
 		}, nil
 
 	case paymententity.PaymentStatusFailed:
-		if err := s.repo.UpdateStatus(
+		if err := s.paymentConfirmationRepo.Fail(
 			ctx,
 			payment.ID,
-			paymententity.PaymentStatusFailed,
 		); err != nil {
 			return nil, richerror.New(Op, err).
 				WithKind(richerror.KindInternal).

@@ -32,7 +32,7 @@ func (d *DB) Confirm(ctx context.Context, paymentID uint64) error {
 				WithMessage(msgerror.QueryFailed)
 		}
 		if status == paymententity.PaymentStatusSuccess {
-			return richerror.New(Op, sErr).
+			return richerror.New(Op, nil).
 				WithKind(richerror.KindConflict).
 				WithCode(richerror.CodePaymentAlreadyConfirmed)
 		}
