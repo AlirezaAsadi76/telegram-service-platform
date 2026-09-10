@@ -55,7 +55,8 @@ type Dependencies struct {
 }
 
 type Repositories struct {
-	queueRepo redisqueue.DB
+	queueRepo           redisqueue.DB
+	transactionProvider postgres.TransactionProvider
 }
 
 type Adapters struct {
@@ -74,6 +75,9 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	if nErr != nil {
 		panic(nErr)
 	}
+	transactionProvider := postgres.NewTransactionProvider(
+		postgresClient.Connection(),
+	)
 
 	redisAdapter := redisadapter.New(cfg.RedisCli)
 
@@ -133,7 +137,8 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 			AuthService:         authSvc,
 		},
 		&Repositories{
-			queueRepo: queueRepo,
+			queueRepo:           queueRepo,
+			transactionProvider: transactionProvider,
 		},
 		&Adapters{
 			botAdapter:       botAdapter,
