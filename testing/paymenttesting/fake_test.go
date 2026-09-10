@@ -211,13 +211,15 @@ func (f *fakePaymentRepository) GetExpired(
 	return nil, nil
 }
 
-type fakePaymentConfirmationRepository struct {
-	confirmErr   error
-	confirmCalls int
-}
-
 func newFakePaymentConfirmationRepository() *fakePaymentConfirmationRepository {
 	return &fakePaymentConfirmationRepository{}
+}
+
+type fakePaymentConfirmationRepository struct {
+	confirmErr   error
+	failErr      error
+	confirmCalls int
+	failCalls    int
 }
 
 func (f *fakePaymentConfirmationRepository) Confirm(
@@ -226,6 +228,14 @@ func (f *fakePaymentConfirmationRepository) Confirm(
 ) error {
 	f.confirmCalls++
 	return f.confirmErr
+}
+
+func (f *fakePaymentConfirmationRepository) Fail(
+	_ context.Context,
+	_ uint64,
+) error {
+	f.failCalls++
+	return f.failErr
 }
 
 type fakePaymentProvider struct {

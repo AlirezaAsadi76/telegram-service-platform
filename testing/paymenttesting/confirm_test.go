@@ -125,8 +125,15 @@ func TestService_ConfirmPayment_ProviderFailed(t *testing.T) {
 
 	if confirmationRepo.confirmCalls != 0 {
 		t.Fatalf(
-			"expected confirmation repository not to be called, got %d",
+			"expected confirm not to be called, got %d",
 			confirmationRepo.confirmCalls,
+		)
+	}
+
+	if confirmationRepo.failCalls != 1 {
+		t.Fatalf(
+			"expected fail to be called once, got %d",
+			confirmationRepo.failCalls,
 		)
 	}
 }
