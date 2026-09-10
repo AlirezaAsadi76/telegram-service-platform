@@ -46,3 +46,7 @@ const (
 	ErrInvalidAlgorithm = "invalid signing algorithm"
 	ErrMissingBearer    = "missing Bearer prefix"
 )
+
+const (
+	PaymentConfirmationConflict = "payment confirmation conflict"
+)

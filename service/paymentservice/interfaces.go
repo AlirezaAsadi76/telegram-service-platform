@@ -25,3 +25,7 @@ type Provider interface {
 type IdempotencyChecker interface {
 	SetIfNotExists(ctx context.Context, key string, value string, ttlSeconds int) (bool, error)
 }
+
+type PaymentConfirmationRepository interface {
+	Confirm(ctx context.Context, paymentID uint64) error
+}

@@ -11,12 +11,14 @@ import (
 )
 
 type DB struct {
-	executor postgres.Executor
+	executor            postgres.Executor
+	transactionProvider postgres.TransactionProvider
 }
 
-func New(pool *postgres.DB) *DB {
+func New(pool *postgres.DB, transactionProvider postgres.TransactionProvider) *DB {
 	return &DB{
-		executor: pool.Connection(),
+		executor:            pool.Connection(),
+		transactionProvider: transactionProvider,
 	}
 }
 
