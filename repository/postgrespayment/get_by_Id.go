@@ -15,7 +15,7 @@ func (d *DB) GetByID(ctx context.Context, id uint64) (*paymententity.Payment, er
 		FROM payments WHERE id = $1
 	`
 
-	row := d.Pool.Connection().QueryRow(ctx, query, id)
+	row := d.executor.QueryRow(ctx, query, id)
 
 	payment, psErr := scanPayment(row)
 	if psErr != nil {

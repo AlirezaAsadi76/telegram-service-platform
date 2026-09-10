@@ -14,7 +14,7 @@ func (d *DB) GetByOrderID(ctx context.Context, orderID uint64) (*paymententity.P
 		FROM payments WHERE order_id = $1 ORDER BY created_at DESC LIMIT 1
 	`
 
-	row := d.Pool.Connection().QueryRow(ctx, query, orderID)
+	row := d.executor.QueryRow(ctx, query, orderID)
 
 	payment, psErr := scanPayment(row)
 	if psErr != nil {

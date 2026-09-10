@@ -28,7 +28,7 @@ func (d *DB) MarkInitiated(
 		  AND status = 'CREATING'
 	`
 
-	result, err := d.Pool.Connection().Exec(
+	result, err := d.executor.Exec(
 		ctx,
 		query,
 		status,

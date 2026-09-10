@@ -35,7 +35,7 @@ func (d *DB) GetByIdempotencyKey(ctx context.Context, key string) (*paymententit
 		LIMIT 1
 	`
 
-	row := d.Pool.Connection().QueryRow(ctx, query, key)
+	row := d.executor.QueryRow(ctx, query, key)
 
 	payment, err := scanPayment(row)
 	if err != nil {

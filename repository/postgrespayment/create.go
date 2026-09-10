@@ -25,7 +25,7 @@ func (d *DB) Create(ctx context.Context, payment *paymententity.Payment) error {
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
 		RETURNING id, created_at, updated_at
 	`
-	qErr := d.Pool.Connection().QueryRow(ctx, query,
+	qErr := d.executor.QueryRow(ctx, query,
 		payment.OrderID, payment.UserID, payment.Method, payment.Amount,
 		payment.Currency, payment.Status, payment.ExternalID, payment.PaymentURL,
 		payment.IdempotencyKey, metadata, payment.ExpiredAt,
