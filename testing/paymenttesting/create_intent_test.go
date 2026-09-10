@@ -12,9 +12,10 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-func TestService_CreateIntent(t *testing.T) {
+func TestService_CreateIntent_Success(t *testing.T) {
 	repo := newFakePaymentRepository()
 	confirmationRepo := newFakePaymentConfirmationRepository()
+
 	service := paymentservice.New(
 		repo,
 		confirmationRepo,
@@ -35,7 +36,6 @@ func TestService_CreateIntent(t *testing.T) {
 		context.Background(),
 		req,
 	)
-
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
@@ -45,21 +45,21 @@ func TestService_CreateIntent(t *testing.T) {
 	}
 
 	if resp.PaymentID != 100 {
-		t.Fatalf(
-			"expected payment ID 100, got %d",
-			resp.PaymentID,
-		)
+		t.Fatalf("expected payment ID 100, got %d", resp.PaymentID)
 	}
 
 	if resp.Status != paymententity.PaymentStatusCreating {
 		t.Fatalf(
-			"expected status CREATING, got %s",
+			"expected CREATING, got %s",
 			resp.Status,
 		)
 	}
 
-	if repo.createdPayment == nil {
-		t.Fatal("expected payment to be created")
+	if repo.createCalls != 1 {
+		t.Fatalf(
+			"expected 1 create call, got %d",
+			repo.createCalls,
+		)
 	}
 
 	if repo.createdPayment.OrderID != req.OrderID {
@@ -93,7 +93,7 @@ func TestService_CreateIntent_RecoverExistingPaymentAfterConflict(
 
 	repo.paymentByIdempotency[existing.IdempotencyKey] = existing
 
-	repo.getSequence = []error{
+	repo.getByIdempotencySequence = []error{
 		richerror.New(
 			"fake.get_by_idempotency_key",
 			nil,
@@ -164,7 +164,7 @@ func TestService_CreateIntent_ActivePaymentAlreadyExists(
 ) {
 	repo := newFakePaymentRepository()
 	confirmationRepo := newFakePaymentConfirmationRepository()
-	repo.getSequence = []error{
+	repo.getByIdempotencySequence = []error{
 		richerror.New(
 			"fake.get_by_idempotency_key",
 			nil,

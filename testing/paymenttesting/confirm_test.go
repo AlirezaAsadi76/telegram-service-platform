@@ -10,41 +10,22 @@ import (
 	"telegram-service-platform/service/paymentservice"
 )
 
-type fakePaymentProvider1 struct {
-	verifyResponse paymentproviderparams.VerifyResponse
-	verifyErr      error
-	verifyCalls    int
-}
-
-func (f *fakePaymentProvider1) Create(
-	_ context.Context,
-	_ paymentproviderparams.CreateRequest,
-) (paymentproviderparams.CreateResponse, error) {
-	return paymentproviderparams.CreateResponse{}, nil
-}
-
-func (f *fakePaymentProvider1) Verify(
-	_ context.Context,
-	_ paymentproviderparams.VerifyRequest,
-) (paymentproviderparams.VerifyResponse, error) {
-	f.verifyCalls++
-
-	return f.verifyResponse, f.verifyErr
-}
-
 func TestService_ConfirmPayment_Success(t *testing.T) {
 	repo := newFakePaymentRepository()
 	confirmationRepo := newFakePaymentConfirmationRepository()
 
 	payment := &paymententity.Payment{
-		ID:      100,
-		OrderID: 10,
-		Status:  paymententity.PaymentStatusPending,
+		ID:         100,
+		OrderID:    10,
+		UserID:     20,
+		Method:     paymententity.PaymentMethodZarinpal,
+		Status:     paymententity.PaymentStatusPending,
+		ExternalID: "EXT-100",
 	}
 
 	repo.payments[payment.ID] = payment
 
-	provider := &fakePaymentProvider1{
+	provider := &fakePaymentProvider{
 		verifyResponse: paymentproviderparams.VerifyResponse{
 			Status: paymententity.PaymentStatusSuccess,
 		},
@@ -61,26 +42,25 @@ func TestService_ConfirmPayment_Success(t *testing.T) {
 		context.Background(),
 		paymentparams.ConfirmPaymentRequest{
 			PaymentID:    payment.ID,
-			ExternalID:   "external-100",
-			CallbackData: map[string]any{"authority": "abc"},
+			CallbackData: map[string]any{"authority": "ABC"},
 		},
 	)
+
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
 	if resp.PaymentID != payment.ID {
-		t.Fatalf("expected payment ID %d, got %d", payment.ID, resp.PaymentID)
+		t.Fatalf("unexpected payment ID")
 	}
 
 	if resp.OrderID != payment.OrderID {
-		t.Fatalf("expected order ID %d, got %d", payment.OrderID, resp.OrderID)
+		t.Fatalf("unexpected order ID")
 	}
 
 	if resp.Status != paymententity.PaymentStatusSuccess {
 		t.Fatalf(
-			"expected status %s, got %s",
-			paymententity.PaymentStatusSuccess,
+			"expected SUCCESS, got %s",
 			resp.Status,
 		)
 	}
@@ -94,7 +74,7 @@ func TestService_ConfirmPayment_Success(t *testing.T) {
 
 	if confirmationRepo.confirmCalls != 1 {
 		t.Fatalf(
-			"expected 1 confirm call, got %d",
+			"expected 1 confirmation call, got %d",
 			confirmationRepo.confirmCalls,
 		)
 	}
@@ -112,7 +92,7 @@ func TestService_ConfirmPayment_ProviderFailed(t *testing.T) {
 
 	repo.payments[payment.ID] = payment
 
-	provider := &fakePaymentProvider1{
+	provider := &fakePaymentProvider{
 		verifyResponse: paymentproviderparams.VerifyResponse{
 			Status: paymententity.PaymentStatusFailed,
 		},
@@ -163,7 +143,7 @@ func TestService_ConfirmPayment_AlreadySuccess(t *testing.T) {
 
 	repo.payments[payment.ID] = payment
 
-	provider := &fakePaymentProvider1{}
+	provider := &fakePaymentProvider{}
 
 	service := paymentservice.New(
 		repo,
@@ -213,7 +193,7 @@ func TestService_ConfirmPayment_InvalidState(t *testing.T) {
 
 	repo.payments[payment.ID] = payment
 
-	provider := &fakePaymentProvider1{}
+	provider := &fakePaymentProvider{}
 
 	service := paymentservice.New(
 		repo,
@@ -259,7 +239,7 @@ func TestService_ConfirmPayment_VerificationError(t *testing.T) {
 
 	repo.payments[payment.ID] = payment
 
-	provider := &fakePaymentProvider1{
+	provider := &fakePaymentProvider{
 		verifyErr: context.DeadlineExceeded,
 	}
 

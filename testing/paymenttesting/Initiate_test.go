@@ -10,15 +10,8 @@ import (
 )
 
 func TestService_Initiate_Success(t *testing.T) {
-	provider := &fakePaymentProvider{
-		response: paymentproviderparams.CreateResponse{
-			ExternalID: "EXT-123",
-			PaymentURL: "https://provider/pay/123",
-		},
-	}
-
 	repo := newFakePaymentRepository()
-	confirmationRepo := newFakePaymentConfirmationRepository()
+
 	payment := &paymententity.Payment{
 		ID:      100,
 		OrderID: 10,
@@ -27,11 +20,18 @@ func TestService_Initiate_Success(t *testing.T) {
 		Status:  paymententity.PaymentStatusCreating,
 	}
 
-	repo.payments[100] = payment
+	repo.payments[payment.ID] = payment
+
+	provider := &fakePaymentProvider{
+		createResponse: paymentproviderparams.CreateResponse{
+			ExternalID: "EXT-123",
+			PaymentURL: "https://provider/pay/123",
+		},
+	}
 
 	service := paymentservice.New(
 		repo,
-		confirmationRepo,
+		newFakePaymentConfirmationRepository(),
 		provider,
 		nil,
 	)
@@ -62,5 +62,19 @@ func TestService_Initiate_Success(t *testing.T) {
 
 	if resp.PaymentURL != "https://provider/pay/123" {
 		t.Fatalf("unexpected payment URL")
+	}
+
+	if provider.createCalls != 1 {
+		t.Fatalf(
+			"expected 1 provider create call, got %d",
+			provider.createCalls,
+		)
+	}
+
+	if repo.markInitiatedCalls != 1 {
+		t.Fatalf(
+			"expected 1 mark initiated call, got %d",
+			repo.markInitiatedCalls,
+		)
 	}
 }
