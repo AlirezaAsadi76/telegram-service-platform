@@ -12,12 +12,20 @@ import (
 )
 
 type DB struct {
-	Pool *postgres.DB
+	executor postgres.Executor
 }
 
 func New(pool *postgres.DB) *DB {
 
-	return &DB{Pool: pool}
+	return &DB{
+		executor: pool.Connection(),
+	}
+}
+
+func NewWithExecutor(executor postgres.Executor) *DB {
+	return &DB{
+		executor: executor,
+	}
 }
 
 func scanOrder(row postgres.Scanner) (orderentity.Order, error) {

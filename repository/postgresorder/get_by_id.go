@@ -17,7 +17,7 @@ func (d *DB) GetByID(ctx context.Context, orderID uint64) (*orderentity.Order, e
 		FROM orders WHERE id = $1
 	`
 
-	row := d.Pool.Connection().QueryRow(ctx, query, orderID)
+	row := d.executor.QueryRow(ctx, query, orderID)
 
 	order, oErr := scanOrder(row)
 	if oErr != nil {

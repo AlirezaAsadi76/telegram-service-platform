@@ -35,7 +35,7 @@ func (d *DB) Create(ctx context.Context, order *orderentity.Order) error {
 		RETURNING id, created_at, updated_at
 	`
 
-	err = d.Pool.Connection().QueryRow(
+	err = d.executor.QueryRow(
 		ctx,
 		query,
 		order.UserID,

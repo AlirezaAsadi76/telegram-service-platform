@@ -34,7 +34,7 @@ func (d *DB) GetByUserID(ctx context.Context, userID uint64) ([]*orderentity.Ord
 	ORDER BY created_at DESC
 	`
 
-	rows, qErr := d.Pool.Connection().Query(ctx, query, userID)
+	rows, qErr := d.executor.Query(ctx, query, userID)
 
 	if qErr != nil {
 		logger.Logger.Debug("GetByUserID", zap.Error(qErr))

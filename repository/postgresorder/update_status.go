@@ -15,7 +15,7 @@ func (d *DB) UpdateStatus(ctx context.Context, id uint64, status orderentity.Ord
 		SET status = $1, external_order_id = $2, provider_id = $3, updated_at = NOW()
 		WHERE id = $4
 	`
-	_, err := d.Pool.Connection().Exec(ctx, query, status, externalOrderID, providerID, id)
+	_, err := d.executor.Exec(ctx, query, status, externalOrderID, providerID, id)
 
 	if err != nil {
 		return richerror.New(Op, err).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
