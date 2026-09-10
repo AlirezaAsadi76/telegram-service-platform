@@ -83,7 +83,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 
 	// Repositories
 	walletRepo := postgreswallet.New(postgresClient)
-	paymentRepo := postgrespayment.New(postgresClient)
+	paymentRepo := postgrespayment.New(postgresClient, transactionProvider)
 	orderRepo := postgresorder.New(postgresClient)
 	providerRepo := postgresprovider.New(postgresClient)
 	idempotencyRepo := redisidempotency.New(redisAdapter)
@@ -104,7 +104,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 
 	// Services
 	walletSvc := walletservice.New(walletRepo, walletRepo, idempotencyRepo, cfg.WalletSvc)
-	paymentSvc := paymentservice.New(paymentRepo, nil, nil) // TODO: add adapters
+	paymentSvc := paymentservice.New(paymentRepo, paymentRepo, nil, nil) // TODO: add adapters
 	orderSvc := orderservice.New(orderRepo)
 	smmSvc := smmproviderservice.New(providerRepo, cfg.SmmSvc)
 	notificationSVC := notificationservice.New(notificationRepo, queueRepo, cfg.NotificationSvc)
