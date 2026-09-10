@@ -18,7 +18,7 @@ func TestService_Initiate_Success(t *testing.T) {
 	}
 
 	repo := newFakePaymentRepository()
-
+	confirmationRepo := newFakePaymentConfirmationRepository()
 	payment := &paymententity.Payment{
 		ID:      100,
 		OrderID: 10,
@@ -31,6 +31,7 @@ func TestService_Initiate_Success(t *testing.T) {
 
 	service := paymentservice.New(
 		repo,
+		confirmationRepo,
 		provider,
 		nil,
 	)

@@ -19,6 +19,27 @@ type fakePaymentRepository struct {
 	markInitiatedCalls    int
 }
 
+type fakePaymentConfirmationRepository struct {
+	confirmErr   error
+	confirmCalls int
+}
+
+func (f *fakePaymentConfirmationRepository) Confirm(
+	_ context.Context,
+	_ uint64,
+) error {
+	f.confirmCalls++
+
+	return f.confirmErr
+}
+
+func newFakePaymentConfirmationRepository() *fakePaymentConfirmationRepository {
+	return &fakePaymentConfirmationRepository{
+		confirmErr:   nil,
+		confirmCalls: 0,
+	}
+}
+
 func newFakePaymentRepository() *fakePaymentRepository {
 	return &fakePaymentRepository{
 		paymentByIdempotency: make(

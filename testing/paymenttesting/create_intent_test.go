@@ -14,9 +14,10 @@ import (
 
 func TestService_CreateIntent(t *testing.T) {
 	repo := newFakePaymentRepository()
-
+	confirmationRepo := newFakePaymentConfirmationRepository()
 	service := paymentservice.New(
 		repo,
+		confirmationRepo,
 		nil,
 		nil,
 	)
@@ -78,7 +79,7 @@ func TestService_CreateIntent_RecoverExistingPaymentAfterConflict(
 	t *testing.T,
 ) {
 	repo := newFakePaymentRepository()
-
+	confirmationRepo := newFakePaymentConfirmationRepository()
 	existing := &paymententity.Payment{
 		ID:             100,
 		OrderID:        10,
@@ -110,7 +111,7 @@ func TestService_CreateIntent_RecoverExistingPaymentAfterConflict(
 			richerror.CodePaymentIdempotencyKeyReused,
 		)
 
-	service := paymentservice.New(repo, nil, nil)
+	service := paymentservice.New(repo, confirmationRepo, nil, nil)
 
 	req := paymentparams.CreateIntentRequest{
 		OrderID:        10,
@@ -162,7 +163,7 @@ func TestService_CreateIntent_ActivePaymentAlreadyExists(
 	t *testing.T,
 ) {
 	repo := newFakePaymentRepository()
-
+	confirmationRepo := newFakePaymentConfirmationRepository()
 	repo.getSequence = []error{
 		richerror.New(
 			"fake.get_by_idempotency_key",
@@ -179,7 +180,7 @@ func TestService_CreateIntent_ActivePaymentAlreadyExists(
 			richerror.CodePaymentIntentAlreadyExists,
 		)
 
-	service := paymentservice.New(repo, nil, nil)
+	service := paymentservice.New(repo, confirmationRepo, nil, nil)
 
 	req := paymentparams.CreateIntentRequest{
 		OrderID:        10,
