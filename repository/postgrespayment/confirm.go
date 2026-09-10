@@ -17,9 +17,10 @@ func (d *DB) Confirm(ctx context.Context, paymentID uint64) error {
 	return d.transactionProvider.Execute(ctx, func(tx pgx.Tx) error {
 		var orderID uint64
 		var status paymententity.PaymentStatus
-		paymentSelectQuery := `SELECT status FROM payments WHERE id = $1`
 
-		sErr := tx.QueryRow(ctx, paymentSelectQuery, paymentID).Scan(&status)
+		const paymentSelectQuery = `SELECT order_id, status FROM payments WHERE id = $1 FOR UPDATE`
+
+		sErr := tx.QueryRow(ctx, paymentSelectQuery, paymentID).Scan(&orderID, &status)
 		if sErr != nil {
 			if errors.Is(sErr, pgx.ErrNoRows) {
 				return richerror.New(Op, sErr).
@@ -36,33 +37,35 @@ func (d *DB) Confirm(ctx context.Context, paymentID uint64) error {
 				WithCode(richerror.CodePaymentAlreadyConfirmed)
 		}
 
-		paymentQuery := `
+		if status != paymententity.PaymentStatusPending {
+			return richerror.New(Op, nil).
+				WithKind(richerror.KindConflict).
+				WithCode(richerror.CodePaymentInvalidState)
+		}
+
+		const paymentUpdateQuery = `
 			UPDATE payments
 			SET
 				status = 'SUCCESS',
 				updated_at = NOW()
 			WHERE id = $1
 			  AND status = 'PENDING'
-			RETURNING order_id
 		`
 
-		err := tx.QueryRow(ctx, paymentQuery, paymentID).Scan(&orderID)
+		tag, err := tx.Exec(ctx, paymentUpdateQuery, paymentID)
 		if err != nil {
-			if errors.Is(err, pgx.ErrNoRows) {
-				return richerror.New(
-					Op,
-					err,
-				).
-					WithKind(richerror.KindConflict).
-					WithMessage(msgerror.PaymentConfirmationConflict)
-			}
-
 			return richerror.New(Op, err).
 				WithKind(richerror.KindQueryFailure).
 				WithMessage(msgerror.QueryFailed)
 		}
 
-		orderQuery := `
+		if tag.RowsAffected() != 1 {
+			return richerror.New(Op, nil).
+				WithKind(richerror.KindConflict).
+				WithCode(richerror.CodePaymentInvalidState)
+		}
+
+		const orderUpdateQuery = `
 			UPDATE orders
 			SET
 				status = 'PAID',
@@ -71,7 +74,7 @@ func (d *DB) Confirm(ctx context.Context, paymentID uint64) error {
 			  AND status = 'PENDING'
 		`
 
-		tag, err := tx.Exec(ctx, orderQuery, orderID)
+		tag, err = tx.Exec(ctx, orderUpdateQuery, orderID)
 		if err != nil {
 			return richerror.New(Op, err).
 				WithKind(richerror.KindQueryFailure).
@@ -79,12 +82,9 @@ func (d *DB) Confirm(ctx context.Context, paymentID uint64) error {
 		}
 
 		if tag.RowsAffected() != 1 {
-			return richerror.New(
-				Op,
-				nil,
-			).
+			return richerror.New(Op, nil).
 				WithKind(richerror.KindConflict).
-				WithMessage(msgerror.PaymentConfirmationConflict)
+				WithCode(richerror.CodeOrderInvalidState)
 		}
 
 		return nil
