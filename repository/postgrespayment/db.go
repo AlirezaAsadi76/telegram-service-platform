@@ -22,9 +22,13 @@ func New(pool *postgres.DB, transactionProvider postgres.TransactionProvider) *D
 	}
 }
 
-func NewWithExecutor(executor postgres.Executor) *DB {
+func NewWithExecutor(
+	executor postgres.Executor,
+	transactionProvider postgres.TransactionProvider,
+) *DB {
 	return &DB{
-		executor: executor,
+		executor:            executor,
+		transactionProvider: transactionProvider,
 	}
 }
 
