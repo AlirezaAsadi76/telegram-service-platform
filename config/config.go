@@ -42,6 +42,15 @@ type AdminConfig struct {
 	TelegramIDs []int64 `koanf:"telegram_ids"`
 }
 
+type PostgresTestDBConfig struct {
+	Host     string `koanf:"host"`
+	Port     uint16 `koanf:"port"`
+	User     string `koanf:"user"`
+	Password string `koanf:"password"`
+	Database string `koanf:"database"`
+	SSLMode  string `koanf:"sslmode"`
+}
+
 type Config struct {
 	HttpServer       HttpServer                     `koanf:"httpServer"`
 	MetricsServer    MetricsServer                  `koanf:"metricsServer"`
@@ -68,4 +77,5 @@ type Config struct {
 	SmmRedis         redissmm.Config                `koanf:"smmRedis"`
 	OrderFlowSvc     orderflowservice.Config        `koanf:"orderFlowSvc"`
 	Auth             authservice.Config             `koanf:"auth"`
+	PostgresTest     PostgresTestDBConfig           `koanf:"postgresTest"`
 }

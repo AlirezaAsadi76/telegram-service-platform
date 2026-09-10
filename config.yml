@@ -18,6 +18,14 @@ postgres:
   database: "telegram_service_platform"
   sslmode: "disable"
 
+postgresTest:
+  host: "localhost"
+  port: 5433
+  user: "postgres"
+  password: "postgres"
+  database: "telegram_service_platform_test"
+  sslmode: "disable"
+
 telegram:
   token: ${TELEGRAM_BOT_TOKEN}
   debug: false
