@@ -60,10 +60,43 @@ func (s *Service) ConfirmPayment(ctx context.Context, req paymentparams.ConfirmP
 
 	providerResp, pErr := provider.Verify(ctx, providerReq)
 	if pErr != nil {
-		return nil, richerror.New(Op, pErr).
-			WithKind(richerror.KindExternalAPI).
-			WithCode(richerror.CodePaymentVerificationFailed).
-			WithMessage(msgerror.PaymentVerifyFailed)
+		switch {
+		case richerror.IsCode(pErr, richerror.CodePaymentProviderRejected):
+			if err := s.paymentConfirmationRepo.Fail(
+				ctx,
+				payment.ID,
+			); err != nil {
+				return nil, richerror.New(Op, err).
+					WithKind(richerror.KindInternal).
+					WithMessage(msgerror.InternalServerError)
+			}
+
+			return &paymentparams.ConfirmPaymentResponse{
+				PaymentID: payment.ID,
+				OrderID:   payment.OrderID,
+				Status:    paymententity.PaymentStatusFailed,
+			}, nil
+
+		case richerror.IsCode(pErr, richerror.CodePaymentProviderTimeout),
+			richerror.IsCode(pErr, richerror.CodePaymentProviderUnavailable):
+			if err := s.paymentConfirmationRepo.MarkUnknown(ctx, payment.ID); err != nil {
+				return nil, richerror.New(Op, err).
+					WithKind(richerror.KindInternal).
+					WithMessage(msgerror.InternalServerError)
+			}
+
+			return &paymentparams.ConfirmPaymentResponse{
+				PaymentID: payment.ID,
+				OrderID:   payment.OrderID,
+				Status:    paymententity.PaymentStatusUnknown,
+			}, nil
+
+		default:
+			return nil, richerror.New(Op, pErr).
+				WithKind(richerror.KindExternalAPI).
+				WithCode(richerror.CodePaymentVerificationFailed).
+				WithMessage(msgerror.PaymentVerifyFailed)
+		}
 	}
 
 	switch providerResp.Status {

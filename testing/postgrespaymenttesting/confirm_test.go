@@ -268,7 +268,8 @@ func TestPaymentConfirmationRepository_Confirm_Concurrent(t *testing.T) {
 
 	if alreadyConfirmedCount != countCallback-1 {
 		t.Fatalf(
-			"expected 1 already-confirmed result, got %d",
+			"expected %d already-confirmed result, got %d",
+			countCallback-1,
 			alreadyConfirmedCount,
 		)
 	}
