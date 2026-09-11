@@ -41,7 +41,7 @@ func (a *Adapter) Verify(ctx context.Context, req paymentproviderparams.VerifyRe
 			WithCode(richerror.CodePaymentInvalidAmount)
 	}
 
-	payload := verifyRequest{
+	payload := VerifyRequest{
 		MerchantID: a.config.MerchantID,
 		Authority:  req.ExternalID,
 		Amount:     amount,
@@ -97,7 +97,7 @@ func (a *Adapter) Verify(ctx context.Context, req paymentproviderparams.VerifyRe
 			WithCode(richerror.CodePaymentProviderUnavailable)
 	}
 
-	var result verifyResponse
+	var result VerifyResponse
 
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return paymentproviderparams.VerifyResponse{}, richerror.New(Op, err).

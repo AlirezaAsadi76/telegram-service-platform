@@ -1,11 +1,11 @@
 package zarinpal
 
-type verifyResponse struct {
-	Data   verifyData    `json:"data"`
-	Errors *verifyErrors `json:"errors"`
+type VerifyResponse struct {
+	Data   VerifyData    `json:"data"`
+	Errors *VerifyErrors `json:"errors"`
 }
 
-type verifyData struct {
+type VerifyData struct {
 	Code        int64  `json:"code"`
 	Message     string `json:"message"`
 	CardHash    string `json:"card_hash"`
@@ -16,7 +16,7 @@ type verifyData struct {
 	Fee         int64  `json:"fee"`
 }
 
-type verifyErrors struct {
+type VerifyErrors struct {
 	Code        int64  `json:"code"`
 	Message     string `json:"message"`
 	Validations []any  `json:"validations"`
