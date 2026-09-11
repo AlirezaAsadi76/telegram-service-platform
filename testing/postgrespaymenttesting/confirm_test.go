@@ -161,3 +161,39 @@ func TestPaymentConfirmationRepository_Confirm_PaymentNotFound(t *testing.T) {
 		)
 	}
 }
+
+func TestPaymentConfirmationRepository_Confirm_AlreadyConfirmed(t *testing.T) {
+	pool := newTestPool(t)
+
+	repo := postgrespayment.NewWithExecutor(
+		pool,
+		postgres.NewTransactionProvider(pool),
+	)
+
+	payment, _ := createTestCase(
+		t,
+		pool,
+		paymententity.PaymentStatusSuccess,
+		orderentity.OrderStatusPending,
+	)
+
+	err := repo.Confirm(
+		context.Background(),
+		payment.ID,
+	)
+
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	if !richerror.IsCode(
+		err,
+		richerror.CodePaymentAlreadyConfirmed,
+	) {
+		t.Fatalf(
+			"expected code %s, got %v",
+			richerror.CodePaymentAlreadyConfirmed,
+			err,
+		)
+	}
+}
