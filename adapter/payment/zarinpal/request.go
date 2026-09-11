@@ -6,7 +6,7 @@ type VerifyRequest struct {
 	Amount     int64  `json:"amount"`
 }
 
-type createRequest struct {
+type CreateRequest struct {
 	MerchantID  string `json:"merchant_id"`
 	Amount      int64  `json:"amount"`
 	CallbackURL string `json:"callback_url"`

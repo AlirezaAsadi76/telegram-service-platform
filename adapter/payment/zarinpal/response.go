@@ -22,18 +22,18 @@ type VerifyErrors struct {
 	Validations []any  `json:"validations"`
 }
 
-type createResponse struct {
-	Data   createData    `json:"data"`
-	Errors *createErrors `json:"errors"`
+type CreateResponse struct {
+	Data   CreateData    `json:"data"`
+	Errors *CreateErrors `json:"errors"`
 }
 
-type createData struct {
+type CreateData struct {
 	Code      int64  `json:"code"`
 	Message   string `json:"message"`
 	Authority string `json:"authority"`
 }
 
-type createErrors struct {
+type CreateErrors struct {
 	Code        int64  `json:"code"`
 	Message     string `json:"message"`
 	Validations []any  `json:"validations"`

@@ -42,7 +42,7 @@ func (a *Adapter) Create(ctx context.Context, req paymentproviderparams.CreateRe
 				WithCode(richerror.CodeInvalidInput)
 	}
 
-	payload := createRequest{
+	payload := CreateRequest{
 		MerchantID:  a.config.MerchantID,
 		Amount:      amount,
 		CallbackURL: req.CallbackURL,
@@ -98,7 +98,7 @@ func (a *Adapter) Create(ctx context.Context, req paymentproviderparams.CreateRe
 				WithCode(richerror.CodePaymentProviderUnavailable)
 	}
 
-	var result createResponse
+	var result CreateResponse
 
 	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
 		return paymentproviderparams.CreateResponse{},
@@ -142,7 +142,7 @@ func (a *Adapter) Create(ctx context.Context, req paymentproviderparams.CreateRe
 	return paymentproviderparams.CreateResponse{
 		ExternalID: result.Data.Authority,
 		PaymentURL: helpers.BuildPaymentURL(
-			a.config.BaseURL,
+			a.config.StartPayURL,
 			result.Data.Authority,
 		),
 	}, nil
