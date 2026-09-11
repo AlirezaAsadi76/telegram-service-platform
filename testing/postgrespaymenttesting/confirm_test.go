@@ -3,6 +3,7 @@ package postgrespaymenttesting
 import (
 	"context"
 	"telegram-service-platform/entity/orderentity"
+	"telegram-service-platform/pkg/richerror"
 	"testing"
 
 	"telegram-service-platform/entity/paymententity"
@@ -128,6 +129,35 @@ func TestPaymentConfirmationRepository_Confirm_RollbackOnOrderFailure(t *testing
 		t.Fatalf(
 			"expected order status CANCELED, got %s",
 			orderStatus,
+		)
+	}
+}
+
+func TestPaymentConfirmationRepository_Confirm_PaymentNotFound(t *testing.T) {
+	pool := newTestPool(t)
+
+	repo := postgrespayment.NewWithExecutor(
+		pool,
+		postgres.NewTransactionProvider(pool),
+	)
+
+	err := repo.Confirm(
+		context.Background(),
+		999999999,
+	)
+
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	if !richerror.IsCode(
+		err,
+		richerror.CodePaymentNotFound,
+	) {
+		t.Fatalf(
+			"expected code %s, got %v",
+			richerror.CodePaymentNotFound,
+			err,
 		)
 	}
 }
