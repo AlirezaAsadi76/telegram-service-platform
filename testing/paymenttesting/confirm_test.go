@@ -2,6 +2,8 @@ package paymenttesting
 
 import (
 	"context"
+	"errors"
+	"telegram-service-platform/pkg/richerror"
 	"testing"
 
 	"telegram-service-platform/entity/paymententity"
@@ -270,6 +272,263 @@ func TestService_ConfirmPayment_VerificationError(t *testing.T) {
 	if confirmationRepo.confirmCalls != 0 {
 		t.Fatalf(
 			"expected confirmation repository not to be called, got %d",
+			confirmationRepo.confirmCalls,
+		)
+	}
+}
+
+func TestService_ConfirmPayment_ProviderRejected(t *testing.T) {
+	repo := newFakePaymentRepository()
+	confirmationRepo := newFakePaymentConfirmationRepository()
+
+	payment := &paymententity.Payment{
+		ID:      100,
+		OrderID: 10,
+		Status:  paymententity.PaymentStatusPending,
+	}
+
+	repo.payments[payment.ID] = payment
+
+	provider := &fakePaymentProvider{
+		verifyErr: richerror.New(
+			"fakeprovider.verify",
+			errors.New("payment rejected"),
+		).WithCode(richerror.CodePaymentProviderRejected),
+	}
+
+	service := paymentservice.New(
+		repo,
+		confirmationRepo,
+		provider,
+		nil,
+	)
+
+	resp, err := service.ConfirmPayment(
+		context.Background(),
+		paymentparams.ConfirmPaymentRequest{
+			PaymentID: payment.ID,
+		},
+	)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if resp.Status != paymententity.PaymentStatusFailed {
+		t.Fatalf(
+			"expected status %s, got %s",
+			paymententity.PaymentStatusFailed,
+			resp.Status,
+		)
+	}
+
+	if confirmationRepo.failCalls != 1 {
+		t.Fatalf(
+			"expected Fail to be called once, got %d",
+			confirmationRepo.failCalls,
+		)
+	}
+
+	if confirmationRepo.markUnknownCalls != 0 {
+		t.Fatalf(
+			"expected MarkUnknown not to be called, got %d",
+			confirmationRepo.markUnknownCalls,
+		)
+	}
+
+	if confirmationRepo.confirmCalls != 0 {
+		t.Fatalf(
+			"expected Confirm not to be called, got %d",
+			confirmationRepo.confirmCalls,
+		)
+	}
+}
+
+func TestService_ConfirmPayment_ProviderTimeout(t *testing.T) {
+	repo := newFakePaymentRepository()
+	confirmationRepo := newFakePaymentConfirmationRepository()
+
+	payment := &paymententity.Payment{
+		ID:      100,
+		OrderID: 10,
+		Status:  paymententity.PaymentStatusPending,
+	}
+
+	repo.payments[payment.ID] = payment
+
+	provider := &fakePaymentProvider{
+		verifyErr: richerror.New(
+			"fakeprovider.verify",
+			context.DeadlineExceeded,
+		).WithCode(richerror.CodePaymentProviderTimeout),
+	}
+
+	service := paymentservice.New(
+		repo,
+		confirmationRepo,
+		provider,
+		nil,
+	)
+
+	resp, err := service.ConfirmPayment(
+		context.Background(),
+		paymentparams.ConfirmPaymentRequest{
+			PaymentID: payment.ID,
+		},
+	)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if resp.Status != paymententity.PaymentStatusUnknown {
+		t.Fatalf(
+			"expected status %s, got %s",
+			paymententity.PaymentStatusUnknown,
+			resp.Status,
+		)
+	}
+
+	if confirmationRepo.markUnknownCalls != 1 {
+		t.Fatalf(
+			"expected MarkUnknown to be called once, got %d",
+			confirmationRepo.markUnknownCalls,
+		)
+	}
+
+	if confirmationRepo.failCalls != 0 {
+		t.Fatalf(
+			"expected Fail not to be called, got %d",
+			confirmationRepo.failCalls,
+		)
+	}
+
+	if confirmationRepo.confirmCalls != 0 {
+		t.Fatalf(
+			"expected Confirm not to be called, got %d",
+			confirmationRepo.confirmCalls,
+		)
+	}
+}
+
+func TestService_ConfirmPayment_ProviderUnavailable(t *testing.T) {
+	repo := newFakePaymentRepository()
+	confirmationRepo := newFakePaymentConfirmationRepository()
+
+	payment := &paymententity.Payment{
+		ID:      100,
+		OrderID: 10,
+		Status:  paymententity.PaymentStatusPending,
+	}
+
+	repo.payments[payment.ID] = payment
+
+	provider := &fakePaymentProvider{
+		verifyErr: richerror.New(
+			"fakeprovider.verify",
+			errors.New("provider unavailable"),
+		).WithCode(richerror.CodePaymentProviderUnavailable),
+	}
+
+	service := paymentservice.New(
+		repo,
+		confirmationRepo,
+		provider,
+		nil,
+	)
+
+	resp, err := service.ConfirmPayment(
+		context.Background(),
+		paymentparams.ConfirmPaymentRequest{
+			PaymentID: payment.ID,
+		},
+	)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if resp.Status != paymententity.PaymentStatusUnknown {
+		t.Fatalf(
+			"expected status %s, got %s",
+			paymententity.PaymentStatusUnknown,
+			resp.Status,
+		)
+	}
+
+	if confirmationRepo.markUnknownCalls != 1 {
+		t.Fatalf(
+			"expected MarkUnknown to be called once, got %d",
+			confirmationRepo.markUnknownCalls,
+		)
+	}
+
+	if confirmationRepo.failCalls != 0 {
+		t.Fatalf(
+			"expected Fail not to be called, got %d",
+			confirmationRepo.failCalls,
+		)
+	}
+
+	if confirmationRepo.confirmCalls != 0 {
+		t.Fatalf(
+			"expected Confirm not to be called, got %d",
+			confirmationRepo.confirmCalls,
+		)
+	}
+}
+
+func TestService_ConfirmPayment_UnknownProviderError(t *testing.T) {
+	repo := newFakePaymentRepository()
+	confirmationRepo := newFakePaymentConfirmationRepository()
+
+	payment := &paymententity.Payment{
+		ID:      100,
+		OrderID: 10,
+		Status:  paymententity.PaymentStatusPending,
+	}
+
+	repo.payments[payment.ID] = payment
+
+	provider := &fakePaymentProvider{
+		verifyErr: errors.New("unexpected provider error"),
+	}
+
+	service := paymentservice.New(
+		repo,
+		confirmationRepo,
+		provider,
+		nil,
+	)
+
+	_, err := service.ConfirmPayment(
+		context.Background(),
+		paymentparams.ConfirmPaymentRequest{
+			PaymentID: payment.ID,
+		},
+	)
+
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	if confirmationRepo.failCalls != 0 {
+		t.Fatalf(
+			"expected Fail not to be called, got %d",
+			confirmationRepo.failCalls,
+		)
+	}
+
+	if confirmationRepo.markUnknownCalls != 0 {
+		t.Fatalf(
+			"expected MarkUnknown not to be called, got %d",
+			confirmationRepo.markUnknownCalls,
+		)
+	}
+
+	if confirmationRepo.confirmCalls != 0 {
+		t.Fatalf(
+			"expected Confirm not to be called, got %d",
 			confirmationRepo.confirmCalls,
 		)
 	}
