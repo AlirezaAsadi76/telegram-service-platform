@@ -312,3 +312,75 @@ func TestPaymentConfirmationRepository_Confirm_Concurrent(t *testing.T) {
 		)
 	}
 }
+
+func TestPaymentConfirmationRepository_MarkUnknown_Success(t *testing.T) {
+	pool := newTestPool(t)
+
+	repo := postgrespayment.NewWithExecutor(
+		pool,
+		postgres.NewTransactionProvider(pool),
+	)
+
+	payment, _ := createTestCase(
+		t,
+		pool,
+		paymententity.PaymentStatusPending,
+		orderentity.OrderStatusPending,
+	)
+
+	err := repo.MarkUnknown(
+		context.Background(),
+		payment.ID,
+	)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	var status paymententity.PaymentStatus
+
+	err = pool.QueryRow(
+		context.Background(),
+		`SELECT status FROM payments WHERE id = $1`,
+		payment.ID,
+	).Scan(&status)
+
+	if err != nil {
+		t.Fatalf("read payment status: %v", err)
+	}
+
+	if status != paymententity.PaymentStatusUnknown {
+		t.Fatalf(
+			"expected UNKNOWN, got %s",
+			status,
+		)
+	}
+}
+
+func TestPaymentConfirmationRepository_MarkUnknown_AlreadyUnknown(t *testing.T) {
+	pool := newTestPool(t)
+
+	repo := postgrespayment.NewWithExecutor(
+		pool,
+		postgres.NewTransactionProvider(pool),
+	)
+
+	payment, _ := createTestCase(
+		t,
+		pool,
+		paymententity.PaymentStatusUnknown,
+		orderentity.OrderStatusPending,
+	)
+
+	err := repo.MarkUnknown(
+		context.Background(),
+		payment.ID,
+	)
+
+	if err != nil {
+		t.Fatalf(
+			"expected nil for already unknown payment, got %v",
+			err,
+		)
+	}
+}
