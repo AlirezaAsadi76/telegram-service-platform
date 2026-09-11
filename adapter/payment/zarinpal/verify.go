@@ -74,12 +74,12 @@ func (a *Adapter) Verify(ctx context.Context, req paymentproviderparams.VerifyRe
 	if dErr != nil {
 		if errors.Is(dErr, context.DeadlineExceeded) ||
 			errors.Is(ctx.Err(), context.DeadlineExceeded) {
-			return paymentproviderparams.VerifyResponse{}, richerror.New(Op, err).
+			return paymentproviderparams.VerifyResponse{}, richerror.New(Op, dErr).
 				WithKind(richerror.KindExternalAPI).
 				WithCode(richerror.CodePaymentProviderTimeout)
 		}
 
-		return paymentproviderparams.VerifyResponse{}, richerror.New(Op, err).
+		return paymentproviderparams.VerifyResponse{}, richerror.New(Op, dErr).
 			WithKind(richerror.KindExternalAPI).
 			WithCode(richerror.CodePaymentProviderUnavailable)
 	}
