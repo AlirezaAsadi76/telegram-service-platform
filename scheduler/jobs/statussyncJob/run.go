@@ -63,7 +63,7 @@ func (j *Job) Run(ctx context.Context) error {
 
 		switch status {
 		case "COMPLETED":
-			if err := j.orderService.UpdateStatus(ctx, orderparams.UpdateStatusRequest{OrderID: order.ID, Status: orderentity.OrderStatusSuccess}); err != nil {
+			if err := j.orderService.UpdateStatus(ctx, orderparams.UpdateStatusRequest{OrderID: order.ID, Status: orderentity.OrderStatusCompleted}); err != nil {
 				logger.Logger.Error("update order to completed failed", zap.String("job", jobName), zap.Error(err))
 				continue
 			}
