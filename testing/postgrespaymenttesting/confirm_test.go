@@ -52,7 +52,7 @@ func TestPaymentConfirmationRepository_Confirm_Success(t *testing.T) {
 		)
 	}
 
-	var orderStatus string
+	var orderStatus orderentity.OrderStatus
 
 	err = pool.QueryRow(
 		context.Background(),
@@ -64,9 +64,69 @@ func TestPaymentConfirmationRepository_Confirm_Success(t *testing.T) {
 		t.Fatalf("read order status: %v", err)
 	}
 
-	if orderStatus != "PAID" {
+	if orderStatus != orderentity.OrderStatusPaid {
 		t.Fatalf(
 			"expected order status PAID, got %s",
+			orderStatus,
+		)
+	}
+}
+
+func TestPaymentConfirmationRepository_Confirm_RollbackOnOrderFailure(t *testing.T) {
+	pool := newTestPool(t)
+
+	repo := postgrespayment.NewWithExecutor(
+		pool,
+		postgres.NewTransactionProvider(pool),
+	)
+
+	payment, order := createTestCase(
+		t,
+		pool,
+		paymententity.PaymentStatusPending,
+		orderentity.OrderStatusCanceled,
+	)
+
+	err := repo.Confirm(context.Background(), payment.ID)
+
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	var paymentStatus paymententity.PaymentStatus
+
+	err = pool.QueryRow(
+		context.Background(),
+		`SELECT status FROM payments WHERE id = $1`,
+		payment.ID,
+	).Scan(&paymentStatus)
+
+	if err != nil {
+		t.Fatalf("read payment status: %v", err)
+	}
+
+	if paymentStatus != paymententity.PaymentStatusPending {
+		t.Fatalf(
+			"expected payment status PENDING after rollback, got %s",
+			paymentStatus,
+		)
+	}
+
+	var orderStatus orderentity.OrderStatus
+
+	err = pool.QueryRow(
+		context.Background(),
+		`SELECT status FROM orders WHERE id = $1`,
+		order.ID,
+	).Scan(&orderStatus)
+
+	if err != nil {
+		t.Fatalf("read order status: %v", err)
+	}
+
+	if orderStatus != orderentity.OrderStatusCanceled {
+		t.Fatalf(
+			"expected order status CANCELED, got %s",
 			orderStatus,
 		)
 	}
