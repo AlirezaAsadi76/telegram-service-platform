@@ -197,3 +197,117 @@ func TestPaymentConfirmationRepository_Confirm_AlreadyConfirmed(t *testing.T) {
 		)
 	}
 }
+
+func TestPaymentConfirmationRepository_Confirm_Concurrent(t *testing.T) {
+	pool := newTestPool(t)
+
+	repo := postgrespayment.NewWithExecutor(
+		pool,
+		postgres.NewTransactionProvider(pool),
+	)
+
+	payment, order := createTestCase(t, pool,
+		paymententity.PaymentStatusPending,
+		orderentity.OrderStatusPending,
+	)
+
+	const countCallback = 2
+
+	type result struct {
+		err error
+	}
+
+	results := make(chan result, countCallback)
+
+	ctx := context.Background()
+
+	for i := 0; i < countCallback; i++ {
+		go func() {
+			results <- result{
+				err: repo.Confirm(ctx, payment.ID),
+			}
+		}()
+
+	}
+
+	resResults := make([]result, 0, countCallback)
+
+	for i := 0; i < countCallback; i++ {
+		resResults = append(resResults, <-results)
+	}
+
+	successCount := 0
+	alreadyConfirmedCount := 0
+
+	for _, val := range resResults {
+		if val.err == nil {
+			successCount++
+			continue
+		}
+
+		if richerror.IsCode(
+			val.err,
+			richerror.CodePaymentAlreadyConfirmed,
+		) {
+			alreadyConfirmedCount++
+			continue
+		}
+
+		t.Fatalf(
+			"unexpected error: %v",
+			val.err,
+		)
+	}
+
+	if successCount != 1 {
+		t.Fatalf(
+			"expected 1 successful confirmation, got %d",
+			successCount,
+		)
+	}
+
+	if alreadyConfirmedCount != 1 {
+		t.Fatalf(
+			"expected 1 already-confirmed result, got %d",
+			alreadyConfirmedCount,
+		)
+	}
+
+	var paymentStatus paymententity.PaymentStatus
+
+	err := pool.QueryRow(
+		context.Background(),
+		`SELECT status FROM payments WHERE id = $1`,
+		payment.ID,
+	).Scan(&paymentStatus)
+
+	if err != nil {
+		t.Fatalf("read payment: %v", err)
+	}
+
+	if paymentStatus != paymententity.PaymentStatusSuccess {
+		t.Fatalf(
+			"expected payment SUCCESS, got %s",
+			paymentStatus,
+		)
+	}
+
+	var orderStatus orderentity.OrderStatus
+
+	err = pool.QueryRow(
+		context.Background(),
+		`SELECT status FROM orders WHERE id = $1`,
+		order.ID,
+	).Scan(&orderStatus)
+
+	if err != nil {
+		t.Fatalf("read order: %v", err)
+	}
+
+	if orderStatus != orderentity.OrderStatusPaid {
+		t.Fatalf(
+			"expected order PAID, got %s",
+			orderStatus,
+		)
+	}
+}
