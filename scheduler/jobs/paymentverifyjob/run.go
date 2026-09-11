@@ -45,7 +45,7 @@ func (j *Job) Run(ctx context.Context) error {
 			zap.Uint64("payment_id", payment.ID),
 		)
 
-		verifyResponse, err := j.paymentService.Verify(ctx, paymentparams.VerifyRequest{PaymentID: payment.ID})
+		verifyResponse, err := j.paymentService.ConfirmPayment(ctx, paymentparams.ConfirmPaymentRequest{PaymentID: payment.ID})
 		if err != nil {
 			logger.Logger.Error("verify failed",
 				zap.String("job", jobName),

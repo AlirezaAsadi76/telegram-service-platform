@@ -10,7 +10,15 @@ import (
 func main() {
 	cfg := config.Load("config.yml")
 
-	postgresClient, err := postgres.New(cfg.PostgresTest)
+	cfgTestPostgres := postgres.DBConfig{
+		Host:     cfg.PostgresTest.Host,
+		Port:     cfg.PostgresTest.Port,
+		User:     cfg.PostgresTest.User,
+		Password: cfg.PostgresTest.Password,
+		Database: cfg.PostgresTest.Database,
+	}
+
+	postgresClient, err := postgres.New(cfgTestPostgres)
 
 	if err != nil {
 		log.Fatal(err)
@@ -18,7 +26,7 @@ func main() {
 
 	defer postgresClient.Close()
 
-	mi := migrator.New(cfg.Postgres)
+	mi := migrator.New(cfgTestPostgres)
 	mi.Down()
 	if err := mi.Up(); err != nil {
 		panic(err)

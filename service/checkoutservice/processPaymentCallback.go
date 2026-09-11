@@ -26,7 +26,7 @@ func (s *Service) ProcessPaymentCallback(ctx context.Context, paymentID uint64, 
 	)
 
 	// 1. Verify payment
-	verifyResp, vErr := s.paymentSvc.Verify(ctx, paymentparams.VerifyRequest{
+	verifyResp, vErr := s.paymentSvc.ConfirmPayment(ctx, paymentparams.ConfirmPaymentRequest{
 		PaymentID:    paymentID,
 		ExternalID:   externalID,
 		CallbackData: callbackData,

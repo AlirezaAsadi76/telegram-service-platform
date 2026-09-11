@@ -17,5 +17,5 @@ type Wallet struct {
 
 func (w Wallet) HasSufficient(amount entity.Amount) bool {
 
-	return w.Balance.GreaterThan(amount)
+	return w.Balance.GreaterThanOrEqual(amount)
 }

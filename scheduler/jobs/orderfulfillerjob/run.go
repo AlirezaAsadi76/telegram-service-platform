@@ -52,7 +52,6 @@ func (j *Job) Run(ctx context.Context) error {
 	}
 
 	if order.Status == orderentity.OrderStatusProcessing ||
-		order.Status == orderentity.OrderStatusSuccess ||
 		order.Status == orderentity.OrderStatusFailed {
 		logger.Logger.Info("order already processed, skipping", zap.Uint64("order_id", order.ID), zap.String("status", string(order.Status)))
 		return nil

@@ -16,8 +16,8 @@ func (a Amount) MarshalJSON() ([]byte, error) {
 	return (decimal.Decimal)(a).MarshalJSON()
 }
 
-func (a Amount) GreaterThan(b Amount) bool {
-	return decimal.Decimal(a).GreaterThan(decimal.Decimal(b))
+func (a Amount) GreaterThanOrEqual(b Amount) bool {
+	return decimal.Decimal(a).GreaterThanOrEqual(decimal.Decimal(b))
 }
 
 func (a Amount) Mul(b Amount) Amount {
