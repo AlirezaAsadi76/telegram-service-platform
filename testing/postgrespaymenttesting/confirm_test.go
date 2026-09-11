@@ -211,7 +211,7 @@ func TestPaymentConfirmationRepository_Confirm_Concurrent(t *testing.T) {
 		orderentity.OrderStatusPending,
 	)
 
-	const countCallback = 2
+	const countCallback = 5
 
 	type result struct {
 		err error
@@ -266,7 +266,7 @@ func TestPaymentConfirmationRepository_Confirm_Concurrent(t *testing.T) {
 		)
 	}
 
-	if alreadyConfirmedCount != 1 {
+	if alreadyConfirmedCount != countCallback-1 {
 		t.Fatalf(
 			"expected 1 already-confirmed result, got %d",
 			alreadyConfirmedCount,
