@@ -1,6 +1,8 @@
 package entity
 
 import (
+	"fmt"
+
 	"github.com/shopspring/decimal"
 )
 
@@ -51,4 +53,13 @@ func (a Amount) String() string {
 }
 func (a Amount) Decimal() decimal.Decimal {
 	return decimal.Decimal(a)
+}
+func (a Amount) ToInt64() (int64, error) {
+	decimalAmount := a.Decimal()
+
+	if !decimalAmount.IsInteger() {
+		return 0, fmt.Errorf("amount must be an integer")
+	}
+
+	return decimalAmount.IntPart(), nil
 }

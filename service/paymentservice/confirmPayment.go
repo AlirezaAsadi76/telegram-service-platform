@@ -55,6 +55,8 @@ func (s *Service) ConfirmPayment(ctx context.Context, req paymentparams.ConfirmP
 	providerReq := paymentproviderparams.VerifyRequest{
 		PaymentID:    payment.ID,
 		ExternalID:   externalID,
+		Amount:       payment.Amount,
+		Currency:     payment.Currency,
 		CallbackData: req.CallbackData,
 	}
 

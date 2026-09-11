@@ -37,6 +37,7 @@ const (
 	KindRedisNil
 	KindMissCatch
 	KindDependencyFailure
+	KindInvalidInput
 )
 
 func IsKind(
