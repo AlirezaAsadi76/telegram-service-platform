@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"telegram-service-platform/params/paymentparams"
-	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 )
 
@@ -13,10 +12,7 @@ func (s *Service) ConfirmPaymentByExternalID(ctx context.Context, req paymentpar
 
 	payment, err := s.repo.GetByExternalID(ctx, req.ExternalID)
 	if err != nil {
-		return nil, richerror.New(Op, err).
-			WithKind(richerror.KindNotFound).
-			WithCode(richerror.CodePaymentNotFound).
-			WithMessage(msgerror.PaymentNotFound)
+		return nil, richerror.New(Op, err)
 	}
 
 	return s.ConfirmPayment(

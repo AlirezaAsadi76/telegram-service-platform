@@ -3,7 +3,6 @@ package postgrespayment
 import (
 	"context"
 	"errors"
-	"fmt"
 	"telegram-service-platform/entity/paymententity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
@@ -44,7 +43,7 @@ func (d *DB) GetByExternalID(ctx context.Context, externalID string) (*paymenten
 				WithKind(richerror.KindNotFound).
 				WithCode(richerror.CodePaymentNotFound)
 		}
-		fmt.Println(err.Error())
+
 		return nil, richerror.New(Op, err).
 			WithKind(richerror.KindQueryFailure).
 			WithMessage(msgerror.QueryFailed)

@@ -12,3 +12,8 @@ type CreateRequest struct {
 	CallbackURL string `json:"callback_url"`
 	Description string `json:"description"`
 }
+
+type CallbackRequest struct {
+	Status    string
+	Authority string
+}
