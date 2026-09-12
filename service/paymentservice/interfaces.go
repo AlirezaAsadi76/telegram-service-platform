@@ -10,6 +10,7 @@ type Repository interface {
 	Create(ctx context.Context, payment *paymententity.Payment) error
 	GetByID(ctx context.Context, id uint64) (*paymententity.Payment, error)
 	GetByOrderID(ctx context.Context, orderID uint64) (*paymententity.Payment, error)
+	GetByExternalID(ctx context.Context, externalID string) (*paymententity.Payment, error)
 	UpdateStatus(ctx context.Context, id uint64, status paymententity.PaymentStatus) error
 	GetByIdempotencyKey(ctx context.Context, key string) (*paymententity.Payment, error)
 	MarkInitiated(ctx context.Context, paymentID uint64, status paymententity.PaymentStatus, externalID string, paymentURL string) error
