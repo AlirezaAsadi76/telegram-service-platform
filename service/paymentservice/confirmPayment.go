@@ -101,11 +101,19 @@ func (s *Service) ConfirmPayment(ctx context.Context, req paymentparams.ConfirmP
 		}
 	}
 
+	if providerResp.ReferenceID == "" {
+		return nil, richerror.New(Op, nil).
+			WithKind(richerror.KindExternalAPI).
+			WithCode(richerror.CodePaymentProviderInvalidResponse).
+			WithMessage(msgerror.PaymentVerifyFailed)
+	}
+
 	switch providerResp.Status {
 	case paymententity.PaymentStatusSuccess:
 		if err := s.paymentConfirmationRepo.Confirm(
 			ctx,
 			payment.ID,
+			providerResp.ReferenceID,
 		); err != nil {
 			if richerror.IsKind(err, richerror.KindConflict) {
 				if richerror.IsCode(err, richerror.CodePaymentAlreadyConfirmed) {

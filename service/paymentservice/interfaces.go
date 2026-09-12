@@ -27,7 +27,7 @@ type IdempotencyChecker interface {
 }
 
 type PaymentConfirmationRepository interface {
-	Confirm(ctx context.Context, paymentID uint64) error
+	Confirm(ctx context.Context, paymentID uint64, providerReferenceID string) error
 	Fail(ctx context.Context, paymentID uint64) error
 	MarkUnknown(ctx context.Context, paymentID uint64) error
 }

@@ -11,7 +11,7 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func (d *DB) Confirm(ctx context.Context, paymentID uint64) error {
+func (d *DB) Confirm(ctx context.Context, paymentID uint64, providerReferenceID string) error {
 	const Op = "postgrespay.confirm"
 
 	return d.transactionProvider.Execute(ctx, func(tx pgx.Tx) error {
@@ -47,12 +47,13 @@ func (d *DB) Confirm(ctx context.Context, paymentID uint64) error {
 			UPDATE payments
 			SET
 				status = 'SUCCESS',
+				provider_reference_id = $1,
 				updated_at = NOW()
-			WHERE id = $1
+			WHERE id = $2
 			  AND status = 'PENDING'
 		`
 
-		tag, err := tx.Exec(ctx, paymentUpdateQuery, paymentID)
+		tag, err := tx.Exec(ctx, paymentUpdateQuery, providerReferenceID, paymentID)
 		if err != nil {
 			return richerror.New(Op, err).
 				WithKind(richerror.KindQueryFailure).
