@@ -9,7 +9,7 @@ import (
 
 func (d *DB) GetPending(ctx context.Context) ([]paymententity.Payment, error) {
 	const Op = "postgrespayment.GetPending"
-	query := `SELECT id, order_id, user_id, method, amount, currency, status, external_id, payment_url, idempotency_key, callback_data, expired_at, created_at, updated_at
+	query := `SELECT id, order_id, user_id, method, amount, currency, status, external_id, provider_reference_id, payment_url, idempotency_key, callback_data, expired_at, created_at, updated_at
 	          FROM payments WHERE status = $1`
 	rows, qErr := d.executor.Query(ctx, query, paymententity.PaymentStatusPending)
 	if qErr != nil {

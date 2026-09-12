@@ -24,6 +24,7 @@ func (d *DB) GetByIdempotencyKey(ctx context.Context, key string) (*paymententit
 			currency,
 			status,
 			external_id,
+			provider_reference_id,
 			payment_url,
 			idempotency_key,
 			callback_data,

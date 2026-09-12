@@ -6,18 +6,19 @@ import (
 )
 
 type Payment struct {
-	ID             uint64
-	OrderID        uint64
-	UserID         uint64
-	Method         PaymentMethod
-	Amount         entity.Amount
-	Currency       entity.Currency
-	Status         PaymentStatus
-	ExternalID     string
-	PaymentURL     string
-	IdempotencyKey string
-	CallbackData   map[string]any
-	ExpiredAt      time.Time
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
+	ID                  uint64
+	OrderID             uint64
+	UserID              uint64
+	Method              PaymentMethod
+	Amount              entity.Amount
+	Currency            entity.Currency
+	Status              PaymentStatus
+	ExternalID          string
+	PaymentURL          string
+	ProviderReferenceID string
+	IdempotencyKey      string
+	CallbackData        map[string]any
+	ExpiredAt           time.Time
+	CreatedAt           time.Time
+	UpdatedAt           time.Time
 }
