@@ -216,19 +216,22 @@ func newFakePaymentConfirmationRepository() *fakePaymentConfirmationRepository {
 }
 
 type fakePaymentConfirmationRepository struct {
-	confirmErr       error
-	failErr          error
-	markUnknownErr   error
-	confirmCalls     int
-	failCalls        int
-	markUnknownCalls int
+	confirmErr              error
+	failErr                 error
+	markUnknownErr          error
+	confirmCalls            int
+	failCalls               int
+	markUnknownCalls        int
+	lastProviderReferenceID string
 }
 
 func (f *fakePaymentConfirmationRepository) Confirm(
 	_ context.Context,
 	_ uint64,
+	providerReferenceID string,
 ) error {
 	f.confirmCalls++
+	f.lastProviderReferenceID = providerReferenceID
 	return f.confirmErr
 }
 

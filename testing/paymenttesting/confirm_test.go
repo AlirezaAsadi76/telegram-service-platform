@@ -29,7 +29,8 @@ func TestService_ConfirmPayment_Success(t *testing.T) {
 
 	provider := &fakePaymentProvider{
 		verifyResponse: paymentproviderparams.VerifyResponse{
-			Status: paymententity.PaymentStatusSuccess,
+			Status:      paymententity.PaymentStatusSuccess,
+			ReferenceID: "REF-100",
 		},
 	}
 
@@ -96,7 +97,8 @@ func TestService_ConfirmPayment_ProviderFailed(t *testing.T) {
 
 	provider := &fakePaymentProvider{
 		verifyResponse: paymentproviderparams.VerifyResponse{
-			Status: paymententity.PaymentStatusFailed,
+			Status:      paymententity.PaymentStatusFailed,
+			ReferenceID: "REF-100",
 		},
 	}
 
@@ -530,6 +532,139 @@ func TestService_ConfirmPayment_UnknownProviderError(t *testing.T) {
 		t.Fatalf(
 			"expected Confirm not to be called, got %d",
 			confirmationRepo.confirmCalls,
+		)
+	}
+}
+
+func TestService_ConfirmPayment_ProviderReferenceID(t *testing.T) {
+	repo := newFakePaymentRepository()
+	confirmationRepo := newFakePaymentConfirmationRepository()
+
+	payment := &paymententity.Payment{
+		ID:         100,
+		OrderID:    10,
+		UserID:     20,
+		Method:     paymententity.PaymentMethodZarinpal,
+		Status:     paymententity.PaymentStatusPending,
+		ExternalID: "EXT-100",
+	}
+
+	repo.payments[payment.ID] = payment
+
+	provider := &fakePaymentProvider{
+		verifyResponse: paymentproviderparams.VerifyResponse{
+			Status:      paymententity.PaymentStatusSuccess,
+			ReferenceID: "REF-100",
+		},
+	}
+
+	service := paymentservice.New(
+		repo,
+		confirmationRepo,
+		provider,
+		nil,
+	)
+
+	resp, err := service.ConfirmPayment(
+		context.Background(),
+		paymentparams.ConfirmPaymentRequest{
+			PaymentID:    payment.ID,
+			CallbackData: map[string]any{"authority": "ABC"},
+		},
+	)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if resp.PaymentID != payment.ID {
+		t.Fatalf("unexpected payment ID")
+	}
+
+	if resp.OrderID != payment.OrderID {
+		t.Fatalf("unexpected order ID")
+	}
+
+	if resp.Status != paymententity.PaymentStatusSuccess {
+		t.Fatalf(
+			"expected SUCCESS, got %s",
+			resp.Status,
+		)
+	}
+
+	if provider.verifyCalls != 1 {
+		t.Fatalf(
+			"expected 1 verify call, got %d",
+			provider.verifyCalls,
+		)
+	}
+
+	if confirmationRepo.confirmCalls != 1 {
+		t.Fatalf(
+			"expected 1 confirmation call, got %d",
+			confirmationRepo.confirmCalls,
+		)
+	}
+
+	if confirmationRepo.lastProviderReferenceID != "REF-100" {
+		t.Fatalf(
+			"expected provider reference ID REF-100, got %s",
+			confirmationRepo.lastProviderReferenceID,
+		)
+	}
+}
+
+func TestService_ConfirmPayment_ProviderSuccessWithoutReferenceId(t *testing.T) {
+	repo := newFakePaymentRepository()
+	confirmationRepo := newFakePaymentConfirmationRepository()
+
+	payment := &paymententity.Payment{
+		ID:         100,
+		OrderID:    10,
+		UserID:     20,
+		Method:     paymententity.PaymentMethodZarinpal,
+		Status:     paymententity.PaymentStatusPending,
+		ExternalID: "EXT-100",
+	}
+
+	repo.payments[payment.ID] = payment
+
+	provider := &fakePaymentProvider{
+		verifyResponse: paymentproviderparams.VerifyResponse{
+			Status:      paymententity.PaymentStatusSuccess,
+			ReferenceID: "",
+		},
+	}
+
+	service := paymentservice.New(
+		repo,
+		confirmationRepo,
+		provider,
+		nil,
+	)
+
+	_, err := service.ConfirmPayment(
+		context.Background(),
+		paymentparams.ConfirmPaymentRequest{
+			PaymentID:    payment.ID,
+			CallbackData: map[string]any{"authority": "ABC"},
+		},
+	)
+
+	if err == nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if confirmationRepo.confirmCalls != 0 {
+		t.Fatalf(
+			"expected 1 confirmation call, got %d",
+			confirmationRepo.confirmCalls,
+		)
+	}
+
+	if !richerror.IsCode(err, richerror.CodePaymentProviderInvalidResponse) {
+		t.Fatalf(
+			"expected provider reference ID INVALID, got %s", confirmationRepo.lastProviderReferenceID,
 		)
 	}
 }
