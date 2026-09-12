@@ -668,3 +668,90 @@ func TestService_ConfirmPayment_ProviderSuccessWithoutReferenceId(t *testing.T) 
 		)
 	}
 }
+
+func TestService_ConfirmPaymentByExternalID_Success(
+	t *testing.T,
+) {
+	repo := newFakePaymentRepository()
+	confirmationRepo := newFakePaymentConfirmationRepository()
+
+	payment := &paymententity.Payment{
+		ID:         100,
+		OrderID:    10,
+		Status:     paymententity.PaymentStatusPending,
+		ExternalID: "AUTH-123",
+	}
+
+	repo.payments[payment.ID] = payment
+
+	provider := &fakePaymentProvider{
+		verifyResponse: paymentproviderparams.VerifyResponse{
+			Status:      paymententity.PaymentStatusSuccess,
+			ReferenceID: "REF-123",
+		},
+	}
+
+	service := paymentservice.New(
+		repo,
+		confirmationRepo,
+		provider,
+		nil,
+	)
+
+	resp, err := service.ConfirmPaymentByExternalID(
+		context.Background(),
+		paymentparams.ConfirmPaymentByExternalIDRequest{
+			ExternalID: "AUTH-123",
+		},
+	)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if resp.PaymentID != payment.ID {
+		t.Fatalf("expected payment ID %d, got %d", payment.ID, resp.PaymentID)
+	}
+
+	if provider.verifyCalls != 1 {
+		t.Fatalf("expected 1 provider verify call, got %d", provider.verifyCalls)
+	}
+
+	if confirmationRepo.confirmCalls != 1 {
+		t.Fatalf(
+			"expected 1 confirm call, got %d",
+			confirmationRepo.confirmCalls,
+		)
+	}
+}
+
+func TestService_ConfirmPaymentByExternalID_NotFound(
+	t *testing.T,
+) {
+	repo := newFakePaymentRepository()
+	confirmationRepo := newFakePaymentConfirmationRepository()
+
+	provider := &fakePaymentProvider{}
+
+	service := paymentservice.New(
+		repo,
+		confirmationRepo,
+		provider,
+		nil,
+	)
+
+	_, err := service.ConfirmPaymentByExternalID(
+		context.Background(),
+		paymentparams.ConfirmPaymentByExternalIDRequest{
+			ExternalID: "AUTH-NOT-FOUND",
+		},
+	)
+
+	if err == nil {
+		t.Fatal("expected error, got nil")
+	}
+
+	if provider.verifyCalls != 0 {
+		t.Fatalf("expected provider not to be called, got %d", provider.verifyCalls)
+	}
+}

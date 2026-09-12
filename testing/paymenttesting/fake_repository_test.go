@@ -2,9 +2,7 @@ package paymenttesting
 
 import (
 	"context"
-
 	"telegram-service-platform/entity/paymententity"
-	"telegram-service-platform/params/paymentproviderparams"
 	"telegram-service-platform/pkg/richerror"
 )
 
@@ -79,7 +77,16 @@ func (f *fakePaymentRepository) GetByID(
 
 	return payment, nil
 }
-
+func (f *fakePaymentRepository) GetByExternalID(_ context.Context, external_id string) (*paymententity.Payment, error) {
+	for _, payment := range f.payments {
+		if payment.ExternalID == external_id {
+			return payment, nil
+		}
+	}
+	return nil, richerror.New("fakepayment.get_by_external_id", nil).
+		WithKind(richerror.KindNotFound).
+		WithCode(richerror.CodePaymentNotFound)
+}
 func (f *fakePaymentRepository) GetByOrderID(
 	_ context.Context,
 	orderID uint64,
@@ -209,77 +216,4 @@ func (f *fakePaymentRepository) GetExpired(
 	_ context.Context,
 ) ([]paymententity.Payment, error) {
 	return nil, nil
-}
-
-func newFakePaymentConfirmationRepository() *fakePaymentConfirmationRepository {
-	return &fakePaymentConfirmationRepository{}
-}
-
-type fakePaymentConfirmationRepository struct {
-	confirmErr              error
-	failErr                 error
-	markUnknownErr          error
-	confirmCalls            int
-	failCalls               int
-	markUnknownCalls        int
-	lastProviderReferenceID string
-}
-
-func (f *fakePaymentConfirmationRepository) Confirm(
-	_ context.Context,
-	_ uint64,
-	providerReferenceID string,
-) error {
-	f.confirmCalls++
-	f.lastProviderReferenceID = providerReferenceID
-	return f.confirmErr
-}
-
-func (f *fakePaymentConfirmationRepository) Fail(
-	_ context.Context,
-	_ uint64,
-) error {
-	f.failCalls++
-	return f.failErr
-}
-
-func (f *fakePaymentConfirmationRepository) MarkUnknown(
-	_ context.Context,
-	_ uint64,
-) error {
-	f.markUnknownCalls++
-	return f.markUnknownErr
-}
-
-type fakePaymentProvider struct {
-	createResponse paymentproviderparams.CreateResponse
-	createErr      error
-	verifyResponse paymentproviderparams.VerifyResponse
-	verifyErr      error
-
-	createCalls int
-	verifyCalls int
-
-	lastCreateRequest paymentproviderparams.CreateRequest
-	lastVerifyRequest paymentproviderparams.VerifyRequest
-}
-
-func (f *fakePaymentProvider) Create(
-	_ context.Context,
-	req paymentproviderparams.CreateRequest,
-) (paymentproviderparams.CreateResponse, error) {
-	f.createCalls++
-	f.lastCreateRequest = req
-
-	return f.createResponse, f.createErr
-}
-
-func (f *fakePaymentProvider) Verify(
-	_ context.Context,
-	req paymentproviderparams.VerifyRequest,
-) (paymentproviderparams.VerifyResponse, error) {
-	f.verifyCalls++
-	f.lastVerifyRequest = req
-
-	return f.verifyResponse, f.verifyErr
 }
