@@ -38,7 +38,8 @@ func scanPayment(row postgres.Scanner) (paymententity.Payment, error) {
 	payment := paymententity.Payment{}
 	var metadata []byte
 	var amountStr string
-	var providerRef sql.NullString
+	var providerRef, paymentUrl, idempotencyKey sql.NullString
+	var expiresAt sql.NullTime
 	err := row.Scan(
 		&payment.ID,
 		&payment.OrderID,
@@ -49,10 +50,10 @@ func scanPayment(row postgres.Scanner) (paymententity.Payment, error) {
 		&payment.Status,
 		&payment.ExternalID,
 		&providerRef,
-		&payment.PaymentURL,
-		&payment.IdempotencyKey,
+		&paymentUrl,
+		&idempotencyKey,
 		&metadata,
-		&payment.ExpiredAt,
+		&expiresAt,
 		&payment.CreatedAt,
 		&payment.UpdatedAt,
 	)
@@ -66,11 +67,16 @@ func scanPayment(row postgres.Scanner) (paymententity.Payment, error) {
 
 	}
 	payment.ProviderReferenceID = providerRef.String
-	amount, sErr := decimal.NewFromString(amountStr)
-	if sErr != nil {
-		return payment, fmt.Errorf("failed to parse amount to decimal: %w", sErr)
+	payment.PaymentURL = paymentUrl.String
+	payment.IdempotencyKey = idempotencyKey.String
+	payment.ExpiredAt = expiresAt.Time
+	if amountStr != "" {
+		amount, sErr := decimal.NewFromString(amountStr)
+		if sErr != nil {
+			return payment, fmt.Errorf("failed to parse amount to decimal: %w", sErr)
+		}
+		payment.Amount = entity.Amount(amount)
 	}
-	payment.Amount = entity.Amount(amount)
 	return payment, err
 
 }

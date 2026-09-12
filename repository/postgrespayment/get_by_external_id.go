@@ -3,7 +3,7 @@ package postgrespayment
 import (
 	"context"
 	"errors"
-
+	"fmt"
 	"telegram-service-platform/entity/paymententity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
@@ -36,33 +36,15 @@ func (d *DB) GetByExternalID(ctx context.Context, externalID string) (*paymenten
 		LIMIT 1
 	`
 
-	var payment paymententity.Payment
-
-	err := d.executor.QueryRow(ctx, query, externalID).
-		Scan(
-			&payment.ID,
-			&payment.OrderID,
-			&payment.UserID,
-			&payment.Method,
-			&payment.Amount,
-			&payment.Currency,
-			&payment.Status,
-			&payment.ExternalID,
-			&payment.ProviderReferenceID,
-			&payment.PaymentURL,
-			&payment.IdempotencyKey,
-			&payment.CallbackData,
-			&payment.ExpiredAt,
-			&payment.CreatedAt,
-			&payment.UpdatedAt,
-		)
+	row := d.executor.QueryRow(ctx, query, externalID)
+	payment, err := scanPayment(row)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, richerror.New(Op, err).
 				WithKind(richerror.KindNotFound).
 				WithCode(richerror.CodePaymentNotFound)
 		}
-
+		fmt.Println(err.Error())
 		return nil, richerror.New(Op, err).
 			WithKind(richerror.KindQueryFailure).
 			WithMessage(msgerror.QueryFailed)
