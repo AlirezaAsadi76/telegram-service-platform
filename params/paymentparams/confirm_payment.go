@@ -13,3 +13,8 @@ type ConfirmPaymentResponse struct {
 	OrderID   uint64
 	Status    paymententity.PaymentStatus
 }
+
+type ConfirmPaymentByExternalIDRequest struct {
+	ExternalID   string
+	CallbackData map[string]any
+}
