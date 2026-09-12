@@ -1,6 +1,7 @@
 package postgrespayment
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"telegram-service-platform/entity"
@@ -37,6 +38,7 @@ func scanPayment(row postgres.Scanner) (paymententity.Payment, error) {
 	payment := paymententity.Payment{}
 	var metadata []byte
 	var amountStr string
+	var providerRef sql.NullString
 	err := row.Scan(
 		&payment.ID,
 		&payment.OrderID,
@@ -46,7 +48,7 @@ func scanPayment(row postgres.Scanner) (paymententity.Payment, error) {
 		&payment.Currency,
 		&payment.Status,
 		&payment.ExternalID,
-		&payment.ProviderReferenceID,
+		&providerRef,
 		&payment.PaymentURL,
 		&payment.IdempotencyKey,
 		&metadata,
@@ -63,6 +65,7 @@ func scanPayment(row postgres.Scanner) (paymententity.Payment, error) {
 		)
 
 	}
+	payment.ProviderReferenceID = providerRef.String
 	amount, sErr := decimal.NewFromString(amountStr)
 	if sErr != nil {
 		return payment, fmt.Errorf("failed to parse amount to decimal: %w", sErr)

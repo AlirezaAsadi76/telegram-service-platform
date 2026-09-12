@@ -2,6 +2,7 @@ package postgrespaymenttesting
 
 import (
 	"context"
+	"database/sql"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/pkg/richerror"
 	"testing"
@@ -27,19 +28,23 @@ func TestPaymentConfirmationRepository_Confirm_Success(t *testing.T) {
 	err := repo.Confirm(
 		context.Background(),
 		payment.ID,
+		"REF-100",
 	)
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
 
-	var paymentStatus paymententity.PaymentStatus
+	var (
+		paymentStatus paymententity.PaymentStatus
+		providerRefID string
+	)
 
 	err = pool.QueryRow(
 		context.Background(),
-		`SELECT status FROM payments WHERE id = $1`,
+		`SELECT status, provider_reference_id FROM payments WHERE id = $1`,
 		payment.ID,
-	).Scan(&paymentStatus)
+	).Scan(&paymentStatus, &providerRefID)
 
 	if err != nil {
 		t.Fatalf("read payment status: %v", err)
@@ -50,6 +55,11 @@ func TestPaymentConfirmationRepository_Confirm_Success(t *testing.T) {
 			"expected payment status %s, got %s",
 			paymententity.PaymentStatusSuccess,
 			paymentStatus,
+		)
+	}
+	if providerRefID != "REF-100" {
+		t.Fatalf(
+			"expected provider_reference_id REF-100, got %s", providerRefID,
 		)
 	}
 
@@ -88,19 +98,22 @@ func TestPaymentConfirmationRepository_Confirm_RollbackOnOrderFailure(t *testing
 		orderentity.OrderStatusCanceled,
 	)
 
-	err := repo.Confirm(context.Background(), payment.ID)
+	err := repo.Confirm(context.Background(), payment.ID, "REF-100")
 
 	if err == nil {
 		t.Fatal("expected error, got nil")
 	}
 
-	var paymentStatus paymententity.PaymentStatus
+	var (
+		paymentStatus paymententity.PaymentStatus
+		providerRefID sql.NullString
+	)
 
 	err = pool.QueryRow(
 		context.Background(),
-		`SELECT status FROM payments WHERE id = $1`,
+		`SELECT status, provider_reference_id FROM payments WHERE id = $1`,
 		payment.ID,
-	).Scan(&paymentStatus)
+	).Scan(&paymentStatus, &providerRefID)
 
 	if err != nil {
 		t.Fatalf("read payment status: %v", err)
@@ -110,6 +123,12 @@ func TestPaymentConfirmationRepository_Confirm_RollbackOnOrderFailure(t *testing
 		t.Fatalf(
 			"expected payment status PENDING after rollback, got %s",
 			paymentStatus,
+		)
+	}
+
+	if providerRefID.String != "" {
+		t.Fatalf(
+			"expected provider_reference_id null, got %s", providerRefID.String,
 		)
 	}
 
@@ -144,6 +163,7 @@ func TestPaymentConfirmationRepository_Confirm_PaymentNotFound(t *testing.T) {
 	err := repo.Confirm(
 		context.Background(),
 		999999999,
+		"REF-100",
 	)
 
 	if err == nil {
@@ -180,6 +200,7 @@ func TestPaymentConfirmationRepository_Confirm_AlreadyConfirmed(t *testing.T) {
 	err := repo.Confirm(
 		context.Background(),
 		payment.ID,
+		"REF-100",
 	)
 
 	if err == nil {
@@ -224,7 +245,7 @@ func TestPaymentConfirmationRepository_Confirm_Concurrent(t *testing.T) {
 	for i := 0; i < countCallback; i++ {
 		go func() {
 			results <- result{
-				err: repo.Confirm(ctx, payment.ID),
+				err: repo.Confirm(ctx, payment.ID, "REF-100"),
 			}
 		}()
 
@@ -274,13 +295,16 @@ func TestPaymentConfirmationRepository_Confirm_Concurrent(t *testing.T) {
 		)
 	}
 
-	var paymentStatus paymententity.PaymentStatus
+	var (
+		paymentStatus paymententity.PaymentStatus
+		providerRefID sql.NullString
+	)
 
 	err := pool.QueryRow(
 		context.Background(),
-		`SELECT status FROM payments WHERE id = $1`,
+		`SELECT status, provider_reference_id FROM payments WHERE id = $1`,
 		payment.ID,
-	).Scan(&paymentStatus)
+	).Scan(&paymentStatus, &providerRefID)
 
 	if err != nil {
 		t.Fatalf("read payment: %v", err)
@@ -290,6 +314,12 @@ func TestPaymentConfirmationRepository_Confirm_Concurrent(t *testing.T) {
 		t.Fatalf(
 			"expected payment SUCCESS, got %s",
 			paymentStatus,
+		)
+	}
+
+	if providerRefID.String != "REF-100" {
+		t.Fatalf(
+			"expected provider_reference_id REF-100, got %s", providerRefID.String,
 		)
 	}
 
