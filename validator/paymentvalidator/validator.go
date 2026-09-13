@@ -2,6 +2,6 @@ package paymentvalidator
 
 type Validator struct{}
 
-func New() Validator {
-	return Validator{}
+func New() *Validator {
+	return &Validator{}
 }
