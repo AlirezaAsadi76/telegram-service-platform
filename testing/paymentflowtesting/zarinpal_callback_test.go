@@ -158,7 +158,7 @@ func TestZarinpalCallbackFlow_Rejected(
 	payment, order := createTestCase(
 		t,
 		pool,
-		paymententity.PaymentStatusFailed,
+		paymententity.PaymentStatusPending,
 		orderentity.OrderStatusPending,
 	)
 
