@@ -8,6 +8,6 @@ import (
 
 func (h *Handler) SetRoutes(e *echo.Echo) {
 	fmt.Println("SetRoutes paymentHandler")
-	e.GET("/payments/zarinpal/callback", h.zarinpalCallbackHandler)
+	e.GET("/payments/zarinpal/callback", h.ZarinpalCallbackHandler)
 
 }

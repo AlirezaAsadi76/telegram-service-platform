@@ -1,15 +1,13 @@
 package paymenthandler
 
-import "telegram-service-platform/validator/paymentvalidator"
-
 type Handler struct {
 	paymentService PaymentConfirmer
-	paymentVal     paymentvalidator.Validator
+	paymentVal     PaymentValidator
 }
 
 func New(
 	paymentService PaymentConfirmer,
-	paymentVal paymentvalidator.Validator,
+	paymentVal PaymentValidator,
 ) *Handler {
 	return &Handler{
 		paymentService: paymentService,

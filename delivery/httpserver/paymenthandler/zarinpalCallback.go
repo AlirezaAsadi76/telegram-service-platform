@@ -9,7 +9,7 @@ import (
 	"github.com/labstack/echo/v5"
 )
 
-func (h *Handler) zarinpalCallbackHandler(c *echo.Context) error {
+func (h *Handler) ZarinpalCallbackHandler(c *echo.Context) error {
 	var callback paymentparams.ZarinpalCallback
 
 	if err := c.Bind(&callback); err != nil {
