@@ -1,24 +1,18 @@
 package paymenthandler
 
-import (
-	"context"
-	"telegram-service-platform/params/paymentparams"
-
-	"github.com/labstack/echo/v5"
-)
-
-type PaymentConfirmer interface {
-	ConfirmPaymentByExternalID(ctx context.Context, req paymentparams.ConfirmPaymentByExternalIDRequest) (*paymentparams.ConfirmPaymentResponse, error)
-}
+import "telegram-service-platform/validator/paymentvalidator"
 
 type Handler struct {
 	paymentService PaymentConfirmer
+	paymentVal     paymentvalidator.Validator
 }
 
 func New(
 	paymentService PaymentConfirmer,
+	paymentVal paymentvalidator.Validator,
 ) *Handler {
 	return &Handler{
 		paymentService: paymentService,
+		paymentVal:     paymentVal,
 	}
 }

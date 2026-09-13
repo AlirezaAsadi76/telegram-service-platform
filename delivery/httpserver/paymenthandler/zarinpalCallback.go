@@ -10,6 +10,9 @@ import (
 func (h *Handler) zarinpalCallbackHandler(c *echo.Context) error {
 
 	var callback paymentparams.ZarinpalCallback
+	if err := c.Bind(&callback); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
 
 	if callback.Authority == "" {
 		return c.JSON(
