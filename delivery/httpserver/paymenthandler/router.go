@@ -7,5 +7,6 @@ import (
 func (h *Handler) SetRoutes(e *echo.Echo) {
 
 	e.GET("/payments/zarinpal/callback", h.ZarinpalCallbackHandler)
+	e.POST("/payments", h.StartPaymentHandler, h.middleware.Auth())
 
 }

@@ -1,21 +1,20 @@
-package middleware
+package middlewarehttpserver
 
 import (
 	"net/http"
 	"telegram-service-platform/config"
-	"telegram-service-platform/service/authservice"
 
 	echojwt "github.com/labstack/echo-jwt/v5"
 	"github.com/labstack/echo/v5"
 )
 
-func Auth(authConfig authservice.Config, authService *authservice.Service) echo.MiddlewareFunc {
+func (m Middleware) Auth() echo.MiddlewareFunc {
 	return echojwt.WithConfig(echojwt.Config{
 		ContextKey:    config.AuthMiddlewareContextKey,
-		SigningKey:    authConfig.SignKey,
+		SigningKey:    m.authConfig.SignKey,
 		SigningMethod: echojwt.AlgorithmHS256,
 		ParseTokenFunc: func(c *echo.Context, auth string) (interface{}, error) {
-			claims, cErr := authService.ParseToken(auth)
+			claims, cErr := m.authSvc.ParseToken(auth)
 			if cErr != nil {
 				return nil, cErr
 			}

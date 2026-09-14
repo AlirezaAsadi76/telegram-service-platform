@@ -3,6 +3,8 @@ package paymenthandler
 import (
 	"context"
 	"telegram-service-platform/params/paymentparams"
+
+	"github.com/labstack/echo/v5"
 )
 
 type PaymentFlow interface {
@@ -13,4 +15,8 @@ type PaymentFlow interface {
 type PaymentValidator interface {
 	ValidateZarinpalCallback(req paymentparams.ZarinpalCallback) (map[string]string, error)
 	ValidateStartPayment(req paymentparams.StartPaymentHandlerRequest) (map[string]string, error)
+}
+
+type AuthMiddleware interface {
+	Auth() echo.MiddlewareFunc
 }

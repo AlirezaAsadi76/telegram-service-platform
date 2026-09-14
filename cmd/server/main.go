@@ -10,6 +10,7 @@ import (
 	"telegram-service-platform/app"
 	"telegram-service-platform/config"
 	"telegram-service-platform/delivery/httpserver"
+	"telegram-service-platform/delivery/httpserver/middlewarehttpserver"
 	"telegram-service-platform/delivery/httpserver/userhandler"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/validator/uservalidator"
@@ -31,13 +32,14 @@ func main() {
 	dependencies, _, _ := app.SetupDependencies(cfg)
 	userVal := uservalidator.New(dependencies.UserService)
 
+	middleware := middlewarehttpserver.New(dependencies.AuthService, cfg.Auth)
+
 	userHandler := userhandler.New(
 		dependencies.UserService,
-		dependencies.AuthService,
+		middleware,
 		dependencies.WalletService,
 		dependencies.OrderService,
 		userVal,
-		cfg.Auth,
 		cfg.Telegram.Token,
 	)
 
