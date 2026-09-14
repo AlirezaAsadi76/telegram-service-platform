@@ -21,6 +21,7 @@ func readPayment(t *testing.T, pool *pgxpool.Pool, paymentID uint64) paymententi
 		context.Background(),
 		`
 			SELECT
+				id,
 				order_id,
 				user_id,
 				method,
@@ -28,8 +29,13 @@ func readPayment(t *testing.T, pool *pgxpool.Pool, paymentID uint64) paymententi
 				currency,
 				status,
 				external_id,
+				provider_reference_id,
 				payment_url,
-				idempotency_key
+				idempotency_key,
+				callback_data,
+				expired_at,
+				created_at,
+				updated_at
 			FROM payments
 			WHERE id = $1
 		`,

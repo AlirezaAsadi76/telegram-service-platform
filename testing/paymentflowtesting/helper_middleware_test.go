@@ -9,5 +9,7 @@ func newFakeMiddleware() MiddlewareTest {
 }
 
 func (m MiddlewareTest) Auth() echo.MiddlewareFunc {
-	return nil
+	return func(next echo.HandlerFunc) echo.HandlerFunc {
+		return next
+	}
 }
