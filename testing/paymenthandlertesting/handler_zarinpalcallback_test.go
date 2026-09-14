@@ -14,7 +14,7 @@ import (
 )
 
 func TestHandler_ZarinpalCallback_Success(t *testing.T) {
-	paymentService := &fakePaymentConfirmer{
+	paymentService := &fakePaymentFlow{
 		response: &paymentparams.ConfirmPaymentResponse{
 			PaymentID: 100,
 			OrderID:   10,
@@ -27,6 +27,7 @@ func TestHandler_ZarinpalCallback_Success(t *testing.T) {
 	handler := paymenthandler.New(
 		paymentService,
 		validator,
+		MiddlewareTest{},
 	)
 
 	e := echo.New()
@@ -64,7 +65,7 @@ func TestHandler_ZarinpalCallback_Success(t *testing.T) {
 }
 
 func TestHandler_ZarinpalCallback_MissingAuthority(t *testing.T) {
-	paymentService := &fakePaymentConfirmer{}
+	paymentService := &fakePaymentFlow{}
 
 	validator := &fakePaymentValidator{
 		err: richerror.New(
@@ -80,6 +81,7 @@ func TestHandler_ZarinpalCallback_MissingAuthority(t *testing.T) {
 	handler := paymenthandler.New(
 		paymentService,
 		validator,
+		MiddlewareTest{},
 	)
 
 	e := echo.New()
@@ -110,12 +112,13 @@ func TestHandler_ZarinpalCallback_MissingAuthority(t *testing.T) {
 }
 
 func TestHandler_ZarinpalCallback_NOK(t *testing.T) {
-	paymentService := &fakePaymentConfirmer{}
+	paymentService := &fakePaymentFlow{}
 	validator := &fakePaymentValidator{}
 
 	handler := paymenthandler.New(
 		paymentService,
 		validator,
+		MiddlewareTest{},
 	)
 
 	e := echo.New()
@@ -148,7 +151,7 @@ func TestHandler_ZarinpalCallback_NOK(t *testing.T) {
 func TestHandler_ZarinpalCallback_ServiceError(
 	t *testing.T,
 ) {
-	paymentService := &fakePaymentConfirmer{
+	paymentService := &fakePaymentFlow{
 		err: richerror.New(
 			"paymentservice.confirm",
 			errors.New("payment not found"),
@@ -162,6 +165,7 @@ func TestHandler_ZarinpalCallback_ServiceError(
 	handler := paymenthandler.New(
 		paymentService,
 		validator,
+		MiddlewareTest{},
 	)
 
 	e := echo.New()
@@ -188,8 +192,9 @@ func TestHandler_ZarinpalCallback_ServiceError(
 }
 func TestHandler_SetRoutes(t *testing.T) {
 	handler := paymenthandler.New(
-		&fakePaymentConfirmer{},
+		&fakePaymentFlow{},
 		&fakePaymentValidator{},
+		MiddlewareTest{},
 	)
 
 	e := echo.New()
