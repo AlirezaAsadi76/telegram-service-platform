@@ -16,7 +16,7 @@ func newZarinpalCallbackFlow(t *testing.T, provider *flowTestProvider, validator
 	t.Helper()
 
 	pool := newTestPool(t)
-
+	middleware := newFakeMiddleware()
 	transactionProvider := postgres.NewTransactionProvider(pool)
 
 	paymentRepo := postgrespayment.NewWithExecutor(
@@ -34,6 +34,7 @@ func newZarinpalCallbackFlow(t *testing.T, provider *flowTestProvider, validator
 	handler := paymenthandler.New(
 		paymentService,
 		validator,
+		middleware,
 	)
 
 	e := echo.New()

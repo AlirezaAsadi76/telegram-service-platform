@@ -54,6 +54,9 @@ func (a Amount) String() string {
 func (a Amount) Decimal() decimal.Decimal {
 	return decimal.Decimal(a)
 }
+func (a Amount) Equal(b Amount) bool {
+	return decimal.Decimal(a).Equal(decimal.Decimal(b))
+}
 func (a Amount) ToInt64() (int64, error) {
 	decimalAmount := a.Decimal()
 
