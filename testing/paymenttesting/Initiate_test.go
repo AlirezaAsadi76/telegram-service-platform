@@ -226,3 +226,104 @@ func TestService_Initiate_MarkInitiatedFailure(t *testing.T) {
 		)
 	}
 }
+
+func TestService_Initiate_InvalidProviderResponse(t *testing.T) {
+
+	repo := newFakePaymentRepository()
+
+	payment := &paymententity.Payment{
+		ID:       100,
+		OrderID:  10,
+		UserID:   20,
+		Method:   paymententity.PaymentMethodZarinpal,
+		Amount:   entity.Amount(decimal.NewFromInt(100000)),
+		Currency: entity.CurrencyTOMAN,
+		Status:   paymententity.PaymentStatusCreating,
+	}
+
+	repo.payments[payment.ID] = payment
+
+	provider := &fakePaymentProvider{
+		createResponse: paymentproviderparams.CreateResponse{
+			ExternalID: "",
+			PaymentURL: "https://provider.test/pay/100",
+		},
+	}
+
+	service := paymentservice.New(
+		repo,
+		newFakePaymentConfirmationRepository(),
+		provider,
+		nil,
+	)
+
+	req := paymentparams.InitiateRequest{
+		PaymentID:   payment.ID,
+		CallbackURL: "https://example.com/payments/zarinpal/callback",
+		Description: "Invalid provider response test",
+	}
+
+	response, err := service.Initiate(
+		context.Background(),
+		req,
+	)
+
+	if err == nil {
+		t.Fatal("expected Initiate to return an error")
+	}
+
+	if response != nil {
+		t.Fatal(
+			"expected response to be nil for invalid provider response",
+		)
+	}
+
+	if !richerror.IsCode(err, richerror.CodePaymentProviderInvalidResponse) {
+		t.Fatalf(
+			"expected error code %s",
+			richerror.CodePaymentProviderInvalidResponse,
+		)
+	}
+
+	if provider.createCalls != 1 {
+		t.Fatalf(
+			"expected provider Create to be called once, got %d",
+			provider.createCalls,
+		)
+	}
+
+	if repo.markInitiatedCalls != 0 {
+		t.Fatalf(
+			"expected MarkInitiated not to be called, got %d",
+			repo.markInitiatedCalls,
+		)
+	}
+
+	persisted := repo.payments[payment.ID]
+
+	if persisted == nil {
+		t.Fatal("expected payment to remain in repository")
+	}
+
+	if persisted.Status != paymententity.PaymentStatusUnknown {
+		t.Fatalf(
+			"expected payment status UNKNOWN, got %s",
+			persisted.Status,
+		)
+	}
+
+	if persisted.ExternalID != "" {
+		t.Fatalf(
+			"expected external ID to remain empty, got %s",
+			persisted.ExternalID,
+		)
+
+	}
+
+	if persisted.PaymentURL != "" {
+		t.Fatalf(
+			"expected payment URL to remain empty, got %s",
+			persisted.PaymentURL,
+		)
+	}
+}
