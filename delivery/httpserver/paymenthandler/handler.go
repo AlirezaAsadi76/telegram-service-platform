@@ -1,12 +1,12 @@
 package paymenthandler
 
 type Handler struct {
-	paymentService PaymentConfirmer
+	paymentService PaymentFlow
 	paymentVal     PaymentValidator
 }
 
 func New(
-	paymentService PaymentConfirmer,
+	paymentService PaymentFlow,
 	paymentVal PaymentValidator,
 ) *Handler {
 	return &Handler{
