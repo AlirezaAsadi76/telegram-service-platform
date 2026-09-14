@@ -17,5 +17,5 @@ func (f *fakePaymentValidator) ValidateZarinpalCallback(_ paymentparams.Zarinpal
 func (f *fakePaymentValidator) ValidateStartPayment(_ paymentparams.StartPaymentHandlerRequest) (map[string]string, error) {
 	f.validateStartPaymentCalled = true
 
-	return nil, nil
+	return f.fieldErrs, f.err
 }

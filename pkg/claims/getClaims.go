@@ -8,6 +8,12 @@ import (
 )
 
 func GetClaimsFromEchoContext(c *echo.Context) *authservice.Claims {
-	rawClaims := c.Get(config.AuthMiddlewareContextKey).(*authservice.Claims)
-	return rawClaims
+	rawClaims := c.Get(config.AuthMiddlewareContextKey)
+
+	claims, ok := rawClaims.(*authservice.Claims)
+	if !ok {
+		return nil
+	}
+
+	return claims
 }
