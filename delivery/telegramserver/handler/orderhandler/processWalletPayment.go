@@ -44,16 +44,20 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 	if uErr != nil || !user.Found {
 		_ = h.messenger.Send(ctx, &bot.SendMessageParams{})
 	}
-	// ۲. فراخوانی CheckoutService
-	chErr := h.checkoutService.ProcessWalletPurchase(ctx, checkoutparams.WalletPurchaseRequest{
-		UserID:      user.UserInfo.Id,
-		ProductType: productentity.ProductTypeSMM,
-		ProductID:   state.ServiceID,
-		Quantity:    state.Quantity,
-		TargetLink:  state.Link,
-		Amount:      state.Price,
-		Currency:    state.Currency,
-	})
+
+	chErr := h.checkoutService.ProcessWalletPurchase(
+		ctx,
+		checkoutparams.WalletPurchaseRequest{
+			UserID:         user.UserInfo.Id,
+			ProductType:    productentity.ProductTypeSMM,
+			ProductID:      state.ServiceID,
+			Quantity:       state.Quantity,
+			TargetLink:     state.Link,
+			Amount:         state.Price,
+			Currency:       state.Currency,
+			IdempotencyKey: state.PurchaseID,
+		},
+	)
 
 	if chErr != nil {
 

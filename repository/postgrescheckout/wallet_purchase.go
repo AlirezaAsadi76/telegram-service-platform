@@ -14,10 +14,7 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func (d *DB) ExecuteWalletPurchase(
-	ctx context.Context,
-	req walletparam.WalletPurchaseRequest,
-) (*walletparam.WalletPurchaseResult, error) {
+func (d *DB) ExecuteWalletPurchase(ctx context.Context, req walletparam.WalletPurchaseRequest) (*walletparam.WalletPurchaseResult, error) {
 	const Op = "postgrescheckout.ExecuteWalletPurchase"
 
 	var result walletparam.WalletPurchaseResult

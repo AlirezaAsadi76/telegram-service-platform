@@ -13,9 +13,9 @@ const (
 	OrderFlowStageCompleted          OrderFlowStage = "completed"
 )
 
-// OrderFlowState وضعیت موقت سفارش کاربر در Redis
 type OrderFlowState struct {
 	Stage       OrderFlowStage  `json:"stage"`
+	PurchaseID  string          `json:"purchase_id"`
 	Platform    string          `json:"platform"`
 	Category    string          `json:"category"`
 	ServiceID   uint64          `json:"service_id"`

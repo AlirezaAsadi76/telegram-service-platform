@@ -35,10 +35,11 @@ const (
 	CodePaymentProviderInvalidResponse Code = "PAYMENT_PROVIDER_INVALID_RESPONSE"
 	CodePaymentLoadFailed              Code = "PAYMENT_LOAD_FAILED"
 
-	CodeWalletNotFound            Code = "WALLET_NOT_FOUND"
-	CodeWalletInsufficientBalance Code = "WALLET_INSUFFICIENT_BALANCE"
-	CodeWalletInvalidAmount       Code = "WALLET_INVALID_AMOUNT"
-	CodeWalletConcurrentUpdate    Code = "WALLET_CONCURRENT_UPDATE"
+	CodeWalletNotFound             Code = "WALLET_NOT_FOUND"
+	CodeWalletInsufficientBalance  Code = "WALLET_INSUFFICIENT_BALANCE"
+	CodeWalletInvalidAmount        Code = "WALLET_INVALID_AMOUNT"
+	CodeWalletConcurrentUpdate     Code = "WALLET_CONCURRENT_UPDATE"
+	CodeWalletIdempotencyKeyReused Code = "WALLET_IDEMPOTENCY_KEY_REUSED"
 
 	CodeInvalidInput Code = "INVALID_INPUT"
 

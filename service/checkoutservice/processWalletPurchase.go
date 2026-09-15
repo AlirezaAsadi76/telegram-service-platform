@@ -3,154 +3,122 @@ package checkoutservice
 import (
 	"context"
 	"fmt"
-	"telegram-service-platform/entity/orderentity"
+	"time"
+
 	"telegram-service-platform/logger"
 	"telegram-service-platform/params/checkoutparams"
-	"telegram-service-platform/params/orderparams"
 	"telegram-service-platform/params/walletparam"
-	"telegram-service-platform/pkg/hashing"
 	"telegram-service-platform/pkg/metrics"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
-	"telegram-service-platform/pkg/ts"
-	"time"
 
 	"github.com/go-telegram/bot"
 	"go.uber.org/zap"
 )
 
 func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.WalletPurchaseRequest) error {
-
 	const Op = "checkoutservice.ProcessWalletPurchase"
 
 	start := time.Now()
-	logger.Logger.Info("checkout wallet purchase started",
+
+	logger.Logger.Info(
+		"wallet purchase started",
 		zap.Uint64("user_id", req.UserID),
+		zap.String("idempotency_key", req.IdempotencyKey),
 		zap.String("amount", req.Amount.String()),
 	)
-	// 1. Check balance
-	balanceResp, err := s.walletSvc.GetBalance(ctx, walletparam.GetBalanceRequest{UserID: req.UserID})
 
+	result, err := s.walletPurchaseRepo.ExecuteWalletPurchase(
+		ctx,
+		walletparam.WalletPurchaseRequest{
+			UserID:         req.UserID,
+			ProductType:    req.ProductType,
+			ProductID:      req.ProductID,
+			Quantity:       req.Quantity,
+			TargetLink:     req.TargetLink,
+			Amount:         req.Amount,
+			Currency:       req.Currency,
+			IdempotencyKey: req.IdempotencyKey,
+		},
+	)
 	if err != nil {
-		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
-		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("checkout wallet purchase failed", zap.Error(err), zap.Uint64("user_id", req.UserID),
-			zap.Duration("latency", time.Since(start)))
+		metrics.WalletTransactions.
+			WithLabelValues("purchase_failed").
+			Inc()
+
+		metrics.CheckoutLatency.
+			WithLabelValues("wallet").
+			Observe(time.Since(start).Seconds())
+
+		logger.Logger.Error(
+			"wallet purchase transaction failed",
+			zap.Uint64("user_id", req.UserID),
+			zap.String("idempotency_key", req.IdempotencyKey),
+			zap.Error(err),
+			zap.Duration("latency", time.Since(start)),
+		)
 
 		return richerror.New(Op, err)
-
-	}
-	if !balanceResp.Balance.GreaterThanOrEqual(req.Amount) {
-		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
-		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("checkout wallet purchase failed", zap.Error(fmt.Errorf("insufficient balance")), zap.Uint64("user_id", req.UserID),
-			zap.String("balance", balanceResp.Balance.String()),
-			zap.String("request_amount", req.Amount.String()),
-			zap.Duration("latency", time.Since(start)))
-
-		return richerror.New(Op, fmt.Errorf("insufficient balance")).
-			WithKind(richerror.KindValidation).WithMessage(msgerror.InsufficientBalance)
 	}
 
-	// 2. Create Order (PENDING)
-	orderResp, oErr := s.orderSvc.Create(ctx, orderparams.CreateRequest{
-		UserID:      req.UserID,
-		ProductType: req.ProductType,
-		ProductID:   req.ProductID,
-		Quantity:    req.Quantity,
-		TargetLink:  req.TargetLink,
-		Amount:      req.Amount,
-		Currency:    req.Currency,
-	})
+	if s.fulfillmentEnqueuer == nil {
+		logger.Logger.Error(
+			"wallet purchase committed but fulfillment enqueuer is unavailable",
+			zap.Uint64("order_id", result.OrderID),
+		)
 
-	if oErr != nil {
-		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
-		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("checkout wallet purchase failed", zap.Error(oErr), zap.Uint64("user_id", req.UserID),
-			zap.Duration("latency", time.Since(start)))
-
-		return richerror.New(Op, oErr)
-
+		return richerror.New(Op, nil).
+			WithKind(richerror.KindInternal).
+			WithMessage(msgerror.OrderFulfillmentEnqueueFailed)
 	}
 
-	// 3. Generate idempotency key
+	if err := s.fulfillmentEnqueuer.Enqueue(ctx, result.OrderID); err != nil {
+		metrics.WalletTransactions.
+			WithLabelValues("enqueue_failed").
+			Inc()
 
-	idempotencyKey := hashing.EncodeStringToSHA256(
-		fmt.Sprintf("%s:%d:%d:%d", s.config.PrefixWalletIdempotencyKey, req.UserID, orderResp.OrderID, ts.Now()))
+		logger.Logger.Error(
+			"wallet purchase committed but fulfillment enqueue failed",
+			zap.Uint64("order_id", result.OrderID),
+			zap.Uint64("wallet_transaction_id", result.WalletTxID),
+			zap.Error(err),
+		)
 
-	// 4. Debit Wallet
-	_, debErr := s.walletSvc.Debit(ctx, walletparam.DebitRequest{
-		UserID:         req.UserID,
-		Amount:         req.Amount,
-		ReferenceID:    fmt.Sprintf("order:%d", orderResp.OrderID),
-		IdempotencyKey: idempotencyKey,
-	})
-	if debErr != nil {
-		// Cancel order
-		_ = s.orderSvc.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
-			OrderID: orderResp.OrderID,
-			Status:  orderentity.OrderStatusCanceled,
-		})
-		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
-		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("checkout wallet purchase failed", zap.Error(debErr), zap.Uint64("order_id", orderResp.OrderID),
-			zap.Duration("latency", time.Since(start)))
-		return richerror.New(Op, debErr)
+		return richerror.New(Op, err).
+			WithKind(richerror.KindQueryFailure).
+			WithMessage(msgerror.OrderFulfillmentEnqueueFailed)
 	}
 
-	// 5. Update Order to PAID ✅ FIX: error handling
-	if ouErr := s.orderSvc.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
-		OrderID: orderResp.OrderID,
-		Status:  orderentity.OrderStatusPaid,
-	}); ouErr != nil {
-		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
-		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("checkout wallet purchase failed", zap.Error(ouErr), zap.Uint64("order_id", orderResp.OrderID),
-			zap.Duration("latency", time.Since(start)))
-		return richerror.New(Op, ouErr).
-			WithKind(richerror.KindQueryFailure).WithMessage(msgerror.OrderUpdateFailed)
-	}
+	metrics.WalletTransactions.
+		WithLabelValues("purchase_success").
+		Inc()
 
-	// 6. Get order and fulfill
-	order, ogErr := s.orderSvc.GetById(ctx, orderResp.OrderID)
-	if ogErr != nil {
-		metrics.WalletTransactions.WithLabelValues("debit_failed").Inc()
-		metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
-		logger.Logger.Error("checkout wallet purchase failed", zap.Error(ogErr), zap.Uint64("order_id", orderResp.OrderID),
-			zap.Duration("latency", time.Since(start)))
-		return richerror.New(Op, ogErr)
-	}
+	metrics.OrdersTotal.
+		WithLabelValues("wallet", "paid").
+		Inc()
 
-	// 7. Fulfill (async with recover)
-	go func() {
-		defer func() {
-			if r := recover(); r != nil {
-				// Log panic
-			}
-		}()
-		//s.fulfillOrderAsync(order)
-	}()
+	metrics.CheckoutLatency.
+		WithLabelValues("wallet").
+		Observe(time.Since(start).Seconds())
 
-	metrics.WalletTransactions.WithLabelValues("WalletPurchase").Inc()
-	metrics.OrdersTotal.WithLabelValues("wallet", "processing").Inc()
-	metrics.ActiveOrders.WithLabelValues("processing").Inc()
-	metrics.CheckoutLatency.WithLabelValues("wallet").Observe(time.Since(start).Seconds())
-
-	logger.Logger.Info("checkout wallet purchase completed",
-		zap.Uint64("order_id", orderResp.OrderID),
+	logger.Logger.Info(
+		"wallet purchase completed",
+		zap.Uint64("order_id", result.OrderID),
+		zap.Uint64("wallet_transaction_id", result.WalletTxID),
 		zap.Duration("latency", time.Since(start)),
 	)
-	// 8. Notify
 
-	_ = s.messenger.Send(ctx, &bot.SendMessageParams{
-		ChatID: req.UserID,
-		Text:   fmt.Sprintf("Order #%d placed! Processing...", order.ID),
-	})
-	//TODO - send to admin
-	//_ = s.messenger.Send(ctx, &bot.SendMessageParams{
-	//	ChatID: payment.,
-	//	Text:  fmt.Sprintf("New order #%d paid via %s", order.ID, payment.Method),
-	//})
+	_ = s.messenger.Send(
+		ctx,
+		&bot.SendMessageParams{
+			ChatID: req.UserID,
+			Text: fmt.Sprintf(
+				"✅ <b>پرداخت با موفقیت انجام شد!</b>\n\n"+
+					"🎉 سفارش #%d ثبت شد و در حال پردازش است.",
+				result.OrderID,
+			),
+		},
+	)
 
 	return nil
 }

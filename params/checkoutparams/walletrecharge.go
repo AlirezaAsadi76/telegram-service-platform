@@ -6,13 +6,14 @@ import (
 )
 
 type WalletPurchaseRequest struct {
-	UserID      uint64
-	ProductType productentity.ProductType
-	ProductID   uint64
-	Quantity    int64
-	TargetLink  string
-	Amount      entity.Amount
-	Currency    entity.Currency
+	UserID         uint64
+	ProductType    productentity.ProductType
+	ProductID      uint64
+	Quantity       int64
+	TargetLink     string
+	Amount         entity.Amount
+	Currency       entity.Currency
+	IdempotencyKey string
 }
 
 type ManualRechargeRequest struct {
