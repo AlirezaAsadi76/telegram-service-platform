@@ -5,13 +5,7 @@ import (
 	"telegram-service-platform/entity"
 	"telegram-service-platform/params/walletparam"
 	"time"
-
-	"github.com/go-telegram/bot"
 )
-
-type Messenger interface {
-	Send(ctx context.Context, params *bot.SendMessageParams) error
-}
 
 type IdempotencyChecker interface {
 	SetIfNotExists(ctx context.Context, key string, Value entity.IdempotencyStatus, ttl time.Duration) (bool, error)

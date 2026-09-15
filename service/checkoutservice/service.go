@@ -1,6 +1,7 @@
 package checkoutservice
 
 import (
+	"telegram-service-platform/service/notificationservice"
 	"telegram-service-platform/service/orderservice"
 	"telegram-service-platform/service/paymentservice"
 	"telegram-service-platform/service/smmproviderservice"
@@ -12,9 +13,9 @@ type Service struct {
 	paymentSvc          *paymentservice.Service
 	orderSvc            *orderservice.Service
 	smmSvc              *smmproviderservice.Service
+	notificationSvc     *notificationservice.Service
 	walletPurchaseRepo  WalletPurchaseRepository
 	fulfillmentEnqueuer FulfillmentEnqueuer
-	messenger           Messenger
 	idempotency         IdempotencyChecker
 	config              Config
 }
@@ -24,9 +25,9 @@ func New(
 	paymentSvc *paymentservice.Service,
 	orderSvc *orderservice.Service,
 	smmSvc *smmproviderservice.Service,
+	notificationSvc *notificationservice.Service,
 	walletPurchaseRepo WalletPurchaseRepository,
 	fulfillmentEnqueuer FulfillmentEnqueuer,
-	messenger Messenger,
 	idempotency IdempotencyChecker,
 	config Config,
 ) *Service {
@@ -34,8 +35,8 @@ func New(
 		walletSvc:           walletSvc,
 		paymentSvc:          paymentSvc,
 		orderSvc:            orderSvc,
+		notificationSvc:     notificationSvc,
 		smmSvc:              smmSvc,
-		messenger:           messenger,
 		idempotency:         idempotency,
 		walletPurchaseRepo:  walletPurchaseRepo,
 		fulfillmentEnqueuer: fulfillmentEnqueuer,

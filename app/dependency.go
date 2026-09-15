@@ -10,6 +10,7 @@ import (
 	"telegram-service-platform/config"
 	"telegram-service-platform/delivery/telegramserver/messenger"
 	"telegram-service-platform/repository/postgres"
+	"telegram-service-platform/repository/postgrescheckout"
 	"telegram-service-platform/repository/postgresnotification"
 	"telegram-service-platform/repository/postgresorder"
 	"telegram-service-platform/repository/postgrespayment"
@@ -77,6 +78,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	if nErr != nil {
 		panic(nErr)
 	}
+	postgresTxClient := postgres.NewTransactionProvider(postgresClient.Connection())
 	transactionProvider := postgres.NewTransactionProvider(
 		postgresClient.Connection(),
 	)
@@ -85,6 +87,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 
 	// Repositories
 	walletRepo := postgreswallet.New(postgresClient)
+	checkoutRepo := postgrescheckout.New(postgresTxClient)
 	paymentRepo := postgrespayment.New(postgresClient, transactionProvider)
 	orderRepo := postgresorder.New(postgresClient)
 	providerRepo := postgresprovider.New(postgresClient)
@@ -123,7 +126,10 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 
 	// Orchestrator
 	// TODO: Replace nil messenger with actual implementation
-	checkoutSvc := checkoutservice.New(walletSvc, paymentSvc, orderSvc, smmSvc, messengerService, idempotencyRepo, cfg.CheckoutSvc)
+	checkoutSvc := checkoutservice.New(
+		walletSvc, paymentSvc, orderSvc,
+		smmSvc, notificationSVC, checkoutRepo, orderfulfillSvc, idempotencyRepo,
+		cfg.CheckoutSvc)
 
 	return &Dependencies{
 			CheckoutService:         checkoutSvc,

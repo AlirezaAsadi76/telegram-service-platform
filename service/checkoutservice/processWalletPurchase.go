@@ -2,7 +2,8 @@ package checkoutservice
 
 import (
 	"context"
-	"fmt"
+	"telegram-service-platform/entity/notificationentity"
+	"telegram-service-platform/params/notificationparams"
 	"time"
 
 	"telegram-service-platform/logger"
@@ -12,7 +13,6 @@ import (
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 
-	"github.com/go-telegram/bot"
 	"go.uber.org/zap"
 )
 
@@ -108,17 +108,23 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		zap.Duration("latency", time.Since(start)),
 	)
 
-	_ = s.messenger.Send(
+	if err := s.notificationSvc.Create(
 		ctx,
-		&bot.SendMessageParams{
-			ChatID: req.UserID,
-			Text: fmt.Sprintf(
-				"✅ <b>پرداخت با موفقیت انجام شد!</b>\n\n"+
-					"🎉 سفارش #%d ثبت شد و در حال پردازش است.",
-				result.OrderID,
-			),
+		notificationparams.CreateRequest{
+			UserID: req.UserID,
+			Type:   notificationentity.NotificationTypeOrderPaid,
+			Payload: map[string]any{
+				"order_id": result.OrderID,
+			},
 		},
-	)
+	); err != nil {
+		logger.Logger.Error(
+			"wallet purchase notification creation failed",
+			zap.Uint64("order_id", result.OrderID),
+			zap.Uint64("user_id", req.UserID),
+			zap.Error(err),
+		)
+	}
 
 	return nil
 }
