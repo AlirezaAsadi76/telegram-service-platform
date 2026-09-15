@@ -16,7 +16,7 @@ func (d *DB) Create(ctx context.Context, wallet *walletentity.Wallet) error {
 		RETURNING id, created_at, updated_at
 	`
 
-	sErr := d.Pool.Connection().QueryRow(ctx, query,
+	sErr := d.executor.QueryRow(ctx, query,
 		wallet.UserID, wallet.Balance, wallet.Currency,
 	).Scan(&wallet.ID, &wallet.CreatedAt, &wallet.UpdatedAt)
 

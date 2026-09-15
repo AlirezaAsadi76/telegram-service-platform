@@ -15,7 +15,7 @@ func (d *DB) GetTransactionByIdempotencyKey(ctx context.Context, key string) (*w
 		FROM wallet_transactions WHERE idempotency_key = $1
 	`
 
-	row := d.Pool.Connection().QueryRow(ctx, query, key)
+	row := d.executor.QueryRow(ctx, query, key)
 
 	walletTr, sErr := scanWalletTransaction(row)
 

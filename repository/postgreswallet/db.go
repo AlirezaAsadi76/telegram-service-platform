@@ -10,12 +10,19 @@ import (
 )
 
 type DB struct {
-	Pool *postgres.DB
+	executor postgres.Executor
 }
 
 func New(pool *postgres.DB) *DB {
+	return &DB{
+		executor: pool.Connection(),
+	}
+}
 
-	return &DB{Pool: pool}
+func NewWithExecutor(executor postgres.Executor) *DB {
+	return &DB{
+		executor: executor,
+	}
 }
 
 func scanWallet(row postgres.Scanner) (walletentity.Wallet, error) {

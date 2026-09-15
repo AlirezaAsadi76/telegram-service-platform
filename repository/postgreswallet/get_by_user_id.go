@@ -14,7 +14,7 @@ func (d *DB) GetByUserID(ctx context.Context, userID uint64) (*walletentity.Wall
 			SELECT id, user_id, balance, currency, version, created_at, updated_at
 			FROM wallets WHERE user_id = $1;
 `
-	row := d.Pool.Connection().QueryRow(ctx, query, userID)
+	row := d.executor.QueryRow(ctx, query, userID)
 
 	wallet, sErr := scanWallet(row)
 	if sErr != nil {

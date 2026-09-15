@@ -15,7 +15,7 @@ func (d *DB) GetForUpdate(ctx context.Context, userID uint64) (*walletentity.Wal
 		FROM wallets WHERE user_id = $1 FOR UPDATE
 	`
 
-	row := d.Pool.Connection().QueryRow(ctx, query, userID)
+	row := d.executor.QueryRow(ctx, query, userID)
 
 	wallet, sErr := scanWallet(row)
 
