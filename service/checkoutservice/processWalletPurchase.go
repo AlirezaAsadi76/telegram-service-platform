@@ -2,15 +2,14 @@ package checkoutservice
 
 import (
 	"context"
-	"telegram-service-platform/entity/notificationentity"
-	"telegram-service-platform/params/notificationparams"
 	"time"
 
+	"telegram-service-platform/entity/notificationentity"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/params/checkoutparams"
+	"telegram-service-platform/params/notificationparams"
 	"telegram-service-platform/params/walletparam"
 	"telegram-service-platform/pkg/metrics"
-	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 
 	"go.uber.org/zap"
@@ -61,51 +60,10 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		return richerror.New(Op, err)
 	}
 
-	if s.fulfillmentEnqueuer == nil {
-		logger.Logger.Error(
-			"wallet purchase committed but fulfillment enqueuer is unavailable",
-			zap.Uint64("order_id", result.OrderID),
-		)
-
-		return richerror.New(Op, nil).
-			WithKind(richerror.KindInternal).
-			WithMessage(msgerror.OrderFulfillmentEnqueueFailed)
-	}
-
-	if err := s.fulfillmentEnqueuer.Enqueue(ctx, result.OrderID); err != nil {
-		metrics.WalletTransactions.
-			WithLabelValues("enqueue_failed").
-			Inc()
-
-		logger.Logger.Error(
-			"wallet purchase committed but fulfillment enqueue failed",
-			zap.Uint64("order_id", result.OrderID),
-			zap.Uint64("wallet_transaction_id", result.WalletTxID),
-			zap.Error(err),
-		)
-
-		return richerror.New(Op, err).
-			WithKind(richerror.KindQueryFailure).
-			WithMessage(msgerror.OrderFulfillmentEnqueueFailed)
-	}
-
-	metrics.WalletTransactions.
-		WithLabelValues("purchase_success").
-		Inc()
-
-	metrics.OrdersTotal.
-		WithLabelValues("wallet", "paid").
-		Inc()
-
-	metrics.CheckoutLatency.
-		WithLabelValues("wallet").
-		Observe(time.Since(start).Seconds())
-
 	logger.Logger.Info(
-		"wallet purchase completed",
+		"wallet purchase committed",
 		zap.Uint64("order_id", result.OrderID),
 		zap.Uint64("wallet_transaction_id", result.WalletTxID),
-		zap.Duration("latency", time.Since(start)),
 	)
 
 	if err := s.notificationSvc.Create(
@@ -125,6 +83,62 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 			zap.Error(err),
 		)
 	}
+
+	if s.fulfillmentEnqueuer == nil {
+		metrics.WalletTransactions.
+			WithLabelValues("enqueue_failed").
+			Inc()
+
+		logger.Logger.Error(
+			"wallet purchase committed but fulfillment enqueuer is unavailable",
+			zap.Uint64("order_id", result.OrderID),
+			zap.Uint64("wallet_transaction_id", result.WalletTxID),
+		)
+	} else if err := s.fulfillmentEnqueuer.Enqueue(
+		ctx,
+		result.OrderID,
+	); err != nil {
+		metrics.WalletTransactions.
+			WithLabelValues("enqueue_failed").
+			Inc()
+
+		logger.Logger.Error(
+			"wallet purchase committed but fulfillment enqueue failed; recovery will retry",
+			zap.Uint64("order_id", result.OrderID),
+			zap.Uint64("wallet_transaction_id", result.WalletTxID),
+			zap.Error(err),
+		)
+	} else {
+		metrics.WalletTransactions.
+			WithLabelValues("enqueue_success").
+			Inc()
+
+		logger.Logger.Info(
+			"wallet fulfillment enqueued",
+			zap.Uint64("order_id", result.OrderID),
+			zap.Uint64("wallet_transaction_id", result.WalletTxID),
+		)
+	}
+
+	metrics.WalletTransactions.
+		WithLabelValues("purchase_success").
+		Inc()
+
+	metrics.OrdersTotal.
+		WithLabelValues("wallet", "paid").
+		Inc()
+
+	metrics.CheckoutLatency.
+		WithLabelValues("wallet").
+		Observe(time.Since(start).Seconds())
+
+	logger.Logger.Info(
+		"wallet purchase completed",
+		zap.Uint64("order_id", result.OrderID),
+		zap.Uint64("wallet_transaction_id", result.WalletTxID),
+
+		zap.Duration("latency", time.Since(start)),
+	)
 
 	return nil
 }
