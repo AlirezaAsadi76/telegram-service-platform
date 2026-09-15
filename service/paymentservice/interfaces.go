@@ -32,3 +32,7 @@ type PaymentConfirmationRepository interface {
 	Fail(ctx context.Context, paymentID uint64) error
 	MarkUnknown(ctx context.Context, paymentID uint64) error
 }
+
+type FulfillmentEnqueuer interface {
+	Enqueue(ctx context.Context, orderID uint64) error
+}

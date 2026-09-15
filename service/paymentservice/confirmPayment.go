@@ -3,12 +3,16 @@ package paymentservice
 import (
 	"context"
 	"fmt"
+	"telegram-service-platform/logger"
+	"telegram-service-platform/pkg/metrics"
 
 	"telegram-service-platform/entity/paymententity"
 	"telegram-service-platform/params/paymentparams"
 	"telegram-service-platform/params/paymentproviderparams"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
+
+	"go.uber.org/zap"
 )
 
 func (s *Service) ConfirmPayment(ctx context.Context, req paymentparams.ConfirmPaymentRequest) (*paymentparams.ConfirmPaymentResponse, error) {
@@ -129,6 +133,23 @@ func (s *Service) ConfirmPayment(ctx context.Context, req paymentparams.ConfirmP
 				WithMessage(msgerror.InternalServerError)
 		}
 
+		if err := s.enqueueFulfillment(ctx, payment.OrderID); err != nil {
+			metrics.OrderFulfillmentEnqueueTotal.
+				WithLabelValues("error").
+				Inc()
+
+			logger.Logger.Error(
+				"payment confirmed but fulfillment enqueue failed",
+				zap.Uint64("payment_id", payment.ID),
+				zap.Uint64("order_id", payment.OrderID),
+				zap.Error(err),
+			)
+
+			return nil, richerror.New(Op, err).
+				WithKind(richerror.KindQueryFailure).
+				WithMessage(msgerror.OrderFulfillmentEnqueueFailed)
+		}
+
 		return &paymentparams.ConfirmPaymentResponse{
 			PaymentID: payment.ID,
 			OrderID:   payment.OrderID,
@@ -157,4 +178,16 @@ func (s *Service) ConfirmPayment(ctx context.Context, req paymentparams.ConfirmP
 			WithCode(richerror.CodePaymentProviderInvalidResponse).
 			WithMessage(msgerror.PaymentVerifyFailed)
 	}
+}
+
+func (s *Service) enqueueFulfillment(ctx context.Context, orderID uint64) error {
+	if s.fulfillmentEnqueuer == nil {
+		logger.Logger.Warn(
+			"fulfillment enqueuer is not configured",
+			zap.Uint64("order_id", orderID),
+		)
+		return nil
+	}
+
+	return s.fulfillmentEnqueuer.Enqueue(ctx, orderID)
 }

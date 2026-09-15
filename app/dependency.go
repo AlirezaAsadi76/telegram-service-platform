@@ -115,7 +115,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	userSvc := userservice.New(walletSvc, userRepo, activityTracker)
 	messengerService := messenger.New(botAdapter)
 	orderflowService := orderflowservice.New(orderFlowCache, cfg.OrderFlowSvc)
-	orderfulfillSvc := orderfulfillmentservice.New(queueRepo, cfg.OrderFullFilSvc)
+	orderfulfillSvc := orderfulfillmentservice.New(queueRepo, cfg.OrderFullFilament)
 	authSvc := authservice.New(cfg.Auth)
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, catalogCache, smmCache, justPanelAdapter)
 	// smmSvc.RegisterProvider("justanotherpanel", justanotherpanel.New(...))
