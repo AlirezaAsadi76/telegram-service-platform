@@ -2,10 +2,10 @@ package postgrescheckout
 
 import (
 	"context"
-	"telegram-service-platform/params/walletparam"
 
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/entity/walletentity"
+	"telegram-service-platform/params/walletparam"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 	"telegram-service-platform/repository/postgresorder"
@@ -14,7 +14,10 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func (d *DB) ExecuteWalletPurchase(ctx context.Context, req walletparam.WalletPurchaseRequest) (*walletparam.WalletPurchaseResult, error) {
+func (d *DB) ExecuteWalletPurchase(
+	ctx context.Context,
+	req walletparam.WalletPurchaseRequest,
+) (*walletparam.WalletPurchaseResult, error) {
 	const Op = "postgrescheckout.ExecuteWalletPurchase"
 
 	var result walletparam.WalletPurchaseResult
@@ -22,6 +25,17 @@ func (d *DB) ExecuteWalletPurchase(ctx context.Context, req walletparam.WalletPu
 	err := d.transactionProvider.Execute(ctx, func(tx pgx.Tx) error {
 		walletRepo := postgreswallet.NewWithExecutor(tx)
 		orderRepo := postgresorder.NewWithExecutor(tx)
+
+		wallet, err := walletRepo.GetForUpdate(ctx, req.UserID)
+		if err != nil {
+			return err
+		}
+
+		if !wallet.HasSufficient(req.Amount) {
+			return richerror.New(Op, nil).
+				WithKind(richerror.KindValidation).
+				WithMessage(msgerror.InsufficientBalance)
+		}
 
 		order := &orderentity.Order{
 			UserID:      req.UserID,
@@ -36,17 +50,6 @@ func (d *DB) ExecuteWalletPurchase(ctx context.Context, req walletparam.WalletPu
 
 		if err := orderRepo.Create(ctx, order); err != nil {
 			return err
-		}
-
-		wallet, err := walletRepo.GetForUpdate(ctx, req.UserID)
-		if err != nil {
-			return err
-		}
-
-		if !wallet.HasSufficient(req.Amount) {
-			return richerror.New(Op, nil).
-				WithKind(richerror.KindValidation).
-				WithMessage(msgerror.InsufficientBalance)
 		}
 
 		walletTx := &walletentity.WalletTransaction{
