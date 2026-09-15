@@ -108,7 +108,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	exchangeRateProvider := exchangerate.New(cfg.ExchangeRate)
 
 	// Services
-	orderfulfillSvc := orderfulfillmentservice.New(queueRepo, cfg.OrderFullFilament)
+	orderfulfillSvc := orderfulfillmentservice.New(queueRepo, cfg.OrderFullFilamentSvc)
 	walletSvc := walletservice.New(walletRepo, walletRepo, idempotencyRepo, cfg.WalletSvc)
 	paymentSvc := paymentservice.New(paymentRepo, paymentRepo, nil, nil, orderfulfillSvc) // TODO: add adapters
 	orderSvc := orderservice.New(orderRepo)

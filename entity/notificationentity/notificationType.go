@@ -10,4 +10,5 @@ const (
 	NotificationTypeWalletRecharged     NotificationType = "WALLET_RECHARGED"
 	NotificationTypeAdminWalletRecharge NotificationType = "ADMIN_WALLET_RECHARGED"
 	NotificationTypeSystemAlert         NotificationType = "SYSTEM_ALERT"
+	NotificationTypeOrderProcessing     NotificationType = "ORDER_PROCESSING"
 )

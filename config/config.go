@@ -72,7 +72,7 @@ type Config struct {
 	PaymentVerify               paymentverifyjob.Config            `koanf:"paymentVerify"`
 	OrderFulFiller              orderfulfillerjob.Config           `koanf:"orderFulFiller"`
 	NotificationJob             notificationdispatchjob.Config     `koanf:"notificationJob"`
-	OrderFulFillmentRecoveryjob orderfulfillmentrecoveryjob.Config `koanf:"orderFulFillmentRecoveryJob"`
+	OrderFulfillmentRecoveryJob orderfulfillmentrecoveryjob.Config `koanf:"orderFulfillmentRecoveryJob"`
 	Justanotherpanel            justanotherpanel.Config            `koanf:"justanotherPanel"`
 	CatalogCatch                rediscatalog.Config                `koanf:"catalogCache"`
 	Activity                    redisactivity.Config               `koanf:"activity"`
@@ -81,5 +81,5 @@ type Config struct {
 	OrderFlowSvc                orderflowservice.Config            `koanf:"orderFlowSvc"`
 	Auth                        authservice.Config                 `koanf:"auth"`
 	PostgresTest                PostgresTestDBConfig               `koanf:"postgresTest"`
-	OrderFullFilament           orderfulfillmentservice.Config     `koanf:"orderFullFilament"`
+	OrderFullFilamentSvc        orderfulfillmentservice.Config     `koanf:"orderFulfillmentSvc"`
 }

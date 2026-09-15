@@ -115,9 +115,9 @@ smmRedis:
 orderFlowSvc:
   order_ttl: "2m"
 
-orderFullFilament:
+orderFulfillmentSvc:
   queue_key: "queue:orders:paid"
 
-orderFulFillmentRecoveryJob:
+orderFulfillmentRecoveryJob:
   stale_after: "1m"
   batch_size: "50"
