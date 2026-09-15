@@ -17,9 +17,8 @@ type WalletPurchaseRequest struct {
 }
 
 type ManualRechargeRequest struct {
-	AdminID        entity.TelegramId
-	UserTelegramID entity.TelegramId
-	UserID         uint64
-	Amount         entity.Amount
-	Currency       entity.Currency
+	AdminID  entity.TelegramId
+	UserID   uint64
+	Amount   entity.Amount
+	Currency entity.Currency
 }
