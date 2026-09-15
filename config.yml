@@ -117,3 +117,7 @@ orderFlowSvc:
 
 orderFullFilament:
   queue_key: "queue:orders:paid"
+
+orderFulFillmentRecoveryJob:
+  stale_after: "1m"
+  batch_size: "50"

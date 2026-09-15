@@ -13,6 +13,7 @@ import (
 	"telegram-service-platform/scheduler"
 	"telegram-service-platform/scheduler/jobs/notificationdispatchjob"
 	"telegram-service-platform/scheduler/jobs/orderfulfillerjob"
+	"telegram-service-platform/scheduler/jobs/orderfulfillmentrecoveryjob"
 	"telegram-service-platform/scheduler/jobs/paymentverifyjob"
 	"telegram-service-platform/service/authservice"
 	"telegram-service-platform/service/checkoutservice"
@@ -53,31 +54,32 @@ type PostgresTestDBConfig struct {
 }
 
 type Config struct {
-	HttpServer        HttpServer                     `koanf:"httpServer"`
-	MetricsServer     MetricsServer                  `koanf:"metricsServer"`
-	Application       Application                    `koanf:"application"`
-	Postgres          postgres.DBConfig              `koanf:"postgres"`
-	Telegram          botadapter.Config              `koanf:"telegram"`
-	RedisCli          redisadapter.Config            `koanf:"redis"`
-	ProductService    productservice.Config          `koanf:"productService"`
-	PriceService      priceservice.Config            `koanf:"priceService"`
-	Fzr               fzrcards.Config                `koanf:"fzr"`
-	ExchangeRate      exchangerate.Config            `koanf:"exchangeRate"`
-	Scheduler         scheduler.Config               `koanf:"scheduler"`
-	WalletSvc         walletservice.Config           `koanf:"wallet"`
-	SmmSvc            smmproviderservice.Config      `koanf:"smmProviderSvc"`
-	CheckoutSvc       checkoutservice.Config         `koanf:"checkoutSvc"`
-	NotificationSvc   notificationservice.Config     `koanf:"notificationSvc"`
-	PaymentVerify     paymentverifyjob.Config        `koanf:"paymentVerify"`
-	OrderFulFiller    orderfulfillerjob.Config       `koanf:"orderFulFiller"`
-	NotificationJob   notificationdispatchjob.Config `koanf:"notificationJob"`
-	Justanotherpanel  justanotherpanel.Config        `koanf:"justanotherPanel"`
-	CatalogCatch      rediscatalog.Config            `koanf:"catalogCache"`
-	Activity          redisactivity.Config           `koanf:"activity"`
-	Admins            AdminConfig                    `koanf:"admins"`
-	SmmRedis          redissmm.Config                `koanf:"smmRedis"`
-	OrderFlowSvc      orderflowservice.Config        `koanf:"orderFlowSvc"`
-	Auth              authservice.Config             `koanf:"auth"`
-	PostgresTest      PostgresTestDBConfig           `koanf:"postgresTest"`
-	OrderFullFilament orderfulfillmentservice.Config `koanf:"orderFullFilament"`
+	HttpServer                  HttpServer                         `koanf:"httpServer"`
+	MetricsServer               MetricsServer                      `koanf:"metricsServer"`
+	Application                 Application                        `koanf:"application"`
+	Postgres                    postgres.DBConfig                  `koanf:"postgres"`
+	Telegram                    botadapter.Config                  `koanf:"telegram"`
+	RedisCli                    redisadapter.Config                `koanf:"redis"`
+	ProductService              productservice.Config              `koanf:"productService"`
+	PriceService                priceservice.Config                `koanf:"priceService"`
+	Fzr                         fzrcards.Config                    `koanf:"fzr"`
+	ExchangeRate                exchangerate.Config                `koanf:"exchangeRate"`
+	Scheduler                   scheduler.Config                   `koanf:"scheduler"`
+	WalletSvc                   walletservice.Config               `koanf:"wallet"`
+	SmmSvc                      smmproviderservice.Config          `koanf:"smmProviderSvc"`
+	CheckoutSvc                 checkoutservice.Config             `koanf:"checkoutSvc"`
+	NotificationSvc             notificationservice.Config         `koanf:"notificationSvc"`
+	PaymentVerify               paymentverifyjob.Config            `koanf:"paymentVerify"`
+	OrderFulFiller              orderfulfillerjob.Config           `koanf:"orderFulFiller"`
+	NotificationJob             notificationdispatchjob.Config     `koanf:"notificationJob"`
+	OrderFulFillmentRecoveryjob orderfulfillmentrecoveryjob.Config `koanf:"orderFulFillmentRecoveryJob"`
+	Justanotherpanel            justanotherpanel.Config            `koanf:"justanotherPanel"`
+	CatalogCatch                rediscatalog.Config                `koanf:"catalogCache"`
+	Activity                    redisactivity.Config               `koanf:"activity"`
+	Admins                      AdminConfig                        `koanf:"admins"`
+	SmmRedis                    redissmm.Config                    `koanf:"smmRedis"`
+	OrderFlowSvc                orderflowservice.Config            `koanf:"orderFlowSvc"`
+	Auth                        authservice.Config                 `koanf:"auth"`
+	PostgresTest                PostgresTestDBConfig               `koanf:"postgresTest"`
+	OrderFullFilament           orderfulfillmentservice.Config     `koanf:"orderFullFilament"`
 }
