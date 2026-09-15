@@ -105,8 +105,9 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	exchangeRateProvider := exchangerate.New(cfg.ExchangeRate)
 
 	// Services
+	orderfulfillSvc := orderfulfillmentservice.New(queueRepo, cfg.OrderFullFilament)
 	walletSvc := walletservice.New(walletRepo, walletRepo, idempotencyRepo, cfg.WalletSvc)
-	paymentSvc := paymentservice.New(paymentRepo, paymentRepo, nil, nil) // TODO: add adapters
+	paymentSvc := paymentservice.New(paymentRepo, paymentRepo, nil, nil, orderfulfillSvc) // TODO: add adapters
 	orderSvc := orderservice.New(orderRepo)
 	smmSvc := smmproviderservice.New(providerRepo, cfg.SmmSvc)
 	notificationSVC := notificationservice.New(notificationRepo, queueRepo, cfg.NotificationSvc)
@@ -115,7 +116,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	userSvc := userservice.New(walletSvc, userRepo, activityTracker)
 	messengerService := messenger.New(botAdapter)
 	orderflowService := orderflowservice.New(orderFlowCache, cfg.OrderFlowSvc)
-	orderfulfillSvc := orderfulfillmentservice.New(queueRepo, cfg.OrderFullFilament)
+
 	authSvc := authservice.New(cfg.Auth)
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, catalogCache, smmCache, justPanelAdapter)
 	// smmSvc.RegisterProvider("justanotherpanel", justanotherpanel.New(...))
