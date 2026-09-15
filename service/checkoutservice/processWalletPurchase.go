@@ -128,7 +128,7 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 				// Log panic
 			}
 		}()
-		s.fulfillOrderAsync(order)
+		//s.fulfillOrderAsync(order)
 	}()
 
 	metrics.WalletTransactions.WithLabelValues("WalletPurchase").Inc()

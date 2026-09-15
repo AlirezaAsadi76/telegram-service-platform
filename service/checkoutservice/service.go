@@ -8,10 +8,11 @@ import (
 )
 
 type Service struct {
-	walletSvc   *walletservice.Service
-	paymentSvc  *paymentservice.Service
-	orderSvc    *orderservice.Service
-	smmSvc      *smmproviderservice.Service
+	walletSvc  *walletservice.Service
+	paymentSvc *paymentservice.Service
+	orderSvc   *orderservice.Service
+	smmSvc     *smmproviderservice.Service
+
 	messenger   Messenger
 	idempotency IdempotencyChecker
 	config      Config
