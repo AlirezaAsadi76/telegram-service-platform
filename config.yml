@@ -114,3 +114,6 @@ smmRedis:
 
 orderFlowSvc:
   order_ttl: "2m"
+
+orderFullFilSvc:
+  queue_key: "queue:orders:paid"

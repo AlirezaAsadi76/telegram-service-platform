@@ -18,6 +18,7 @@ import (
 	"telegram-service-platform/service/checkoutservice"
 	"telegram-service-platform/service/notificationservice"
 	"telegram-service-platform/service/orderflowservice"
+	"telegram-service-platform/service/orderfulfillmentservice"
 	"telegram-service-platform/service/priceservice"
 	"telegram-service-platform/service/productservice"
 	"telegram-service-platform/service/smmproviderservice"
@@ -78,4 +79,5 @@ type Config struct {
 	OrderFlowSvc     orderflowservice.Config        `koanf:"orderFlowSvc"`
 	Auth             authservice.Config             `koanf:"auth"`
 	PostgresTest     PostgresTestDBConfig           `koanf:"postgresTest"`
+	OrderFullFilSvc  orderfulfillmentservice.Config `koanf:"orderFullFilSvc"`
 }

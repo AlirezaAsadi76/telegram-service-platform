@@ -28,6 +28,7 @@ import (
 	"telegram-service-platform/service/checkoutservice"
 	"telegram-service-platform/service/notificationservice"
 	"telegram-service-platform/service/orderflowservice"
+	"telegram-service-platform/service/orderfulfillmentservice"
 	"telegram-service-platform/service/orderservice"
 	"telegram-service-platform/service/paymentservice"
 	"telegram-service-platform/service/priceservice"
@@ -39,19 +40,20 @@ import (
 )
 
 type Dependencies struct {
-	CheckoutService     *checkoutservice.Service
-	WalletService       *walletservice.Service
-	OrderService        *orderservice.Service
-	PaymentService      *paymentservice.Service
-	SMMService          *smmproviderservice.Service
-	NotificationService *notificationservice.Service
-	UserService         *userservice.Service
-	PricingService      *pricingservice.Service
-	PriceService        *priceservice.Service
-	ProductService      *productservice.Service
-	MessengerService    *messenger.Service
-	OrderFlowService    *orderflowservice.Service
-	AuthService         *authservice.Service
+	CheckoutService         *checkoutservice.Service
+	WalletService           *walletservice.Service
+	OrderService            *orderservice.Service
+	PaymentService          *paymentservice.Service
+	SMMService              *smmproviderservice.Service
+	NotificationService     *notificationservice.Service
+	OrderFulfillmentService *orderfulfillmentservice.Service
+	UserService             *userservice.Service
+	PricingService          *pricingservice.Service
+	PriceService            *priceservice.Service
+	ProductService          *productservice.Service
+	MessengerService        *messenger.Service
+	OrderFlowService        *orderflowservice.Service
+	AuthService             *authservice.Service
 }
 
 type Repositories struct {
@@ -113,6 +115,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	userSvc := userservice.New(walletSvc, userRepo, activityTracker)
 	messengerService := messenger.New(botAdapter)
 	orderflowService := orderflowservice.New(orderFlowCache, cfg.OrderFlowSvc)
+	orderfulfillSvc := orderfulfillmentservice.New(queueRepo, cfg.OrderFullFilSvc)
 	authSvc := authservice.New(cfg.Auth)
 	productSvc := productservice.New(cfg.ProductService, pricingSvc, productRepo, catalogCache, smmCache, justPanelAdapter)
 	// smmSvc.RegisterProvider("justanotherpanel", justanotherpanel.New(...))
@@ -122,19 +125,20 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	checkoutSvc := checkoutservice.New(walletSvc, paymentSvc, orderSvc, smmSvc, messengerService, idempotencyRepo, cfg.CheckoutSvc)
 
 	return &Dependencies{
-			CheckoutService:     checkoutSvc,
-			WalletService:       walletSvc,
-			OrderService:        orderSvc,
-			PaymentService:      paymentSvc,
-			SMMService:          smmSvc,
-			NotificationService: notificationSVC,
-			UserService:         userSvc,
-			PricingService:      pricingSvc,
-			PriceService:        priceService,
-			ProductService:      productSvc,
-			MessengerService:    messengerService,
-			OrderFlowService:    orderflowService,
-			AuthService:         authSvc,
+			CheckoutService:         checkoutSvc,
+			WalletService:           walletSvc,
+			OrderService:            orderSvc,
+			PaymentService:          paymentSvc,
+			SMMService:              smmSvc,
+			NotificationService:     notificationSVC,
+			UserService:             userSvc,
+			PricingService:          pricingSvc,
+			PriceService:            priceService,
+			ProductService:          productSvc,
+			MessengerService:        messengerService,
+			OrderFlowService:        orderflowService,
+			AuthService:             authSvc,
+			OrderFulfillmentService: orderfulfillSvc,
 		},
 		&Repositories{
 			queueRepo:           queueRepo,
