@@ -4,6 +4,7 @@ import (
 	"context"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/pkg/metrics"
+	"telegram-service-platform/pkg/richerror"
 	"time"
 
 	"go.uber.org/zap"
@@ -40,7 +41,7 @@ func (j *Job) Run(ctx context.Context) error {
 			zap.Error(err),
 		)
 
-		return err
+		return richerror.New(Op, err)
 	}
 
 	if len(result.Orders) == 0 {

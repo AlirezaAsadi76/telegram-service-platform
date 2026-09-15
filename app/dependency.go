@@ -78,7 +78,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	if nErr != nil {
 		panic(nErr)
 	}
-	postgresTxClient := postgres.NewTransactionProvider(postgresClient.Connection())
+
 	transactionProvider := postgres.NewTransactionProvider(
 		postgresClient.Connection(),
 	)
@@ -87,7 +87,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 
 	// Repositories
 	walletRepo := postgreswallet.New(postgresClient)
-	checkoutRepo := postgrescheckout.New(postgresTxClient)
+	checkoutRepo := postgrescheckout.New(transactionProvider)
 	paymentRepo := postgrespayment.New(postgresClient, transactionProvider)
 	orderRepo := postgresorder.New(postgresClient)
 	providerRepo := postgresprovider.New(postgresClient)
