@@ -2,17 +2,9 @@ package postgresorder
 
 import (
 	"context"
+
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
-)
-
-package postgresorder
-
-import (
-"context"
-
-"telegram-service-platform/pkg/msgerror"
-"telegram-service-platform/pkg/richerror"
 )
 
 func (d *DB) ClaimForProcessing(ctx context.Context, orderID uint64) (bool, error) {

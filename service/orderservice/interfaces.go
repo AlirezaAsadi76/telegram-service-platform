@@ -13,4 +13,5 @@ type Repository interface {
 	UpdateStatus(ctx context.Context, id uint64, status orderentity.OrderStatus, externalOrderID string, providerID *uint64) error
 	GetByStatus(ctx context.Context, status orderentity.OrderStatus) ([]*orderentity.Order, error)
 	GetStalePaid(ctx context.Context, olderThan time.Duration, limit int) ([]*orderentity.Order, error)
+	ClaimForProcessing(ctx context.Context, orderID uint64) (bool, error)
 }
