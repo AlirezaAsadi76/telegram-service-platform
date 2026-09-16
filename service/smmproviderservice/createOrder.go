@@ -22,17 +22,18 @@ func (s *Service) CreateOrder(ctx context.Context, req smmparams.CreateOrderAdap
 
 	if len(providers) == 0 {
 		return smmparams.CreateOrderResult{
-			Outcome: smmparams.CreateOrderOutcomeUnknown,
-		}, richerror.New(
-			Op,
-			fmt.Errorf("no active smm provider"),
-		).
-			WithKind(richerror.KindDependencyFailure).
-			WithCode(richerror.CodeSMMProviderUnavailable).
-			WithMessage(msgerror.NoAvailableAdapter)
+				Outcome: smmparams.CreateOrderOutcomeUnknown,
+			}, richerror.New(
+				Op,
+				fmt.Errorf("no active smm provider"),
+			).
+				WithKind(richerror.KindDependencyFailure).
+				WithCode(richerror.CodeSMMProviderUnavailable).
+				WithMessage(msgerror.NoAvailableAdapter)
 	}
 
 	rejected := 0
+	usableProviders := 0
 
 	for _, provider := range providers {
 		adapter, ok := s.providers[provider.Name]
@@ -44,6 +45,8 @@ func (s *Service) CreateOrder(ctx context.Context, req smmparams.CreateOrderAdap
 		if !okk {
 			continue
 		}
+
+		usableProviders++
 
 		if !breaker.Allow() {
 			continue
@@ -60,16 +63,30 @@ func (s *Service) CreateOrder(ctx context.Context, req smmparams.CreateOrderAdap
 			breaker.RecordFailure()
 
 			return smmparams.CreateOrderResult{
-				Outcome:      smmparams.CreateOrderOutcomeUnknown,
-				ProviderID:   provider.ID,
-				ProviderName: provider.Name,
-			}, richerror.New(Op, createErr).
-				WithKind(richerror.KindExternalAPI).
-				WithMessage(msgerror.ExternalServiceFailed)
+					Outcome:      smmparams.CreateOrderOutcomeUnknown,
+					ProviderID:   provider.ID,
+					ProviderName: provider.Name,
+				}, richerror.New(Op, createErr).
+					WithKind(richerror.KindExternalAPI).
+					WithMessage(msgerror.ExternalServiceFailed)
 		}
 
 		switch response.Outcome {
 		case smmparams.CreateOrderOutcomeCreated:
+			if response.ExternalOrderID == "" {
+				breaker.RecordFailure()
+
+				return smmparams.CreateOrderResult{
+						Outcome:      smmparams.CreateOrderOutcomeUnknown,
+						ProviderID:   provider.ID,
+						ProviderName: provider.Name,
+					}, richerror.New(Op,
+						fmt.Errorf("provider %s returned empty external order id", provider.Name)).
+						WithKind(richerror.KindExternalAPI).
+						WithCode(richerror.CodeSMMProviderInvalidResponse).
+						WithMessage(msgerror.SMMProviderInvalidResponse)
+			}
+
 			breaker.RecordSuccess()
 
 			return smmparams.CreateOrderResult{
@@ -87,26 +104,38 @@ func (s *Service) CreateOrder(ctx context.Context, req smmparams.CreateOrderAdap
 			breaker.RecordFailure()
 
 			return smmparams.CreateOrderResult{
-				Outcome:      smmparams.CreateOrderOutcomeUnknown,
-				ProviderID:   provider.ID,
-				ProviderName: provider.Name,
-			}, richerror.New(Op, fmt.Errorf("provider returned unknown create outcome")).
-				WithKind(richerror.KindExternalAPI).
-				WithCode(richerror.CodeSMMProviderInvalidResponse).
-				WithMessage(msgerror.SMMProviderInvalidResponse)
+					Outcome:      smmparams.CreateOrderOutcomeUnknown,
+					ProviderID:   provider.ID,
+					ProviderName: provider.Name,
+				}, richerror.New(Op, fmt.Errorf("provider returned unknown create outcome")).
+					WithKind(richerror.KindExternalAPI).
+					WithCode(richerror.CodeSMMProviderInvalidResponse).
+					WithMessage(msgerror.SMMProviderInvalidResponse)
 		}
 	}
 
-	if rejected == len(providers) {
+	if usableProviders == 0 {
+		return smmparams.CreateOrderResult{
+				Outcome: smmparams.CreateOrderOutcomeUnknown,
+			}, richerror.New(
+				Op,
+				fmt.Errorf("no usable smm provider"),
+			).
+				WithKind(richerror.KindDependencyFailure).
+				WithCode(richerror.CodeSMMProviderUnavailable).
+				WithMessage(msgerror.SMMProviderUnavailable)
+	}
+
+	if rejected == usableProviders {
 		return smmparams.CreateOrderResult{
 			Outcome: smmparams.CreateOrderOutcomeRejected,
 		}, nil
 	}
 
 	return smmparams.CreateOrderResult{
-		Outcome: smmparams.CreateOrderOutcomeUnknown,
-	}, richerror.New(Op, fmt.Errorf("no usable smm provider")).
-		WithKind(richerror.KindDependencyFailure).
-		WithCode(richerror.CodeSMMProviderUnavailable).
-		WithMessage(msgerror.SMMProviderUnavailable)
+			Outcome: smmparams.CreateOrderOutcomeUnknown,
+		}, richerror.New(Op, fmt.Errorf("no usable smm provider")).
+			WithKind(richerror.KindDependencyFailure).
+			WithCode(richerror.CodeSMMProviderUnavailable).
+			WithMessage(msgerror.SMMProviderUnavailable)
 }
