@@ -7,8 +7,8 @@ import (
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (d *DB) SetProviderOrder(ctx context.Context, orderID uint64, providerID uint64, externalOrderID string) error {
-	const Op = "postgresorder.SetProviderOrder"
+func (d *DB) SaveExternalOrder(ctx context.Context, orderID uint64, providerID uint64, externalOrderID string) error {
+	const Op = "postgresorder.SaveExternalOrder"
 
 	query := `
 		UPDATE orders
@@ -17,6 +17,14 @@ func (d *DB) SetProviderOrder(ctx context.Context, orderID uint64, providerID ui
 		    updated_at = NOW()
 		WHERE id = $3
 		  AND status = 'PROCESSING'
+		  AND (
+			  provider_id IS NULL
+			  OR provider_id = $1
+		  )
+		  AND (
+			  external_order_id IS NULL
+			  OR external_order_id = $2
+		  )
 	`
 
 	tag, err := d.executor.Exec(

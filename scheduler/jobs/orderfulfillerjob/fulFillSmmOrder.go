@@ -40,7 +40,7 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 			)
 
 			if result.ProviderID != 0 {
-				if providerErr := j.orderService.SetProvider(ctx, order.ID, result.ProviderID); providerErr != nil {
+				if providerErr := j.orderService.AssignProvider(ctx, order.ID, result.ProviderID); providerErr != nil {
 					logger.Logger.Error(
 						"failed to persist provider for unknown SMM result",
 						zap.Uint64("order_id", order.ID),
@@ -49,6 +49,10 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 					)
 
 					metrics.WorkerRuns.WithLabelValues(j.Name(), "provider_persist_failed").Inc()
+
+					return richerror.New(Op, providerErr).
+						WithKind(richerror.KindQueryFailure).
+						WithMessage(msgerror.OrderUpdateFailed)
 				}
 			}
 
@@ -77,7 +81,7 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 				WithMessage(msgerror.SMMProviderInvalidResponse)
 		}
 
-		if err := j.orderService.SetProviderOrder(
+		if err := j.orderService.SaveExternalOrder(
 			ctx,
 			order.ID,
 			result.ProviderID,
@@ -151,13 +155,17 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 		)
 
 		if result.ProviderID != 0 {
-			if providerErr := j.orderService.SetProvider(ctx, order.ID, result.ProviderID); providerErr != nil {
+			if providerErr := j.orderService.AssignProvider(ctx, order.ID, result.ProviderID); providerErr != nil {
 				logger.Logger.Error(
 					"failed to persist provider for unknown SMM result",
 					zap.Uint64("order_id", order.ID),
 					zap.Uint64("provider_id", result.ProviderID),
 					zap.Error(providerErr),
 				)
+
+				return richerror.New(Op, providerErr).
+					WithKind(richerror.KindQueryFailure).
+					WithMessage(msgerror.OrderUpdateFailed)
 			}
 		}
 

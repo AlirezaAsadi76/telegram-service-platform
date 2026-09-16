@@ -14,6 +14,6 @@ type Repository interface {
 	GetByStatus(ctx context.Context, status orderentity.OrderStatus) ([]*orderentity.Order, error)
 	GetStalePaid(ctx context.Context, olderThan time.Duration, limit int) ([]*orderentity.Order, error)
 	ClaimForProcessing(ctx context.Context, orderID uint64) (bool, error)
-	SetProviderOrder(ctx context.Context, orderID uint64, providerID uint64, externalOrderID string) error
-	SetProvider(ctx context.Context, orderID uint64, providerID uint64) error
+	SaveExternalOrder(ctx context.Context, orderID uint64, providerID uint64, externalOrderID string) error
+	AssignProvider(ctx context.Context, orderID uint64, providerID uint64) error
 }
