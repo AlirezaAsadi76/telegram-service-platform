@@ -8,10 +8,10 @@ import (
 	"net/url"
 	"strings"
 	"telegram-service-platform/entity/smmentity"
-	"telegram-service-platform/params/smmprams"
+	"telegram-service-platform/params/smmparams"
 )
 
-func (a *Adapter) AllServices(ctx context.Context) (smmprams.GetAllServicesResponse, error) {
+func (a *Adapter) AllServices(ctx context.Context) (smmparams.GetAllServicesResponse, error) {
 	form := url.Values{
 		"key":    {a.config.APIKey},
 		"action": {string(ActionTypeServices)},
@@ -24,7 +24,7 @@ func (a *Adapter) AllServices(ctx context.Context) (smmprams.GetAllServicesRespo
 		strings.NewReader(form.Encode()),
 	)
 	if err != nil {
-		return smmprams.GetAllServicesResponse{}, err
+		return smmparams.GetAllServicesResponse{}, err
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
@@ -32,13 +32,13 @@ func (a *Adapter) AllServices(ctx context.Context) (smmprams.GetAllServicesRespo
 
 	resp, err := a.client.Do(req)
 	if err != nil {
-		return smmprams.GetAllServicesResponse{}, err
+		return smmparams.GetAllServicesResponse{}, err
 
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return smmprams.GetAllServicesResponse{}, fmt.Errorf(
+		return smmparams.GetAllServicesResponse{}, fmt.Errorf(
 			"JAP API returned %s",
 			resp.Status,
 		)
@@ -46,11 +46,11 @@ func (a *Adapter) AllServices(ctx context.Context) (smmprams.GetAllServicesRespo
 
 	Smms := make([]smmentity.SMM, 0)
 	if err := json.NewDecoder(resp.Body).Decode(&Smms); err != nil {
-		return smmprams.GetAllServicesResponse{}, err
+		return smmparams.GetAllServicesResponse{}, err
 
 	}
 
-	return smmprams.GetAllServicesResponse{
+	return smmparams.GetAllServicesResponse{
 		Services: Smms,
 	}, nil
 }

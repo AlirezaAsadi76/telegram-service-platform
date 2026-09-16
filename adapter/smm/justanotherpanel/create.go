@@ -11,12 +11,12 @@ import (
 	"net/url"
 	"strconv"
 
-	"telegram-service-platform/params/smmprams"
+	"telegram-service-platform/params/smmparams"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (a *Adapter) Create(ctx context.Context, req smmprams.CreateOrderAdapterRequest) (smmprams.CreateOrderAdapterResponse, error) {
+func (a *Adapter) Create(ctx context.Context, req smmparams.CreateOrderAdapterRequest) (smmparams.CreateOrderAdapterResponse, error) {
 	const Op = "justanotherpanel.Create"
 
 	data := url.Values{}
@@ -33,12 +33,12 @@ func (a *Adapter) Create(ctx context.Context, req smmprams.CreateOrderAdapterReq
 		bytes.NewBufferString(data.Encode()),
 	)
 	if err != nil {
-		return smmprams.CreateOrderAdapterResponse{
-				Outcome: smmprams.CreateOrderOutcomeUnknown,
-			}, richerror.New(Op, err).
-				WithKind(richerror.KindDependencyFailure).
-				WithCode(richerror.CodeSMMProviderRequestFailed).
-				WithMessage(msgerror.SMMProviderRequestFailed)
+		return smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeUnknown,
+		}, richerror.New(Op, err).
+			WithKind(richerror.KindDependencyFailure).
+			WithCode(richerror.CodeSMMProviderRequestFailed).
+			WithMessage(msgerror.SMMProviderRequestFailed)
 	}
 
 	httpReq.Header.Set(
@@ -60,23 +60,23 @@ func (a *Adapter) Create(ctx context.Context, req smmprams.CreateOrderAdapterReq
 			message = msgerror.SMMProviderTimeout
 		}
 
-		return smmprams.CreateOrderAdapterResponse{
-				Outcome: smmprams.CreateOrderOutcomeUnknown,
-			}, richerror.New(Op, dErr).
-				WithKind(richerror.KindExternalAPI).
-				WithCode(code).
-				WithMessage(message)
+		return smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeUnknown,
+		}, richerror.New(Op, dErr).
+			WithKind(richerror.KindExternalAPI).
+			WithCode(code).
+			WithMessage(message)
 	}
 	defer resp.Body.Close()
 
 	body, rErr := io.ReadAll(resp.Body)
 	if rErr != nil {
-		return smmprams.CreateOrderAdapterResponse{
-				Outcome: smmprams.CreateOrderOutcomeUnknown,
-			}, richerror.New(Op, rErr).
-				WithKind(richerror.KindExternalAPI).
-				WithCode(richerror.CodeSMMProviderInvalidResponse).
-				WithMessage(msgerror.SMMProviderInvalidResponse)
+		return smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeUnknown,
+		}, richerror.New(Op, rErr).
+			WithKind(richerror.KindExternalAPI).
+			WithCode(richerror.CodeSMMProviderInvalidResponse).
+			WithMessage(msgerror.SMMProviderInvalidResponse)
 	}
 
 	var result struct {
@@ -85,50 +85,50 @@ func (a *Adapter) Create(ctx context.Context, req smmprams.CreateOrderAdapterReq
 	}
 
 	if err := json.Unmarshal(body, &result); err != nil {
-		return smmprams.CreateOrderAdapterResponse{
-				Outcome: smmprams.CreateOrderOutcomeUnknown,
-			}, richerror.New(Op, fmt.Errorf("invalid provider response: %w", err)).
-				WithKind(richerror.KindExternalAPI).
-				WithCode(richerror.CodeSMMProviderInvalidResponse).
-				WithMessage(msgerror.SMMProviderInvalidResponse)
+		return smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeUnknown,
+		}, richerror.New(Op, fmt.Errorf("invalid provider response: %w", err)).
+			WithKind(richerror.KindExternalAPI).
+			WithCode(richerror.CodeSMMProviderInvalidResponse).
+			WithMessage(msgerror.SMMProviderInvalidResponse)
 	}
 
 	if result.Error != "" {
-		return smmprams.CreateOrderAdapterResponse{
-				Outcome: smmprams.CreateOrderOutcomeRejected,
-			}, richerror.New(
-				Op,
-				fmt.Errorf("provider rejected order: %s", result.Error),
-			).
-				WithKind(richerror.KindConflict).
-				WithCode(richerror.CodeSMMProviderRejected).
-				WithMessage(msgerror.SMMProviderRejected)
+		return smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeRejected,
+		}, richerror.New(
+			Op,
+			fmt.Errorf("provider rejected order: %s", result.Error),
+		).
+			WithKind(richerror.KindConflict).
+			WithCode(richerror.CodeSMMProviderRejected).
+			WithMessage(msgerror.SMMProviderRejected)
 	}
 
 	if resp.StatusCode < http.StatusOK ||
 		resp.StatusCode >= http.StatusMultipleChoices {
-		return smmprams.CreateOrderAdapterResponse{
-				Outcome: smmprams.CreateOrderOutcomeUnknown,
-			}, richerror.New(Op, fmt.Errorf("provider returned HTTP status %d", resp.StatusCode)).
-				WithKind(richerror.KindExternalAPI).
-				WithCode(richerror.CodeSMMProviderHTTPError).
-				WithMessage(msgerror.SMMProviderHTTPError)
+		return smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeUnknown,
+		}, richerror.New(Op, fmt.Errorf("provider returned HTTP status %d", resp.StatusCode)).
+			WithKind(richerror.KindExternalAPI).
+			WithCode(richerror.CodeSMMProviderHTTPError).
+			WithMessage(msgerror.SMMProviderHTTPError)
 	}
 
 	if result.Order <= 0 {
-		return smmprams.CreateOrderAdapterResponse{
-				Outcome: smmprams.CreateOrderOutcomeUnknown,
-			}, richerror.New(
-				Op,
-				fmt.Errorf("invalid provider order id: %d", result.Order),
-			).
-				WithKind(richerror.KindExternalAPI).
-				WithCode(richerror.CodeSMMProviderInvalidResponse).
-				WithMessage(msgerror.SMMProviderInvalidResponse)
+		return smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeUnknown,
+		}, richerror.New(
+			Op,
+			fmt.Errorf("invalid provider order id: %d", result.Order),
+		).
+			WithKind(richerror.KindExternalAPI).
+			WithCode(richerror.CodeSMMProviderInvalidResponse).
+			WithMessage(msgerror.SMMProviderInvalidResponse)
 	}
 
-	return smmprams.CreateOrderAdapterResponse{
-		Outcome:         smmprams.CreateOrderOutcomeCreated,
+	return smmparams.CreateOrderAdapterResponse{
+		Outcome:         smmparams.CreateOrderOutcomeCreated,
 		ExternalOrderID: strconv.FormatInt(result.Order, 10),
 	}, nil
 }

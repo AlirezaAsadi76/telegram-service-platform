@@ -4,7 +4,7 @@ import (
 	"context"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/smmentity"
-	"telegram-service-platform/params/smmprams"
+	"telegram-service-platform/params/smmparams"
 )
 
 type Repository interface {
@@ -27,7 +27,7 @@ type Repository interface {
 }
 
 type SMMAdapterInterface interface {
-	AllServices(ctx context.Context) (smmprams.GetAllServicesResponse, error)
+	AllServices(ctx context.Context) (smmparams.GetAllServicesResponse, error)
 }
 
 type SmmCache interface {

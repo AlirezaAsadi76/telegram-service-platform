@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"net/url"
 
-	"telegram-service-platform/params/smmprams"
+	"telegram-service-platform/params/smmparams"
 )
 
 // Refill requests a refill for a single order.
 // JAP returns {"refill": <refill_id>} on success.
-func (a *Adapter) Refill(ctx context.Context, orderID string) (smmprams.RefillResponse, error) {
+func (a *Adapter) Refill(ctx context.Context, orderID string) (smmparams.RefillResponse, error) {
 	form := url.Values{
 		"key":    {a.config.APIKey},
 		"action": {string(ActionTypeRefill)},
@@ -22,12 +22,12 @@ func (a *Adapter) Refill(ctx context.Context, orderID string) (smmprams.RefillRe
 		Error  string `json:"error"`
 	}
 	if err := a.doRequest(ctx, form, &result); err != nil {
-		return smmprams.RefillResponse{}, fmt.Errorf("refill request: %w", err)
+		return smmparams.RefillResponse{}, fmt.Errorf("refill request: %w", err)
 	}
 
 	if result.Error != "" {
-		return smmprams.RefillResponse{}, fmt.Errorf("jap error: %s", result.Error)
+		return smmparams.RefillResponse{}, fmt.Errorf("jap error: %s", result.Error)
 	}
 
-	return smmprams.RefillResponse{RefillID: result.Refill}, nil
+	return smmparams.RefillResponse{RefillID: result.Refill}, nil
 }

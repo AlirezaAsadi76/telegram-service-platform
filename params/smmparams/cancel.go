@@ -1,4 +1,4 @@
-package smmprams
+package smmparams
 
 import "telegram-service-platform/entity/smmentity"
 

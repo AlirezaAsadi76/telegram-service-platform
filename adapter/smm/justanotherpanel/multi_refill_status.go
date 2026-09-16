@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"telegram-service-platform/entity/smmentity"
-	"telegram-service-platform/params/smmprams"
+	"telegram-service-platform/params/smmparams"
 )
 
 // MultiRefillStatus queries the status of multiple refill requests at once.
@@ -19,7 +19,7 @@ import (
 //	{"refill": 3, "status": {"error": "Refill not found"}}
 //
 // ]
-func (a *Adapter) MultiRefillStatus(ctx context.Context, refillIDs []string) (smmprams.MultiRefillStatusResponse, error) {
+func (a *Adapter) MultiRefillStatus(ctx context.Context, refillIDs []string) (smmparams.MultiRefillStatusResponse, error) {
 	form := url.Values{
 		"key":     {a.config.APIKey},
 		"action":  {string(ActionTypeRefillStatus)},
@@ -32,7 +32,7 @@ func (a *Adapter) MultiRefillStatus(ctx context.Context, refillIDs []string) (sm
 		Status json.RawMessage `json:"status"`
 	}
 	if err := a.doRequest(ctx, form, &rawItems); err != nil {
-		return smmprams.MultiRefillStatusResponse{}, fmt.Errorf("multi-refill-status request: %w", err)
+		return smmparams.MultiRefillStatusResponse{}, fmt.Errorf("multi-refill-status request: %w", err)
 	}
 
 	items := make([]smmentity.RefillStatusItem, 0, len(rawItems))
@@ -57,5 +57,5 @@ func (a *Adapter) MultiRefillStatus(ctx context.Context, refillIDs []string) (sm
 		items = append(items, item)
 	}
 
-	return smmprams.MultiRefillStatusResponse{Items: items}, nil
+	return smmparams.MultiRefillStatusResponse{Items: items}, nil
 }

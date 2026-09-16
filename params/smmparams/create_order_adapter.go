@@ -1,4 +1,4 @@
-package smmprams
+package smmparams
 
 type CreateOrderOutcome string
 

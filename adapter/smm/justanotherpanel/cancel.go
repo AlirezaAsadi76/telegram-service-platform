@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"telegram-service-platform/entity/smmentity"
-	"telegram-service-platform/params/smmprams"
+	"telegram-service-platform/params/smmparams"
 )
 
 // Cancel requests cancellation for one or more orders.
@@ -20,7 +20,7 @@ import (
 // ]
 // The "cancel" field is int64 (1 = success, 0 = failed) on success,
 // or {"error": "..."} on failure for that specific order.
-func (a *Adapter) Cancel(ctx context.Context, orderIDs []string) (smmprams.CancelResponse, error) {
+func (a *Adapter) Cancel(ctx context.Context, orderIDs []string) (smmparams.CancelResponse, error) {
 	form := url.Values{
 		"key":    {a.config.APIKey},
 		"action": {string(ActionTypeCancel)},
@@ -33,7 +33,7 @@ func (a *Adapter) Cancel(ctx context.Context, orderIDs []string) (smmprams.Cance
 		Cancel json.RawMessage `json:"cancel"`
 	}
 	if err := a.doRequest(ctx, form, &rawItems); err != nil {
-		return smmprams.CancelResponse{}, fmt.Errorf("cancel request: %w", err)
+		return smmparams.CancelResponse{}, fmt.Errorf("cancel request: %w", err)
 	}
 
 	items := make([]smmentity.CancelItem, 0, len(rawItems))
@@ -58,5 +58,5 @@ func (a *Adapter) Cancel(ctx context.Context, orderIDs []string) (smmprams.Cance
 		items = append(items, item)
 	}
 
-	return smmprams.CancelResponse{Items: items}, nil
+	return smmparams.CancelResponse{Items: items}, nil
 }

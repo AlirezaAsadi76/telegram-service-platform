@@ -6,11 +6,11 @@ import (
 	"net/url"
 
 	"telegram-service-platform/entity/smmentity"
-	"telegram-service-platform/params/smmprams"
+	"telegram-service-platform/params/smmparams"
 )
 
 // Status queries the status of a single order from JAP API.
-func (a *Adapter) Status(ctx context.Context, orderID string) (smmprams.GetStatusResponse, error) {
+func (a *Adapter) Status(ctx context.Context, orderID string) (smmparams.GetStatusResponse, error) {
 	form := url.Values{
 		"key":    {a.config.APIKey},
 		"action": {string(ActionTypeStatus)},
@@ -19,8 +19,8 @@ func (a *Adapter) Status(ctx context.Context, orderID string) (smmprams.GetStatu
 
 	var status smmentity.Status
 	if err := a.doRequest(ctx, form, &status); err != nil {
-		return smmprams.GetStatusResponse{}, fmt.Errorf("status request: %w", err)
+		return smmparams.GetStatusResponse{}, fmt.Errorf("status request: %w", err)
 	}
 
-	return smmprams.GetStatusResponse{Status: status}, nil
+	return smmparams.GetStatusResponse{Status: status}, nil
 }

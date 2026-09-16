@@ -38,7 +38,7 @@ func main() {
 	//res1, gerr := jpanelAdapter.GetBalance(ctx)
 	//fmt.Println(gerr)
 	//fmt.Println(res1)
-	//res2, gerr2 := jpanelAdapter.Create(ctx, smmprams.CreateOrderAdapterRequest{
+	//res2, gerr2 := jpanelAdapter.Create(ctx, smmparams.CreateOrderAdapterRequest{
 	//	ServiceID: "34134234324342341",
 	//	Link:      "https://t.me/TelgramAdsPoplo",
 	//	Quantity:  5000,

@@ -7,12 +7,12 @@ import (
 	"strings"
 
 	"telegram-service-platform/entity/smmentity"
-	"telegram-service-platform/params/smmprams"
+	"telegram-service-platform/params/smmparams"
 )
 
 // MultiStatus queries the status of multiple orders at once.
 // JAP returns a map where keys are order IDs and values are status objects.
-func (a *Adapter) MultiStatus(ctx context.Context, orderIDs []string) (smmprams.GetMultiStatusResponse, error) {
+func (a *Adapter) MultiStatus(ctx context.Context, orderIDs []string) (smmparams.GetMultiStatusResponse, error) {
 	form := url.Values{
 		"key":    {a.config.APIKey},
 		"action": {string(ActionTypeStatus)},
@@ -22,8 +22,8 @@ func (a *Adapter) MultiStatus(ctx context.Context, orderIDs []string) (smmprams.
 	// JAP returns: {"1234": {...}, "5678": {...}}
 	var result map[string]smmentity.Status
 	if err := a.doRequest(ctx, form, &result); err != nil {
-		return smmprams.GetMultiStatusResponse{}, fmt.Errorf("multi-status request: %w", err)
+		return smmparams.GetMultiStatusResponse{}, fmt.Errorf("multi-status request: %w", err)
 	}
 
-	return smmprams.GetMultiStatusResponse{Statuses: result}, nil
+	return smmparams.GetMultiStatusResponse{Statuses: result}, nil
 }

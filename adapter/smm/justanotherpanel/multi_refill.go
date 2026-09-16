@@ -8,13 +8,13 @@ import (
 	"strings"
 
 	"telegram-service-platform/entity/smmentity"
-	"telegram-service-platform/params/smmprams"
+	"telegram-service-platform/params/smmparams"
 )
 
 // MultiRefill requests refills for multiple orders at once.
 // JAP returns an array where each item has {"order": <id>, "refill": <refill_id>}
 // or {"order": <id>, "refill": {"error": "..."}} on failure for that order.
-func (a *Adapter) MultiRefill(ctx context.Context, orderIDs []string) (smmprams.MultiRefillResponse, error) {
+func (a *Adapter) MultiRefill(ctx context.Context, orderIDs []string) (smmparams.MultiRefillResponse, error) {
 	form := url.Values{
 		"key":    {a.config.APIKey},
 		"action": {string(ActionTypeRefill)},
@@ -27,7 +27,7 @@ func (a *Adapter) MultiRefill(ctx context.Context, orderIDs []string) (smmprams.
 		Refill json.RawMessage `json:"refill"`
 	}
 	if err := a.doRequest(ctx, form, &rawItems); err != nil {
-		return smmprams.MultiRefillResponse{}, fmt.Errorf("multi-refill request: %w", err)
+		return smmparams.MultiRefillResponse{}, fmt.Errorf("multi-refill request: %w", err)
 	}
 
 	items := make([]smmentity.MultiRefillItem, 0, len(rawItems))
@@ -52,5 +52,5 @@ func (a *Adapter) MultiRefill(ctx context.Context, orderIDs []string) (smmprams.
 		items = append(items, item)
 	}
 
-	return smmprams.MultiRefillResponse{Items: items}, nil
+	return smmparams.MultiRefillResponse{Items: items}, nil
 }

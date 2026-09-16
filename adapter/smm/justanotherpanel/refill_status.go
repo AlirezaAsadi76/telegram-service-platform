@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"net/url"
 
-	"telegram-service-platform/params/smmprams"
+	"telegram-service-platform/params/smmparams"
 )
 
 // RefillStatus queries the status of a single refill request.
 // JAP returns {"status": "Completed"} or {"error": "Refill not found"}.
-func (a *Adapter) RefillStatus(ctx context.Context, refillID string) (smmprams.RefillStatusResponse, error) {
+func (a *Adapter) RefillStatus(ctx context.Context, refillID string) (smmparams.RefillStatusResponse, error) {
 	form := url.Values{
 		"key":    {a.config.APIKey},
 		"action": {string(ActionTypeRefillStatus)},
@@ -22,12 +22,12 @@ func (a *Adapter) RefillStatus(ctx context.Context, refillID string) (smmprams.R
 		Error  string `json:"error"`
 	}
 	if err := a.doRequest(ctx, form, &result); err != nil {
-		return smmprams.RefillStatusResponse{}, fmt.Errorf("refill-status request: %w", err)
+		return smmparams.RefillStatusResponse{}, fmt.Errorf("refill-status request: %w", err)
 	}
 
 	if result.Error != "" {
-		return smmprams.RefillStatusResponse{Error: result.Error}, nil
+		return smmparams.RefillStatusResponse{Error: result.Error}, nil
 	}
 
-	return smmprams.RefillStatusResponse{Status: result.Status}, nil
+	return smmparams.RefillStatusResponse{Status: result.Status}, nil
 }
