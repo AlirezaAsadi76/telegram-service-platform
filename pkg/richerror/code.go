@@ -44,4 +44,11 @@ const (
 	CodeInvalidInput Code = "INVALID_INPUT"
 
 	CodeTelegramOperationFailed Code = "TELEGRAM_OPERATION_FAILED"
+
+	CodeSMMProviderRejected        Code = "SMM_PROVIDER_REJECTED"
+	CodeSMMProviderUnavailable     Code = "SMM_PROVIDER_UNAVAILABLE"
+	CodeSMMProviderTimeout         Code = "SMM_PROVIDER_TIMEOUT"
+	CodeSMMProviderInvalidResponse Code = "SMM_PROVIDER_INVALID_RESPONSE"
+	CodeSMMProviderHTTPError       Code = "SMM_PROVIDER_HTTP_ERROR"
+	CodeSMMProviderRequestFailed   Code = "SMM_PROVIDER_REQUEST_FAILED"
 )

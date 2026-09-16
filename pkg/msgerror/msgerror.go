@@ -43,6 +43,15 @@ const (
 )
 
 const (
+	SMMProviderRejected        = "smm provider rejected the order"
+	SMMProviderUnavailable     = "smm provider unavailable"
+	SMMProviderTimeout         = "smm provider timeout"
+	SMMProviderInvalidResponse = "smm provider returned an invalid response"
+	SMMProviderHTTPError       = "smm provider http error"
+	SMMProviderRequestFailed   = "failed to call smm provider"
+)
+
+const (
 	ErrInvalidToken     = "invalid or malformed token"
 	ErrTokenExpired     = "token has expired"
 	ErrInvalidAlgorithm = "invalid signing algorithm"

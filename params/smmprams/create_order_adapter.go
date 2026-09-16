@@ -1,6 +1,12 @@
 package smmprams
 
-import "telegram-service-platform/entity/orderentity"
+type CreateOrderOutcome string
+
+const (
+	CreateOrderOutcomeCreated  CreateOrderOutcome = "CREATED"
+	CreateOrderOutcomeRejected CreateOrderOutcome = "REJECTED"
+	CreateOrderOutcomeUnknown  CreateOrderOutcome = "UNKNOWN"
+)
 
 type CreateOrderAdapterRequest struct {
 	ServiceID string
@@ -9,6 +15,6 @@ type CreateOrderAdapterRequest struct {
 }
 
 type CreateOrderAdapterResponse struct {
+	Outcome         CreateOrderOutcome
 	ExternalOrderID string
-	Status          orderentity.OrderStatus
 }
