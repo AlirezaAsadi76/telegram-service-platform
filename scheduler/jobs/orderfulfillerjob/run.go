@@ -7,12 +7,10 @@ import (
 	"telegram-service-platform/params/orderparams"
 	"time"
 
-	"telegram-service-platform/entity/notificationentity"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/entity/productentity"
 	"telegram-service-platform/logger"
-	"telegram-service-platform/params/notificationparams"
-	"telegram-service-platform/params/smmparams"
+
 	"telegram-service-platform/pkg/metrics"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"

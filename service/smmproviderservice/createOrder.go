@@ -66,9 +66,7 @@ func (s *Service) CreateOrder(ctx context.Context, req smmparams.CreateOrderAdap
 				Outcome:      smmparams.CreateOrderOutcomeUnknown,
 				ProviderID:   provider.ID,
 				ProviderName: provider.Name,
-			}, richerror.New(Op, createErr).
-				WithKind(richerror.KindExternalAPI).
-				WithMessage(msgerror.ExternalServiceFailed)
+			}, createErr
 		}
 
 		switch response.Outcome {
