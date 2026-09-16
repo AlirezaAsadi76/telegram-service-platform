@@ -136,7 +136,7 @@ func (j *Job) Run(ctx context.Context) error {
 			"failed to claim order",
 			zap.String("job", jobName),
 			zap.Uint64("order_id", order.ID),
-			zap.Error(err),
+			zap.Error(cErr),
 		)
 
 		return cErr

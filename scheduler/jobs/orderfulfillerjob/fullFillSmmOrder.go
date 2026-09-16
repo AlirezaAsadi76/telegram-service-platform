@@ -28,30 +28,31 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 	)
 
 	if err != nil {
-		if result.ProviderID != 0 {
-			logger.Logger.Error(
-				"SMM create returned unknown result",
-				zap.Uint64("order_id", order.ID),
-				zap.Uint64("provider_id", result.ProviderID),
-				zap.String("provider_name", result.ProviderName),
-				zap.String("outcome", string(result.Outcome)),
-				zap.Error(err),
-			)
-		}
-
 		metrics.SMMProviderRequests.WithLabelValues(result.ProviderName, "error").Inc()
 
 		if result.Outcome == smmparams.CreateOrderOutcomeUnknown {
 			logger.Logger.Warn(
-				"SMM create outcome is unknown; order remains processing",
+				"SMM create outcome is unknown",
 				zap.Uint64("order_id", order.ID),
 				zap.Uint64("provider_id", result.ProviderID),
 				zap.String("provider_name", result.ProviderName),
+				zap.Error(err),
 			)
 
-			metrics.WorkerRuns.
-				WithLabelValues(j.Name(), "unknown_provider_result").
-				Inc()
+			if result.ProviderID != 0 {
+				if providerErr := j.orderService.SetProvider(ctx, order.ID, result.ProviderID); providerErr != nil {
+					logger.Logger.Error(
+						"failed to persist provider for unknown SMM result",
+						zap.Uint64("order_id", order.ID),
+						zap.Uint64("provider_id", result.ProviderID),
+						zap.Error(providerErr),
+					)
+
+					metrics.WorkerRuns.WithLabelValues(j.Name(), "provider_persist_failed").Inc()
+				}
+			}
+
+			metrics.WorkerRuns.WithLabelValues(j.Name(), "unknown_provider_result").Inc()
 
 			return nil
 		}
@@ -90,9 +91,7 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 				zap.Error(err),
 			)
 
-			metrics.WorkerRuns.
-				WithLabelValues(j.Name(), "provider_result_persist_failed").
-				Inc()
+			metrics.WorkerRuns.WithLabelValues(j.Name(), "provider_result_persist_failed").Inc()
 
 			// Never retry Create blindly after the provider has
 			// already returned an external order id.
@@ -128,9 +127,7 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 			)
 		}
 
-		metrics.WorkerRuns.
-			WithLabelValues(j.Name(), "success").
-			Inc()
+		metrics.WorkerRuns.WithLabelValues(j.Name(), "success").Inc()
 
 		return nil
 
@@ -141,8 +138,7 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 		)
 
 		metrics.WorkerRuns.
-			WithLabelValues(j.Name(), "provider_rejected").
-			Inc()
+			WithLabelValues(j.Name(), "provider_rejected").Inc()
 
 		return nil
 
@@ -154,9 +150,18 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 			zap.String("provider_name", result.ProviderName),
 		)
 
-		metrics.WorkerRuns.
-			WithLabelValues(j.Name(), "unknown_provider_result").
-			Inc()
+		if result.ProviderID != 0 {
+			if providerErr := j.orderService.SetProvider(ctx, order.ID, result.ProviderID); providerErr != nil {
+				logger.Logger.Error(
+					"failed to persist provider for unknown SMM result",
+					zap.Uint64("order_id", order.ID),
+					zap.Uint64("provider_id", result.ProviderID),
+					zap.Error(providerErr),
+				)
+			}
+		}
+
+		metrics.WorkerRuns.WithLabelValues(j.Name(), "unknown_provider_result").Inc()
 
 		return nil
 
