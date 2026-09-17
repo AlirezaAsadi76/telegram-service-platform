@@ -25,6 +25,20 @@ func (j *Job) Run(ctx context.Context) error {
 	j.mutex.Lock()
 	defer j.mutex.Unlock()
 
+	if err := j.recoverUnresolvedAttempts(ctx); err != nil {
+		metrics.WorkerRuns.
+			WithLabelValues(jobName, "attempt_recovery_error").
+			Inc()
+
+		logger.Logger.Error(
+			"order fulfillment attempt recovery failed",
+			zap.String("job", jobName),
+			zap.Error(err),
+		)
+
+		return richerror.New(Op, err)
+	}
+
 	result, err := j.orderService.GetStalePaid(
 		ctx,
 		j.config.StaleAfter,

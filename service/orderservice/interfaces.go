@@ -17,6 +17,6 @@ type Repository interface {
 	SaveExternalOrder(ctx context.Context, orderID uint64, providerID uint64, externalOrderID string) error
 	AssignProvider(ctx context.Context, orderID uint64, providerID uint64) error
 	CreateFulfillmentAttempt(ctx context.Context, attempt *orderentity.FulfillmentAttempt) (uint64, error)
-	GetUnresolvedFulfillmentAttempts(ctx context.Context, limit int) ([]*orderentity.FulfillmentAttempt, error)
+	GetUnresolvedFulfillmentAttempts(ctx context.Context, limit int) ([]orderentity.FulfillmentAttempt, error)
 	MarkFulfillmentAttemptResolved(ctx context.Context, attemptID uint64) error
 }
