@@ -55,7 +55,7 @@ func (s *Service) RefundOrder(ctx context.Context, req checkoutparams.RefundOrde
 	if err := s.notificationSvc.Create(
 		ctx,
 		notificationparams.CreateRequest{
-			UserID: result.OrderID,
+			UserID: result.UserID,
 			Type:   notificationentity.NotificationTypeOrderFailed,
 			Payload: map[string]any{
 				"order_id": result.OrderID,

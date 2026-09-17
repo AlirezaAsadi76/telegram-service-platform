@@ -2,44 +2,33 @@ package msgerror
 
 const (
 	InternalServerError          = "something went wrong"
-	UserNotFound                 = "user not found"
-	PaymentNotFound              = "payment not found"
-	WalletNotFound               = "wallet not found"
 	IdempotencyAlreadyProcessing = "idempotency already processing"
-	UserAlreadyExists            = "user already exists"
 	InvalidInput                 = "invalid input"
-	Unauthorized                 = "unauthorized"
-	Forbidden                    = "access forbidden"
-	ProductNotFound              = "productkeyboard not found"
-	OrderNotFound                = "order not found"
+	Unexpected                   = "unexpected"
+	QueryFailed                  = "failed to query"
+	QueryScanFailed              = "failed to query scan"
+	ExternalServiceFailed        = "external service failed"
+	InvalidPrice                 = "invalid price"
+	MarshalFailed                = "marshal failed"
+	UnmarshalFailed              = "unmarshal failed"
+	NoAvailableAdapter           = "no available adapter"
+	InsufficientBalance          = "insufficient balance"
+)
 
-	OrderAlreadyPaid              = "order already paid"
-	PaymentFailed                 = "payment failed"
-	PaymentAlreadyProcessed       = "payment already processed"
-	TelegramOperationFailed       = "telegram operation failed"
-	Unexpected                    = "unexpected"
-	TelegramIdInvalid             = "telegram id invalid"
-	CacheReadFailed               = "failed to read cache"
-	CacheWriteFailed              = "failed to write cache"
-	CacheParseFailed              = "failed to parse cache value"
-	QueryFailed                   = "failed to query"
-	QueryScanFailed               = "failed to query scan"
-	ExternalServiceFailed         = "external service failed"
-	PremiumPriceNotFound          = "premium price not found"
-	InvalidPrice                  = "invalid price"
-	CacheNotFound                 = "cache not found"
-	MarshalFailed                 = "marshal failed"
-	UnmarshalFailed               = "unmarshal failed"
-	ProviderCreateFailed          = "provider create failed"
-	PaymentProviderError          = "payment provider error"
-	PaymentVerifyFailed           = "payment verify failed"
+const (
+	CacheEmpty       = "cache empty"
+	CacheNotFound    = "cache not found"
+	CacheReadFailed  = "failed to read cache"
+	CacheWriteFailed = "failed to write cache"
+	CacheParseFailed = "failed to parse cache value"
+)
+
+const (
 	OrderCreateFailed             = "order create failed"
 	OrderUpdateFailed             = "order update failed"
+	OrderNotFound                 = "order not found"
 	OrderFulfillmentEnqueueFailed = "failed to enqueue order fulfillment"
-	NoAvailableAdapter            = "no available adapter"
-	InsufficientBalance           = "insufficient balance"
-	CacheEmpty                    = "cache empty"
-	WalletIdempotencyKeyReused    = "wallet idempotency key reused"
+	OrderAlreadyPaid              = "order already paid"
 )
 
 const (
@@ -60,4 +49,25 @@ const (
 
 const (
 	PaymentConfirmationConflict = "payment confirmation conflict"
+	PaymentProviderError        = "payment provider error"
+	PaymentVerifyFailed         = "payment verify failed"
+	PaymentAlreadyProcessed     = "payment already processed"
+	PaymentNotFound             = "payment not found"
+	PaymentFailed               = "payment failed"
+)
+
+const (
+	WalletTransactionNotFound  = "wallet transaction not found"
+	WalletIdempotencyKeyReused = "wallet idempotency key reused"
+	WalletNotFound             = "wallet not found"
+)
+
+const (
+	UserNotFound      = "user not found"
+	UserAlreadyExists = "user already exists"
+	UserUnauthorized  = "user unauthorized"
+)
+
+const (
+	ProductNotFound = "productkeyboard not found"
 )

@@ -2,9 +2,12 @@ package postgreswallet
 
 import (
 	"context"
+	"errors"
 	"telegram-service-platform/entity/walletentity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
+
+	"github.com/jackc/pgx/v5"
 )
 
 func (d *DB) GetTransactionByIdempotencyKey(ctx context.Context, key string) (*walletentity.WalletTransaction, error) {
@@ -20,7 +23,15 @@ func (d *DB) GetTransactionByIdempotencyKey(ctx context.Context, key string) (*w
 	walletTr, sErr := scanWalletTransaction(row)
 
 	if sErr != nil {
-		return nil, richerror.New(Op, sErr).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryScanFailed)
+		if errors.Is(sErr, pgx.ErrNoRows) {
+			return nil, richerror.New(Op, sErr).
+				WithKind(richerror.KindNotFound).
+				WithMessage(msgerror.WalletTransactionNotFound)
+		}
+
+		return nil, richerror.New(Op, sErr).
+			WithKind(richerror.KindQueryFailure).
+			WithMessage(msgerror.QueryScanFailed)
 	}
 
 	return &walletTr, nil

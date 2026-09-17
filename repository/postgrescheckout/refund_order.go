@@ -2,7 +2,6 @@ package postgrescheckout
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"telegram-service-platform/entity/orderentity"
@@ -72,13 +71,16 @@ func (d *DB) ExecuteOrderRefund(ctx context.Context, req checkoutparams.RefundOr
 		existingTx, gtErr := walletRepo.GetTransactionByIdempotencyKey(ctx, idempotencyKey)
 
 		if gtErr == nil && existingTx != nil {
-			return richerror.New(Op, fmt.Errorf("refund transaction exists for order %d but order is still processing", order.ID)).
+			return richerror.New(Op, fmt.Errorf(
+				"refund transaction exists for order %d but order is still processing",
+				order.ID,
+			)).
 				WithKind(richerror.KindConflict).
 				WithMessage(msgerror.OrderUpdateFailed)
 		}
 
-		if !errors.Is(err, pgx.ErrNoRows) {
-			return err
+		if gtErr != nil && !richerror.IsKind(gtErr, richerror.KindNotFound) {
+			return gtErr
 		}
 
 		refundTx := &walletentity.WalletTransaction{
