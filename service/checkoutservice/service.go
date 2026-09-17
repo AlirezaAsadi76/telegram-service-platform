@@ -14,7 +14,7 @@ type Service struct {
 	orderSvc            *orderservice.Service
 	smmSvc              *smmproviderservice.Service
 	notificationSvc     *notificationservice.Service
-	walletPurchaseRepo  WalletPurchaseRepository
+	transactionRepo     TransactionRepository
 	fulfillmentEnqueuer FulfillmentEnqueuer
 	idempotency         IdempotencyChecker
 	config              Config
@@ -26,7 +26,7 @@ func New(
 	orderSvc *orderservice.Service,
 	smmSvc *smmproviderservice.Service,
 	notificationSvc *notificationservice.Service,
-	walletPurchaseRepo WalletPurchaseRepository,
+	transactionRepo TransactionRepository,
 	fulfillmentEnqueuer FulfillmentEnqueuer,
 	idempotency IdempotencyChecker,
 	config Config,
@@ -38,7 +38,7 @@ func New(
 		notificationSvc:     notificationSvc,
 		smmSvc:              smmSvc,
 		idempotency:         idempotency,
-		walletPurchaseRepo:  walletPurchaseRepo,
+		transactionRepo:     transactionRepo,
 		fulfillmentEnqueuer: fulfillmentEnqueuer,
 		config:              config,
 	}

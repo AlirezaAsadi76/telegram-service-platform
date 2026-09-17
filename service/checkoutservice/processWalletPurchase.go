@@ -27,7 +27,7 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		zap.String("amount", req.Amount.String()),
 	)
 
-	result, err := s.walletPurchaseRepo.ExecuteWalletPurchase(
+	result, err := s.transactionRepo.ExecuteWalletPurchase(
 		ctx,
 		walletparam.WalletPurchaseRequest{
 			UserID:         req.UserID,

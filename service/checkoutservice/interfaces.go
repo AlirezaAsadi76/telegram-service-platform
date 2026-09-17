@@ -3,6 +3,7 @@ package checkoutservice
 import (
 	"context"
 	"telegram-service-platform/entity"
+	"telegram-service-platform/params/checkoutparams"
 	"telegram-service-platform/params/walletparam"
 	"time"
 )
@@ -12,8 +13,9 @@ type IdempotencyChecker interface {
 	Set(ctx context.Context, key string, Value entity.IdempotencyStatus, ttl time.Duration) error
 }
 
-type WalletPurchaseRepository interface {
+type TransactionRepository interface {
 	ExecuteWalletPurchase(ctx context.Context, req walletparam.WalletPurchaseRequest) (*walletparam.WalletPurchaseResult, error)
+	ExecuteOrderRefund(ctx context.Context, req checkoutparams.RefundOrderRequest) (*checkoutparams.RefundOrderResponse, error)
 }
 
 type FulfillmentEnqueuer interface {

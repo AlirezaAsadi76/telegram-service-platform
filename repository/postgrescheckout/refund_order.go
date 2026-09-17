@@ -123,6 +123,7 @@ func (d *DB) ExecuteOrderRefund(ctx context.Context, req checkoutparams.RefundOr
 		}
 
 		result = checkoutparams.RefundOrderResponse{
+			UserID:       order.UserID,
 			OrderID:      order.ID,
 			WalletTxID:   refundTx.ID,
 			RefundAmount: order.Amount,
