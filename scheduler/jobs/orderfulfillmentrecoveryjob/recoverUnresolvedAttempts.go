@@ -60,7 +60,10 @@ func (j *Job) recoverUnresolvedAttempts(ctx context.Context) error {
 	return nil
 }
 
-func (j *Job) recoverCreatedAttempt(ctx context.Context, attempt orderentity.FulfillmentAttempt) error {
+func (j *Job) recoverCreatedAttempt(
+	ctx context.Context,
+	attempt orderentity.FulfillmentAttempt,
+) error {
 	const Op = "orderfulfillmentrecoveryjob.recoverCreatedAttempt"
 
 	if attempt.ExternalOrderID == "" {
@@ -73,12 +76,8 @@ func (j *Job) recoverCreatedAttempt(ctx context.Context, attempt orderentity.Ful
 		return richerror.New(Op, err)
 	}
 
-	if order.ProviderID == nil {
-		return richerror.New(Op, nil).
-			WithKind(richerror.KindConflict)
-	}
-
-	if *order.ProviderID != attempt.ProviderID {
+	if order.ProviderID != nil &&
+		*order.ProviderID != attempt.ProviderID {
 		return richerror.New(Op, nil).
 			WithKind(richerror.KindConflict)
 	}
@@ -121,6 +120,19 @@ func (j *Job) recoverCreatedAttempt(ctx context.Context, attempt orderentity.Ful
 		attempt.ProviderID,
 		attempt.ExternalOrderID,
 	); err != nil {
+		logger.Logger.Error(
+			"failed to persist recovered SMM provider order",
+			zap.Uint64("attempt_id", attempt.ID),
+			zap.Uint64("order_id", attempt.OrderID),
+			zap.Uint64("provider_id", attempt.ProviderID),
+			zap.String("external_order_id", attempt.ExternalOrderID),
+			zap.Error(err),
+		)
+
+		metrics.WorkerRuns.
+			WithLabelValues(j.Name(), "attempt_recovery_persist_failed").
+			Inc()
+
 		return richerror.New(Op, err)
 	}
 
@@ -128,6 +140,17 @@ func (j *Job) recoverCreatedAttempt(ctx context.Context, attempt orderentity.Ful
 		ctx,
 		attempt.ID,
 	); err != nil {
+		logger.Logger.Error(
+			"failed to mark recovered fulfillment attempt resolved",
+			zap.Uint64("attempt_id", attempt.ID),
+			zap.Uint64("order_id", attempt.OrderID),
+			zap.Error(err),
+		)
+
+		metrics.WorkerRuns.
+			WithLabelValues(j.Name(), "attempt_resolve_failed").
+			Inc()
+
 		return richerror.New(Op, err)
 	}
 
@@ -145,7 +168,6 @@ func (j *Job) recoverCreatedAttempt(ctx context.Context, attempt orderentity.Ful
 
 	return nil
 }
-
 func (j *Job) recoverUnknownAttempt(ctx context.Context, attempt orderentity.FulfillmentAttempt) error {
 	const Op = "orderfulfillmentrecoveryjob.recoverUnknownAttempt"
 
