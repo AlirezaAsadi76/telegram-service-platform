@@ -23,7 +23,6 @@ func New(
 	notificationService *notificationservice.Service,
 	checkoutService *checkoutservice.Service,
 
-
 ) *Job {
 	return &Job{
 		orderService:        orderService,

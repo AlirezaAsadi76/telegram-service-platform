@@ -119,14 +119,22 @@ func (d *DB) ExecuteOrderRefund(ctx context.Context, req checkoutparams.RefundOr
 			return err
 		}
 
-		if err := orderRepo.UpdateStatus(
-			ctx,
-			order.ID,
-			orderentity.OrderStatusFailed,
-			"",
-			nil,
-		); err != nil {
+		failed, err := orderRepo.FailProcessing(ctx, order.ID)
+		if err != nil {
 			return err
+		}
+
+		if !failed {
+			return richerror.New(
+				Op,
+				fmt.Errorf(
+					"order %d was not processing when refund failure transition was attempted",
+					order.ID,
+				),
+			).
+				WithKind(richerror.KindConflict).
+				WithCode(richerror.CodeOrderInvalidState).
+				WithMessage(msgerror.OrderUpdateFailed)
 		}
 
 		result = checkoutparams.RefundOrderResponse{
