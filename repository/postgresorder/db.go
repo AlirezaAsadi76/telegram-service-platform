@@ -1,6 +1,7 @@
 package postgresorder
 
 import (
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"telegram-service-platform/entity"
@@ -72,6 +73,30 @@ func scanOrder(row postgres.Scanner) (orderentity.Order, error) {
 	}
 
 	return order, err
+
+}
+
+func scanFulfillmentAttempt(row postgres.Scanner) (orderentity.FulfillmentAttempt, error) {
+	fulfill := orderentity.FulfillmentAttempt{}
+	var externalOrderID sql.NullString
+	var resolveAt sql.NullTime
+
+	err := row.Scan(
+		&fulfill.ID,
+		&fulfill.OrderID,
+		&fulfill.ProviderID,
+		&fulfill.Outcome,
+		&externalOrderID,
+		&resolveAt,
+		&fulfill.CreatedAt,
+		&fulfill.UpdatedAt)
+
+	fulfill.ExternalOrderID = externalOrderID.String
+	if resolveAt.Valid {
+		fulfill.ResolvedAt = &resolveAt.Time
+	}
+
+	return fulfill, err
 
 }
 
