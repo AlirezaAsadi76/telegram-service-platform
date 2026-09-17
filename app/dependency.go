@@ -113,6 +113,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	paymentSvc := paymentservice.New(paymentRepo, paymentRepo, nil, nil, orderfulfillSvc) // TODO: add adapters
 	orderSvc := orderservice.New(orderRepo)
 	smmSvc := smmproviderservice.New(providerRepo, cfg.SmmSvc)
+	smmSvc.RegisterProvider("justanotherpanel", justPanelAdapter)
 	notificationSVC := notificationservice.New(notificationRepo, queueRepo, cfg.NotificationSvc)
 	priceService := priceservice.New(cfg.PriceService, priceRepo, telegramProvider, exchangeRateProvider)
 	pricingSvc := pricingservice.New(priceRepo)
