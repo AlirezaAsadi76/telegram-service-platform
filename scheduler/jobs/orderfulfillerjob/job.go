@@ -2,6 +2,7 @@ package orderfulfillerjob
 
 import (
 	"sync"
+	"telegram-service-platform/service/checkoutservice"
 	"telegram-service-platform/service/notificationservice"
 	"telegram-service-platform/service/orderservice"
 	"telegram-service-platform/service/smmproviderservice"
@@ -13,6 +14,7 @@ type Job struct {
 	smmProviderService  *smmproviderservice.Service
 	notificationService *notificationservice.Service
 	walletService       *walletservice.Service
+	checkoutService     *checkoutservice.Service
 	redis               RedisRepository
 	mutex               sync.Mutex
 	config              Config
@@ -23,6 +25,7 @@ func New(
 	smmProviderService *smmproviderservice.Service,
 	notificationService *notificationservice.Service,
 	walletService *walletservice.Service,
+	checkoutService *checkoutservice.Service,
 	redis RedisRepository,
 	config Config,
 ) *Job {
@@ -31,6 +34,7 @@ func New(
 		smmProviderService:  smmProviderService,
 		notificationService: notificationService,
 		walletService:       walletService,
+		checkoutService:     checkoutService,
 		redis:               redis,
 		config:              config,
 	}
