@@ -13,7 +13,10 @@ import (
 func (j *Job) recoverUnresolvedAttempts(ctx context.Context) error {
 	const Op = "orderfulfillmentrecoveryjob.recoverUnresolvedAttempts"
 
-	attempts, err := j.orderService.GetUnresolvedFulfillmentAttempts(ctx, j.config.BatchSize)
+	attempts, err := j.orderService.GetUnresolvedFulfillmentAttempts(
+		ctx,
+		j.config.BatchSize,
+	)
 	if err != nil {
 		return richerror.New(Op, err)
 	}
@@ -57,7 +60,7 @@ func (j *Job) recoverUnresolvedAttempts(ctx context.Context) error {
 	return nil
 }
 
-func (j *Job) recoverCreatedAttempt(ctx context.Context, attempt *orderentity.FulfillmentAttempt) error {
+func (j *Job) recoverCreatedAttempt(ctx context.Context, attempt orderentity.FulfillmentAttempt) error {
 	const Op = "orderfulfillmentrecoveryjob.recoverCreatedAttempt"
 
 	if attempt.ExternalOrderID == "" {
@@ -68,6 +71,16 @@ func (j *Job) recoverCreatedAttempt(ctx context.Context, attempt *orderentity.Fu
 	order, err := j.orderService.GetById(ctx, attempt.OrderID)
 	if err != nil {
 		return richerror.New(Op, err)
+	}
+
+	if order.ProviderID == nil {
+		return richerror.New(Op, nil).
+			WithKind(richerror.KindConflict)
+	}
+
+	if *order.ProviderID != attempt.ProviderID {
+		return richerror.New(Op, nil).
+			WithKind(richerror.KindConflict)
 	}
 
 	if order.ExternalOrderID != "" {
@@ -88,12 +101,6 @@ func (j *Job) recoverCreatedAttempt(ctx context.Context, attempt *orderentity.Fu
 			Inc()
 
 		return nil
-	}
-
-	if order.ProviderID != nil &&
-		*order.ProviderID != attempt.ProviderID {
-		return richerror.New(Op, nil).
-			WithKind(richerror.KindConflict)
 	}
 
 	if order.Status != orderentity.OrderStatusProcessing {
@@ -132,12 +139,14 @@ func (j *Job) recoverCreatedAttempt(ctx context.Context, attempt *orderentity.Fu
 		zap.String("external_order_id", attempt.ExternalOrderID),
 	)
 
-	metrics.WorkerRuns.WithLabelValues(j.Name(), "attempt_recovered").Inc()
+	metrics.WorkerRuns.
+		WithLabelValues(j.Name(), "attempt_recovered").
+		Inc()
 
 	return nil
 }
 
-func (j *Job) recoverUnknownAttempt(ctx context.Context, attempt *orderentity.FulfillmentAttempt) error {
+func (j *Job) recoverUnknownAttempt(ctx context.Context, attempt orderentity.FulfillmentAttempt) error {
 	const Op = "orderfulfillmentrecoveryjob.recoverUnknownAttempt"
 
 	order, err := j.orderService.GetById(ctx, attempt.OrderID)
@@ -169,8 +178,6 @@ func (j *Job) recoverUnknownAttempt(ctx context.Context, attempt *orderentity.Fu
 			WithKind(richerror.KindConflict)
 	}
 
-	// UNKNOWN is intentionally unresolved.
-	// No blind Create retry and no automatic refund.
 	metrics.WorkerRuns.
 		WithLabelValues(j.Name(), "unknown_attempt_pending").
 		Inc()

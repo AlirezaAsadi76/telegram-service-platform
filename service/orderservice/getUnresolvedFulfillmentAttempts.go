@@ -8,7 +8,7 @@ import (
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (s *Service) GetUnresolvedFulfillmentAttempts(ctx context.Context, limit int) ([]*orderentity.FulfillmentAttempt, error) {
+func (s *Service) GetUnresolvedFulfillmentAttempts(ctx context.Context, limit int) ([]orderentity.FulfillmentAttempt, error) {
 	const Op = "orderservice.GetUnresolvedFulfillmentAttempts"
 
 	attempts, err := s.repo.GetUnresolvedFulfillmentAttempts(ctx, limit)
