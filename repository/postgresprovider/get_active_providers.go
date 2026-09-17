@@ -11,7 +11,7 @@ func (d *DB) GetActiveByType(ctx context.Context, providerType providerentity.Pr
 	const Op = "postgresprovider.GetActiveByType"
 
 	query := `
-		SELECT id, name, type, base_url, api_key, config, priority, is_active, created_at
+		SELECT id, name, type, base_url, api_key, config, priority, is_active
 		FROM providers WHERE type = $1 AND is_active = true ORDER BY priority ASC
 	`
 	rows, qErr := d.Pool.Connection().Query(ctx, query, providerType)

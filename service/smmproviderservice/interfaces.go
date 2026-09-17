@@ -14,4 +14,5 @@ type SMMProvider interface {
 
 type ProviderRepository interface {
 	GetActiveByType(ctx context.Context, providerType providerentity.ProviderType) ([]*providerentity.Provider, error)
+	GetByID(ctx context.Context, providerID uint64) (*providerentity.Provider, error)
 }
