@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"telegram-service-platform/params/orderparams"
+	"telegram-service-platform/params/checkoutparams"
 	"time"
 
 	"telegram-service-platform/entity/orderentity"
@@ -188,12 +188,13 @@ func (j *Job) Run(ctx context.Context) error {
 func (j *Job) markUnsupportedOrder(ctx context.Context, orderID uint64) error {
 	const Op = "orderfulfillerjob.markUnsupportedOrder"
 
-	status := orderentity.OrderStatusFailed
-
-	if err := j.orderService.UpdateStatus(ctx, orderparams.UpdateStatusRequest{
-		OrderID: orderID,
-		Status:  status,
-	}); err != nil {
+	if err := j.checkoutService.RefundOrder(
+		ctx,
+		checkoutparams.RefundOrderRequest{
+			OrderID: orderID,
+			Reason:  "unsupported_product_type",
+		},
+	); err != nil {
 		return richerror.New(Op, err).
 			WithKind(richerror.KindQueryFailure).
 			WithMessage(msgerror.OrderUpdateFailed)

@@ -99,40 +99,11 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 				zap.Uint64("provider_id", result.ProviderID),
 				zap.String("external_order_id", result.ExternalOrderID),
 			)
-
 			return richerror.New(Op, nil).
 				WithKind(richerror.KindExternalAPI).
 				WithCode(richerror.CodeSMMProviderInvalidResponse).
 				WithMessage(msgerror.SMMProviderInvalidResponse)
 		}
-
-		attempt := &orderentity.FulfillmentAttempt{
-			OrderID:         order.ID,
-			ProviderID:      result.ProviderID,
-			Outcome:         orderentity.FulfillmentAttemptOutcomeCreated,
-			ExternalOrderID: result.ExternalOrderID,
-		}
-
-		attemptID, attemptErr := j.orderService.CreateFulfillmentAttempt(ctx, attempt)
-		if attemptErr != nil {
-			logger.Logger.Error(
-				"failed to persist created SMM fulfillment attempt",
-				zap.Uint64("order_id", order.ID),
-				zap.Uint64("provider_id", result.ProviderID),
-				zap.String("external_order_id", result.ExternalOrderID),
-				zap.Error(attemptErr),
-			)
-
-			metrics.WorkerRuns.
-				WithLabelValues(j.Name(), "fulfillment_attempt_persist_failed").
-				Inc()
-
-			return richerror.New(Op, attemptErr).
-				WithKind(richerror.KindQueryFailure).
-				WithMessage(msgerror.OrderUpdateFailed)
-		}
-
-		attempt.ID = attemptID
 
 		if err := j.orderService.SaveExternalOrder(
 			ctx,
@@ -148,14 +119,50 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 				zap.Error(err),
 			)
 
-			metrics.WorkerRuns.WithLabelValues(j.Name(), "provider_result_persist_failed").Inc()
+			metrics.WorkerRuns.
+				WithLabelValues(j.Name(), "provider_result_persist_failed").
+				Inc()
 
-			// Never retry Create blindly after the provider has
-			// already returned an external order id.
+			// Provider has already created the order.
+			// Never retry Create blindly.
 			return nil
 		}
 
-		if err := j.orderService.MarkFulfillmentAttemptResolved(ctx, attempt.ID); err != nil {
+		attempt := &orderentity.FulfillmentAttempt{
+			OrderID:         order.ID,
+			ProviderID:      result.ProviderID,
+			Outcome:         orderentity.FulfillmentAttemptOutcomeCreated,
+			ExternalOrderID: result.ExternalOrderID,
+		}
+
+		attemptID, attemptErr := j.orderService.CreateFulfillmentAttempt(
+			ctx,
+			attempt,
+		)
+		if attemptErr != nil {
+			logger.Logger.Error(
+				"failed to persist created SMM fulfillment attempt after provider result was saved",
+				zap.Uint64("order_id", order.ID),
+				zap.Uint64("provider_id", result.ProviderID),
+				zap.String("external_order_id", result.ExternalOrderID),
+				zap.Error(attemptErr),
+			)
+
+			metrics.WorkerRuns.
+				WithLabelValues(j.Name(), "fulfillment_attempt_persist_failed").
+				Inc()
+
+			// Order provider data is already durable.
+			// StatusSync can continue reconciliation.
+			return nil
+		}
+
+		attempt.ID = attemptID
+
+		if err := j.orderService.MarkFulfillmentAttemptResolved(
+			ctx,
+			attempt.ID,
+		); err != nil {
 			logger.Logger.Error(
 				"failed to mark SMM fulfillment attempt resolved",
 				zap.Uint64("order_id", order.ID),
@@ -197,7 +204,9 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 			)
 		}
 
-		metrics.WorkerRuns.WithLabelValues(j.Name(), "success").Inc()
+		metrics.WorkerRuns.
+			WithLabelValues(j.Name(), "success").
+			Inc()
 
 		return nil
 
