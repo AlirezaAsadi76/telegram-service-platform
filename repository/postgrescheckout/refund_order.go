@@ -44,12 +44,17 @@ func (d *DB) ExecuteOrderRefund(ctx context.Context, req checkoutparams.RefundOr
 					RefundAmount:    existingRefund.Amount,
 					AlreadyRefunded: true,
 				}
-
 				return nil
 			}
 
-			return richerror.New(Op,
-				fmt.Errorf("order %d is failed but refund transaction was not found", order.ID)).
+			if refundErr != nil && !richerror.IsKind(refundErr, richerror.KindNotFound) {
+				return refundErr
+			}
+
+			return richerror.New(
+				Op,
+				fmt.Errorf("order %d is failed but refund transaction was not found", order.ID),
+			).
 				WithKind(richerror.KindConflict).
 				WithMessage(msgerror.OrderUpdateFailed)
 		}

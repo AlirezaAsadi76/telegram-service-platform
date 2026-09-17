@@ -89,7 +89,7 @@ func (j *Job) Run(ctx context.Context) error {
 			"failed to unmarshal order id",
 			zap.String("job", jobName),
 			zap.String("payload", result[1]),
-			zap.Error(err),
+			zap.Error(uErr),
 		)
 
 		return richerror.New(Op, uErr).
