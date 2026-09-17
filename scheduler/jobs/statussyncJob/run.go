@@ -2,6 +2,7 @@ package statussyncjob
 
 import (
 	"context"
+	"telegram-service-platform/params/checkoutparams"
 	"time"
 
 	"telegram-service-platform/entity/notificationentity"
@@ -178,12 +179,41 @@ func (j *Job) Run(ctx context.Context) error {
 			)
 
 		case orderentity.OrderStatusFailed:
+			logger.Logger.Info(
+				"provider marked order as failed; starting order refund",
+				zap.String("job", jobName),
+				zap.Uint64("order_id", order.ID),
+				zap.Uint64("provider_id", *order.ProviderID),
+				zap.String("external_order_id", order.ExternalOrderID),
+			)
+
+			if err := j.checkoutService.RefundOrder(
+				ctx,
+				checkoutparams.RefundOrderRequest{
+					OrderID: order.ID,
+					Reason:  "provider_failed",
+				},
+			); err != nil {
+				metrics.WorkerRuns.
+					WithLabelValues(jobName, "refund_failed").
+					Inc()
+
+				logger.Logger.Error(
+					"failed to refund provider failed order",
+					zap.String("job", jobName),
+					zap.Uint64("order_id", order.ID),
+					zap.Error(err),
+				)
+
+				continue
+			}
+
 			metrics.WorkerRuns.
-				WithLabelValues(jobName, "provider_failed_pending_refund").
+				WithLabelValues(jobName, "refunded").
 				Inc()
 
 			logger.Logger.Info(
-				"provider marked order failed; refund handled in next checkpoint",
+				"provider failed order refunded successfully",
 				zap.String("job", jobName),
 				zap.Uint64("order_id", order.ID),
 			)
