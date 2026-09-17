@@ -6,6 +6,7 @@ import (
 	"telegram-service-platform/entity/notificationentity"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/logger"
+	"telegram-service-platform/params/checkoutparams"
 	"telegram-service-platform/params/notificationparams"
 	"telegram-service-platform/params/smmparams"
 	"telegram-service-platform/pkg/metrics"
@@ -14,6 +15,8 @@ import (
 
 	"go.uber.org/zap"
 )
+
+const smmProviderRejectedRefundReason = "smm_provider_rejected"
 
 func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) error {
 	const Op = "orderfulfillerjob.fulfillSMMOrder"
@@ -142,7 +145,37 @@ func (j *Job) fulfillSMMOrder(ctx context.Context, order *orderentity.Order) err
 		)
 
 		metrics.WorkerRuns.
-			WithLabelValues(j.Name(), "provider_rejected").Inc()
+			WithLabelValues(j.Name(), "provider_rejected").
+			Inc()
+
+		if err := j.checkoutService.RefundOrder(
+			ctx,
+			checkoutparams.RefundOrderRequest{
+				OrderID: order.ID,
+				Reason:  smmProviderRejectedRefundReason,
+			},
+		); err != nil {
+			metrics.WorkerRuns.
+				WithLabelValues(j.Name(), "refund_failed").
+				Inc()
+
+			logger.Logger.Error(
+				"failed to refund rejected SMM order",
+				zap.Uint64("order_id", order.ID),
+				zap.Error(err),
+			)
+
+			return richerror.New(Op, err)
+		}
+
+		metrics.WorkerRuns.
+			WithLabelValues(j.Name(), "provider_rejected_refunded").
+			Inc()
+
+		logger.Logger.Info(
+			"rejected SMM order refunded successfully",
+			zap.Uint64("order_id", order.ID),
+		)
 
 		return nil
 
