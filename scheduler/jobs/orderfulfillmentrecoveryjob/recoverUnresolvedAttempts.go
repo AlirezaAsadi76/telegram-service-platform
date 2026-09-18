@@ -6,6 +6,7 @@ import (
 	"telegram-service-platform/logger"
 	"telegram-service-platform/pkg/metrics"
 	"telegram-service-platform/pkg/richerror"
+	"time"
 
 	"go.uber.org/zap"
 )
@@ -192,6 +193,8 @@ func (j *Job) recoverUnknownAttempt(ctx context.Context, attempt orderentity.Ful
 			zap.Uint64("provider_id", attempt.ProviderID),
 		)
 
+		metrics.WorkerRuns.WithLabelValues(j.Name(), "unknown_attempt_provider_assigned").Inc()
+
 		return nil
 	}
 
@@ -200,9 +203,38 @@ func (j *Job) recoverUnknownAttempt(ctx context.Context, attempt orderentity.Ful
 			WithKind(richerror.KindConflict)
 	}
 
-	metrics.WorkerRuns.
-		WithLabelValues(j.Name(), "unknown_attempt_pending").
-		Inc()
+	age := time.Since(attempt.CreatedAt)
+
+	if age < 0 {
+		logger.Logger.Warn(
+			"unknown SMM fulfillment attempt has future creation time",
+			zap.Uint64("attempt_id", attempt.ID),
+			zap.Uint64("order_id", attempt.OrderID),
+			zap.Uint64("provider_id", attempt.ProviderID),
+			zap.Time("created_at", attempt.CreatedAt),
+		)
+
+		metrics.WorkerRuns.WithLabelValues(j.Name(), "unknown_attempt_pending").Inc()
+
+		return nil
+	}
+
+	if j.config.ReconciliationAfter > 0 && age >= j.config.ReconciliationAfter {
+		metrics.WorkerRuns.WithLabelValues(j.Name(), "reconciliation_required").Inc()
+
+		logger.Logger.Error(
+			"unknown SMM fulfillment attempt requires reconciliation",
+			zap.Uint64("attempt_id", attempt.ID),
+			zap.Uint64("order_id", attempt.OrderID),
+			zap.Uint64("provider_id", attempt.ProviderID),
+			zap.Duration("age", age),
+			zap.Time("created_at", attempt.CreatedAt),
+		)
+
+		return nil
+	}
+
+	metrics.WorkerRuns.WithLabelValues(j.Name(), "unknown_attempt_pending").Inc()
 
 	return nil
 }

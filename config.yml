@@ -120,4 +120,5 @@ orderFulfillmentSvc:
 
 orderFulfillmentRecoveryJob:
   stale_after: "1m"
+  reconciliation_after: "30m"
   batch_size: "50"
