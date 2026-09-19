@@ -59,10 +59,8 @@ func (s *Service) CreateIntent(ctx context.Context, req paymentparams.CreateInte
 
 		if richerror.IsKind(err, richerror.KindConflict) {
 
-			if richerror.IsCode(
-				err,
-				richerror.CodePaymentIdempotencyKeyReused,
-			) {
+			if richerror.IsCode(err, richerror.CodePaymentIdempotencyKeyReused) {
+
 				existing, getErr := s.repo.GetByIdempotencyKey(
 					ctx,
 					req.IdempotencyKey,
@@ -87,34 +85,22 @@ func (s *Service) CreateIntent(ctx context.Context, req paymentparams.CreateInte
 				}, nil
 			}
 
-			if richerror.IsCode(
-				err,
-				richerror.CodePaymentIntentAlreadyExists,
-			) {
+			if richerror.IsCode(err, richerror.CodePaymentIntentAlreadyExists) {
 				metrics.PaymentIntentResult.
-					WithLabelValues(
-						string(req.Method),
-						"active_payment_exists",
-					).
-					Inc()
+					WithLabelValues(string(req.Method), "active_payment_exists").Inc()
 
 				return nil, err
 			}
 		}
 
-		metrics.PaymentIntentResult.
-			WithLabelValues(string(req.Method), "failed").
-			Inc()
+		metrics.PaymentIntentResult.WithLabelValues(string(req.Method), "failed").Inc()
 
 		return nil, richerror.New(op, err).
 			WithKind(richerror.KindCreateFailed).
 			WithCode(richerror.CodePaymentIntentCreationFailed)
 	}
 
-	metrics.PaymentIntentResult.WithLabelValues(
-		string(payment.Method),
-		"created",
-	).Inc()
+	metrics.PaymentIntentResult.WithLabelValues(string(payment.Method), "created").Inc()
 
 	return &paymentparams.CreateIntentResponse{
 		PaymentID: payment.ID,

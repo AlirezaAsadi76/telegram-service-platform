@@ -88,11 +88,7 @@ func (a *Adapter) Verify(ctx context.Context, req paymentproviderparams.VerifyRe
 
 	if resp.StatusCode >= http.StatusInternalServerError {
 		return paymentproviderparams.VerifyResponse{}, richerror.New(Op,
-			fmt.Errorf(
-				"zarinpal returned HTTP %d",
-				resp.StatusCode,
-			),
-		).
+			fmt.Errorf("zarinpal returned HTTP %d", resp.StatusCode)).
 			WithKind(richerror.KindExternalAPI).
 			WithCode(richerror.CodePaymentProviderUnavailable)
 	}

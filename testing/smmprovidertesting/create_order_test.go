@@ -1,0 +1,341 @@
+package smmprovidertesting
+
+import (
+	"context"
+	"testing"
+
+	"telegram-service-platform/entity/providerentity"
+	"telegram-service-platform/params/smmparams"
+	"telegram-service-platform/pkg/richerror"
+)
+
+func TestService_CreateOrder_Created(t *testing.T) {
+	repo := &fakeProviderRepository{
+		providers: []*providerentity.Provider{
+			newSMMProvider(1, "provider-a"),
+		},
+	}
+
+	provider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome:         smmparams.CreateOrderOutcomeCreated,
+			ExternalOrderID: "EXT-100",
+		},
+	}
+
+	service := newTestService(
+		repo,
+		map[string]*fakeSMMProvider{
+			"provider-a": provider,
+		},
+	)
+
+	response, err := service.CreateOrder(
+		context.Background(),
+		smmparams.CreateOrderAdapterRequest{},
+	)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if response.Outcome != smmparams.CreateOrderOutcomeCreated {
+		t.Fatalf(
+			"expected CREATED, got %s",
+			response.Outcome,
+		)
+	}
+
+	if response.ProviderID != 1 {
+		t.Fatalf(
+			"expected provider ID 1, got %d",
+			response.ProviderID,
+		)
+	}
+
+	if response.ProviderName != "provider-a" {
+		t.Fatalf(
+			"expected provider name provider-a, got %s",
+			response.ProviderName,
+		)
+	}
+
+	if response.ExternalOrderID != "EXT-100" {
+		t.Fatalf(
+			"expected external order ID EXT-100, got %s",
+			response.ExternalOrderID,
+		)
+	}
+
+	if provider.createCalls != 1 {
+		t.Fatalf(
+			"expected Create to be called once, got %d",
+			provider.createCalls,
+		)
+	}
+}
+
+func TestService_CreateOrder_RejectedThenCreated(t *testing.T) {
+	repo := &fakeProviderRepository{
+		providers: []*providerentity.Provider{
+			newSMMProvider(1, "provider-a"),
+			newSMMProvider(2, "provider-b"),
+		},
+	}
+
+	firstProvider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeRejected,
+		},
+	}
+
+	secondProvider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome:         smmparams.CreateOrderOutcomeCreated,
+			ExternalOrderID: "EXT-200",
+		},
+	}
+
+	service := newTestService(
+		repo,
+		map[string]*fakeSMMProvider{
+			"provider-a": firstProvider,
+			"provider-b": secondProvider,
+		},
+	)
+
+	response, err := service.CreateOrder(
+		context.Background(),
+		smmparams.CreateOrderAdapterRequest{},
+	)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if response.Outcome != smmparams.CreateOrderOutcomeCreated {
+		t.Fatalf(
+			"expected CREATED, got %s",
+			response.Outcome,
+		)
+	}
+
+	if response.ProviderID != 2 {
+		t.Fatalf(
+			"expected provider ID 2, got %d",
+			response.ProviderID,
+		)
+	}
+
+	if response.ExternalOrderID != "EXT-200" {
+		t.Fatalf(
+			"expected external order ID EXT-200, got %s",
+			response.ExternalOrderID,
+		)
+	}
+
+	if firstProvider.createCalls != 1 {
+		t.Fatalf(
+			"expected first provider to be called once, got %d",
+			firstProvider.createCalls,
+		)
+	}
+
+	if secondProvider.createCalls != 1 {
+		t.Fatalf(
+			"expected second provider to be called once, got %d",
+			secondProvider.createCalls,
+		)
+	}
+}
+
+func TestService_CreateOrder_UnknownStopsFallback(t *testing.T) {
+	repo := &fakeProviderRepository{
+		providers: []*providerentity.Provider{
+			newSMMProvider(1, "provider-a"),
+			newSMMProvider(2, "provider-b"),
+		},
+	}
+
+	firstProvider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeUnknown,
+		},
+		createErr: richerror.New(
+			"fakeprovider.Create",
+			context.DeadlineExceeded,
+		),
+	}
+
+	secondProvider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome:         smmparams.CreateOrderOutcomeCreated,
+			ExternalOrderID: "EXT-300",
+		},
+	}
+
+	service := newTestService(
+		repo,
+		map[string]*fakeSMMProvider{
+			"provider-a": firstProvider,
+			"provider-b": secondProvider,
+		},
+	)
+
+	response, err := service.CreateOrder(
+		context.Background(),
+		smmparams.CreateOrderAdapterRequest{},
+	)
+
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	if response.Outcome != smmparams.CreateOrderOutcomeUnknown {
+		t.Fatalf(
+			"expected UNKNOWN, got %s",
+			response.Outcome,
+		)
+	}
+
+	if response.ProviderID != 1 {
+		t.Fatalf(
+			"expected provider ID 1, got %d",
+			response.ProviderID,
+		)
+	}
+
+	if firstProvider.createCalls != 1 {
+		t.Fatalf(
+			"expected first provider to be called once, got %d",
+			firstProvider.createCalls,
+		)
+	}
+
+	if secondProvider.createCalls != 0 {
+		t.Fatalf(
+			"expected second provider not to be called, got %d calls",
+			secondProvider.createCalls,
+		)
+	}
+}
+
+func TestService_CreateOrder_CreatedWithoutExternalID(t *testing.T) {
+	repo := &fakeProviderRepository{
+		providers: []*providerentity.Provider{
+			newSMMProvider(1, "provider-a"),
+		},
+	}
+
+	provider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeCreated,
+		},
+	}
+
+	service := newTestService(
+		repo,
+		map[string]*fakeSMMProvider{
+			"provider-a": provider,
+		},
+	)
+
+	response, err := service.CreateOrder(
+		context.Background(),
+		smmparams.CreateOrderAdapterRequest{},
+	)
+
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	if response.Outcome != smmparams.CreateOrderOutcomeUnknown {
+		t.Fatalf(
+			"expected UNKNOWN, got %s",
+			response.Outcome,
+		)
+	}
+
+	if response.ProviderID != 1 {
+		t.Fatalf(
+			"expected provider ID 1, got %d",
+			response.ProviderID,
+		)
+	}
+
+	if !richerror.IsCode(
+		err,
+		richerror.CodeSMMProviderInvalidResponse,
+	) {
+		t.Fatalf(
+			"expected error code %s",
+			richerror.CodeSMMProviderInvalidResponse,
+		)
+	}
+
+	if provider.createCalls != 1 {
+		t.Fatalf(
+			"expected provider to be called once, got %d",
+			provider.createCalls,
+		)
+	}
+}
+
+func TestService_CreateOrder_AllProvidersRejected(t *testing.T) {
+	repo := &fakeProviderRepository{
+		providers: []*providerentity.Provider{
+			newSMMProvider(1, "provider-a"),
+			newSMMProvider(2, "provider-b"),
+		},
+	}
+
+	firstProvider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeRejected,
+		},
+	}
+
+	secondProvider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeRejected,
+		},
+	}
+
+	service := newTestService(
+		repo,
+		map[string]*fakeSMMProvider{
+			"provider-a": firstProvider,
+			"provider-b": secondProvider,
+		},
+	)
+
+	response, err := service.CreateOrder(
+		context.Background(),
+		smmparams.CreateOrderAdapterRequest{},
+	)
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if response.Outcome != smmparams.CreateOrderOutcomeRejected {
+		t.Fatalf(
+			"expected REJECTED, got %s",
+			response.Outcome,
+		)
+	}
+
+	if firstProvider.createCalls != 1 {
+		t.Fatalf(
+			"expected first provider to be called once, got %d",
+			firstProvider.createCalls,
+		)
+	}
+
+	if secondProvider.createCalls != 1 {
+		t.Fatalf(
+			"expected second provider to be called once, got %d",
+			secondProvider.createCalls,
+		)
+	}
+}

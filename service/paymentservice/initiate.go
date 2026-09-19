@@ -65,35 +65,20 @@ func (s *Service) Initiate(ctx context.Context, req paymentparams.InitiateReques
 
 	providerResp, cErr := provider.Create(ctx, providerReq)
 	if cErr != nil {
-		if richerror.IsCode(
-			cErr,
-			richerror.CodePaymentProviderRejected,
-		) {
+		if richerror.IsCode(cErr, richerror.CodePaymentProviderRejected) {
 			if err := s.repo.UpdateStatus(
 				ctx,
 				payment.ID,
-				paymententity.PaymentStatusFailed,
-			); err != nil {
-				metrics.PaymentInitiationResult.
-					WithLabelValues(
-						string(payment.Method),
-						"persist_failed",
-					).
-					Inc()
+				paymententity.PaymentStatusFailed); err != nil {
+
+				metrics.PaymentInitiationResult.WithLabelValues(string(payment.Method), "persist_failed").Inc()
 
 				return nil, richerror.New(op, err).
 					WithKind(richerror.KindQueryFailure).
-					WithCode(
-						richerror.CodePaymentInitiationUpdateFailed,
-					)
+					WithCode(richerror.CodePaymentInitiationUpdateFailed)
 			}
 
-			metrics.PaymentInitiationResult.
-				WithLabelValues(
-					string(payment.Method),
-					"rejected",
-				).
-				Inc()
+			metrics.PaymentInitiationResult.WithLabelValues(string(payment.Method), "rejected").Inc()
 
 			return nil, cErr
 		}
@@ -103,26 +88,14 @@ func (s *Service) Initiate(ctx context.Context, req paymentparams.InitiateReques
 			payment.ID,
 			paymententity.PaymentStatusUnknown,
 		); err != nil {
-			metrics.PaymentInitiationResult.
-				WithLabelValues(
-					string(payment.Method),
-					"persist_failed",
-				).
-				Inc()
+			metrics.PaymentInitiationResult.WithLabelValues(string(payment.Method), "persist_failed").Inc()
 
 			return nil, richerror.New(op, err).
 				WithKind(richerror.KindQueryFailure).
-				WithCode(
-					richerror.CodePaymentInitiationUpdateFailed,
-				)
+				WithCode(richerror.CodePaymentInitiationUpdateFailed)
 		}
 
-		metrics.PaymentInitiationResult.
-			WithLabelValues(
-				string(payment.Method),
-				"unknown",
-			).
-			Inc()
+		metrics.PaymentInitiationResult.WithLabelValues(string(payment.Method), "unknown").Inc()
 
 		return nil, cErr
 	}
@@ -133,32 +106,18 @@ func (s *Service) Initiate(ctx context.Context, req paymentparams.InitiateReques
 			payment.ID,
 			paymententity.PaymentStatusUnknown,
 		); err != nil {
-			metrics.PaymentInitiationResult.
-				WithLabelValues(
-					string(payment.Method),
-					"persist_failed",
-				).
-				Inc()
+			metrics.PaymentInitiationResult.WithLabelValues(string(payment.Method), "persist_failed").Inc()
 
 			return nil, richerror.New(op, err).
 				WithKind(richerror.KindQueryFailure).
-				WithCode(
-					richerror.CodePaymentInitiationUpdateFailed,
-				)
+				WithCode(richerror.CodePaymentInitiationUpdateFailed)
 		}
 
-		metrics.PaymentInitiationResult.
-			WithLabelValues(
-				string(payment.Method),
-				"invalid_response",
-			).
-			Inc()
+		metrics.PaymentInitiationResult.WithLabelValues(string(payment.Method), "invalid_response").Inc()
 
 		return nil, richerror.New(op, nil).
 			WithKind(richerror.KindExternalAPI).
-			WithCode(
-				richerror.CodePaymentProviderInvalidResponse,
-			)
+			WithCode(richerror.CodePaymentProviderInvalidResponse)
 	}
 
 	if err := s.repo.MarkInitiated(
@@ -180,9 +139,7 @@ func (s *Service) Initiate(ctx context.Context, req paymentparams.InitiateReques
 			WithCode(richerror.CodePaymentInitiationUpdateFailed)
 	}
 
-	metrics.PaymentInitiationResult.
-		WithLabelValues(string(payment.Method), "created").
-		Inc()
+	metrics.PaymentInitiationResult.WithLabelValues(string(payment.Method), "created").Inc()
 
 	return &paymentparams.InitiateResponse{
 		PaymentID:  payment.ID,
