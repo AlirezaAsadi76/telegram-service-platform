@@ -2,6 +2,7 @@ package orderfulfillmentrecoverytesting
 
 import (
 	"context"
+	"errors"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/scheduler/jobs/orderfulfillmentrecoveryjob"
 	"telegram-service-platform/service/orderfulfillmentservice"
@@ -415,6 +416,229 @@ func TestJob_Run_UnknownAttemptRecoversProviderAssignment(t *testing.T) {
 		t.Fatalf(
 			"expected SaveExternalOrder not to be called, got %d",
 			repo.saveExternalCalls,
+		)
+	}
+}
+
+func TestJob_Run_ReEnqueuesStalePaidOrders(t *testing.T) {
+
+	orders := []*orderentity.Order{
+		{
+			ID:     42,
+			Status: orderentity.OrderStatusPaid,
+		},
+		{
+			ID:     43,
+			Status: orderentity.OrderStatusPaid,
+		},
+	}
+
+	repo := &fakeOrderRepository{
+		staleOrders: orders,
+	}
+
+	queue := &fakeQueue{}
+
+	job := newRecoveryJob(
+		repo,
+		queue,
+		orderfulfillmentrecoveryjob.Config{
+			StaleAfter: 15 * time.Minute,
+			BatchSize:  50,
+		},
+	)
+
+	err := job.Run(context.Background())
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if len(queue.values) != 2 {
+		t.Fatalf(
+			"expected 2 enqueue operations, got %d",
+			len(queue.values),
+		)
+	}
+
+	if queue.queueKey != "orders:paid" {
+		t.Fatalf(
+			"expected queue key orders:paid, got %s",
+			queue.queueKey,
+		)
+	}
+
+	if queue.values[0] != uint64(42) {
+		t.Fatalf(
+			"expected first order ID 42, got %v",
+			queue.values[0],
+		)
+	}
+
+	if queue.values[1] != uint64(43) {
+		t.Fatalf(
+			"expected second order ID 43, got %v",
+			queue.values[1],
+		)
+	}
+}
+
+func TestJob_Run_NoStalePaidOrdersDoesNotEnqueue(t *testing.T) {
+
+	repo := &fakeOrderRepository{
+		staleOrders: nil,
+	}
+
+	queue := &fakeQueue{}
+
+	job := newRecoveryJob(
+		repo,
+		queue,
+		orderfulfillmentrecoveryjob.Config{
+			StaleAfter: 15 * time.Minute,
+			BatchSize:  50,
+		},
+	)
+
+	err := job.Run(context.Background())
+
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if len(queue.values) != 0 {
+		t.Fatalf(
+			"expected no enqueue operation, got %d",
+			len(queue.values),
+		)
+	}
+
+	expectedEvents := []string{
+		"get_unresolved_attempts",
+		"get_stale_paid",
+	}
+
+	for i, expected := range expectedEvents {
+		if i >= len(repo.events) {
+			t.Fatalf("missing event %q", expected)
+		}
+
+		if repo.events[i] != expected {
+			t.Fatalf(
+				"expected event %q at position %d, got %q",
+				expected,
+				i,
+				repo.events[i],
+			)
+		}
+	}
+}
+
+func TestJob_Run_PartialReenqueueFailureContinues(t *testing.T) {
+
+	orders := []*orderentity.Order{
+		{
+			ID:     42,
+			Status: orderentity.OrderStatusPaid,
+		},
+		{
+			ID:     43,
+			Status: orderentity.OrderStatusPaid,
+		},
+		{
+			ID:     44,
+			Status: orderentity.OrderStatusPaid,
+		},
+	}
+
+	repo := &fakeOrderRepository{
+		staleOrders: orders,
+	}
+
+	queue := &fakeQueue{
+		failOrderIDs: map[uint64]error{
+			43: errors.New("redis unavailable"),
+		},
+	}
+
+	job := newRecoveryJob(
+		repo,
+		queue,
+		orderfulfillmentrecoveryjob.Config{
+			StaleAfter: 15 * time.Minute,
+			BatchSize:  50,
+		},
+	)
+
+	err := job.Run(context.Background())
+
+	if err != nil {
+		t.Fatalf(
+			"expected partial enqueue failure to be handled, got %v",
+			err,
+		)
+	}
+
+	if len(queue.values) != 3 {
+		t.Fatalf(
+			"expected 3 enqueue attempts, got %d",
+			len(queue.values),
+		)
+	}
+
+	expected := []uint64{
+		42,
+		43,
+		44,
+	}
+
+	for i, value := range queue.values {
+		orderID, ok := value.(uint64)
+		if !ok {
+			t.Fatalf(
+				"expected uint64 queue value, got %T",
+				value,
+			)
+		}
+
+		if orderID != expected[i] {
+			t.Fatalf(
+				"expected order ID %d at position %d, got %d",
+				expected[i],
+				i,
+				orderID,
+			)
+		}
+	}
+}
+
+func TestJob_Run_GetStalePaidFailure(t *testing.T) {
+
+	repo := &fakeOrderRepository{
+		stalePaidErr: errors.New("database unavailable"),
+	}
+
+	queue := &fakeQueue{}
+
+	job := newRecoveryJob(
+		repo,
+		queue,
+		orderfulfillmentrecoveryjob.Config{
+			StaleAfter: 15 * time.Minute,
+			BatchSize:  50,
+		},
+	)
+
+	err := job.Run(context.Background())
+
+	if err == nil {
+		t.Fatal("expected error")
+	}
+
+	if len(queue.values) != 0 {
+		t.Fatalf(
+			"expected no enqueue after GetStalePaid failure, got %d",
+			len(queue.values),
 		)
 	}
 }

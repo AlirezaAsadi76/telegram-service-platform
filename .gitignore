@@ -31,4 +31,6 @@ go.work.sum
 # .vscode/
 
 cmd/sampleTokenGenerate
+testing/jobs/orderfulfillmentrecoveryjob/log
+testing/jobs/orderfulfillertesting/log
 

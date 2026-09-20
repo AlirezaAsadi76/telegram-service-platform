@@ -22,8 +22,8 @@ type fakeOrderRepository struct {
 	saveExternalErr   error
 	assignProviderErr error
 	resolveErr        error
-
-	staleOrders []*orderentity.Order
+	stalePaidErr      error
+	staleOrders       []*orderentity.Order
 }
 
 func (f *fakeOrderRepository) Create(
@@ -76,6 +76,10 @@ func (f *fakeOrderRepository) GetStalePaid(
 	_ int,
 ) ([]*orderentity.Order, error) {
 	f.events = append(f.events, "get_stale_paid")
+
+	if f.stalePaidErr != nil {
+		return nil, f.stalePaidErr
+	}
 
 	return f.staleOrders, nil
 }
