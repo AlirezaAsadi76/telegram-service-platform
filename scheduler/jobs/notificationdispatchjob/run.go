@@ -3,7 +3,6 @@ package notificationdispatchjob
 import (
 	"context"
 	"errors"
-	"fmt"
 	"telegram-service-platform/entity/notificationentity"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/params/notificationparams"
