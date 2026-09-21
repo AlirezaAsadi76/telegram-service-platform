@@ -14,7 +14,7 @@ func (d *DB) GetTransactionByIdempotencyKey(ctx context.Context, key string) (*w
 	const Op = "postgreswallet.GetTransactionByIdempotencyKey"
 
 	query := `
-		SELECT id, wallet_id, user_id, type, amount, status, reference_id, idempotency_key, created_at
+		SELECT id, wallet_id, user_id, type, amount, status, reference_id, idempotency_key, created_at, updated_at
 		FROM wallet_transactions WHERE idempotency_key = $1
 	`
 
