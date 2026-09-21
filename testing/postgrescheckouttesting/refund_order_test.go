@@ -435,3 +435,111 @@ func TestExecuteOrderRefund_InvalidState(t *testing.T) {
 		t.Fatal("expected external order ID to remain unchanged")
 	}
 }
+
+func TestExecuteOrderRefund_RollsBackAllChangesWhenFinalStateUpdateFails(t *testing.T) {
+
+	checkoutRepo, pool := newTestCheckoutRepository(t)
+
+	refundAmount := decimal.NewFromInt(30)
+
+	fixture := createRefundFixture(
+		t,
+		pool,
+		orderentity.OrderStatusProcessing,
+		refundAmount,
+	)
+
+	beforeBalance := getWalletBalance(
+		t,
+		pool,
+		fixture.WalletID,
+	)
+
+	_, providerBefore, externalBefore := getOrderState(
+		t,
+		pool,
+		fixture.OrderID,
+	)
+
+	if providerBefore == nil {
+		t.Fatal("expected provider ID before refund")
+	}
+
+	installFailOrderStatusTransition(
+		t,
+		pool,
+		fixture.OrderID,
+	)
+
+	_, err := checkoutRepo.ExecuteOrderRefund(
+		context.Background(),
+		checkoutparams.RefundOrderRequest{
+			OrderID: fixture.OrderID,
+			Reason:  "provider_failed",
+		},
+	)
+
+	if err == nil {
+		t.Fatal("expected refund transaction to fail")
+	}
+
+	afterBalance := getWalletBalance(
+		t,
+		pool,
+		fixture.WalletID,
+	)
+
+	if !afterBalance.Equal(beforeBalance) {
+		t.Fatalf(
+			"expected wallet balance to rollback to %s, got %s",
+			beforeBalance,
+			afterBalance,
+		)
+	}
+
+	txCount := getRefundTransactionCount(
+		t,
+		pool,
+		fixture.OrderID,
+	)
+
+	if txCount != 0 {
+		t.Fatalf(
+			"expected refund transaction to be rolled back, got %d",
+			txCount,
+		)
+	}
+
+	status, providerAfter, externalAfter := getOrderState(
+		t,
+		pool,
+		fixture.OrderID,
+	)
+
+	if status != orderentity.OrderStatusProcessing {
+		t.Fatalf(
+			"expected order status PROCESSING after rollback, got %s",
+			status,
+		)
+	}
+
+	if providerAfter == nil {
+		t.Fatal("expected provider ID to remain after rollback")
+	}
+
+	if *providerAfter != *providerBefore {
+		t.Fatalf(
+			"expected provider ID %d after rollback, got %d",
+			*providerBefore,
+			*providerAfter,
+		)
+	}
+
+	if externalAfter != externalBefore {
+		t.Fatalf(
+			"expected external order ID %s after rollback, got %s",
+			externalBefore,
+			externalAfter,
+		)
+	}
+}
