@@ -33,4 +33,5 @@ go.work.sum
 cmd/sampleTokenGenerate
 testing/jobs/orderfulfillmentrecoveryjob/log
 testing/jobs/orderfulfillertesting/log
+testing/jobs/statussyncjob/log
 
