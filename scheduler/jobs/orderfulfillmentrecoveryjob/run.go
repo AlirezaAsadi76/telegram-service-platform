@@ -98,6 +98,27 @@ func (j *Job) Run(ctx context.Context) error {
 		)
 	}
 
+	if err := j.recoverStaleProcessingWithoutEvidence(ctx); err != nil {
+		metrics.WorkerRuns.
+			WithLabelValues(jobName, "processing_recovery_error").
+			Inc()
+
+		logger.Logger.Error(
+			"order fulfillment recovery failed to inspect stale processing orders",
+			zap.String("job", jobName),
+			zap.Error(err),
+		)
+
+		return richerror.New(Op, err)
+	}
+
+	if len(result.Orders) == 0 && failed == 0 {
+		logger.Logger.Debug(
+			"no stale paid orders found",
+			zap.String("job", jobName),
+		)
+	}
+
 	if failed > 0 {
 		metrics.WorkerRuns.
 			WithLabelValues(jobName, "partial_error").
@@ -111,8 +132,8 @@ func (j *Job) Run(ctx context.Context) error {
 	logger.Logger.Info(
 		"order fulfillment recovery completed",
 		zap.String("job", jobName),
-		zap.Int("orders", len(result.Orders)),
-		zap.Int("failed", failed),
+		zap.Int("stale_paid_orders", len(result.Orders)),
+		zap.Int("reenqueue_failed", failed),
 		zap.Duration("duration", time.Since(start)),
 	)
 
