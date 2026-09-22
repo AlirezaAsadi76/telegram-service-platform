@@ -35,6 +35,14 @@ func (f *fakeOrderRepository) GetByID(_ context.Context, orderID uint64) (*order
 	return f.order, nil
 }
 
+func (f *fakeOrderRepository) GetStaleProcessingWithoutEvidence(
+	_ context.Context,
+	_ time.Duration,
+	_ int,
+) ([]*orderentity.Order, error) {
+	return nil, nil
+}
+
 func (f *fakeOrderRepository) GetByUserID(_ context.Context, _ uint64) ([]*orderentity.Order, error) {
 	return nil, nil
 }

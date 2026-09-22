@@ -642,3 +642,66 @@ func TestJob_Run_GetStalePaidFailure(t *testing.T) {
 		)
 	}
 }
+
+func TestJob_Run_StaleProcessingWithoutEvidenceRequiresReconciliation(
+	t *testing.T,
+) {
+	order := &orderentity.Order{
+		ID:              42,
+		UserID:          100,
+		Status:          orderentity.OrderStatusProcessing,
+		ExternalOrderID: "",
+		UpdatedAt:       time.Now().Add(-45 * time.Minute),
+	}
+
+	repo := &fakeOrderRepository{
+		staleProcessingOrders: []*orderentity.Order{
+			order,
+		},
+	}
+
+	queue := &fakeQueue{}
+
+	job := newRecoveryJob(
+		repo,
+		queue,
+		orderfulfillmentrecoveryjob.Config{
+			StaleAfter:          15 * time.Minute,
+			ReconciliationAfter: 30 * time.Minute,
+			BatchSize:           50,
+		},
+	)
+
+	err := job.Run(context.Background())
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if repo.staleProcessingCalls != 1 {
+		t.Fatalf(
+			"expected GetStaleProcessingWithoutEvidence once, got %d",
+			repo.staleProcessingCalls,
+		)
+	}
+
+	if order.Status != orderentity.OrderStatusProcessing {
+		t.Fatalf(
+			"expected order to remain PROCESSING, got %s",
+			order.Status,
+		)
+	}
+
+	if order.ExternalOrderID != "" {
+		t.Fatalf(
+			"expected external order ID to remain empty, got %s",
+			order.ExternalOrderID,
+		)
+	}
+
+	if len(queue.values) != 0 {
+		t.Fatalf(
+			"expected no queue operation for stale PROCESSING order, got %d",
+			len(queue.values),
+		)
+	}
+}

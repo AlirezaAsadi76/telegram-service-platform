@@ -58,19 +58,6 @@ func (j *Job) Run(ctx context.Context) error {
 		return richerror.New(Op, err)
 	}
 
-	if len(result.Orders) == 0 {
-		logger.Logger.Debug(
-			"no stale paid orders found",
-			zap.String("job", jobName),
-		)
-
-		metrics.WorkerRuns.
-			WithLabelValues(jobName, "success").
-			Inc()
-
-		return nil
-	}
-
 	var failed int
 
 	for _, order := range result.Orders {

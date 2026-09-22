@@ -11,19 +11,21 @@ import (
 type fakeOrderRepository struct {
 	order *orderentity.Order
 
-	unresolvedAttempts []orderentity.FulfillmentAttempt
-
-	saveExternalCalls   int
-	assignProviderCalls int
-	resolveCalls        int
+	unresolvedAttempts    []orderentity.FulfillmentAttempt
+	staleOrders           []*orderentity.Order
+	staleProcessingOrders []*orderentity.Order
+	saveExternalCalls     int
+	assignProviderCalls   int
+	resolveCalls          int
+	staleProcessingCalls  int
 
 	events []string
 
-	saveExternalErr   error
-	assignProviderErr error
-	resolveErr        error
-	stalePaidErr      error
-	staleOrders       []*orderentity.Order
+	saveExternalErr    error
+	assignProviderErr  error
+	resolveErr         error
+	stalePaidErr       error
+	staleProcessingErr error
 }
 
 func (f *fakeOrderRepository) Create(
@@ -61,6 +63,20 @@ func (f *fakeOrderRepository) UpdateStatus(
 	_ *uint64,
 ) error {
 	return nil
+}
+
+func (f *fakeOrderRepository) GetStaleProcessingWithoutEvidence(
+	_ context.Context,
+	_ time.Duration,
+	_ int,
+) ([]*orderentity.Order, error) {
+	f.staleProcessingCalls++
+
+	if f.staleProcessingErr != nil {
+		return nil, f.staleProcessingErr
+	}
+
+	return f.staleProcessingOrders, nil
 }
 
 func (f *fakeOrderRepository) GetByStatus(

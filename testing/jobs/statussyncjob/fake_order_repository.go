@@ -26,6 +26,14 @@ func (f *fakeOrderRepository) Create(
 	return nil
 }
 
+func (f *fakeOrderRepository) GetStaleProcessingWithoutEvidence(
+	_ context.Context,
+	_ time.Duration,
+	_ int,
+) ([]*orderentity.Order, error) {
+	return nil, nil
+}
+
 func (f *fakeOrderRepository) GetByID(
 	_ context.Context,
 	orderID uint64,
