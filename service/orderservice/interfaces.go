@@ -20,4 +20,5 @@ type Repository interface {
 	GetUnresolvedFulfillmentAttempts(ctx context.Context, limit int) ([]orderentity.FulfillmentAttempt, error)
 	MarkFulfillmentAttemptResolved(ctx context.Context, attemptID uint64) error
 	CompleteProcessing(ctx context.Context, orderID uint64) (bool, error)
+	GetStaleProcessingWithoutEvidence(ctx context.Context, olderThan time.Duration, limit int) ([]*orderentity.Order, error)
 }
