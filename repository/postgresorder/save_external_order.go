@@ -22,7 +22,7 @@ func (d *DB) SaveExternalOrder(ctx context.Context, orderID uint64, providerID u
 			  OR provider_id = $1
 		  )
 		  AND (
-			  external_order_id IS NULL
+			  COALESCE(external_order_id, '') = ''
 			  OR external_order_id = $2
 		  )
 	`
