@@ -388,3 +388,122 @@ func TestService_CalculateSMMPrice_InactiveService(
 		t.Fatal("expected inactive SMM service to return error")
 	}
 }
+
+func TestService_GetSMMServiceByMappingID_ResolvesProviderService(
+	t *testing.T,
+) {
+	repository := &mappingResolutionRepository{
+		mapping: &smmentity.SmmMapping{
+			Id:           55,
+			SmmServiceId: 10,
+			IsActive:     true,
+		},
+		service: &smmentity.SMM{
+			Id:           10,
+			Service:      123456,
+			Name:         "Telegram Members",
+			ProviderName: "justanotherpanel",
+			Rate: entity.Amount(
+				decimal.NewFromFloat(0.125),
+			),
+			IsActive: true,
+		},
+	}
+
+	service := productservice.New(
+		productservice.Config{},
+		nil,
+		repository,
+		nil,
+		nil,
+		nil,
+	)
+
+	smm, err := service.GetSMMServiceByMappingID(
+		context.Background(),
+		55,
+	)
+	if err != nil {
+		t.Fatalf(
+			"unexpected error: %v",
+			err,
+		)
+	}
+
+	if smm.Id != 10 {
+		t.Fatalf(
+			"expected internal SMM ID 10, got %d",
+			smm.Id,
+		)
+	}
+
+	if smm.Service != 123456 {
+		t.Fatalf(
+			"expected provider service ID 123456, got %d",
+			smm.Service,
+		)
+	}
+
+	if smm.ProviderName != "justanotherpanel" {
+		t.Fatalf(
+			"expected provider justanotherpanel, got %s",
+			smm.ProviderName,
+		)
+	}
+}
+
+func TestService_GetSMMServiceByMappingID_MappingNotFound(
+	t *testing.T,
+) {
+	repository := &mappingResolutionRepository{
+		mappingErr: errors.New("mapping not found"),
+	}
+
+	service := productservice.New(
+		productservice.Config{},
+		nil,
+		repository,
+		nil,
+		nil,
+		nil,
+	)
+
+	_, err := service.GetSMMServiceByMappingID(
+		context.Background(),
+		55,
+	)
+	if err == nil {
+		t.Fatal("expected mapping lookup error")
+	}
+}
+
+func TestService_GetSMMServiceByMappingID_ServiceNotFound(
+	t *testing.T,
+) {
+	repository := &mappingResolutionRepository{
+		mapping: &smmentity.SmmMapping{
+			Id:           55,
+			SmmServiceId: 10,
+		},
+		serviceErr: errors.New(
+			"SMM service not found",
+		),
+	}
+
+	service := productservice.New(
+		productservice.Config{},
+		nil,
+		repository,
+		nil,
+		nil,
+		nil,
+	)
+
+	_, err := service.GetSMMServiceByMappingID(
+		context.Background(),
+		55,
+	)
+	if err == nil {
+		t.Fatal("expected service lookup error")
+	}
+}
