@@ -29,7 +29,6 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 	chatID := update.CallbackQuery.Message.Message.Chat.ID
 	telegramID := update.CallbackQuery.From.ID
 
-	// ۱. دریافت State نهایی
 	stateResp, err := h.orderFlowService.GetOrderFlow(ctx, orderparams.GetOrderFlowRequest{TelegramID: entity.TelegramId(telegramID)})
 	if err != nil || stateResp == nil || stateResp.Stage != orderentity.OrderFlowStageConfirming {
 		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
@@ -69,7 +68,7 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 				ChatID: chatID,
 				Text:   "❌ موجودی کیف پول شما کافی نیست.\nلطفاً ابتدا کیف پول خود را شارژ کنید.\n\n(سفارش شما تا ۱۰ دقیقه دیگر در سیستم باقی می‌ماند تا پس از شارژ، پرداخت را انجام دهید.)",
 			})
-			// State را پاک نمی‌کنیم تا کاربر بعد از شارژ بتواند برگردد و پرداخت کند
+
 		} else {
 			logger.Logger.Error("wallet purchase failed",
 				zap.String("op", op),

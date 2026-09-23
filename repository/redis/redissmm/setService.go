@@ -11,7 +11,7 @@ import (
 
 func (c *SMMCache) SetService(ctx context.Context, service *smmentity.SMM) error {
 	const op = "redissmm.SetService"
-	key := fmt.Sprintf(serviceKeyPattern, service.Service)
+	key := fmt.Sprintf(serviceKeyPattern, service.Id)
 
 	data, err := json.Marshal(service)
 	if err != nil {
