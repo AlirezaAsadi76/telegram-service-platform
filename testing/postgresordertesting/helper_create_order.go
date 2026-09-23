@@ -2,9 +2,10 @@ package postgresordertesting
 
 import (
 	"context"
-	"telegram-service-platform/entity/orderentity"
 	"testing"
 	"time"
+
+	"telegram-service-platform/entity/orderentity"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -19,6 +20,8 @@ func createTestOrder(
 	t.Helper()
 
 	var orderID uint64
+
+	updatedAt = updatedAt.UTC()
 
 	err := pool.QueryRow(
 		context.Background(),
