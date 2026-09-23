@@ -308,3 +308,63 @@ func TestService_UpdateSMMMapping_InvalidatesOldAndNewPlatforms(
 		)
 	}
 }
+func TestService_GetDistinctPlatforms_WithoutCatalogCache(
+	t *testing.T,
+) {
+	repository := &fakeProductRepository{
+		platforms: []smmentity.Platform{
+			{
+				Name: "telegram",
+			},
+		},
+	}
+
+	service := newProductService(
+		repository,
+		&fakeSMMAdapter{},
+	)
+
+	response, err := service.GetDistinctPlatforms(
+		context.Background(),
+	)
+	if err != nil {
+		t.Fatalf(
+			"unexpected error: %v",
+			err,
+		)
+	}
+
+	if len(response.Platforms) != 1 {
+		t.Fatalf(
+			"expected 1 platform, got %d",
+			len(response.Platforms),
+		)
+	}
+
+	if repository.platformCalls != 1 {
+		t.Fatalf(
+			"expected one database call, got %d",
+			repository.platformCalls,
+		)
+	}
+}
+
+func TestService_InvalidateCatalogCache_WithoutCatalogCache(
+	t *testing.T,
+) {
+	service := newProductService(
+		&fakeProductRepository{},
+		&fakeSMMAdapter{},
+	)
+
+	err := service.InvalidateCatalogCache(
+		context.Background(),
+		smmentity.TelegramPlatform,
+	)
+	if err != nil {
+		t.Fatalf(
+			"expected nil error without catalog cache, got %v",
+			err,
+		)
+	}
+}
