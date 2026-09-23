@@ -65,6 +65,7 @@ scheduler:
   order_fulfillment_recovery_interval: "1m"
   smm_validation_interval: "12h"
   user_activity_sync_interval: "10m"
+  smm_catalog_sync_interval: "8h"
 
 wallet:
   idempotency_processing_ttl: "5m"

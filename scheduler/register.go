@@ -80,6 +80,9 @@ func (s *Scheduler) resolveInterval(name string) time.Duration {
 	case "order-fulfillment-recovery":
 		return s.config.OrderFulfillmentRecoveryInterval
 
+	case "smm-catalog-sync":
+		return s.config.SmmCatalogSyncInterval
+
 	default:
 		return 1 * time.Minute
 	}

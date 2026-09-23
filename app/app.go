@@ -19,6 +19,7 @@ import (
 	"telegram-service-platform/scheduler/jobs/paymentexpiryjob"
 	"telegram-service-platform/scheduler/jobs/paymentverifyjob"
 	"telegram-service-platform/scheduler/jobs/pricerefreshjob"
+	"telegram-service-platform/scheduler/jobs/smmcatalogsyncjob"
 	"telegram-service-platform/scheduler/jobs/smmvalidationjob"
 	statussyncjob "telegram-service-platform/scheduler/jobs/statussyncJob"
 	"telegram-service-platform/validator/ordervalidator"
@@ -63,8 +64,9 @@ func New(cfg config.Config) (*App, error) {
 	ndj := notificationdispatchjob.New(dependencies.NotificationService, repositories.queueRepo, dependencies.MessengerService, cfg.NotificationJob)
 	smj := smmvalidationjob.New(dependencies.ProductService, dependencies.NotificationService)
 	rej := orderfulfillmentrecoveryjob.New(dependencies.OrderService, dependencies.OrderFulfillmentService, cfg.OrderFulfillmentRecoveryJob)
+	scsj := smmcatalogsyncjob.New(dependencies.ProductService)
 	schedulerObj, sErr := scheduler.New(cfg.Scheduler,
-		prj, pvj, ofj, ssj, pej, ndj, smj, rej)
+		prj, pvj, ofj, ssj, pej, ndj, scsj, smj, rej)
 	if err := schedulerObj.Register(); err != nil {
 		return nil, err
 	}

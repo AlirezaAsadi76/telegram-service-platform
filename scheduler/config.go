@@ -13,6 +13,7 @@ type Config struct {
 
 	QueueConsumerInterval            time.Duration `koanf:"queue_consumer_interval"`
 	OrderFulfillmentRecoveryInterval time.Duration `koanf:"order_fulfillment_recovery_interval"`
+	SmmCatalogSyncInterval           time.Duration `koanf:"smm_catalog_sync_interval"`
 
 	SmmValidationInterval time.Duration `koanf:"smm_validation_interval"`
 
