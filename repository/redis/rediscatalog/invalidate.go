@@ -8,7 +8,7 @@ import (
 	"telegram-service-platform/pkg/richerror"
 )
 
-func (c *CatalogCache) Invalidate(ctx context.Context, platform string, ) error {
+func (c *CatalogCache) Invalidate(ctx context.Context, platform string) error {
 	const op = "rediscatalog.Invalidate"
 
 	categoryKey := fmt.Sprintf(c.config.categoriesCacheKey, platform)

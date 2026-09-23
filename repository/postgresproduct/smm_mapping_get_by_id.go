@@ -2,7 +2,6 @@ package postgresproduct
 
 import (
 	"context"
-	"fmt"
 	"telegram-service-platform/entity/smmentity"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/pkg/msgerror"
@@ -12,12 +11,10 @@ import (
 	"go.uber.org/zap"
 )
 
-// SMMMappingGetByID returns a single mapping by its catalog ID.
-// Use this during order creation to resolve the selected service.
 func (db *DB) SMMMappingGetByID(ctx context.Context, id int64) (*smmentity.SmmMapping, error) {
 	const Op = "postgresproduct.SMMMappingGetByID"
 	start := time.Now()
-	fmt.Println(id)
+
 	query := `SELECT id, smm_service_id, name, platform, category, description, is_active, button_name, sort_order, created_at, updated_at
 	          FROM smm_service_mappings WHERE id = $1`
 

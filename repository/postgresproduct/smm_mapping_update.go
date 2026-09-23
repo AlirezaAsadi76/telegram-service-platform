@@ -22,9 +22,10 @@ func (db *DB) SMMMappingUpdate(ctx context.Context, m *smmentity.SmmMapping) err
 				                               description = $5, is_active = $6,
 				                               button_name = $7, sort_order = $8
 				                               updated_at = NOW() WHERE id = $9`
-	if _, err := db.Pool.Connection().Exec(ctx, query,
+	tag, err := db.Pool.Connection().Exec(ctx, query,
 		m.SmmServiceId, m.Name, m.Platform, m.Category, m.Description, m.IsActive, m.ButtonName, m.SortOrder, m.Id,
-	); err != nil {
+	)
+	if err != nil {
 		logger.Logger.Error("smm mapping update failed",
 			zap.String("op", Op),
 			zap.Int64("id", m.Id),
@@ -34,6 +35,21 @@ func (db *DB) SMMMappingUpdate(ctx context.Context, m *smmentity.SmmMapping) err
 		return richerror.New(Op, err).
 			WithKind(richerror.KindQueryFailure).
 			WithMessage(msgerror.QueryFailed)
+	}
+
+	if tag.RowsAffected() != 1 {
+		err := richerror.New(Op, nil).
+			WithKind(richerror.KindNotFound).
+			WithMessage(msgerror.ProductNotFound)
+
+		logger.Logger.Warn(
+			"smm mapping update found no row",
+			zap.String("op", Op),
+			zap.Int64("id", m.Id),
+			zap.Duration("duration", time.Since(start)),
+		)
+
+		return err
 	}
 
 	logger.Logger.Info("smm mapping updated",
