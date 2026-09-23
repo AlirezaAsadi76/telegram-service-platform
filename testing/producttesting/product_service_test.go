@@ -3,9 +3,14 @@ package producttesting
 import (
 	"context"
 	"errors"
+	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/smmentity"
+	"telegram-service-platform/params/productparams"
 	"telegram-service-platform/params/smmparams"
+	"telegram-service-platform/service/productservice"
 	"testing"
+
+	"github.com/shopspring/decimal"
 )
 
 func TestService_SyncSMMServices(t *testing.T) {
@@ -201,5 +206,185 @@ func TestService_GetMissingSMMServices_ReturnsOnlyMissingServices(
 			"expected provider catalog to be read once, got %d",
 			adapter.calls,
 		)
+	}
+}
+
+func TestService_CalculateSMMPrice(t *testing.T) {
+	repository := &calculateSMMPriceRepository{
+		mapping: &smmentity.SmmMapping{
+			Id:           55,
+			SmmServiceId: 10,
+			IsActive:     true,
+		},
+		service: &smmentity.SMM{
+			Id:       10,
+			Service:  123456,
+			Rate:     entity.Amount(decimal.NewFromFloat(0.125)),
+			IsActive: true,
+		},
+	}
+
+	pricingService := newSMMPricingService(
+		2,
+		100000,
+	)
+
+	service := productservice.New(
+		productservice.Config{},
+		pricingService,
+		repository,
+		nil,
+		nil,
+		nil,
+	)
+
+	response, err := service.CalculateSMMPrice(
+		context.Background(),
+		productparams.CalculateSMMPriceRequest{
+			MappingID: 55,
+			Quantity:  2000,
+		},
+	)
+	if err != nil {
+		t.Fatalf(
+			"unexpected error: %v",
+			err,
+		)
+	}
+
+	if response.MappingID != 55 {
+		t.Fatalf(
+			"expected mapping ID 55, got %d",
+			response.MappingID,
+		)
+	}
+
+	if response.ServiceID != 10 {
+		t.Fatalf(
+			"expected internal service ID 10, got %d",
+			response.ServiceID,
+		)
+	}
+
+	if !response.Rate.Equal(
+		entity.Amount(decimal.NewFromFloat(0.125)),
+	) {
+		t.Fatalf(
+			"expected rate 0.125, got %s",
+			response.Rate.String(),
+		)
+	}
+
+	// 0.125 * 2000 / 1000 = 0.25 USD
+	expectedUSD := entity.Amount(
+		decimal.NewFromFloat(0.25),
+	)
+
+	if !response.Price.USD.Equal(expectedUSD) {
+		t.Fatalf(
+			"expected USD price %s, got %s",
+			expectedUSD.String(),
+			response.Price.USD.String(),
+		)
+	}
+
+	// 0.25 / 2 = 0.125 TON
+	expectedTON := entity.Amount(
+		decimal.NewFromFloat(0.125),
+	)
+
+	if !response.Price.TON.Equal(expectedTON) {
+		t.Fatalf(
+			"expected TON price %s, got %s",
+			expectedTON.String(),
+			response.Price.TON.String(),
+		)
+	}
+
+	// 0.25 * 100000 = 25000 TOMAN
+	expectedToman := entity.Amount(
+		decimal.NewFromFloat(25000),
+	)
+
+	if !response.Price.Toman.Equal(expectedToman) {
+		t.Fatalf(
+			"expected TOMAN price %s, got %s",
+			expectedToman.String(),
+			response.Price.Toman.String(),
+		)
+	}
+}
+
+func TestService_CalculateSMMPrice_InactiveMapping(
+	t *testing.T,
+) {
+	repository := &calculateSMMPriceRepository{
+		mapping: &smmentity.SmmMapping{
+			Id:           55,
+			SmmServiceId: 10,
+			IsActive:     false,
+		},
+		service: &smmentity.SMM{
+			Id:       10,
+			Rate:     entity.Amount(decimal.NewFromFloat(0.125)),
+			IsActive: true,
+		},
+	}
+
+	service := productservice.New(
+		productservice.Config{},
+		newSMMPricingService(2, 100000),
+		repository,
+		nil,
+		nil,
+		nil,
+	)
+
+	_, err := service.CalculateSMMPrice(
+		context.Background(),
+		productparams.CalculateSMMPriceRequest{
+			MappingID: 55,
+			Quantity:  1000,
+		},
+	)
+	if err == nil {
+		t.Fatal("expected inactive mapping to return error")
+	}
+}
+
+func TestService_CalculateSMMPrice_InactiveService(
+	t *testing.T,
+) {
+	repository := &calculateSMMPriceRepository{
+		mapping: &smmentity.SmmMapping{
+			Id:           55,
+			SmmServiceId: 10,
+			IsActive:     true,
+		},
+		service: &smmentity.SMM{
+			Id:       10,
+			Rate:     entity.Amount(decimal.NewFromFloat(0.125)),
+			IsActive: false,
+		},
+	}
+
+	service := productservice.New(
+		productservice.Config{},
+		newSMMPricingService(2, 100000),
+		repository,
+		nil,
+		nil,
+		nil,
+	)
+
+	_, err := service.CalculateSMMPrice(
+		context.Background(),
+		productparams.CalculateSMMPriceRequest{
+			MappingID: 55,
+			Quantity:  1000,
+		},
+	)
+	if err == nil {
+		t.Fatal("expected inactive SMM service to return error")
 	}
 }
