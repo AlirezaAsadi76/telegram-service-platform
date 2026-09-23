@@ -48,7 +48,7 @@ func New(cfg config.Config) (*App, error) {
 	adminHandler := adminhandler.New(dependencies.CheckoutService, dependencies.UserService, dependencies.MessengerService, cfg.Admins)
 	orderHandler := orderhandler.New(
 		dependencies.ProductService, dependencies.CheckoutService,
-		dependencies.OrderFlowService, dependencies.PricingService,
+		dependencies.OrderFlowService,
 		dependencies.UserService, dependencies.MessengerService, orderValidator)
 
 	//conversations
