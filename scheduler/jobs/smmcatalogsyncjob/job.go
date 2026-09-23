@@ -2,8 +2,6 @@ package smmcatalogsyncjob
 
 import (
 	"sync"
-
-	"telegram-service-platform/service/productservice"
 )
 
 type Job struct {
@@ -11,7 +9,7 @@ type Job struct {
 	mutex          sync.Mutex
 }
 
-func New(productService *productservice.Service) *Job {
+func New(productService ProductService) *Job {
 	return &Job{
 		productService: productService,
 	}
