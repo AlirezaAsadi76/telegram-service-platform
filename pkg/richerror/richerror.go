@@ -57,9 +57,7 @@ func (e *RichError) Kind() Kind {
 
 	}
 
-	var richErr *RichError
-
-	if errors.As(e.wrappedError, &richErr) {
+	if richErr, ok := errors.AsType[*RichError](e.wrappedError); ok {
 
 		return richErr.Kind()
 
@@ -95,9 +93,7 @@ func (e *RichError) Message() string {
 
 	}
 
-	var richErr *RichError
-
-	if errors.As(e.wrappedError, &richErr) {
+	if richErr, ok := errors.AsType[*RichError](e.wrappedError); ok {
 
 		return richErr.Message()
 
