@@ -17,7 +17,6 @@ func (s Service) GetSMMServiceByID(ctx context.Context, req productparams.GetSmm
 	const op = "productservice.GetSMMServiceByID"
 	start := time.Now()
 
-	// 1. تلاش برای خواندن از کش
 	if service, found, err := s.smmCache.GetService(ctx, req.Id); err == nil && found {
 		metrics.SMMCacheHits.WithLabelValues("service").Inc()
 		logger.Logger.Debug("smm service cache hit",
