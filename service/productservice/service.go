@@ -1,7 +1,6 @@
 package productservice
 
 import (
-	"telegram-service-platform/repository/redis/rediscatalog"
 	"telegram-service-platform/repository/redis/redissmm"
 	"telegram-service-platform/service/pricingservice"
 	"time"
@@ -14,12 +13,12 @@ type Service struct {
 	repository   Repository
 	pricingSVc   *pricingservice.Service
 	adapter      SMMAdapterInterface
-	catalogCache *rediscatalog.CatalogCache
+	catalogCache CatalogCache
 	smmCache     *redissmm.SMMCache
 	config       Config
 }
 
-func New(config Config, pricingSVc *pricingservice.Service, repository Repository, catalogCache *rediscatalog.CatalogCache, smmCache *redissmm.SMMCache, adapter SMMAdapterInterface) *Service {
+func New(config Config, pricingSVc *pricingservice.Service, repository Repository, catalogCache CatalogCache, smmCache *redissmm.SMMCache, adapter SMMAdapterInterface) *Service {
 	return &Service{
 
 		repository:   repository,

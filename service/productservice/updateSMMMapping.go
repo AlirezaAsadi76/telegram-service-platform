@@ -18,6 +18,23 @@ func (s Service) UpdateSMMMapping(ctx context.Context, req productparams.UpdateS
 	const Op = "productservice.AdminUpdateSMMMapping"
 	start := time.Now()
 
+	previous, err := s.repository.SMMMappingGetByID(
+		ctx,
+		req.Id,
+	)
+	if err != nil {
+		logger.Logger.Error(
+			"admin update smm mapping lookup failed",
+			zap.String("op", Op),
+			zap.Int64("id", req.Id),
+			zap.Error(err),
+			zap.Duration("duration", time.Since(start)),
+		)
+
+		return productparams.UpdateSMMMappingResponse{},
+			richerror.New(Op, err)
+	}
+
 	smm := smmentity.SmmMapping{
 		Id:           req.Id,
 		SmmServiceId: req.SmmServiceId,
@@ -40,6 +57,8 @@ func (s Service) UpdateSMMMapping(ctx context.Context, req productparams.UpdateS
 			WithKind(richerror.KindInternal).
 			WithMessage(msgerror.InternalServerError)
 	}
+
+	s.invalidateCatalogCacheBestEffort(ctx, previous.Platform, smm.Platform)
 
 	logger.Logger.Info("admin updated smm mapping",
 		zap.Int64("id", smm.Id),

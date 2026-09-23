@@ -36,3 +36,11 @@ type SmmCache interface {
 	SetMapping(ctx context.Context, mapping *smmentity.SmmMapping) error
 	GetMapping(ctx context.Context, id int64) (*smmentity.SmmMapping, bool, error)
 }
+
+type CatalogCache interface {
+	GetPlatforms(ctx context.Context) ([]smmentity.Platform, bool, error)
+	SetPlatforms(ctx context.Context, platforms []smmentity.Platform) error
+	GetCategories(ctx context.Context, platform string) ([]smmentity.Category, bool, error)
+	SetCategories(ctx context.Context, platform string, categories []smmentity.Category) error
+	Invalidate(ctx context.Context, platform string) error
+}

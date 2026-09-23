@@ -41,6 +41,8 @@ func (s Service) CreateSMMMapping(ctx context.Context, req productparams.CreateS
 			WithMessage(msgerror.InternalServerError)
 	}
 
+	s.invalidateCatalogCacheBestEffort(ctx, smm.Platform)
+
 	logger.Logger.Info("admin created smm mapping",
 		zap.Int64("id", smm.Id),
 		zap.String("name", smm.Name),
