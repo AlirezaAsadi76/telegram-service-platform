@@ -30,9 +30,9 @@ func (a *Adapter) AllServices(ctx context.Context) (smmparams.GetAllServicesResp
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Accept", "application/json")
 
-	resp, err := a.client.Do(req)
-	if err != nil {
-		return smmparams.GetAllServicesResponse{}, err
+	resp, dErr := a.client.Do(req)
+	if dErr != nil {
+		return smmparams.GetAllServicesResponse{}, dErr
 
 	}
 	defer resp.Body.Close()
@@ -44,13 +44,18 @@ func (a *Adapter) AllServices(ctx context.Context) (smmparams.GetAllServicesResp
 		)
 	}
 
-	Smms := make([]smmentity.SMM, 0)
-	if err := json.NewDecoder(resp.Body).Decode(&Smms); err != nil {
+	services := make([]smmentity.SMM, 0)
+	if err := json.NewDecoder(resp.Body).Decode(&services); err != nil {
 		return smmparams.GetAllServicesResponse{}, err
 
 	}
 
+	for i := range services {
+		services[i].IsActive = true
+		services[i].ProviderName = providerName
+	}
+
 	return smmparams.GetAllServicesResponse{
-		Services: Smms,
+		Services: services,
 	}, nil
 }

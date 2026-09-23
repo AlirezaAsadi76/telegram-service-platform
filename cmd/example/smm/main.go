@@ -4,17 +4,15 @@ import (
 	"context"
 	"fmt"
 	"telegram-service-platform/config"
-	"telegram-service-platform/entity/smmentity"
-	"telegram-service-platform/params/productparams"
+
 	"telegram-service-platform/repository/postgres"
 	"telegram-service-platform/repository/postgresproduct"
-	"telegram-service-platform/service/productservice"
 )
 
 func main() {
 	cfg := config.Load("config.yml")
 	fmt.Println("config : ", cfg)
-	ctx := context.Background()
+	//ctx := context.Background()
 	//jpanelAdapter := justanotherpanel.New(cfg.Justanotherpanel)
 	//
 	//ff, err := jpanelAdapter.AllServices(context.Background())
@@ -62,7 +60,16 @@ func main() {
 
 	repoProduct := postgresproduct.New(pq)
 
-	productSvc := productservice.New(cfg.ProductService, nil, repoProduct)
+	services, err := repoProduct.SMMServiceGetAll(
+		context.Background(),
+	)
+	if err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("loaded %d SMM services\n", len(services))
+
+	//productSvc := productservice.New(cfg.ProductService, nil, repoProduct)
 
 	//{
 	//	"service": 7102,
@@ -180,21 +187,21 @@ func main() {
 	//	ButtonName:   "عادی",
 	//})
 
-	catalog, gcErr := productSvc.GetSMMCatalog(ctx)
-	fmt.Println(catalog, gcErr)
-	smm, giErr := productSvc.GetSMMMappingByID(ctx, productparams.GetSmmMappingByIDRequest{
-		Id: 1,
-	})
-	fmt.Println(smm, giErr)
-	plat, pcErr := productSvc.GetSMMMappingsByPlatformCategory(ctx, productparams.GetSmmMappingByPlatformCategoryRequest{
-		Platform: smmentity.TickTockPlatform,
-		Category: smmentity.FollowerCategory,
-	})
-	fmt.Println(plat, pcErr)
-	platr, pcErrr := productSvc.GetSMMMappingsByPlatformCategory(ctx, productparams.GetSmmMappingByPlatformCategoryRequest{
-		Platform: smmentity.TickTockPlatform,
-		Category: smmentity.ViewCategory,
-	})
-	fmt.Println(platr, pcErrr)
+	//catalog, gcErr := productSvc.GetSMMCatalog(ctx)
+	//fmt.Println(catalog, gcErr)
+	//smm, giErr := productSvc.GetSMMMappingByID(ctx, productparams.GetSmmMappingByIDRequest{
+	//	Id: 1,
+	//})
+	//fmt.Println(smm, giErr)
+	//plat, pcErr := productSvc.GetSMMMappingsByPlatformCategory(ctx, productparams.GetSmmMappingByPlatformCategoryRequest{
+	//	Platform: smmentity.TickTockPlatform,
+	//	Category: smmentity.FollowerCategory,
+	//})
+	//fmt.Println(plat, pcErr)
+	//platr, pcErrr := productSvc.GetSMMMappingsByPlatformCategory(ctx, productparams.GetSmmMappingByPlatformCategoryRequest{
+	//	Platform: smmentity.TickTockPlatform,
+	//	Category: smmentity.ViewCategory,
+	//})
+	//fmt.Println(platr, pcErrr)
 
 }
