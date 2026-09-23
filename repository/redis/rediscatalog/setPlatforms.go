@@ -15,7 +15,7 @@ func (c *CatalogCache) SetPlatforms(ctx context.Context, platforms []smmentity.P
 		return richerror.New(Op, mErr).WithKind(richerror.KindSerializationFailure).WithMessage(msgerror.MarshalFailed)
 	}
 	if err := c.redis.Client().Set(ctx, c.config.PlatformsCacheKey, data, c.config.cacheTTL).Err(); err != nil {
-		return richerror.New(Op, mErr).WithKind(richerror.KindMissCatch).WithMessage(msgerror.CacheWriteFailed)
+		return richerror.New(Op, mErr).WithKind(richerror.KindUnexpected).WithMessage(msgerror.CacheWriteFailed)
 	}
 	return nil
 }

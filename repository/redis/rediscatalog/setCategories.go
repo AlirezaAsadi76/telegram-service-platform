@@ -18,7 +18,7 @@ func (c *CatalogCache) SetCategories(ctx context.Context, platform string, categ
 	}
 
 	if err := c.redis.Client().Set(ctx, key, data, c.config.cacheTTL).Err(); err != nil {
-		return richerror.New(Op, mErr).WithKind(richerror.KindMissCatch).WithMessage(msgerror.CacheWriteFailed)
+		return richerror.New(Op, mErr).WithKind(richerror.KindUnexpected).WithMessage(msgerror.CacheWriteFailed)
 	}
 
 	return nil
