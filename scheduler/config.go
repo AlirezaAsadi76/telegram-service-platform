@@ -7,15 +7,14 @@ type Config struct {
 	StarsRefreshInterval    time.Duration `koanf:"stars_refresh_interval"`
 	PremiumRefreshInterval  time.Duration `koanf:"premium_refresh_interval"`
 
-	// Phase 2 — Cron Jobs
 	PaymentVerifyInterval time.Duration `koanf:"payment_verify_interval"`
 	StatusSyncInterval    time.Duration `koanf:"status_sync_interval"`
 	PaymentExpiryInterval time.Duration `koanf:"payment_expiry_interval"`
 
-	// Phase 2 — Queue Consumers (short interval for continuous polling)
-	QueueConsumerInterval time.Duration `koanf:"queue_consumer_interval"`
-	// validation services
+	QueueConsumerInterval            time.Duration `koanf:"queue_consumer_interval"`
+	OrderFulfillmentRecoveryInterval time.Duration `koanf:"order_fulfillment_recovery_interval"`
+
 	SmmValidationInterval time.Duration `koanf:"smm_validation_interval"`
-	// userActivity
-	userActivitysyncInterval time.Duration `koanf:"user_activity_sync_interval"`
+
+	userActivitySyncInterval time.Duration `koanf:"user_activity_sync_interval"`
 }

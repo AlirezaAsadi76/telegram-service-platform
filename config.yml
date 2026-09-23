@@ -62,6 +62,7 @@ scheduler:
   status_sync_interval: "5m"
   payment_expiry_interval: "5m"
   queue_consumer_interval: "5m"
+  order_fulfillment_recovery_interval: "1m"
   smm_validation_interval: "12h"
   user_activity_sync_interval: "10m"
 
