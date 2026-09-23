@@ -44,7 +44,14 @@ func (s Service) CalculatePrice(
 				WithMessage(msgerror.InvalidPrice)
 	}
 
-	tonPriceDecimal := decimal.NewFromFloat(tomanPrice)
+	if tomanPrice <= 0 {
+		return productentity.Price{},
+			richerror.New(Op, errors.New("invalid USD/TOMAN price")).
+				WithKind(richerror.KindInvalid).
+				WithMessage(msgerror.InvalidPrice)
+	}
+
+	tonPriceDecimal := decimal.NewFromFloat(tonPrice)
 	tomanPriceDecimal := decimal.NewFromFloat(tomanPrice)
 
 	return productentity.Price{
