@@ -1,3 +1,3 @@
 package justanotherpanel
 
-const providerName = "justanotherpanel"
+const ProviderName = "justanotherpanel"

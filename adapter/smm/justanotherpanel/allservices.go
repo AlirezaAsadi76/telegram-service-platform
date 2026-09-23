@@ -52,7 +52,7 @@ func (a *Adapter) AllServices(ctx context.Context) (smmparams.GetAllServicesResp
 
 	for i := range services {
 		services[i].IsActive = true
-		services[i].ProviderName = providerName
+		services[i].ProviderName = ProviderName
 	}
 
 	return smmparams.GetAllServicesResponse{
