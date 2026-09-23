@@ -35,3 +35,5 @@ testing/jobs/orderfulfillmentrecoveryjob/log
 testing/jobs/orderfulfillertesting/log
 testing/jobs/statussyncjob/log
 testing/checkouttesting/log
+testing/producttesting/log
+testing/jobs/smmcatalogsyncjobtesting/log
