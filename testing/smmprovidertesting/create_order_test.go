@@ -424,3 +424,87 @@ func TestService_CreateOrder_TargetsRequestedProvider(
 		)
 	}
 }
+
+func TestService_CreateOrder_TargetedProviderRejectedDoesNotFallback(
+	t *testing.T,
+) {
+	targetProvider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome: smmparams.CreateOrderOutcomeRejected,
+		},
+	}
+
+	fallbackProvider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome:         smmparams.CreateOrderOutcomeCreated,
+			ExternalOrderID: "FALLBACK-100",
+		},
+	}
+
+	repo := &fakeProviderRepository{
+		providers: []*providerentity.Provider{
+			newSMMProvider(1, "provider-a"),
+			newSMMProvider(2, "provider-b"),
+		},
+	}
+
+	service := newTestService(
+		repo,
+		map[string]*fakeSMMProvider{
+			"provider-a": targetProvider,
+			"provider-b": fallbackProvider,
+		},
+	)
+
+	result, err := service.CreateOrder(
+		context.Background(),
+		smmparams.CreateOrderAdapterRequest{
+			ProviderName: "provider-a",
+			ServiceID:    "123456",
+			Link:         "https://example.com",
+			Quantity:     1000,
+		},
+	)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	if result == nil {
+		t.Fatal("expected non-nil result")
+	}
+
+	if result.Outcome != smmparams.CreateOrderOutcomeRejected {
+		t.Fatalf(
+			"expected REJECTED, got %s",
+			result.Outcome,
+		)
+	}
+
+	if targetProvider.createCalls != 1 {
+		t.Fatalf(
+			"expected targeted provider to be called once, got %d",
+			targetProvider.createCalls,
+		)
+	}
+
+	if fallbackProvider.createCalls != 0 {
+		t.Fatalf(
+			"expected fallback provider not to be called, got %d",
+			fallbackProvider.createCalls,
+		)
+	}
+
+	if targetProvider.lastRequest.ProviderName != "provider-a" {
+		t.Fatalf(
+			"expected provider name provider-a, got %s",
+			targetProvider.lastRequest.ProviderName,
+		)
+	}
+
+	if targetProvider.lastRequest.ServiceID != "123456" {
+		t.Fatalf(
+			"expected service ID 123456, got %s",
+			targetProvider.lastRequest.ServiceID,
+		)
+	}
+}
