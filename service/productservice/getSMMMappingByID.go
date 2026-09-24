@@ -29,8 +29,6 @@ func (s Service) GetSMMMappingByID(ctx context.Context, req productparams.GetSmm
 		metrics.SMMCacheMisses.WithLabelValues("mapping").Inc()
 	}
 
-	metrics.SMMCacheMisses.WithLabelValues("mapping").Inc()
-
 	mapping, err := s.repository.SMMMappingGetByID(ctx, req.Id)
 	if err != nil {
 		logger.Logger.Error("get smm mapping by id failed",

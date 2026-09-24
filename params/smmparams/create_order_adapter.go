@@ -9,6 +9,8 @@ const (
 )
 
 type CreateOrderAdapterRequest struct {
+	ProviderName string
+	// ServiceID is the provider-specific service ID.
 	ServiceID string
 	Link      string
 	Quantity  int64
