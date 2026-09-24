@@ -11,13 +11,15 @@ type fakeSMMProvider struct {
 	response smmparams.CreateOrderAdapterResponse
 	err      error
 
-	events     []string
-	createCall int
+	events      []string
+	createCall  int
+	lastRequest smmparams.CreateOrderAdapterRequest
 }
 
-func (f *fakeSMMProvider) Create(_ context.Context, _ smmparams.CreateOrderAdapterRequest) (smmparams.CreateOrderAdapterResponse, error) {
+func (f *fakeSMMProvider) Create(_ context.Context, req smmparams.CreateOrderAdapterRequest) (smmparams.CreateOrderAdapterResponse, error) {
 	f.createCall++
 	f.events = append(f.events, "provider_create")
+	f.lastRequest = req
 
 	return f.response, f.err
 }

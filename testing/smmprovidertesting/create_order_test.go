@@ -339,3 +339,88 @@ func TestService_CreateOrder_AllProvidersRejected(t *testing.T) {
 		)
 	}
 }
+
+func TestService_CreateOrder_TargetsRequestedProvider(
+	t *testing.T,
+) {
+	firstProvider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome:         smmparams.CreateOrderOutcomeCreated,
+			ExternalOrderID: "WRONG-100",
+		},
+	}
+
+	japProvider := &fakeSMMProvider{
+		createResponse: smmparams.CreateOrderAdapterResponse{
+			Outcome:         smmparams.CreateOrderOutcomeCreated,
+			ExternalOrderID: "JAP-100",
+		},
+	}
+
+	repo := &fakeProviderRepository{
+		providers: []*providerentity.Provider{
+			newSMMProvider(1, "provider-a"),
+			newSMMProvider(2, "justanotherpanel"),
+		},
+	}
+
+	service := newTestService(
+		repo,
+		map[string]*fakeSMMProvider{
+			"provider-a":       firstProvider,
+			"justanotherpanel": japProvider,
+		},
+	)
+
+	result, err := service.CreateOrder(
+		context.Background(),
+		smmparams.CreateOrderAdapterRequest{
+			ProviderName: "justanotherpanel",
+			ServiceID:    "123456",
+			Link:         "https://example.com",
+			Quantity:     1000,
+		},
+	)
+	if err != nil {
+		t.Fatalf(
+			"unexpected error: %v",
+			err,
+		)
+	}
+
+	if result.Outcome !=
+		smmparams.CreateOrderOutcomeCreated {
+		t.Fatalf(
+			"expected CREATED, got %s",
+			result.Outcome,
+		)
+	}
+
+	if result.ProviderName != "justanotherpanel" {
+		t.Fatalf(
+			"expected justanotherpanel, got %s",
+			result.ProviderName,
+		)
+	}
+
+	if firstProvider.createCalls != 0 {
+		t.Fatalf(
+			"expected provider-a not to be called, got %d calls",
+			firstProvider.createCalls,
+		)
+	}
+
+	if japProvider.createCalls != 1 {
+		t.Fatalf(
+			"expected JAP provider to be called once, got %d calls",
+			japProvider.createCalls,
+		)
+	}
+
+	if japProvider.lastRequest.ServiceID != "123456" {
+		t.Fatalf(
+			"expected service ID 123456, got %s",
+			japProvider.lastRequest.ServiceID,
+		)
+	}
+}

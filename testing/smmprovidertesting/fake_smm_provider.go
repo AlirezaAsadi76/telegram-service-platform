@@ -2,6 +2,7 @@ package smmprovidertesting
 
 import (
 	"context"
+
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/entity/providerentity"
 	"telegram-service-platform/params/smmparams"
@@ -11,20 +12,36 @@ import (
 type fakeSMMProvider struct {
 	createResponse smmparams.CreateOrderAdapterResponse
 	createErr      error
-	createCalls    int
+
+	createCalls int
+
+	lastRequest smmparams.CreateOrderAdapterRequest
 }
 
-func (f *fakeSMMProvider) Create(_ context.Context, _ smmparams.CreateOrderAdapterRequest) (smmparams.CreateOrderAdapterResponse, error) {
+func (f *fakeSMMProvider) Create(
+	_ context.Context,
+	req smmparams.CreateOrderAdapterRequest,
+) (
+	smmparams.CreateOrderAdapterResponse,
+	error,
+) {
 	f.createCalls++
+	f.lastRequest = req
 
 	return f.createResponse, f.createErr
 }
 
-func (f *fakeSMMProvider) GetOrderStatus(_ context.Context, _ string) (orderentity.OrderStatus, error) {
+func (f *fakeSMMProvider) GetOrderStatus(
+	_ context.Context,
+	_ string,
+) (orderentity.OrderStatus, error) {
 	return "", nil
 }
 
-func newTestService(repo *fakeProviderRepository, adapters map[string]*fakeSMMProvider) *smmproviderservice.Service {
+func newTestService(
+	repo *fakeProviderRepository,
+	adapters map[string]*fakeSMMProvider,
+) *smmproviderservice.Service {
 	service := smmproviderservice.New(
 		repo,
 		smmproviderservice.Config{
@@ -40,7 +57,10 @@ func newTestService(repo *fakeProviderRepository, adapters map[string]*fakeSMMPr
 	return service
 }
 
-func newSMMProvider(id uint64, name string) *providerentity.Provider {
+func newSMMProvider(
+	id uint64,
+	name string,
+) *providerentity.Provider {
 	return &providerentity.Provider{
 		ID:       id,
 		Name:     name,

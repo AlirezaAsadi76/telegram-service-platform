@@ -3,6 +3,8 @@ package orderfulfillertesting
 import (
 	"context"
 	"errors"
+	"telegram-service-platform/entity"
+	"telegram-service-platform/entity/smmentity"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
 	"testing"
@@ -15,6 +17,8 @@ import (
 	"telegram-service-platform/service/notificationservice"
 	"telegram-service-platform/service/orderservice"
 	"telegram-service-platform/service/smmproviderservice"
+
+	"github.com/shopspring/decimal"
 )
 
 func TestJob_Run_CreatedSMMOrder(t *testing.T) {
@@ -61,6 +65,14 @@ func TestJob_Run_CreatedSMMOrder(t *testing.T) {
 		provider,
 	)
 
+	productService := &fakeProductService{
+		service: &smmentity.SMM{
+			Id:           10,
+			Service:      123456,
+			ProviderName: "provider-a",
+		},
+	}
+
 	redis := &fakeRedis{
 		result: []string{
 			"orders:paid",
@@ -79,6 +91,7 @@ func TestJob_Run_CreatedSMMOrder(t *testing.T) {
 
 	job := orderfulfillerjob.New(
 		orderService,
+		productService,
 		smmService,
 		notificationService,
 		nil,
@@ -200,7 +213,6 @@ func TestJob_Run_CreatedSMMOrder(t *testing.T) {
 }
 
 func TestJob_Run_SkipsAlreadyProcessedOrder(t *testing.T) {
-	// Arrange
 
 	order := &orderentity.Order{
 		ID:          42,
@@ -226,6 +238,14 @@ func TestJob_Run_SkipsAlreadyProcessedOrder(t *testing.T) {
 		},
 	}
 
+	productService := &fakeProductService{
+		service: &smmentity.SMM{
+			Id:           10,
+			Service:      123456,
+			ProviderName: "provider-a",
+		},
+	}
+
 	smmService := smmproviderservice.New(
 		providerRepo,
 		smmproviderservice.Config{
@@ -248,6 +268,7 @@ func TestJob_Run_SkipsAlreadyProcessedOrder(t *testing.T) {
 
 	job := orderfulfillerjob.New(
 		orderService,
+		productService,
 		smmService,
 		nil,
 		nil,
@@ -259,11 +280,7 @@ func TestJob_Run_SkipsAlreadyProcessedOrder(t *testing.T) {
 		},
 	)
 
-	// Act
-
 	err := job.Run(context.Background())
-
-	// Assert
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -286,7 +303,6 @@ func TestJob_Run_SkipsAlreadyProcessedOrder(t *testing.T) {
 }
 
 func TestJob_Run_UnknownProviderResultCreatesRecoveryAttempt(t *testing.T) {
-	// Arrange
 
 	order := &orderentity.Order{
 		ID:          42,
@@ -304,6 +320,14 @@ func TestJob_Run_UnknownProviderResultCreatesRecoveryAttempt(t *testing.T) {
 
 	providerRepo := &fakeProviderRepository{
 		provider: newProvider(7, "provider-a"),
+	}
+
+	productService := &fakeProductService{
+		service: &smmentity.SMM{
+			Id:           10,
+			Service:      123456,
+			ProviderName: "provider-a",
+		},
 	}
 
 	provider := &fakeSMMProvider{
@@ -334,6 +358,7 @@ func TestJob_Run_UnknownProviderResultCreatesRecoveryAttempt(t *testing.T) {
 
 	job := orderfulfillerjob.New(
 		orderService,
+		productService,
 		smmService,
 		nil,
 		nil,
@@ -345,11 +370,7 @@ func TestJob_Run_UnknownProviderResultCreatesRecoveryAttempt(t *testing.T) {
 		},
 	)
 
-	// Act
-
 	err := job.Run(context.Background())
-
-	// Assert
 
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -398,7 +419,6 @@ func TestJob_Run_UnknownProviderResultCreatesRecoveryAttempt(t *testing.T) {
 }
 
 func TestJob_Run_ClaimFailureDoesNotCallProvider(t *testing.T) {
-	// Arrange
 
 	order := &orderentity.Order{
 		ID:          42,
@@ -438,6 +458,14 @@ func TestJob_Run_ClaimFailureDoesNotCallProvider(t *testing.T) {
 		},
 	)
 
+	productService := &fakeProductService{
+		service: &smmentity.SMM{
+			Id:           10,
+			Service:      123456,
+			ProviderName: "provider-a",
+		},
+	}
+
 	smmService.RegisterProvider(
 		"provider-a",
 		provider,
@@ -452,6 +480,7 @@ func TestJob_Run_ClaimFailureDoesNotCallProvider(t *testing.T) {
 
 	job := orderfulfillerjob.New(
 		orderService,
+		productService,
 		smmService,
 		nil,
 		nil,
@@ -463,11 +492,7 @@ func TestJob_Run_ClaimFailureDoesNotCallProvider(t *testing.T) {
 		},
 	)
 
-	// Act
-
 	err := job.Run(context.Background())
-
-	// Assert
 
 	if err == nil {
 		t.Fatal("expected claim error, got nil")
@@ -503,5 +528,156 @@ func TestJob_Run_ClaimFailureDoesNotCallProvider(t *testing.T) {
 				orderRepo.events[i],
 			)
 		}
+	}
+}
+
+func TestJob_Run_ResolvesProviderServiceIDThroughMapping(
+	t *testing.T,
+) {
+	order := &orderentity.Order{
+		ID:          42,
+		UserID:      100,
+		ProductType: productentity.ProductTypeSMM,
+		// This is Mapping ID, NOT Provider Service ID.
+		ProductID:  55,
+		Quantity:   1000,
+		TargetLink: "https://example.com/test",
+		Status:     orderentity.OrderStatusPaid,
+	}
+
+	orderRepo := &fakeOrderRepository{
+		order:       order,
+		claimResult: true,
+	}
+
+	orderService := orderservice.New(
+		orderRepo,
+	)
+
+	productService := &fakeProductService{
+		service: &smmentity.SMM{
+			Id:           10,
+			Service:      123456,
+			ProviderName: "provider-a",
+			Rate: entity.Amount(
+				decimal.NewFromFloat(0.125),
+			),
+			IsActive: true,
+		},
+	}
+
+	providerRepo := &fakeProviderRepository{
+		provider: newProvider(
+			7,
+			"provider-a",
+		),
+	}
+
+	provider := &fakeSMMProvider{
+		response: smmparams.CreateOrderAdapterResponse{
+			Outcome:         smmparams.CreateOrderOutcomeCreated,
+			ExternalOrderID: "EXT-100",
+		},
+	}
+
+	smmService := smmproviderservice.New(
+		providerRepo,
+		smmproviderservice.Config{
+			FailureThreshold: 3,
+			SuccessThreshold: 1,
+		},
+	)
+
+	smmService.RegisterProvider(
+		"provider-a",
+		provider,
+	)
+
+	redis := &fakeRedis{
+		result: []string{
+			"orders:paid",
+			"42",
+		},
+	}
+
+	notificationRepo := &fakeNotificationRepository{}
+	notificationRedis := &fakeNotificationRedis{}
+
+	notificationService := notificationservice.New(
+		notificationRepo,
+		notificationRedis,
+		notificationservice.Config{},
+	)
+
+	job := orderfulfillerjob.New(
+		orderService,
+		productService,
+		smmService,
+		notificationService,
+		nil,
+		nil,
+		redis,
+		orderfulfillerjob.Config{
+			QueueKey: "orders:paid",
+			Timeout:  time.Second,
+		},
+	)
+
+	err := job.Run(
+		context.Background(),
+	)
+	if err != nil {
+		t.Fatalf(
+			"unexpected error: %v",
+			err,
+		)
+	}
+
+	if productService.calls != 1 {
+		t.Fatalf(
+			"expected product service to be called once, got %d",
+			productService.calls,
+		)
+	}
+
+	if productService.lastMappingID != 55 {
+		t.Fatalf(
+			"expected mapping ID 55, got %d",
+			productService.lastMappingID,
+		)
+	}
+
+	if provider.createCall != 1 {
+		t.Fatalf(
+			"expected provider Create once, got %d",
+			provider.createCall,
+		)
+	}
+
+	if provider.lastRequest.ServiceID != "123456" {
+		t.Fatalf(
+			"expected provider service ID 123456, got %s",
+			provider.lastRequest.ServiceID,
+		)
+	}
+
+	if provider.lastRequest.ProviderName != "provider-a" {
+		t.Fatalf(
+			"expected provider name provider-a, got %s",
+			provider.lastRequest.ProviderName,
+		)
+	}
+
+	if provider.lastRequest.ServiceID == "55" {
+		t.Fatal(
+			"mapping ID must never be sent as provider service ID",
+		)
+	}
+
+	if order.ExternalOrderID != "EXT-100" {
+		t.Fatalf(
+			"expected external order ID EXT-100, got %s",
+			order.ExternalOrderID,
+		)
 	}
 }
