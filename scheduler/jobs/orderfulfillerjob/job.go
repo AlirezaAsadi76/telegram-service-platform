@@ -11,6 +11,7 @@ import (
 
 type Job struct {
 	orderService        *orderservice.Service
+	productService      ProductService
 	smmProviderService  *smmproviderservice.Service
 	notificationService *notificationservice.Service
 	walletService       *walletservice.Service
@@ -22,6 +23,7 @@ type Job struct {
 
 func New(
 	orderService *orderservice.Service,
+	productService ProductService,
 	smmProviderService *smmproviderservice.Service,
 	notificationService *notificationservice.Service,
 	walletService *walletservice.Service,
@@ -31,6 +33,7 @@ func New(
 ) *Job {
 	return &Job{
 		orderService:        orderService,
+		productService:      productService,
 		smmProviderService:  smmProviderService,
 		notificationService: notificationService,
 		walletService:       walletService,
