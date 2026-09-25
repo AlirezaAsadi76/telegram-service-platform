@@ -3,6 +3,7 @@ package paymentparams
 import (
 	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/paymententity"
+	"time"
 )
 
 type CreateRequest struct {
@@ -12,6 +13,7 @@ type CreateRequest struct {
 	Amount         entity.Amount
 	Currency       entity.Currency
 	IdempotencyKey string
+	ExpiredAt      time.Time
 }
 
 type CreateResponse struct {

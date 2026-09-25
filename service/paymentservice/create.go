@@ -15,7 +15,6 @@ func (s *Service) Create(ctx context.Context, req paymentparams.CreateRequest) (
 
 	provider := s.getProvider(req.Method)
 
-	// Create external payment
 	providerReq := paymentproviderparams.CreateRequest{
 		Amount:   req.Amount,
 		Currency: req.Currency,
@@ -25,7 +24,6 @@ func (s *Service) Create(ctx context.Context, req paymentparams.CreateRequest) (
 		return nil, richerror.New(Op, pcErr).WithKind(richerror.KindExternalAPI).WithMessage(msgerror.PaymentProviderError)
 	}
 
-	// Save to DB
 	payment := &paymententity.Payment{
 		OrderID:        req.OrderID,
 		UserID:         req.UserID,
@@ -35,6 +33,7 @@ func (s *Service) Create(ctx context.Context, req paymentparams.CreateRequest) (
 		Status:         paymententity.PaymentStatusPending,
 		ExternalID:     providerResp.ExternalID,
 		IdempotencyKey: req.IdempotencyKey,
+		ExpiredAt:      req.ExpiredAt,
 	}
 	if err := s.repo.Create(ctx, payment); err != nil {
 		return nil, richerror.New(Op, pcErr).WithKind(richerror.KindQueryFailure).WithMessage(msgerror.QueryFailed)
