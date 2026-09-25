@@ -2,6 +2,7 @@ package orderhandler
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"telegram-service-platform/delivery/telegramserver/keyboard"
 	"telegram-service-platform/params/userparams"
@@ -29,7 +30,6 @@ func (h *Handler) processDirectPayment(ctx context.Context, b *bot.Bot, update *
 	chatID := update.CallbackQuery.Message.Message.Chat.ID
 	telegramID := update.CallbackQuery.From.ID
 
-	// ۱. دریافت State
 	stateResp, gErr := h.orderFlowService.GetOrderFlow(ctx, orderparams.GetOrderFlowRequest{
 		TelegramID: entity.TelegramId(telegramID),
 	})
@@ -57,16 +57,61 @@ func (h *Handler) processDirectPayment(ctx context.Context, b *bot.Bot, update *
 		return
 	}
 
-	resp, pErr := h.checkoutService.ProcessDirectPaymentPurchase(ctx, checkoutparams.DirectPaymentPurchase{
-		UserID:      user.UserInfo.Id,
-		ProductType: productentity.ProductTypeSMM,
-		ProductID:   state.ServiceID,
-		Quantity:    state.Quantity,
-		TargetLink:  state.Link,
-		Amount:      state.Price,
-		Currency:    state.Currency,
-		Method:      method,
-	})
+	priceLockMethod := paymentMethodToPriceLockMethod(method)
+
+	if err := h.ensurePriceLock(
+		ctx,
+		telegramID,
+		user.UserInfo.Id,
+		state,
+		priceLockMethod,
+	); err != nil {
+		if errors.Is(err, ErrPriceLockMethodMismatch) {
+			_ = h.messenger.Send(ctx, &bot.SendMessageParams{
+				ChatID: chatID,
+				Text:   priceLockMethodMismatchMessage,
+			})
+			return
+		}
+
+		logger.Logger.Error(
+			"failed to lock SMM price for direct payment",
+			zap.String("op", op),
+			zap.Uint64("user_id", user.UserInfo.Id),
+			zap.Uint64("mapping_id", state.ServiceID),
+			zap.String("method", string(method)),
+			zap.Error(err),
+		)
+
+		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
+			ChatID: chatID,
+			Text:   priceLockFailedMessage,
+		})
+		return
+	}
+
+	req := checkoutparams.DirectPaymentPurchase{
+		UserID:                 user.UserInfo.Id,
+		ProductType:            productentity.ProductTypeSMM,
+		ProductID:              state.ServiceID,
+		Quantity:               state.Quantity,
+		TargetLink:             state.Link,
+		Amount:                 state.Price,
+		Currency:               state.Currency,
+		Method:                 method,
+		PriceLockedAt:          state.PriceLockedAt,
+		PriceLockExpiresAt:     state.PriceLockExpiresAt,
+		PriceLockPaymentMethod: priceLockMethod,
+	}
+
+	if vErr := h.validator.ValidateDirectPaymentPriceLock(req, priceLockMethod); vErr != nil {
+		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
+			ChatID: chatID,
+			Text:   vErr.Error(),
+		})
+	}
+
+	resp, pErr := h.checkoutService.ProcessDirectPaymentPurchase(ctx, req)
 
 	if pErr != nil {
 		logger.Logger.Error("direct payment purchase failed",

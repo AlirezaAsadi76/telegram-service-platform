@@ -128,7 +128,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	// Orchestrator
 	// TODO: Replace nil messenger with actual implementation
 	checkoutSvc := checkoutservice.New(
-		walletSvc, paymentSvc, orderSvc,
+		walletSvc, productSvc, paymentSvc, orderSvc,
 		smmSvc, notificationSVC, checkoutRepo, orderfulfillSvc, idempotencyRepo,
 		cfg.CheckoutSvc)
 

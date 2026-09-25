@@ -15,7 +15,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *Service) LockSMMPrice(ctx context.Context, req checkoutparams.LockProductPriceRequest) (*checkoutparams.LockProductPriceResponse, error) {
+func (s *Service) LockProductPrice(ctx context.Context, req checkoutparams.LockProductPriceRequest) (*checkoutparams.LockProductPriceResponse, error) {
 	const op = "checkoutservice.LockSMMPrice"
 
 	if s.productSvc == nil {

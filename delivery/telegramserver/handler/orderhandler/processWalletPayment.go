@@ -44,17 +44,70 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 		_ = h.messenger.Send(ctx, &bot.SendMessageParams{})
 	}
 
-	chErr := h.checkoutService.ProcessWalletPurchase(
+	if err := h.ensurePriceLock(
+		ctx,
+		telegramID,
+		user.UserInfo.Id,
+		state,
+		entity.PriceLockPaymentMethodWallet,
+	); err != nil {
+		if errors.Is(err, ErrPriceLockMethodMismatch) {
+			_ = h.messenger.Send(ctx, &bot.SendMessageParams{
+				ChatID: chatID,
+				Text:   priceLockMethodMismatchMessage,
+			})
+			return
+		}
+
+		logger.Logger.Error(
+			"failed to lock Product price for wallet payment",
+			zap.String("op", op),
+			zap.Uint64("user_id", user.UserInfo.Id),
+			zap.Uint64("mapping_id", state.ServiceID),
+			zap.Error(err),
+		)
+
+		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
+			ChatID: chatID,
+			Text:   priceLockFailedMessage,
+		})
+		return
+	}
+
+	req := checkoutparams.WalletPurchaseRequest{
+		UserID:                 user.UserInfo.Id,
+		ProductType:            productentity.ProductTypeSMM,
+		ProductID:              state.ServiceID,
+		Quantity:               state.Quantity,
+		TargetLink:             state.Link,
+		Amount:                 state.Price,
+		Currency:               state.Currency,
+		IdempotencyKey:         state.PurchaseID,
+		PriceLockedAt:          state.PriceLockedAt,
+		PriceLockExpiresAt:     state.PriceLockExpiresAt,
+		PriceLockPaymentMethod: entity.PriceLockPaymentMethodWallet,
+	}
+
+	if vErr := h.validator.ValidatePaymentPriceLock(req, entity.PriceLockPaymentMethodWallet); vErr != nil {
+		_ = h.messenger.Send(ctx, &bot.SendMessageParams{
+			ChatID: chatID,
+			Text:   vErr.Error(),
+		})
+	}
+	_, chErr := h.checkoutService.ProcessWalletPurchase(
 		ctx,
 		checkoutparams.WalletPurchaseRequest{
-			UserID:         user.UserInfo.Id,
-			ProductType:    productentity.ProductTypeSMM,
-			ProductID:      state.ServiceID,
-			Quantity:       state.Quantity,
-			TargetLink:     state.Link,
-			Amount:         state.Price,
-			Currency:       state.Currency,
-			IdempotencyKey: state.PurchaseID,
+			UserID:                 user.UserInfo.Id,
+			ProductType:            productentity.ProductTypeSMM,
+			ProductID:              state.ServiceID,
+			Quantity:               state.Quantity,
+			TargetLink:             state.Link,
+			Amount:                 state.Price,
+			Currency:               state.Currency,
+			IdempotencyKey:         state.PurchaseID,
+			PriceLockedAt:          state.PriceLockedAt,
+			PriceLockExpiresAt:     state.PriceLockExpiresAt,
+			PriceLockPaymentMethod: entity.PriceLockPaymentMethodWallet,
 		},
 	)
 
@@ -82,10 +135,6 @@ func (h *Handler) processWalletPayment(ctx context.Context, b *bot.Bot, update *
 		}
 		return
 	}
-
-	_ = h.orderFlowService.CompleteOrderFlow(ctx, orderparams.DeleteOrderFlowRequest{
-		TelegramID: entity.TelegramId(telegramID),
-	}, 0)
 
 	_ = h.messenger.Send(ctx, &bot.SendMessageParams{
 		ChatID: chatID,

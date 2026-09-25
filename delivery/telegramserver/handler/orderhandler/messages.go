@@ -101,3 +101,9 @@ func walletPurchaseSuccessMessage(
 		amount,
 	)
 }
+
+const (
+	priceLockFailedMessage = "❌ امکان قفل کردن قیمت سفارش وجود ندارد. لطفاً دوباره تلاش کنید."
+
+	priceLockMethodMismatchMessage = "⚠️ قیمت این سفارش قبلاً برای یک روش پرداخت دیگر قفل شده است. لطفاً همان روش پرداخت را ادامه دهید."
+)

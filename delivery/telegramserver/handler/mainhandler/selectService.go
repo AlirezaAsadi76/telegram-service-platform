@@ -11,6 +11,7 @@ import (
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 
 	"telegram-service-platform/logger"
@@ -84,7 +85,9 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 	}
 
 	state := orderentity.OrderFlowState{
-		Stage:       orderentity.OrderFlowStageWaitingForQuantity,
+		Stage:      orderentity.OrderFlowStageWaitingForQuantity,
+		PurchaseID: uuid.NewString(),
+
 		Platform:    platformName,
 		Category:    categoryName,
 		ServiceID:   uint64(serviceID),
@@ -92,9 +95,6 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 		MinQuantity: serviceResp.Smm.Min,
 		MaxQuantity: serviceResp.Smm.Max,
 		Rate:        serviceResp.Smm.Rate,
-		Link:        "",
-		Quantity:    0,
-		Price:       entity.Amount{},
 		Currency:    entity.CurrencyTOMAN,
 	}
 

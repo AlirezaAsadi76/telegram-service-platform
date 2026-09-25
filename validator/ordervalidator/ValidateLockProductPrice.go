@@ -1,4 +1,4 @@
-package checkoutValidator
+package ordervalidator
 
 import (
 	"telegram-service-platform/entity"
