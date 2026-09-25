@@ -115,7 +115,7 @@ smmRedis:
   smm_ttl: "12h"
 
 orderFlowSvc:
-  order_ttl: "2m"
+  order_ttl: "15m"
 
 orderFulfillmentSvc:
   queue_key: "queue:orders:paid"
