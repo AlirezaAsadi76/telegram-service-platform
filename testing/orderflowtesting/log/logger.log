@@ -1,0 +1,4 @@
+{"level":"info","ts":"2026-09-25T09:44:10.508+0330","caller":"orderflowservice/save.go:60","msg":"order flow state saved","op":"orderflowservice.SaveOrderFlow","telegram_id":100,"service_id":55,"stage":"waiting_for_quantity","latency":0.0000536}
+{"level":"info","ts":"2026-09-25T09:44:10.509+0330","caller":"orderflowservice/save.go:60","msg":"order flow state saved","op":"orderflowservice.SaveOrderFlow","telegram_id":100,"service_id":55,"stage":"waiting_for_link","latency":0.0000452}
+{"level":"info","ts":"2026-09-25T09:44:10.509+0330","caller":"orderflowservice/delete.go:37","msg":"order flow state deleted","op":"orderflowservice.DeleteOrderFlow","telegram_id":100,"reason":"expired","latency":0.0000217}
+{"level":"info","ts":"2026-09-25T09:44:10.509+0330","caller":"orderflowservice/get.go:66","msg":"expired order flow state rejected","op":"orderflowservice.GetOrderFlow","telegram_id":100,"expires_at":1790316790,"latency":0.000125799}
