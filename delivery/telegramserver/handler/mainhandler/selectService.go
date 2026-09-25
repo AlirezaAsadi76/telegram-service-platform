@@ -2,13 +2,12 @@ package mainhandler
 
 import (
 	"context"
-	"fmt"
+	"errors"
 	"strconv"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/entity/orderentity"
 	"telegram-service-platform/params/orderparams"
 	"telegram-service-platform/pkg/helpers"
-	"time"
 
 	"github.com/go-telegram/bot"
 	"github.com/go-telegram/bot/models"
@@ -27,15 +26,16 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 
 	chatID := update.CallbackQuery.Message.Message.Chat.ID
 	messageID := update.CallbackQuery.Message.Message.ID
+	telegramID := update.CallbackQuery.From.ID
 
-	h.clearActiveOrderFlowIfAny(ctx, update.CallbackQuery.From.ID, op)
+	h.clearActiveOrderFlowIfAny(ctx, telegramID, op)
 
 	data, ccErr := h.callbackQueryData(update.CallbackQuery.Data, CategorySplitMode)
 	platformName := data[platformSplitMode]
 	categoryName := data[CategorySplitMode]
 	serviceIDStr := data[ServiceSplitMode]
 	if ccErr != nil {
-		h.handleError(ctx, chatID, op, fmt.Errorf("داده نامعتبر"))
+		h.handleError(ctx, chatID, op, errors.New("invalid callback data"))
 		return
 	}
 
@@ -52,26 +52,34 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 	mappingResp, gErr := h.productService.GetSMMMappingByID(ctx, productparams.GetSmmMappingByIDRequest{
 		Id: serviceID,
 	})
-	if gErr != nil {
+	if gErr != nil || mappingResp == nil || mappingResp.SmmMapping == nil {
 		logger.Logger.Error("failed to get service mapping details",
 			zap.String("op", op),
 			zap.Int64("serviceMappingID", serviceID),
 			zap.Error(gErr),
 		)
-		h.handleError(ctx, chatID, op, err)
+		if gErr != nil {
+			h.handleError(ctx, chatID, op, gErr)
+		} else {
+			h.handleError(ctx, chatID, op, errors.New("service mapping not found"))
+		}
 		return
 	}
 
 	serviceResp, gsErr := h.productService.GetSMMServiceByID(ctx, productparams.GetSmmServiceByIDRequest{
 		Id: mappingResp.SmmMapping.SmmServiceId,
 	})
-	if gsErr != nil {
+	if gsErr != nil || serviceResp == nil || serviceResp.Smm == nil {
 		logger.Logger.Error("failed to get service details",
 			zap.String("op", op),
 			zap.Int64("serviceID", serviceID),
 			zap.Error(gsErr),
 		)
-		h.handleError(ctx, chatID, op, err)
+		if gsErr != nil {
+			h.handleError(ctx, chatID, op, gsErr)
+		} else {
+			h.handleError(ctx, chatID, op, errors.New("smm service not found"))
+		}
 		return
 	}
 
@@ -88,13 +96,11 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 		Quantity:    0,
 		Price:       entity.Amount{},
 		Currency:    entity.CurrencyTOMAN,
-		ExpiresAt:   time.Now().Add(10 * time.Minute).Unix(),
 	}
-	fmt.Println("telegramID", chatID)
+
 	saveErr := h.orderFlowService.SaveOrderFlow(ctx, orderparams.SaveOrderFlowRequest{
 		TelegramID: entity.TelegramId(chatID),
 		State:      state,
-		TTLMins:    10,
 	})
 	if saveErr != nil {
 		logger.Logger.Error("failed to save order flow state",
@@ -106,14 +112,8 @@ func (h *Handler) selectService(ctx context.Context, b *bot.Bot, update *models.
 		return
 	}
 
-	message := fmt.Sprintf(
-		"✅ سرویس «%s» با موفقیت انتخاب شد.\n\n"+
-			"📱 پلتفرم: %s\n"+
-			"%s دسته‌بندی: %s\n\n"+
-			"• حداقل تعداد سفارش: %d\n"+
-			"• حداکثر تعداد سفارش: %d\n\n"+
-			"🔢 لطفاً تعداد مورد نظر خود را فقط به صورت عدد ارسال کنید:",
-		mappingResp.SmmMapping.ButtonName, // یا serviceResp.Service.Name
+	message := serviceSelectedMessage(
+		mappingResp.SmmMapping.ButtonName,
 		helpers.GetPlatformDisplayName(platformName),
 		helpers.GetCategoryIcon(categoryName),
 		helpers.GetCategoryDisplayName(categoryName),

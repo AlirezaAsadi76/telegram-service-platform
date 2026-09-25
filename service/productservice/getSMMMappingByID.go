@@ -12,7 +12,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s Service) GetSMMMappingByID(ctx context.Context, req productparams.GetSmmMappingByIDRequest) (productparams.GetSmmMappingByIDResponse, error) {
+func (s Service) GetSMMMappingByID(ctx context.Context, req productparams.GetSmmMappingByIDRequest) (*productparams.GetSmmMappingByIDResponse, error) {
 	const Op = "productservice.GetSMMMappingByID"
 	start := time.Now()
 
@@ -24,7 +24,7 @@ func (s Service) GetSMMMappingByID(ctx context.Context, req productparams.GetSmm
 				zap.Int64("id", req.Id),
 				zap.Duration("duration", time.Since(start)),
 			)
-			return productparams.GetSmmMappingByIDResponse{SmmMapping: mapping}, nil
+			return &productparams.GetSmmMappingByIDResponse{SmmMapping: mapping}, nil
 		}
 		metrics.SMMCacheMisses.WithLabelValues("mapping").Inc()
 	}
@@ -37,7 +37,7 @@ func (s Service) GetSMMMappingByID(ctx context.Context, req productparams.GetSmm
 			zap.Error(err),
 			zap.Duration("duration", time.Since(start)),
 		)
-		return productparams.GetSmmMappingByIDResponse{}, richerror.New(Op, err).
+		return &productparams.GetSmmMappingByIDResponse{}, richerror.New(Op, err).
 			WithKind(richerror.KindNotFound).
 			WithMessage(msgerror.ProductNotFound)
 	}
@@ -58,7 +58,7 @@ func (s Service) GetSMMMappingByID(ctx context.Context, req productparams.GetSmm
 		zap.String("name", mapping.Name),
 		zap.Duration("duration", time.Since(start)),
 	)
-	return productparams.GetSmmMappingByIDResponse{
+	return &productparams.GetSmmMappingByIDResponse{
 		SmmMapping: mapping,
 	}, nil
 }

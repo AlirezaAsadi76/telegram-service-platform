@@ -13,7 +13,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s Service) GetSMMServiceByID(ctx context.Context, req productparams.GetSmmServiceByIDRequest) (productparams.GetSmmServiceByIDResponse, error) {
+func (s Service) GetSMMServiceByID(ctx context.Context, req productparams.GetSmmServiceByIDRequest) (*productparams.GetSmmServiceByIDResponse, error) {
 	const op = "productservice.GetSMMServiceByID"
 	start := time.Now()
 	if s.smmCache != nil {
@@ -24,7 +24,7 @@ func (s Service) GetSMMServiceByID(ctx context.Context, req productparams.GetSmm
 				zap.Int64("id", req.Id),
 				zap.Duration("duration", time.Since(start)),
 			)
-			return productparams.GetSmmServiceByIDResponse{Smm: service}, nil
+			return &productparams.GetSmmServiceByIDResponse{Smm: service}, nil
 		}
 
 		metrics.SMMCacheMisses.WithLabelValues("service").Inc()
@@ -38,7 +38,7 @@ func (s Service) GetSMMServiceByID(ctx context.Context, req productparams.GetSmm
 			zap.Error(err),
 			zap.Duration("duration", time.Since(start)),
 		)
-		return productparams.GetSmmServiceByIDResponse{}, richerror.New(op, err).
+		return &productparams.GetSmmServiceByIDResponse{}, richerror.New(op, err).
 			WithKind(richerror.KindNotFound).
 			WithMessage(msgerror.ProductNotFound)
 	}
@@ -60,7 +60,7 @@ func (s Service) GetSMMServiceByID(ctx context.Context, req productparams.GetSmm
 		zap.Duration("duration", time.Since(start)),
 	)
 
-	return productparams.GetSmmServiceByIDResponse{
+	return &productparams.GetSmmServiceByIDResponse{
 		Smm: service,
 	}, nil
 }
