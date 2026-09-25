@@ -20,6 +20,22 @@ type fakePriceRepository struct {
 	usdTomanCalls int
 }
 
+func newSMMPricingServiceWithConfig(
+	config pricingservice.Config,
+	tonUSD float64,
+	usdToman float64,
+) *pricingservice.Service {
+	repository := &fakePriceRepository{
+		tonUsdPrice:   tonUSD,
+		usdTomanPrice: usdToman,
+	}
+
+	return pricingservice.New(
+		repository,
+		config,
+	)
+}
+
 func (f *fakePriceRepository) GetTonUsdPrice(
 	_ context.Context,
 ) (float64, error) {

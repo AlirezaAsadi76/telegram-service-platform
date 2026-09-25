@@ -94,5 +94,11 @@ func newSMMPricingService(
 
 	return pricingservice.New(
 		priceRepository,
+		pricingservice.Config{
+			SMMMinimumUnitPriceToman: "5000",
+			SMMMinimumMultiplier:     "1.4",
+			SMMMaximumMultiplier:     "4",
+			SMMMultiplierScaleToman:  "1466.6666666666666666666666666667",
+		},
 	)
 }

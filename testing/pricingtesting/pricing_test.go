@@ -71,7 +71,12 @@ func TestService_CalculatePrice(t *testing.T) {
 				usdTomanErr:   tt.usdTomanErr,
 			}
 
-			service := pricingservice.New(repository)
+			service := pricingservice.New(repository, pricingservice.Config{
+				SMMMinimumUnitPriceToman: "5000",
+				SMMMinimumMultiplier:     "1.4",
+				SMMMaximumMultiplier:     "4",
+				SMMMultiplierScaleToman:  "1466.6666666666666666666666666667",
+			})
 
 			usd := entity.Amount(
 				decimal.NewFromFloat(tt.usd),
@@ -98,5 +103,126 @@ func TestService_CalculatePrice(t *testing.T) {
 			assertAmount(t, price.TON, tt.wantTON)
 			assertAmount(t, price.Toman, tt.wantToman)
 		})
+	}
+}
+
+func TestService_CalculateSMMSellingPrice_UsesMinimumPriceForCheapService(
+	t *testing.T,
+) {
+	service := newSMMPricingServiceWithConfig(
+		pricingservice.Config{
+			SMMMinimumUnitPriceToman: "5000",
+			SMMMinimumMultiplier:     "1.4",
+			SMMMaximumMultiplier:     "4",
+			SMMMultiplierScaleToman:  "1466.6666666666666666666666666667",
+		},
+		2,
+		240000,
+	)
+
+	price, err := service.CalculateSMMSellingPrice(
+		context.Background(),
+		entity.Amount(decimal.NewFromFloat(0.0015)),
+		15000,
+	)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	// Provider cost:
+	// 0.0015 * 15000 / 1000 = 0.0225 USD
+	//
+	// Base cost:
+	// 0.0225 * 240000 = 5400 TOMAN
+	//
+	// Base unit cost:
+	// 5400 / 15 = 360 TOMAN / 1000
+	//
+	// Minimum selling price:
+	// 5000 * 15 = 75000 TOMAN
+	expected := entity.Amount(
+		decimal.NewFromInt(75000),
+	)
+
+	if !price.Toman.Equal(expected) {
+		t.Fatalf(
+			"expected TOMAN price %s, got %s",
+			expected.String(),
+			price.Toman.String(),
+		)
+	}
+}
+
+func TestService_CalculateSMMSellingPrice_IsContinuousAtMinimumPriceBoundary(
+	t *testing.T,
+) {
+	service := newSMMPricingServiceWithConfig(
+		pricingservice.Config{
+			SMMMinimumUnitPriceToman: "5000",
+			SMMMinimumMultiplier:     "1.4",
+			SMMMaximumMultiplier:     "4",
+			SMMMultiplierScaleToman:  "1466.6666666666666666666666666667",
+		},
+		2,
+		240000,
+	)
+
+	price, err := service.CalculateSMMSellingPrice(
+		context.Background(),
+		entity.Amount(decimal.NewFromInt(2000)).Div(
+			entity.Amount(decimal.NewFromInt(240000)),
+		),
+		1000,
+	)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	expected := entity.Amount(
+		decimal.NewFromInt(5000),
+	)
+
+	if !price.Toman.Equal(expected) {
+		t.Fatalf(
+			"expected boundary price %s, got %s",
+			expected.String(),
+			price.Toman.String(),
+		)
+	}
+}
+
+func TestSMMPricingRule_CalculatesExpectedSellingUnitPrice(
+	t *testing.T,
+) {
+	rule := pricingservice.SMMPricingRule{
+		MinimumUnitPriceToman: entity.Amount(
+			decimal.NewFromInt(5000),
+		),
+		MinimumMultiplier: decimal.RequireFromString("1.4"),
+		MaximumMultiplier: decimal.RequireFromString("4"),
+		MultiplierScaleToman: entity.Amount(
+			decimal.RequireFromString(
+				"1466.6666666666666666666666666667",
+			),
+		),
+	}
+
+	price, err := rule.CalculateSellingUnitPrice(
+		entity.Amount(decimal.NewFromInt(10000)),
+	)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+
+	expected := entity.Amount(
+		decimal.NewFromInt(17326),
+	)
+
+	if !price.Equal(expected) {
+		t.Fatalf(
+			"expected unit price %s, got %s",
+			expected.String(),
+			price.String(),
+		)
 	}
 }

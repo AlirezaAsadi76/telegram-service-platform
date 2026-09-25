@@ -275,9 +275,8 @@ func TestService_CalculateSMMPrice(t *testing.T) {
 		)
 	}
 
-	// 0.125 * 2000 / 1000 = 0.25 USD
 	expectedUSD := entity.Amount(
-		decimal.NewFromFloat(0.25),
+		decimal.NewFromFloat(0.41826),
 	)
 
 	if !response.Price.USD.Equal(expectedUSD) {
@@ -288,9 +287,8 @@ func TestService_CalculateSMMPrice(t *testing.T) {
 		)
 	}
 
-	// 0.25 / 2 = 0.125 TON
 	expectedTON := entity.Amount(
-		decimal.NewFromFloat(0.125),
+		decimal.NewFromFloat(0.20913),
 	)
 
 	if !response.Price.TON.Equal(expectedTON) {
@@ -301,9 +299,8 @@ func TestService_CalculateSMMPrice(t *testing.T) {
 		)
 	}
 
-	// 0.25 * 100000 = 25000 TOMAN
 	expectedToman := entity.Amount(
-		decimal.NewFromFloat(25000),
+		decimal.NewFromInt(41826),
 	)
 
 	if !response.Price.Toman.Equal(expectedToman) {
@@ -505,5 +502,81 @@ func TestService_GetSMMServiceByMappingID_ServiceNotFound(
 	)
 	if err == nil {
 		t.Fatal("expected service lookup error")
+	}
+}
+
+func TestService_CalculateSMMPrice_RejectsQuantityBelowMinimum(t *testing.T) {
+	repository := &calculateSMMPriceRepository{
+		mapping: &smmentity.SmmMapping{
+			Id:           55,
+			SmmServiceId: 10,
+			IsActive:     true,
+		},
+		service: &smmentity.SMM{
+			Id:       10,
+			Service:  123456,
+			Rate:     entity.Amount(decimal.NewFromFloat(0.0015)),
+			Min:      1000,
+			Max:      100000,
+			IsActive: true,
+		},
+	}
+
+	service := productservice.New(
+		productservice.Config{},
+		newSMMPricingService(2, 240000),
+		repository,
+		nil,
+		nil,
+		nil,
+	)
+
+	_, err := service.CalculateSMMPrice(
+		context.Background(),
+		productparams.CalculateSMMPriceRequest{
+			MappingID: 55,
+			Quantity:  999,
+		},
+	)
+	if err == nil {
+		t.Fatal("expected quantity below minimum to return error")
+	}
+}
+
+func TestService_CalculateSMMPrice_RejectsQuantityAboveMaximum(t *testing.T) {
+	repository := &calculateSMMPriceRepository{
+		mapping: &smmentity.SmmMapping{
+			Id:           55,
+			SmmServiceId: 10,
+			IsActive:     true,
+		},
+		service: &smmentity.SMM{
+			Id:       10,
+			Service:  123456,
+			Rate:     entity.Amount(decimal.NewFromFloat(0.0015)),
+			Min:      1000,
+			Max:      100000,
+			IsActive: true,
+		},
+	}
+
+	service := productservice.New(
+		productservice.Config{},
+		newSMMPricingService(2, 240000),
+		repository,
+		nil,
+		nil,
+		nil,
+	)
+
+	_, err := service.CalculateSMMPrice(
+		context.Background(),
+		productparams.CalculateSMMPriceRequest{
+			MappingID: 55,
+			Quantity:  100001,
+		},
+	)
+	if err == nil {
+		t.Fatal("expected quantity above maximum to return error")
 	}
 }
