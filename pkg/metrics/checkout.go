@@ -22,3 +22,12 @@ var (
 		Buckets: []float64{0.01, 0.05, 0.1, 0.25, 0.5, 1, 2, 5},
 	}, []string{"flow_type"})
 )
+
+var CheckoutPriceLocks = promauto.NewCounterVec(
+	prometheus.CounterOpts{
+		Namespace: "smm_bot",
+		Name:      "checkout_price_locks_total",
+		Help:      "Total number of SMM price lock operations.",
+	},
+	[]string{"payment_method", "status"},
+)

@@ -2,12 +2,12 @@ package uservalidator
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/params/userparams"
 	"telegram-service-platform/pkg/msgerror"
 	"telegram-service-platform/pkg/richerror"
+	"telegram-service-platform/pkg/wrapper"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )
@@ -22,20 +22,8 @@ func (v Validator) ValidationUserExistence(ctx context.Context, telegramID entit
 	)
 
 	if vErr != nil {
-		var errV validation.Errors
-		if ok := errors.As(vErr, &errV); ok {
-			var firstErrorMsg string
-			for _, err := range errV {
-				if err != nil {
-					firstErrorMsg = err.Error()
-					break
-				}
-			}
-			return 0, richerror.New(op, vErr).
-				WithKind(richerror.KindValidation).
-				WithMessage(firstErrorMsg).
-				WithMeta(map[string]interface{}{"telegram_id": telegramID})
-		}
+		_, richError := wrapper.WrapValidateError(op, vErr, entity.Meta{"telegram_id": telegramID})
+		return 0, richError
 	}
 
 	user, _ := v.userService.FindUserByTelegramID(ctx, userparams.FindUserByTelegramIDRequest{

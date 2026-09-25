@@ -80,6 +80,9 @@ checkoutSvc:
   PrefixIdempotencyKey: "DirectIdempotency"
   prefix_wallet_idempotency_key: "WalletIdempotency"
   prefix_Manual_idempotency_key: "ManualIdempotency"
+  wallet_price_lock_ttl: "15m"
+  zarinpal_price_lock_ttl: "15m"
+  crypto_price_lock_ttl: "45m"
 
 notificationSvc:
   queue_key: "queue:notifications:pending"

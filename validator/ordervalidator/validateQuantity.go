@@ -1,10 +1,11 @@
 package ordervalidator
 
 import (
-	"errors"
 	"fmt"
+	"telegram-service-platform/entity"
 	"telegram-service-platform/params/orderparams"
 	"telegram-service-platform/pkg/richerror"
+	"telegram-service-platform/pkg/wrapper"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )
@@ -21,25 +22,10 @@ func (v *Validator) ValidateQuantity(req orderparams.SubmitQuantityRequest) erro
 	)
 
 	if vErr != nil {
-		var errV validation.Errors
-		if ok := errors.As(vErr, &errV); ok {
 
-			var firstErrorMsg string
-			for _, err := range errV {
-				if err != nil {
-					firstErrorMsg = err.Error()
-					break
-				}
-			}
+		_, wrapError := wrapper.WrapValidateError(op, vErr, entity.Meta{"request": req})
+		return wrapError
 
-			return richerror.New(op, vErr).
-				WithKind(richerror.KindValidation).
-				WithMessage(firstErrorMsg).
-				WithMeta(map[string]interface{}{
-					"request":      req,
-					"field_errors": errV,
-				})
-		}
 	}
 	return nil
 }

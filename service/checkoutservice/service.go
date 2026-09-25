@@ -10,6 +10,7 @@ import (
 
 type Service struct {
 	walletSvc           *walletservice.Service
+	productSvc          ProductSvc
 	paymentSvc          *paymentservice.Service
 	orderSvc            *orderservice.Service
 	smmSvc              *smmproviderservice.Service
@@ -22,6 +23,7 @@ type Service struct {
 
 func New(
 	walletSvc *walletservice.Service,
+	productSvc ProductSvc,
 	paymentSvc *paymentservice.Service,
 	orderSvc *orderservice.Service,
 	smmSvc *smmproviderservice.Service,
@@ -33,6 +35,7 @@ func New(
 ) *Service {
 	return &Service{
 		walletSvc:           walletSvc,
+		productSvc:          productSvc,
 		paymentSvc:          paymentSvc,
 		orderSvc:            orderSvc,
 		notificationSvc:     notificationSvc,

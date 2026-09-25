@@ -10,8 +10,9 @@ type Config struct {
 	PriceCacheTTL time.Duration `koanf:"priceCacheTTL"`
 }
 type Service struct {
-	repository   Repository
-	pricingSVc   *pricingservice.Service
+	repository Repository
+	pricingSVc *pricingservice.Service
+
 	adapter      SMMAdapterInterface
 	catalogCache CatalogCache
 	smmCache     *redissmm.SMMCache

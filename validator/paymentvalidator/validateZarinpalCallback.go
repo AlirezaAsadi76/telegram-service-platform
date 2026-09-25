@@ -1,15 +1,14 @@
 package paymentvalidator
 
 import (
-	"errors"
+	"telegram-service-platform/entity"
 	"telegram-service-platform/params/paymentparams"
-	"telegram-service-platform/pkg/msgerror"
-	"telegram-service-platform/pkg/richerror"
+	"telegram-service-platform/pkg/wrapper"
 
 	validation "github.com/go-ozzo/ozzo-validation"
 )
 
-func (v *Validator) ValidateZarinpalCallback(req paymentparams.ZarinpalCallback) (map[string]string, error) {
+func (v *Validator) ValidateZarinpalCallback(req paymentparams.ZarinpalCallback) (entity.Meta, error) {
 	const Op = "validate.ZarinpalCallback"
 
 	vErr := validation.ValidateStruct(&req,
@@ -18,18 +17,9 @@ func (v *Validator) ValidateZarinpalCallback(req paymentparams.ZarinpalCallback)
 
 	if vErr != nil {
 
-		fieldErrors := make(map[string]string)
-		var errV validation.Errors
-		ok := errors.As(vErr, &errV)
-		if ok {
-			for key, val := range errV {
-				fieldErrors[key] = val.Error()
-			}
-		}
-		return fieldErrors, richerror.New(Op, vErr).
-			WithMessage(msgerror.InvalidInput).
-			WithKind(richerror.KindInvalid).
-			WithMeta(map[string]interface{}{"request": req})
+		fieldErrors, wrapError := wrapper.WrapValidateError(Op, vErr, entity.Meta{"request": req})
+		return fieldErrors, wrapError
+
 	}
 
 	return nil, nil

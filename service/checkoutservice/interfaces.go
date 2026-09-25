@@ -4,6 +4,7 @@ import (
 	"context"
 	"telegram-service-platform/entity"
 	"telegram-service-platform/params/checkoutparams"
+	"telegram-service-platform/params/productparams"
 	"telegram-service-platform/params/walletparam"
 	"time"
 )
@@ -20,4 +21,8 @@ type TransactionRepository interface {
 
 type FulfillmentEnqueuer interface {
 	Enqueue(ctx context.Context, orderID uint64) error
+}
+
+type ProductSvc interface {
+	CalculateSMMPrice(ctx context.Context, req productparams.CalculateSMMPriceRequest) (productparams.CalculateSMMPriceResponse, error)
 }
