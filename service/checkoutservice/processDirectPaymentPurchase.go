@@ -25,7 +25,6 @@ func (s *Service) ProcessDirectPaymentPurchase(ctx context.Context, req checkout
 		zap.String("amount", req.Amount.String()),
 	)
 
-	// 1. Create Order (PENDING)
 	orderResp, err := s.orderSvc.Create(ctx, orderparams.CreateRequest{
 		UserID:      req.UserID,
 		ProductType: req.ProductType,
@@ -42,12 +41,10 @@ func (s *Service) ProcessDirectPaymentPurchase(ctx context.Context, req checkout
 		return nil, richerror.New(Op, err)
 	}
 
-	// 2. Generate idempotency key
 	idempotencyKey := hashing.EncodeStringToSHA256(
 		fmt.Sprintf("%s:%d:%d:%d", s.config.PrefixDirectIdempotencyKey, req.UserID, orderResp.OrderID, ts.Now()),
 	)
 
-	// 3. Create Payment
 	paymentResp, cpErr := s.paymentSvc.Create(ctx, paymentparams.CreateRequest{
 		OrderID:        orderResp.OrderID,
 		UserID:         req.UserID,
@@ -78,5 +75,7 @@ func (s *Service) ProcessDirectPaymentPurchase(ctx context.Context, req checkout
 		OrderID:    orderResp.OrderID,
 		PaymentID:  paymentResp.PaymentID,
 		PaymentURL: paymentResp.PaymentURL,
+		Amount:     req.Amount,
+		Currency:   req.Currency,
 	}, nil
 }
