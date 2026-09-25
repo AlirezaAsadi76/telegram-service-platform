@@ -2,6 +2,8 @@ package checkoutservice
 
 import (
 	"context"
+	"errors"
+	"telegram-service-platform/pkg/msgerror"
 	"time"
 
 	"telegram-service-platform/entity/notificationentity"
@@ -15,10 +17,16 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.WalletPurchaseRequest) error {
+func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.WalletPurchaseRequest) (*checkoutparams.WalletPurchaseResponse, error) {
 	const Op = "checkoutservice.ProcessWalletPurchase"
 
 	start := time.Now()
+
+	if s.transactionRepo == nil {
+		return nil, richerror.New(Op, errors.New("wallet transaction repository is unavailable")).
+			WithKind(richerror.KindDependencyFailure).
+			WithMessage(msgerror.ExternalServiceFailed)
+	}
 
 	logger.Logger.Info(
 		"wallet purchase started",
@@ -57,7 +65,13 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 			zap.Duration("latency", time.Since(start)),
 		)
 
-		return richerror.New(Op, err)
+		return nil, richerror.New(Op, err)
+	}
+
+	if result == nil {
+		return nil, richerror.New(Op, errors.New("wallet purchase returned nil result")).
+			WithKind(richerror.KindInternal).
+			WithCode(richerror.CodeUnknown)
 	}
 
 	logger.Logger.Info(
@@ -66,22 +80,23 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		zap.Uint64("wallet_transaction_id", result.WalletTxID),
 	)
 
-	if err := s.notificationSvc.Create(
-		ctx,
-		notificationparams.CreateRequest{
-			UserID: req.UserID,
-			Type:   notificationentity.NotificationTypeOrderPaid,
-			Payload: map[string]any{
-				"order_id": result.OrderID,
+	if s.notificationSvc != nil {
+		if err := s.notificationSvc.Create(
+			ctx,
+			notificationparams.CreateRequest{
+				UserID: req.UserID,
+				Type:   notificationentity.NotificationTypeOrderPaid,
+				Payload: map[string]any{
+					"order_id": result.OrderID,
+				},
 			},
-		},
-	); err != nil {
-		logger.Logger.Error(
-			"wallet purchase notification creation failed",
-			zap.Uint64("order_id", result.OrderID),
-			zap.Uint64("user_id", req.UserID),
-			zap.Error(err),
-		)
+		); err != nil {
+			logger.Logger.Error(
+				"wallet purchase notification creation failed",
+				zap.Uint64("order_id", result.OrderID),
+				zap.Error(err),
+			)
+		}
 	}
 
 	if s.fulfillmentEnqueuer == nil {
@@ -94,10 +109,7 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 			zap.Uint64("order_id", result.OrderID),
 			zap.Uint64("wallet_transaction_id", result.WalletTxID),
 		)
-	} else if err := s.fulfillmentEnqueuer.Enqueue(
-		ctx,
-		result.OrderID,
-	); err != nil {
+	} else if err := s.fulfillmentEnqueuer.Enqueue(ctx, result.OrderID); err != nil {
 		metrics.WalletTransactions.
 			WithLabelValues("enqueue_failed").
 			Inc()
@@ -140,5 +152,11 @@ func (s *Service) ProcessWalletPurchase(ctx context.Context, req checkoutparams.
 		zap.Duration("latency", time.Since(start)),
 	)
 
-	return nil
+	return &checkoutparams.WalletPurchaseResponse{
+		OrderID:    result.OrderID,
+		WalletTxID: result.WalletTxID,
+		Amount:     req.Amount,
+		Currency:   req.Currency,
+		NewBalance: result.NewBalance,
+	}, nil
 }
