@@ -3,6 +3,7 @@ package orderflowservice
 import (
 	"context"
 	"errors"
+	"fmt"
 	"telegram-service-platform/logger"
 	"telegram-service-platform/params/orderparams"
 	"telegram-service-platform/pkg/metrics"
@@ -15,7 +16,7 @@ import (
 func (s *Service) SaveOrderFlow(ctx context.Context, req orderparams.SaveOrderFlowRequest) error {
 	const op = "orderflowservice.SaveOrderFlow"
 	start := time.Now()
-
+	fmt.Println(s.config.OrderTTL)
 	if s.config.OrderTTL <= 0 {
 		return richerror.New(
 			op,

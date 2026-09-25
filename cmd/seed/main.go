@@ -5,10 +5,7 @@ import (
 	"log"
 	"telegram-service-platform/config"
 	"telegram-service-platform/repository/postgres"
-	"telegram-service-platform/repository/postgresorder"
-	"telegram-service-platform/repository/postgresuser"
-	"telegram-service-platform/repository/postgreswallet"
-	seeder2 "telegram-service-platform/repository/seeder"
+	"telegram-service-platform/repository/seeder/smmseeder"
 )
 
 func main() {
@@ -44,18 +41,18 @@ func main() {
 	//	log.Fatal(err)
 	//}
 
-	//if err := smmseeder.SeedSMMData(ctx, db); err != nil {
-	//	log.Fatal(err)
-	//}
-	walletRepo := postgreswallet.New(postgresClient)
-	orderRepo := postgresorder.New(postgresClient)
-	userRepo := postgresuser.New(postgresClient)
-
-	seeder := seeder2.New(userRepo, walletRepo, orderRepo)
-
-	seeder.SeedTestUser(ctx)
-	seeder.SeedTestWallet(ctx)
-	seeder.SeedTestOrders(ctx)
+	if err := smmseeder.SeedSMMData(ctx, postgresClient); err != nil {
+		log.Fatal(err)
+	}
+	//walletRepo := postgreswallet.New(postgresClient)
+	//orderRepo := postgresorder.New(postgresClient)
+	//userRepo := postgresuser.New(postgresClient)
+	//
+	//seeder := seeder2.New(userRepo, walletRepo, orderRepo)
+	//
+	//seeder.SeedTestUser(ctx)
+	//seeder.SeedTestWallet(ctx)
+	//seeder.SeedTestOrders(ctx)
 
 	log.Println("seed completed")
 }

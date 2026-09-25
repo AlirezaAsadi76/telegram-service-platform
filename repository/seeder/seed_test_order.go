@@ -67,7 +67,7 @@ func (s *Seeder) SeedTestOrders(ctx context.Context) error {
 			Quantity:    1500,
 			Amount:      entity.Amount(decimal.NewFromInt(22500)),
 			Currency:    "TOMAN",
-			Status:      orderentity.OrderStatusSuccess,
+			Status:      orderentity.OrderStatusCompleted,
 			CreatedAt:   time.Now().Add(-24 * time.Hour),
 			UpdatedAt:   time.Now().Add(-23 * time.Hour),
 		},
