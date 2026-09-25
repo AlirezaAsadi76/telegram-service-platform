@@ -7,18 +7,23 @@ import (
 )
 
 type DirectPaymentPurchase struct {
-	UserID      uint64
-	ProductType productentity.ProductType
-	ProductID   uint64
-	Quantity    int64
-	TargetLink  string
-	Amount      entity.Amount
-	Currency    entity.Currency
-	Method      paymententity.PaymentMethod
+	UserID                 uint64
+	ProductType            productentity.ProductType
+	ProductID              uint64
+	Quantity               int64
+	TargetLink             string
+	Amount                 entity.Amount
+	Currency               entity.Currency
+	Method                 paymententity.PaymentMethod
+	PriceLockedAt          int64
+	PriceLockExpiresAt     int64
+	PriceLockPaymentMethod entity.PriceLockPaymentMethod
 }
 
 type PaymentURLResponse struct {
 	OrderID    uint64
 	PaymentID  uint64
 	PaymentURL string
+	Amount     entity.Amount
+	Currency   entity.Currency
 }

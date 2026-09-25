@@ -15,7 +15,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func (s *Service) LockSMMPrice(ctx context.Context, req checkoutparams.LockSMMPriceRequest) (*checkoutparams.LockSMMPriceResponse, error) {
+func (s *Service) LockSMMPrice(ctx context.Context, req checkoutparams.LockProductPriceRequest) (*checkoutparams.LockProductPriceResponse, error) {
 	const op = "checkoutservice.LockSMMPrice"
 
 	if s.productSvc == nil {
@@ -83,7 +83,7 @@ func (s *Service) LockSMMPrice(ctx context.Context, req checkoutparams.LockSMMPr
 		zap.Time("expires_at", expiresAt),
 	)
 
-	return &checkoutparams.LockSMMPriceResponse{
+	return &checkoutparams.LockProductPriceResponse{
 		Amount:        amount,
 		Currency:      req.Currency,
 		PaymentMethod: req.PaymentMethod,

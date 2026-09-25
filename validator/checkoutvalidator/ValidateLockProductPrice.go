@@ -9,7 +9,7 @@ import (
 	validation "github.com/go-ozzo/ozzo-validation"
 )
 
-func (v *Validator) ValidateLockSMMPrice(req checkoutparams.LockSMMPriceRequest) error {
+func (v *Validator) ValidateLockProductPrice(req checkoutparams.LockProductPriceRequest) error {
 	const op = "checkout.ValidateLockSMMPrice"
 
 	vErr := validation.ValidateStruct(&req,

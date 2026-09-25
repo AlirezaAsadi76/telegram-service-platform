@@ -5,7 +5,7 @@ import (
 	"telegram-service-platform/entity/productentity"
 )
 
-type LockSMMPriceRequest struct {
+type LockProductPriceRequest struct {
 	UserID        uint64
 	ProductType   productentity.ProductType
 	ProductID     uint64
@@ -14,7 +14,7 @@ type LockSMMPriceRequest struct {
 	PaymentMethod entity.PriceLockPaymentMethod
 }
 
-type LockSMMPriceResponse struct {
+type LockProductPriceResponse struct {
 	Amount        entity.Amount
 	Currency      entity.Currency
 	PaymentMethod entity.PriceLockPaymentMethod
