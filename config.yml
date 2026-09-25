@@ -124,3 +124,9 @@ orderFulfillmentRecoveryJob:
   stale_after: "1m"
   reconciliation_after: "30m"
   batch_size: "50"
+
+pricingService:
+    smm_minimum_unit_price_toman: "5000"
+    smm_minimum_multiplier: "1.4"
+    smm_maximum_multiplier: "4"
+    smm_multiplier_scale_toman: "1466.6666666666666666666666666667"

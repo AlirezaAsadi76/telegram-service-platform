@@ -11,8 +11,9 @@ type CalculateSMMPriceRequest struct {
 }
 
 type CalculateSMMPriceResponse struct {
-	MappingID int64
-	ServiceID int64
-	Rate      entity.Amount
-	Price     productentity.Price
+	MappingID        int64
+	ServiceID        int64
+	Rate             entity.Amount
+	PricePerThousand productentity.Price
+	Price            productentity.Price
 }

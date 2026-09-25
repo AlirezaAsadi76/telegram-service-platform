@@ -116,7 +116,7 @@ func SetupDependencies(cfg config.Config) (*Dependencies, *Repositories, *Adapte
 	smmSvc.RegisterProvider("justanotherpanel", justPanelAdapter)
 	notificationSVC := notificationservice.New(notificationRepo, queueRepo, cfg.NotificationSvc)
 	priceService := priceservice.New(cfg.PriceService, priceRepo, telegramProvider, exchangeRateProvider)
-	pricingSvc := pricingservice.New(priceRepo)
+	pricingSvc := pricingservice.New(priceRepo, cfg.PricingService)
 	userSvc := userservice.New(walletSvc, userRepo, activityTracker)
 	messengerService := messenger.New(botAdapter)
 	orderflowService := orderflowservice.New(orderFlowCache, cfg.OrderFlowSvc)
